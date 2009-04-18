@@ -1,0 +1,161 @@
+/* ==============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+/*
+ * @author Karri-Pekka Laakso (kplaakso)
+ */
+
+.continuousCalendar {
+	position: absolute;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 8pt;
+	color: black;
+	border: 1px solid #999999;
+	background-color: white;
+}
+
+.continuousCalendar thead th {
+	font-weight: bold;
+	text-align: center;
+	padding: 0px 1px 0px 1px;
+	border-bottom: 1px solid #888888;
+}
+.continuousCalendar tbody th,
+.continuousCalendar thead th.year {
+	text-align: left;
+	border-right: 1px solid #888888;
+	padding: 0px 1px 0px 2px;
+}
+
+.continuousCalendar thead th.year div {
+	width: 50px;
+}
+.continuousCalendar tbody th {
+	font-weight: normal;
+}
+.continuousCalendar thead th.year {
+	text-align: center;
+}
+.continuousCalendar th.year span {
+	font-weight: normal;
+	cursor: pointer;
+}
+
+.continuousCalendar th.year span {
+	cursor: pointer;
+	vertical-align: top;
+}
+
+.continuousCalendar #arrowLeft {
+	width: 5px;
+	background: url("arrow-left.gif") 0px 2px no-repeat;
+	padding: 0px 5px 4px 0px;
+}
+
+.continuousCalendar #arrowRight {
+	width: 5px;
+	background: url("arrow-right.gif") 2px 2px no-repeat;
+	padding: 0px 0px 4px 5px;
+}
+
+.continuousCalendar td {
+	text-align: right;
+	padding: 0px 4px 0px 4px;
+	background-color: white;
+	cursor: pointer;
+}
+.continuousCalendar td.empty { cursor: default; }
+.continuousCalendar th.scroll,
+.continuousCalendar td.scroll { border-left: 1px solid #888888; }
+
+.continuousCalendar td:hover,
+.continuousCalendar td.holiday:hover {
+	font-weight: bold;
+	color: blue;
+}
+
+.continuousCalendar td.odd,
+.continuousCalendar th.odd {
+	background-color: #e8e8e8;
+}
+
+.continuousCalendar td.holiday,
+.continuousCalendar th.holiday {
+	font-weight: bold;
+	color: #666666;
+}
+
+.continuousCalendar td.selected {
+	background-color: rgb(0,65,196);
+	color: white;
+	font-weight: bold;
+}
+
+.continuousCalendar td.today {
+	border: 1px solid red;
+	padding: 0px 3px 0px 3px;
+}
+
+
+.continuousCalendar input {
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 8pt;
+	color: black;
+	width: 25px;
+	border: none;
+	padding: 1px;
+	height: 1em;
+	background-color: white;
+}
+
+.continuousCalendar .close {
+	cursor: pointer;
+	line-height: 0.8em;
+	padding: 0px 1px 0px 1px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.continuousCalendar #arrowUp {
+	width: 9px;
+	height: 9px;
+	background: url("arrow-up.gif") 0px 0px no-repeat;
+}
+
+.continuousCalendar #arrowDown {
+	width: 9px;
+	height: 9px;
+	background: url("arrow-down.gif") 0px 0px no-repeat;
+}
+
+.continuousCalendar #arrowMoreUp {
+	width: 9px;
+	height: 9px;
+	background: url("arrow-more-up.gif") 0px 0px no-repeat;
+}
+
+.continuousCalendar #arrowMoreDown {
+	width: 9px;
+	height: 9px;
+	background: url("arrow-more-down.gif") 0px 0px no-repeat;
+}
+
+input.continuousCalendarField {
+	border: 1px solid black;
+	width: 70px; /* TODO:  calculate this with manual fontmetrics */
+}
+
+input.continuousCalendarField.wicket-invalid {
+	background-color: #FF6666;
+}
