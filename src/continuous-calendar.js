@@ -14,4 +14,4 @@ $.fn.continuousCalendar = function(day, month, year) {
     "</tbody>",
     "</table>"
   ].join("\n"));
-}
+};
