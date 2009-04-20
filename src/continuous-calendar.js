@@ -24,6 +24,8 @@ $.fn.continuousCalendar = function(params) {
     markup.push("<tr>");
     if (firstDayOfWeek.getDate() <= 7) {
       markup.push('<td class="month">' + months[firstDayOfWeek.getMonth()] + '</td>');
+    } else {
+      markup.push('<td></td>');
     }
     for (var i = 0; i < 7; i++) {
       markup.push('<td class="date">' + firstDayOfWeek.plusDays(i).getDate() + "</td>");

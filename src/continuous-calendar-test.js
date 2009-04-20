@@ -15,6 +15,7 @@ test("lists week days for vappu 2009", function() {
     '<table>',
     '<tbody>',
     '<tr>',
+    '<td></td>',
     '<td class="date">27</td>',
     '<td class="date">28</td>',
     '<td class="date">29</td>',
