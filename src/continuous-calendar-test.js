@@ -1,4 +1,4 @@
-module("Charge from customer selector", {
+module("continuous calendar", {
   setup: resetAll,
   tearDown: resetAll
 });
@@ -27,7 +27,6 @@ test("lists week days for vappu 2009", function() {
     '</table>'
   ].join("\n");
   equals(actual, expected);
-  console.log(actual, "expected: ", expected);
 });
 
 test("lists given number of weeks before given date", function() {
