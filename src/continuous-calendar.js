@@ -1,17 +1,30 @@
-$.fn.continuousCalendar = function(day, month, year) {
-  var date = new Date(month + "/" + day + "/" + year);
+$.fn.continuousCalendar = function(params) {
+  var date = new Date(params.date[1] + "/" + params.date[0] + "/" + params.date[2]);
   var monday = date.getFirstDateOfWeek(1);
-  var weekMarkup = [];
-  for (var i = 0; i < 7; i++) {
-    weekMarkup.push("<td>" + monday.plusDays(i).getDate() + "</td>");
-  }
+
   this.append([
     "<table>",
     "<tbody>",
-    "<tr>",
-    weekMarkup.join("\n"),
-    "</tr>",
+    weeksBefore(params.weeksBefore),
     "</tbody>",
     "</table>"
   ].join("\n"));
+
+  function weeksBefore(numberOfWeeks) {
+    var markup = [];
+    for (var i = numberOfWeeks; i >= 0; i--) {
+      markup.push(weekMarkup(monday.plusDays(i * (-7))));
+    }
+    return markup.join("\n");
+  }
+
+  function weekMarkup(firstDayOfWeek) {
+    var markup = [];
+    markup.push("<tr>");
+    for (var i = 0; i < 7; i++) {
+      markup.push("<td>" + firstDayOfWeek.plusDays(i).getDate() + "</td>");
+    }
+    markup.push("</tr>");
+    return markup.join("\n");
+  }
 };
