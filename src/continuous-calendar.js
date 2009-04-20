@@ -4,7 +4,7 @@ $.fn.continuousCalendar = function(params) {
   var firstWeekdayOfGivenDate = date.getFirstDateOfWeek(Date.MONDAY);
 
   this.append([
-    "<table>",
+    '<table class="continuousCalendar">',
     "<tbody>",
     weekRangeMarkup(params.weeksBefore, params.weeksAfter),
     "</tbody>",

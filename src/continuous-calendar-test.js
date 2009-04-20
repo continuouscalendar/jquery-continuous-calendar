@@ -12,7 +12,7 @@ test("lists week days for vappu 2009", function() {
 
   var actual = $("#continuousCalendar").html();
   var expected = [
-    '<table>',
+    '<table class="continuousCalendar">',
     '<tbody>',
     '<tr>',
     '<td></td>',
