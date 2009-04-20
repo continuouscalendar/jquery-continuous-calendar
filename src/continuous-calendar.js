@@ -5,12 +5,12 @@ $.fn.continuousCalendar = function(params) {
   this.append([
     "<table>",
     "<tbody>",
-    weeksBeforeAndAfter(params.weeksBefore, params.weeksAfter),
+    weekRangeMarkup(params.weeksBefore, params.weeksAfter),
     "</tbody>",
     "</table>"
   ].join("\n"));
 
-  function weeksBeforeAndAfter(before, after) {
+  function weekRangeMarkup(before, after) {
     var markup = [];
     for (var i = before; i >= -after; i--) {
       markup.push(weekMarkup(monday.plusDays(i * (-7))));
@@ -22,9 +22,10 @@ $.fn.continuousCalendar = function(params) {
     var markup = [];
     markup.push("<tr>");
     for (var i = 0; i < 7; i++) {
-      markup.push("<td>" + firstDayOfWeek.plusDays(i).getDate() + "</td>");
+      markup.push('<td class="date">' + firstDayOfWeek.plusDays(i).getDate() + "</td>");
     }
     markup.push("</tr>");
     return markup.join("\n");
   }
+ // var months = []
 };

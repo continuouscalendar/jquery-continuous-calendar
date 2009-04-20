@@ -12,19 +12,19 @@ test("lists week days for vappu 2009", function() {
 
   var actual = $("#continuousCalendar").html();
   var expected = [
-    "<table>",
-    "<tbody>",
-    "<tr>",
-    "<td>27</td>",
-    "<td>28</td>",
-    "<td>29</td>",
-    "<td>30</td>",
-    "<td>1</td>",
-    "<td>2</td>",
-    "<td>3</td>",
-    "</tr>",
-    "</tbody>",
-    "</table>"
+    '<table>',
+    '<tbody>',
+    '<tr>',
+    '<td class="date">27</td>',
+    '<td class="date">28</td>',
+    '<td class="date">29</td>',
+    '<td class="date">30</td>',
+    '<td class="date">1</td>',
+    '<td class="date">2</td>',
+    '<td class="date">3</td>',
+    '</tr>',
+    '</tbody>',
+    '</table>'
   ].join("\n");
   equals(actual, expected);
   console.log(actual, "expected: ", expected);
@@ -36,11 +36,11 @@ test("lists given number of weeks before given date", function() {
     weeksBefore: 2,
     weeksAfter: 0
   });
-  equals($.trim($("#continuousCalendar").text()), [
-    "30","31","1","2","3","4","5","","",
-    "6","7","8","9","10","11","12","","",
+  equals($("#continuousCalendar").find(".date").text(), [
+    "30","31","1","2","3","4","5",
+    "6","7","8","9","10","11","12",
     "13","14","15","16","17","18","19"
-  ].join("\n"));
+  ].join(""));
 });
 
 test("lists given number of weeks after given date", function() {
@@ -49,11 +49,11 @@ test("lists given number of weeks after given date", function() {
     weeksBefore: 0,
     weeksAfter: 2
   });
-  equals($.trim($("#continuousCalendar").text()), [
+  equals($.trim($("#continuousCalendar").find(".date").text()), [
     "13","14","15","16","17","18","19","","",
     "20","21","22","23","24","25","26","","",
     "27","28","29","30","1","2","3"
-  ].join("\n"));
+  ].join(""));
 });
 
 function equalsWithLog(actual, expected) {
