@@ -23,6 +23,8 @@ Date.MINUTE = 60 * Date.SECOND;
 Date.HOUR = 60 * Date.MINUTE;
 Date.DAY = 24 * Date.HOUR;
 Date.WEEK = 7 * Date.DAY;
+Date.MONDAY = 1;
+Date.SUNDAY = 0;
 
 Date.getDaysInMonth = function(year, month) {
   if (((0 == (year % 4)) && ( (0 != (year % 100)) || (0 == (year % 400)))) && month == 1) {

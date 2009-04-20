@@ -1,6 +1,6 @@
 $.fn.continuousCalendar = function(params) {
   var date = new Date(params.date[1] + "/" + params.date[0] + "/" + params.date[2]);
-  var firstWeekdayOfGivenDate = date.getFirstDateOfWeek(1);
+  var firstWeekdayOfGivenDate = date.getFirstDateOfWeek(Date.MONDAY);
 
   this.append([
     "<table>",

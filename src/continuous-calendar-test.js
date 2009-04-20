@@ -56,6 +56,15 @@ test("lists given number of weeks after given date", function() {
   ].join(""));
 });
 
+test("shows month name on first row of full week", function() {
+  $("#continuousCalendar").continuousCalendar({
+    date: [30, 4, 2009],
+    weeksBefore: 0,
+    weeksAfter: 1
+  });
+  //TODO implement test
+});
+
 function resetAll() {
   $("#continuousCalendar").empty();
 }
