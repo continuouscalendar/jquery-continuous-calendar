@@ -5,14 +5,14 @@ $.fn.continuousCalendar = function(params) {
   this.append([
     "<table>",
     "<tbody>",
-    weeksBefore(params.weeksBefore),
+    weeksBeforeAndAfter(params.weeksBefore, params.weeksAfter),
     "</tbody>",
     "</table>"
   ].join("\n"));
 
-  function weeksBefore(numberOfWeeks) {
+  function weeksBeforeAndAfter(before, after) {
     var markup = [];
-    for (var i = numberOfWeeks; i >= 0; i--) {
+    for (var i = before; i >= -after; i--) {
       markup.push(weekMarkup(monday.plusDays(i * (-7))));
     }
     return markup.join("\n");
