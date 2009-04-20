@@ -56,11 +56,6 @@ test("lists given number of weeks after given date", function() {
   ].join(""));
 });
 
-function equalsWithLog(actual, expected) {
-  equals(actual, expected);
-  console.log('actual:\n"', actual, '"\nexpected:\n"', expected + '"');
-}
-
 function resetAll() {
   $("#continuousCalendar").empty();
 }
