@@ -22,19 +22,21 @@
 	color: black;
 	border: 1px solid #999999;
 	background-color: white;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 .continuousCalendar thead th {
 	font-weight: bold;
 	text-align: center;
-	padding: 0px 1px 0px 1px;
+	padding: 0 1px 0 1px;
 	border-bottom: 1px solid #888888;
 }
 .continuousCalendar tbody th,
 .continuousCalendar thead th.year {
 	text-align: left;
 	border-right: 1px solid #888888;
-	padding: 0px 1px 0px 2px;
+	padding: 0 1px 0 2px;
 }
 
 .continuousCalendar thead th.year div {
@@ -58,25 +60,21 @@
 
 .continuousCalendar #arrowLeft {
 	width: 5px;
-	background: url("arrow-left.gif") 0px 2px no-repeat;
-	padding: 0px 5px 4px 0px;
+	padding: 0 5px 4px 0;
 }
 
 .continuousCalendar #arrowRight {
 	width: 5px;
-	background: url("arrow-right.gif") 2px 2px no-repeat;
-	padding: 0px 0px 4px 5px;
+	padding: 0 0 4px 5px;
 }
 
 .continuousCalendar td {
 	text-align: right;
-	padding: 0px 4px 0px 4px;
+	padding: 0 4px 0 4px;
 	background-color: white;
 	cursor: pointer;
 }
 .continuousCalendar td.empty { cursor: default; }
-.continuousCalendar th.scroll,
-.continuousCalendar td.scroll { border-left: 1px solid #888888; }
 
 .continuousCalendar td:hover,
 .continuousCalendar td.holiday:hover {
@@ -103,9 +101,8 @@
 
 .continuousCalendar td.today {
 	border: 1px solid red;
-	padding: 0px 3px 0px 3px;
+	padding: 0 3px 0 3px;
 }
-
 
 .continuousCalendar input {
 	font-family: Arial, Verdana, sans-serif;
@@ -116,38 +113,6 @@
 	padding: 1px;
 	height: 1em;
 	background-color: white;
-}
-
-.continuousCalendar .close {
-	cursor: pointer;
-	line-height: 0.8em;
-	padding: 0px 1px 0px 1px;
-	vertical-align: middle;
-	text-align: center;
-}
-
-.continuousCalendar #arrowUp {
-	width: 9px;
-	height: 9px;
-	background: url("arrow-up.gif") 0px 0px no-repeat;
-}
-
-.continuousCalendar #arrowDown {
-	width: 9px;
-	height: 9px;
-	background: url("arrow-down.gif") 0px 0px no-repeat;
-}
-
-.continuousCalendar #arrowMoreUp {
-	width: 9px;
-	height: 9px;
-	background: url("arrow-more-up.gif") 0px 0px no-repeat;
-}
-
-.continuousCalendar #arrowMoreDown {
-	width: 9px;
-	height: 9px;
-	background: url("arrow-more-down.gif") 0px 0px no-repeat;
 }
 
 input.continuousCalendarField {

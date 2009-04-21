@@ -1,7 +1,7 @@
 $.fn.continuousCalendar = function(params) {
   var months = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
-  var date = new Date(params.date[1] + "/" + params.date[0] + "/" + params.date[2]);
-  var firstWeekdayOfGivenDate = date.getFirstDateOfWeek(Date.MONDAY);
+  var selectedDate = new Date(params.date[1] + "/" + params.date[0] + "/" + params.date[2]);
+  var firstWeekdayOfGivenDate = selectedDate.getFirstDateOfWeek(Date.MONDAY);
 
   this.append([
     '<table class="continuousCalendar">',
@@ -22,15 +22,22 @@ $.fn.continuousCalendar = function(params) {
   function weekMarkup(firstDayOfWeek) {
     var markup = [];
     markup.push("<tr>");
+    var cell = $("<td></td>");
     if (firstDayOfWeek.getDate() <= 7) {
-      markup.push('<td class="month">' + months[firstDayOfWeek.getMonth()] + '</td>');
-    } else {
-      markup.push('<td></td>');
+      cell.addClass("month");
+      cell.append(months[firstDayOfWeek.getMonth()]);
     }
+    cell.addClass(background(firstDayOfWeek));
+    markup.push(cell.parent().html());
     for (var i = 0; i < 7; i++) {
-      markup.push('<td class="date">' + firstDayOfWeek.plusDays(i).getDate() + "</td>");
+      var date = firstDayOfWeek.plusDays(i);
+      markup.push('<td class="date'+background(date)+'">' + date.getDate() + "</td>");
     }
     markup.push("</tr>");
     return markup.join("\n");
+
+    function background(date) {
+      return date.isOddMonth()?' odd':'';
+    }
   }
 };

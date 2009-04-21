@@ -15,11 +15,11 @@ test("lists week days for vappu 2009", function() {
     '<table class="continuousCalendar">',
     '<tbody>',
     '<tr>',
-    '<td></td>',
-    '<td class="date">27</td>',
-    '<td class="date">28</td>',
-    '<td class="date">29</td>',
-    '<td class="date">30</td>',
+    '<td class="odd"></td>',
+    '<td class="date odd">27</td>',
+    '<td class="date odd">28</td>',
+    '<td class="date odd">29</td>',
+    '<td class="date odd">30</td>',
     '<td class="date">1</td>',
     '<td class="date">2</td>',
     '<td class="date">3</td>',
@@ -27,7 +27,7 @@ test("lists week days for vappu 2009", function() {
     '</tbody>',
     '</table>'
   ].join("\n");
-  equals(actual, expected);
+  equals(actual, expected, "april should be odd");
 });
 
 test("lists given number of weeks before given date", function() {
