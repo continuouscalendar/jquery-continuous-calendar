@@ -34,7 +34,7 @@ test("lists week days for vappu 2009", function() {
     '<td class="date odd">27</td>',
     '<td class="date odd">28</td>',
     '<td class="date odd">29</td>',
-    '<td class="date odd">30</td>',
+    '<td class="date odd selected">30</td>',
     '<td class="date">1</td>',
     '<td class="date">2</td>',
     '<td class="date">3</td>',
@@ -94,6 +94,15 @@ test("highlights current date", function() {
   var cells = calendar().find(".today");
   equals(cells.size(), 1);
   equals(cells.text(), today.getDate());
+});
+
+test("highlight selected date", function() {
+  calendar().continuousCalendar({
+    date:  [30, 4, 2009],
+    weeksBefore:2,
+    weeksAfter:2
+  });
+  equals(calendar().find(".selected").text(), "30");
 });
 
 var testIndex = 0;

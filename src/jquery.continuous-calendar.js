@@ -45,6 +45,9 @@
         if (date.isToday()) {
           dateCell.addClass("today");
         }
+        if(date.compareTo(selectedDate) == 0) {
+          dateCell.addClass("selected");
+        }
         markup.append(dateCell);
       }
       return markup;
