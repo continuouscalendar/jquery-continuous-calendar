@@ -91,7 +91,9 @@ test("highlights current date", function() {
     weeksBefore: 1,
     weeksAfter: 1
   });
-  equals(calendar().find(".today").text(), "" + today.getDate());
+  var cells = calendar().find(".today");
+  equals(cells.size(), 1);
+  equals(cells.text(), today.getDate());
 });
 
 var testIndex = 0;
