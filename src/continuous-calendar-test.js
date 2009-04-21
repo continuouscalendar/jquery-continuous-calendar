@@ -3,6 +3,17 @@ module("continuous calendar", {
   tearDown: resetAll
 });
 
+test("shows year and week days", function() {
+  $("#continuousCalendar").continuousCalendar({
+    date: [30, 4, 2009],
+    weeksBefore: 0,
+    weeksAfter: 0
+  });
+  equals($.trim($("#continuousCalendar .continuousCalendar thead th").text()), [
+    "2009"
+  ].join(""));
+});
+
 test("lists week days for vappu 2009", function() {
   $("#continuousCalendar").continuousCalendar({
     date: [30, 4, 2009],
@@ -63,17 +74,6 @@ test("shows month name on first row of full week", function() {
   var secondMonth = months.eq(1);
   equals(secondMonth.text(), "kesäkuu");
   equals(secondMonth.next().text(), "1");
-});
-
-test("shows week days and year", function() {
-  $("#continuousCalendar").continuousCalendar({
-    date: [30, 4, 2009],
-    weeksBefore: 0,
-    weeksAfter: 0
-  });
-  equals($.trim($("#continuousCalendar .continuousCalendar thead th").text()), [
-    "2009"
-  ].join(""));
 });
 
 function resetAll() {
