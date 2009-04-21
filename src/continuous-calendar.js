@@ -22,10 +22,10 @@ $.fn.continuousCalendar = function(params) {
   function weekMarkup(firstDayOfWeek) {
     var markup = [];
     markup.push("<tr>");
-    var cell = $("<td></td>");
+    var cell = $("<th></th>");
     if (firstDayOfWeek.getDate() <= 7) {
-      cell.addClass("month");
       cell.append(months[firstDayOfWeek.getMonth()]);
+      cell.addClass("month");
     }
     cell.addClass(background(firstDayOfWeek));
     markup.push(cell.parent().html());

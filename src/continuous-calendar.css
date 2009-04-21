@@ -39,8 +39,12 @@
 	padding: 0 1px 0 2px;
 }
 
-.continuousCalendar thead th.year div {
+.continuousCalendar .year div {
 	width: 50px;
+}
+.continuousCalendar .month {
+	width: 50px;
+  text-align:left;
 }
 .continuousCalendar tbody th {
 	font-weight: normal;
@@ -73,6 +77,7 @@
 	padding: 0 4px 0 4px;
 	background-color: white;
 	cursor: pointer;
+  width: 12px;
 }
 .continuousCalendar td.empty { cursor: default; }
 

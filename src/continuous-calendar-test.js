@@ -15,7 +15,7 @@ test("lists week days for vappu 2009", function() {
     '<table class="continuousCalendar">',
     '<tbody>',
     '<tr>',
-    '<td class="odd"></td>',
+    '<th class="odd"></th>',
     '<td class="date odd">27</td>',
     '<td class="date odd">28</td>',
     '<td class="date odd">29</td>',
