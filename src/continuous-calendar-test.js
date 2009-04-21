@@ -85,6 +85,4 @@ test("shows month name on first row of full week", function() {
   equals(secondMonth.next().text(), "1");
 });
 
-function resetAll() {
-  $("#continuousCalendar").empty();
-}
+function resetAll() {}

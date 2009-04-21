@@ -4,6 +4,7 @@ $.fn.continuousCalendar = function(params) {
   var selectedDate = new Date(params.date[1] + "/" + params.date[0] + "/" + params.date[2]);
   var firstWeekdayOfGivenDate = selectedDate.getFirstDateOfWeek(Date.MONDAY);
 
+  this.empty();
   this.append([
     '<table class="continuousCalendar">',
     '<thead><th class="year">' + selectedDate.getFullYear() + '</th>',
