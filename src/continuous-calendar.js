@@ -6,7 +6,7 @@ $.fn.continuousCalendar = function(params) {
 
   this.append([
     '<table class="continuousCalendar">',
-    '<thead><th>' + selectedDate.getFullYear() + '</th>',
+    '<thead><th class="year">' + selectedDate.getFullYear() + '</th>',
     weekDaysMarkup(),
     '</thead>',
     '</table>',
@@ -20,7 +20,7 @@ $.fn.continuousCalendar = function(params) {
   function weekDaysMarkup() {
     var markup = [];
     for (var i in weekDays) {
-      markup.push('<th>' + weekDays[i] + '</th>');
+      markup.push('<th class="weekDay">' + weekDays[i] + '</th>');
     }
     return markup.join("\n");
   }

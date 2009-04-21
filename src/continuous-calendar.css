@@ -32,24 +32,23 @@
 	padding: 0 1px 0 1px;
 	border-bottom: 1px solid #888888;
 }
-.continuousCalendar tbody th,
-.continuousCalendar thead th.year {
-	text-align: left;
-	border-right: 1px solid #888888;
-	padding: 0 1px 0 2px;
+
+.continuousCalendar thead th.year,
+.continuousCalendar tbody th {
+  text-align: left;
+  border-right: 1px solid #888888;
+  padding: 0 1px 0 2px;
+  width: 60px;
 }
 
-.continuousCalendar .year div {
-	width: 50px;
-}
 .continuousCalendar tbody th {
-	width: 50px;
-  text-align:left;
   font-weight: normal;
 }
+
 .continuousCalendar thead th.year {
 	text-align: center;
 }
+
 .continuousCalendar th.year span {
 	font-weight: normal;
 	cursor: pointer;
@@ -70,12 +69,14 @@
 	padding: 0 0 4px 5px;
 }
 
-.continuousCalendar td {
+.continuousCalendar td,
+.continuousCalendar thead th.weekDay {
 	text-align: right;
 	background-color: white;
 	cursor: pointer;
   width: 20px;
 }
+
 .continuousCalendar td.empty { cursor: default; }
 
 .continuousCalendar td:hover,

@@ -3,14 +3,23 @@ module("continuous calendar", {
   tearDown: resetAll
 });
 
-test("shows year and week days", function() {
+test("shows year", function() {
   $("#continuousCalendar").continuousCalendar({
     date: [30, 4, 2008],
     weeksBefore: 0,
     weeksAfter: 0
   });
-  equals($.trim($("#continuousCalendar .continuousCalendar thead th").text()), [
-    "2008", "ma", "ti", "ke", "to", "pe", "la", "su"
+  equals($.trim($("#continuousCalendar .continuousCalendar thead th.year").text()), "2008");
+});
+
+test("shows week days", function() {
+  $("#continuousCalendar").continuousCalendar({
+    date: [30, 4, 2008],
+    weeksBefore: 0,
+    weeksAfter: 0
+  });
+  equals($.trim($("#continuousCalendar .continuousCalendar thead th.weekDay").text()), [
+    "ma", "ti", "ke", "to", "pe", "la", "su"
   ].join(""));
 });
 
