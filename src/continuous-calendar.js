@@ -5,22 +5,12 @@ $.fn.continuousCalendar = function(params) {
   var firstWeekdayOfGivenDate = selectedDate.getFirstDateOfWeek(Date.MONDAY);
 
   this.empty();
-  this.append([
-    '<div class="continuousCalendar">',
-    '<table>',
-    '<thead><th class="year">' + selectedDate.getFullYear() + '</th>',
-    weekDaysMarkup(),
-    '</thead>',
-    '</table>',
-    '<div class="calendarScrollContent">',
-    '<table>',
-    '<tbody>',
-    weekRangeMarkup(params.weeksBefore, params.weeksAfter),
-    '</tbody>',
-    '</table>',
-    '</div>',
-    '</div>'
-  ].join("\n"));
+
+  var calendar = $("<div></div>").addClass("continuousCalendar");
+  var header = $("<table></table>").append('<thead><th class="year">' + selectedDate.getFullYear() + '</th>' + weekDaysMarkup() + '</thead>');
+  var body = $("<div></div>").addClass("calendarScrollContent").append('<table><tbody>'+weekRangeMarkup(params.weeksBefore, params.weeksAfter)+'</tbody></table>');
+  calendar.append(header).append(body);
+  this.append(calendar);
 
   function weekDaysMarkup() {
     var markup = [];
