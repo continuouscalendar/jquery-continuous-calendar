@@ -6,7 +6,7 @@ $.fn.continuousCalendar = function(params) {
 
   this.append([
     '<table class="continuousCalendar">',
-    '<thead><th>2009</th>',
+    '<thead><th>' + selectedDate.getFullYear() + '</th>',
     weekDaysMarkup(),
     '</thead>',
     '</table>',
@@ -45,13 +45,13 @@ $.fn.continuousCalendar = function(params) {
     markup.push(cell.parent().html());
     for (var i = 0; i < 7; i++) {
       var date = firstDayOfWeek.plusDays(i);
-      markup.push('<td class="date'+background(date)+'">' + date.getDate() + "</td>");
+      markup.push('<td class="date' + background(date) + '">' + date.getDate() + "</td>");
     }
     markup.push("</tr>");
     return markup.join("\n");
 
     function background(date) {
-      return date.isOddMonth()?' odd':'';
+      return date.isOddMonth() ? ' odd' : '';
     }
   }
 };

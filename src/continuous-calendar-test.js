@@ -5,12 +5,12 @@ module("continuous calendar", {
 
 test("shows year and week days", function() {
   $("#continuousCalendar").continuousCalendar({
-    date: [30, 4, 2009],
+    date: [30, 4, 2008],
     weeksBefore: 0,
     weeksAfter: 0
   });
   equals($.trim($("#continuousCalendar .continuousCalendar thead th").text()), [
-    "2009", "ma", "ti", "ke", "to", "pe", "la", "su"
+    "2008", "ma", "ti", "ke", "to", "pe", "la", "su"
   ].join(""));
 });
 
