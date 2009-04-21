@@ -10,7 +10,7 @@ test("shows year and week days", function() {
     weeksAfter: 0
   });
   equals($.trim($("#continuousCalendar .continuousCalendar thead th").text()), [
-    "2009"
+    "2009", "ma", "ti", "ke", "to", "pe", "la", "su"
   ].join(""));
 });
 

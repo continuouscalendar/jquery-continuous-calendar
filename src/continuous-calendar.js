@@ -1,11 +1,14 @@
 $.fn.continuousCalendar = function(params) {
+  var weekDays = ["ma", "ti", "ke", "to", "pe", "la", "su"];
   var months = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
   var selectedDate = new Date(params.date[1] + "/" + params.date[0] + "/" + params.date[2]);
   var firstWeekdayOfGivenDate = selectedDate.getFirstDateOfWeek(Date.MONDAY);
 
   this.append([
     '<table class="continuousCalendar">',
-    '<thead><th>2009</th></thead>',
+    '<thead><th>2009</th>',
+    weekDaysMarkup(),
+    '</thead>',
     '</table>',
     '<table class="continuousCalendar">',
     "<tbody>",
@@ -13,6 +16,14 @@ $.fn.continuousCalendar = function(params) {
     "</tbody>",
     "</table>"
   ].join("\n"));
+
+  function weekDaysMarkup() {
+    var markup = [];
+    for (var i in weekDays) {
+      markup.push('<th>' + weekDays[i] + '</th>');
+    }
+    return markup.join("\n");
+  }
 
   function weekRangeMarkup(before, after) {
     var markup = [];
