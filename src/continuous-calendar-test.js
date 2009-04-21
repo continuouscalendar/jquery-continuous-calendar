@@ -88,8 +88,8 @@ test("highlights current date", function() {
   var today = new Date();
   calendar().continuousCalendar({
     date: [today.getDate(), today.getMonth() + 1, today.getFullYear()],
-    weeksBefore: 1,
-    weeksAfter: 1
+    weeksBefore: 20,
+    weeksAfter: 20
   });
   var cells = calendar().find(".today");
   equals(cells.size(), 1);

@@ -12,11 +12,13 @@ $.fn.continuousCalendar = function(params) {
     weekDaysMarkup(),
     '</thead>',
     '</table>',
+    '<div class="calendarScrollContent">',
     '<table>',
     '<tbody>',
     weekRangeMarkup(params.weeksBefore, params.weeksAfter),
     '</tbody>',
     '</table>',
+    '</div>',
     '</div>'
   ].join("\n"));
 
