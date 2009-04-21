@@ -9,7 +9,6 @@ test("lists week days for vappu 2009", function() {
     weeksBefore: 0,
     weeksAfter: 0
   });
-
   var actual = $("#continuousCalendar").html();
   var expected = [
     '<table class="continuousCalendar">',
@@ -62,9 +61,11 @@ test("shows month name on first row of full week", function() {
     weeksBefore: 0,
     weeksAfter: 1
   });
-  equals($("#continuousCalendar").find(".month").size(), 1);
-  equals($("#continuousCalendar").find(".month").text(), "toukokuu");
-  equals($("#continuousCalendar").find(".month").next().text(), "4");
+  var months = $("#continuousCalendar").find(".month");
+  equals(months.size(), 1);
+  var firstMonth = months.eq(0);
+  equals(firstMonth.text(), "toukokuu");
+  equals(firstMonth.next().text(), "4");
 });
 
 function resetAll() {
