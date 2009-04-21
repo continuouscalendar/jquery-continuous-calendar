@@ -37,16 +37,23 @@ $.fn.continuousCalendar = function(params) {
   function weekMarkup(firstDayOfWeek) {
     var markup = [];
     markup.push("<tr>");
-    var cell = $("<th></th>");
+    var monthCell = $("<th></th>");
     if (firstDayOfWeek.getDate() <= 7) {
-      cell.append(months[firstDayOfWeek.getMonth()]);
-      cell.addClass("month");
+      monthCell.append(months[firstDayOfWeek.getMonth()]);
+      monthCell.addClass("month");
     }
-    cell.addClass(background(firstDayOfWeek));
-    markup.push(cell.parent().html());
+    monthCell.addClass(background(firstDayOfWeek));
+    markup.push(monthCell.parent().html());
     for (var i = 0; i < 7; i++) {
       var date = firstDayOfWeek.plusDays(i);
-      markup.push('<td class="date' + background(date) + '">' + date.getDate() + "</td>");
+      var dateCell = $("<td></td>");
+      dateCell.addClass("date");
+      dateCell.addClass(background(date));
+      if (date.isToday()) {
+        dateCell.addClass("today");
+      }
+      dateCell.append(date.getDate());
+      markup.push(dateCell.parent().html());
     }
     markup.push("</tr>");
     return markup.join("\n");

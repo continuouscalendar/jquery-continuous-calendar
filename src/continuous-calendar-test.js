@@ -84,6 +84,16 @@ test("shows month name on first row of full week", function() {
   equals(secondMonth.next().text(), "1");
 });
 
+test("highlights current date", function() {
+  var today = new Date();
+  calendar().continuousCalendar({
+    date: [today.getDate(), today.getMonth() + 1, today.getFullYear()],
+    weeksBefore: 1,
+    weeksAfter: 1
+  });
+  equals(calendar().find(".today").text(), "" + today.getDate());
+});
+
 var testIndex = 0;
 
 function createCalendarContainer() {

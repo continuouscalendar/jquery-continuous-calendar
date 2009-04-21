@@ -15,6 +15,15 @@
 /*
  * @author Karri-Pekka Laakso (kplaakso)
  */
+.continuousCalendar td,
+.continuousCalendar thead .weekDay {
+	text-align: right;
+	background-color: white;
+	cursor: pointer;
+  width: 20px;
+  padding:1px;
+  /*border:1px solid transparent;*/
+}
 
 .continuousCalendar {
 	font-family: Arial, Verdana, sans-serif;
@@ -26,7 +35,7 @@
   border-spacing: 0;
 }
 
-.continuousCalendar thead th {
+.continuousCalendar table thead th {
 	font-weight: bold;
 	text-align: center;
 	padding: 0 1px 0 1px;
@@ -69,14 +78,6 @@
 	padding: 0 0 4px 5px;
 }
 
-.continuousCalendar td,
-.continuousCalendar thead th.weekDay {
-	text-align: right;
-	background-color: white;
-	cursor: pointer;
-  width: 20px;
-}
-
 .continuousCalendar td.empty { cursor: default; }
 
 .continuousCalendar td:hover,
@@ -104,7 +105,7 @@
 
 .continuousCalendar td.today {
 	border: 1px solid red;
-	padding: 0 3px 0 3px;
+  padding:0;
 }
 
 .continuousCalendar input {
