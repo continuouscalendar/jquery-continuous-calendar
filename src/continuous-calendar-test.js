@@ -68,6 +68,15 @@ test("shows month name on first row of full week", function() {
   equals(firstMonth.next().text(), "4");
 });
 
+test("show week days and year", function() {
+  $("#continuousCalendar").continuousCalendar({
+    date: [30, 4, 2009],
+    weeksBefore: 0,
+    weeksAfter: 1
+  });
+  //TODO implement test
+});
+
 function resetAll() {
   $("#continuousCalendar").empty();
 }
