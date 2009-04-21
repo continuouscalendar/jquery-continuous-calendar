@@ -6,16 +6,18 @@ $.fn.continuousCalendar = function(params) {
 
   this.empty();
   this.append([
-    '<table class="continuousCalendar">',
+    '<div class="continuousCalendar">',
+    '<table>',
     '<thead><th class="year">' + selectedDate.getFullYear() + '</th>',
     weekDaysMarkup(),
     '</thead>',
     '</table>',
-    '<table class="continuousCalendar">',
-    "<tbody>",
+    '<table>',
+    '<tbody>',
     weekRangeMarkup(params.weeksBefore, params.weeksAfter),
-    "</tbody>",
-    "</table>"
+    '</tbody>',
+    '</table>',
+    '</div>'
   ].join("\n"));
 
   function weekDaysMarkup() {
