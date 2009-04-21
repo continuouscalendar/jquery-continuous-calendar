@@ -42,12 +42,10 @@
 .continuousCalendar .year div {
 	width: 50px;
 }
-.continuousCalendar .month {
+.continuousCalendar tbody th {
 	width: 50px;
   text-align:left;
-}
-.continuousCalendar tbody th {
-	font-weight: normal;
+  font-weight: normal;
 }
 .continuousCalendar thead th.year {
 	text-align: center;
@@ -74,10 +72,9 @@
 
 .continuousCalendar td {
 	text-align: right;
-	padding: 0 4px 0 4px;
 	background-color: white;
 	cursor: pointer;
-  width: 12px;
+  width: 20px;
 }
 .continuousCalendar td.empty { cursor: default; }
 

@@ -5,6 +5,9 @@ $.fn.continuousCalendar = function(params) {
 
   this.append([
     '<table class="continuousCalendar">',
+    '<thead><th>2009</th></thead>',
+    '</table>',
+    '<table class="continuousCalendar">',
     "<tbody>",
     weekRangeMarkup(params.weeksBefore, params.weeksAfter),
     "</tbody>",

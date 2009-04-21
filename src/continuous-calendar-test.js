@@ -9,10 +9,7 @@ test("lists week days for vappu 2009", function() {
     weeksBefore: 0,
     weeksAfter: 0
   });
-  var actual = $("#continuousCalendar").html();
-  var expected = [
-    '<table class="continuousCalendar">',
-    '<tbody>',
+  equals($.trim($("#continuousCalendar .continuousCalendar tbody").html()), [
     '<tr>',
     '<th class="odd"></th>',
     '<td class="date odd">27</td>',
@@ -22,11 +19,8 @@ test("lists week days for vappu 2009", function() {
     '<td class="date">1</td>',
     '<td class="date">2</td>',
     '<td class="date">3</td>',
-    '</tr>',
-    '</tbody>',
-    '</table>'
-  ].join("\n");
-  equals(actual, expected, "april should be odd");
+    '</tr>'
+  ].join("\n"));
 });
 
 test("lists given number of weeks before given date", function() {
@@ -59,22 +53,27 @@ test("shows month name on first row of full week", function() {
   $("#continuousCalendar").continuousCalendar({
     date: [30, 4, 2009],
     weeksBefore: 0,
-    weeksAfter: 1
+    weeksAfter: 5
   });
-  var months = $("#continuousCalendar").find(".month");
-  equals(months.size(), 1);
+  var months = $("#continuousCalendar .month");
+  equals(months.size(), 2);
   var firstMonth = months.eq(0);
   equals(firstMonth.text(), "toukokuu");
   equals(firstMonth.next().text(), "4");
+  var secondMonth = months.eq(1);
+  equals(secondMonth.text(), "kesäkuu");
+  equals(secondMonth.next().text(), "1");
 });
 
-test("show week days and year", function() {
+test("shows week days and year", function() {
   $("#continuousCalendar").continuousCalendar({
     date: [30, 4, 2009],
     weeksBefore: 0,
-    weeksAfter: 1
+    weeksAfter: 0
   });
-  //TODO implement test
+  equals($.trim($("#continuousCalendar .continuousCalendar thead th").text()), [
+    "2009"
+  ].join(""));
 });
 
 function resetAll() {
