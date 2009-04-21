@@ -5,52 +5,48 @@ $.fn.continuousCalendar = function(params) {
   var firstWeekdayOfGivenDate = selectedDate.getFirstDateOfWeek(Date.MONDAY);
 
   this.empty();
-
-  var calendar = $("<div></div>").addClass("continuousCalendar");
-  var header = $("<table></table>").append('<thead><th class="year">' + selectedDate.getFullYear() + '</th>' + weekDaysMarkup() + '</thead>');
-  var body = $("<div></div>").addClass("calendarScrollContent").append('<table><tbody>'+weekRangeMarkup(params.weeksBefore, params.weeksAfter)+'</tbody></table>');
-  calendar.append(header).append(body);
+  var headerTable = $("<table>").append(header());
+  var bodyTable = $("<table>").append(weekRange(params.weeksBefore, params.weeksAfter));
+  var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
+  var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
   this.append(calendar);
 
-  function weekDaysMarkup() {
-    var markup = [];
-    for (var i in weekDays) {
-      markup.push('<th class="weekDay">' + weekDays[i] + '</th>');
-    }
-    return markup.join("\n");
+  function header() {
+    var year = $("<th>").addClass("year").append(selectedDate.getFullYear());
+    var thead = $("<thead>").append(year);
+    $(weekDays).each(function() {
+      var weekDay = $('<th>').append(this.toString()).addClass("weekDay");
+      thead.append(weekDay);
+    });
+    return thead;
   }
 
-  function weekRangeMarkup(before, after) {
-    var markup = [];
+  function weekRange(before, after) {
+    var markup = $("<tbody>");
     for (var i = before; i >= -after; i--) {
-      markup.push(weekMarkup(firstWeekdayOfGivenDate.plusDays(i * (-7))));
+      markup.append(week(firstWeekdayOfGivenDate.plusDays(i * (-7))));
     }
-    return markup.join("\n");
+    return markup;
   }
 
-  function weekMarkup(firstDayOfWeek) {
-    var markup = [];
-    markup.push("<tr>");
-    var monthCell = $("<th></th>");
+  function week(firstDayOfWeek) {
+    var markup = $("<tr>");
+    var monthCell = $("<th>");
     if (firstDayOfWeek.getDate() <= 7) {
       monthCell.append(months[firstDayOfWeek.getMonth()]);
       monthCell.addClass("month");
     }
     monthCell.addClass(background(firstDayOfWeek));
-    markup.push(monthCell.parent().html());
+    markup.append(monthCell);
     for (var i = 0; i < 7; i++) {
       var date = firstDayOfWeek.plusDays(i);
-      var dateCell = $("<td></td>");
-      dateCell.addClass("date");
-      dateCell.addClass(background(date));
+      var dateCell = $("<td>").addClass("date").addClass(background(date)).append(date.getDate());
       if (date.isToday()) {
         dateCell.addClass("today");
       }
-      dateCell.append(date.getDate());
-      markup.push(dateCell.parent().html());
+      markup.append(dateCell);
     }
-    markup.push("</tr>");
-    return markup.join("\n");
+    return markup;
 
     function background(date) {
       return date.isOddMonth() ? ' odd' : '';

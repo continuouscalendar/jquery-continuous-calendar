@@ -39,7 +39,7 @@ test("lists week days for vappu 2009", function() {
     '<td class="date">2</td>',
     '<td class="date">3</td>',
     '</tr>'
-  ].join("\n"));
+  ].join(""));
 });
 
 test("lists given number of weeks before given date", function() {
