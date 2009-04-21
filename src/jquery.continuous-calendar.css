@@ -14,115 +14,75 @@
 
 /*
  * @author Karri-Pekka Laakso (kplaakso)
+ * @author Eero Anttila (eeroan)
  */
 
-.continuousCalendar td,
-.continuousCalendar thead .weekDay {
-	text-align: right;
-	background-color: white;
-	cursor: pointer;
-  width: 16px;
-  padding:1px;
-  /*border:1px solid transparent;*/
+.calendarScrollContent {
+  overflow-y: auto;
+  width: 200px;
+  height: 100px;
+  border: 1px solid #999999;
 }
 
-.calendarScrollContent {
-  overflow-y:auto;
-  width:206px;
-  height: 100px;
-}
 .continuousCalendar table {
-	font-family: Arial, Verdana, sans-serif;
-	font-size: 8pt;
-	color: black;
-	border: 1px solid #999999;
-	background-color: white;
+  font-family: Arial, Verdana, sans-serif;
+  font-size: 8pt;
+  color: black;
+  background-color: white;
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-.continuousCalendar thead th.year,
-.continuousCalendar tbody th {
-  text-align: left;
+.continuousCalendar .calendarHeader {
+  border: 1px solid #999999;
+  border-bottom: none;
+  text-align: center;
+  margin-left: 1px;
+}
+
+.continuousCalendar .calendarHeader .weekDay,
+  .continuousCalendar .calendarBody td {
+  text-align: right;
+  background-color: white;
+  width: 13px;
+  padding: 1px;
+  padding-right: 3px;
+}
+
+.continuousCalendar .calendarBody td {
+  cursor: pointer;
+}
+
+.continuousCalendar .calendarHeader .year,
+  .continuousCalendar .calendarBody th {
   border-right: 1px solid #888888;
-  padding: 0 1px 0 2px;
   width: 60px;
 }
 
-.continuousCalendar tbody th {
+.continuousCalendar .calendarHeader .year {
+  text-align: center;
+}
+
+.continuousCalendar .calendarBody th {
+  text-align: left;
   font-weight: normal;
 }
 
-.continuousCalendar thead th.year {
-	text-align: center;
+.continuousCalendar td:hover {
+  font-weight: bold;
+  color: blue;
 }
 
-.continuousCalendar th.year span {
-	font-weight: normal;
-	cursor: pointer;
-}
-
-.continuousCalendar th.year span {
-	cursor: pointer;
-	vertical-align: top;
-}
-
-.continuousCalendar #arrowLeft {
-	width: 5px;
-	padding: 0 5px 4px 0;
-}
-
-.continuousCalendar #arrowRight {
-	width: 5px;
-	padding: 0 0 4px 5px;
-}
-
-.continuousCalendar td.empty { cursor: default; }
-
-.continuousCalendar td:hover,
-.continuousCalendar td.holiday:hover {
-	font-weight: bold;
-	color: blue;
-}
-
-.continuousCalendar td.odd,
-.continuousCalendar th.odd {
-	background-color: #e8e8e8;
-}
-
-.continuousCalendar td.holiday,
-.continuousCalendar th.holiday {
-	font-weight: bold;
-	color: #666666;
+.continuousCalendar table .odd {
+  background-color: #e8e8e8;
 }
 
 .continuousCalendar td.selected {
-	background-color: rgb(0,65,196);
-	color: white;
-	font-weight: bold;
+  background-color: rgb(0, 65, 196);
+  color: white;
+  font-weight: bold;
 }
 
 .continuousCalendar td.today {
-	border: 1px solid red;
-  padding:0;
-}
-
-.continuousCalendar input {
-	font-family: Arial, Verdana, sans-serif;
-	font-size: 8pt;
-	color: black;
-	width: 25px;
-	border: none;
-	padding: 1px;
-	height: 1em;
-	background-color: white;
-}
-
-input.continuousCalendarField {
-	border: 1px solid black;
-	width: 70px; /* TODO:  calculate this with manual fontmetrics */
-}
-
-input.continuousCalendarField.wicket-invalid {
-	background-color: #FF6666;
+  border: 1px solid red;
 }

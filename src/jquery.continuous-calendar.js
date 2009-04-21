@@ -6,8 +6,8 @@
     var firstWeekdayOfGivenDate = selectedDate.getFirstDateOfWeek(Date.MONDAY);
 
     this.empty();
-    var headerTable = $("<table>").append(header());
-    var bodyTable = $("<table>").append(weekRange(params.weeksBefore, params.weeksAfter));
+    var headerTable = $("<table>").addClass("calendarHeader").append(header());
+    var bodyTable = $("<table>").addClass("calendarBody").append(weekRange(params.weeksBefore, params.weeksAfter));
     var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
     var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
     this.append(calendar);
@@ -45,7 +45,7 @@
         if (date.isToday()) {
           dateCell.addClass("today");
         }
-        if(date.compareTo(selectedDate) == 0) {
+        if (date.compareTo(selectedDate) == 0) {
           dateCell.addClass("selected");
         }
         markup.append(dateCell);
