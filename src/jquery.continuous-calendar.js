@@ -2,8 +2,8 @@
   $.fn.continuousCalendar = function(params) {
     var WEEK_DAYS = ["ma", "ti", "ke", "to", "pe", "la", "su"];
     var MONTHS = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
-    var startDate = new Date(params.startDate[1] + "/" + params.startDate[0] + "/" + params.startDate[2]);
-    var endDate = params.endDate ? new Date(params.endDate[1] + "/" + params.endDate[0] + "/" + params.endDate[2]) : startDate;
+    var startDate = createDateBy(params.startDate);
+    var endDate = params.endDate ? createDateBy(params.endDate) : startDate;
     var firstWeekdayOfGivenDate = startDate.getFirstDateOfWeek(Date.MONDAY);
 
     createCalendar(this);
@@ -68,6 +68,10 @@
 
     function backgroundBy(date) {
       return date.isOddMonth() ? ' odd' : '';
+    }
+
+    function createDateBy(array) {
+      return new Date(array[1] + "/" + array[0] + "/" + array[2]);
     }
   };
 })(jQuery);
