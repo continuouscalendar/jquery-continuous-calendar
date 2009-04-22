@@ -5,12 +5,16 @@
     var selectedDate = new Date(params.date[1] + "/" + params.date[0] + "/" + params.date[2]);
     var firstWeekdayOfGivenDate = selectedDate.getFirstDateOfWeek(Date.MONDAY);
 
-    this.empty();
-    var headerTable = $("<table>").addClass("calendarHeader").append(header());
-    var bodyTable = $("<table>").addClass("calendarBody").append(weekRange(params.weeksBefore, params.weeksAfter));
-    var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
-    var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
-    this.append(calendar);
+    createCalendar(this);
+
+    function createCalendar(container) {
+      container.empty();
+      var headerTable = $("<table>").addClass("calendarHeader").append(header());
+      var bodyTable = $("<table>").addClass("calendarBody").append(weekRange(params.weeksBefore, params.weeksAfter));
+      var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
+      var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
+      container.append(calendar);
+    }
 
     function header() {
       var year = $("<th>").addClass("year").append(selectedDate.getFullYear());
