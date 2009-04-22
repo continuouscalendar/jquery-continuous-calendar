@@ -27,16 +27,16 @@
     }
 
     function weekRange(before, after) {
-      var markup = $("<tbody>");
+      var tbody = $("<tbody>");
       for (var i = before; i >= -after; i--) {
-        markup.append(week(firstWeekdayOfGivenDate.plusDays(i * (-weekDays.length))));
+        tbody.append(week(firstWeekdayOfGivenDate.plusDays(i * (-weekDays.length))));
       }
-      return markup;
+      return tbody;
     }
 
     function week(firstDayOfWeek) {
-      var markup = $("<tr>");
-      markup.append(month(firstDayOfWeek));
+      var tr = $("<tr>");
+      tr.append(month(firstDayOfWeek));
       for (var i = 0; i < weekDays.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
@@ -46,19 +46,19 @@
         if (date.compareTo(selectedDate) == 0) {
           dateCell.addClass("selected");
         }
-        markup.append(dateCell);
+        tr.append(dateCell);
       }
-      return markup;
+      return tr;
     }
 
     function month(firstDayOfWeek) {
-      var markup = $("<th>");
+      var th = $("<th>");
       if (firstDayOfWeek.getDate() <= weekDays.length) {
-        markup.append(months[firstDayOfWeek.getMonth()]);
-        markup.addClass("month");
+        th.append(months[firstDayOfWeek.getMonth()]);
+        th.addClass("month");
       }
-      markup.addClass(backgroundBy(firstDayOfWeek));
-      return markup;
+      th.addClass(backgroundBy(firstDayOfWeek));
+      return th;
     }
 
     function backgroundBy(date) {
