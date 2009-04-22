@@ -17,13 +17,16 @@
     }
 
     function header() {
-      var year = $("<th>").addClass("year").append(selectedDate.getFullYear());
-      var thead = $("<thead>").append(year);
+      var thead = $("<thead>").append(year());
       $(WEEK_DAYS).each(function() {
         var weekDay = $('<th>').append(this.toString()).addClass("weekDay");
         thead.append(weekDay);
       });
       return thead;
+
+      function year() {
+        return $("<th>").addClass("year").append(selectedDate.getFullYear());
+      }
     }
 
     function weekRange(before, after) {
