@@ -179,6 +179,11 @@ Date.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
 Date.prototype.clone = function() {
   return new Date(this.getTime());
 };
+
 Date.prototype.isOddMonth = function() {
   return this.getMonth()%2 != 0;
+}
+
+Date.prototype.equalsOnlyDate = function(date) {
+  return this.compareDateOnlyTo(date) == 0;
 }

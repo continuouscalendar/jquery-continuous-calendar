@@ -2,8 +2,9 @@
   $.fn.continuousCalendar = function(params) {
     var WEEK_DAYS = ["ma", "ti", "ke", "to", "pe", "la", "su"];
     var MONTHS = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
-    var selectedDate = new Date(params.date[1] + "/" + params.date[0] + "/" + params.date[2]);
-    var firstWeekdayOfGivenDate = selectedDate.getFirstDateOfWeek(Date.MONDAY);
+    var startDate = new Date(params.startDate[1] + "/" + params.startDate[0] + "/" + params.startDate[2]);
+    var endDate = params.endDate ? new Date(params.endDate[1] + "/" + params.endDate[0] + "/" + params.endDate[2]) : startDate;
+    var firstWeekdayOfGivenDate = startDate.getFirstDateOfWeek(Date.MONDAY);
 
     createCalendar(this);
 
@@ -25,7 +26,8 @@
       return thead;
 
       function year() {
-        return $("<th>").addClass("year").append(selectedDate.getFullYear());
+        //TODO will react on scroll and depends on top left corner date
+        return $("<th>").addClass("year").append(startDate.getFullYear());
       }
     }
 
@@ -46,7 +48,7 @@
         if (date.isToday()) {
           dateCell.addClass("today");
         }
-        if (date.compareTo(selectedDate) == 0) {
+        if (date.equalsOnlyDate(startDate)) {
           dateCell.addClass("selected");
         }
         tr.append(dateCell);

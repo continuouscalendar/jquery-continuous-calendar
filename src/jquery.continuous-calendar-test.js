@@ -4,7 +4,7 @@ module("continuous calendar", {
 
 test("shows year", function() {
   calendar().continuousCalendar({
-    date: [30, 4, 2008],
+    startDate: [30, 4, 2008],
     weeksBefore: 0,
     weeksAfter: 0
   });
@@ -13,7 +13,7 @@ test("shows year", function() {
 
 test("shows week days", function() {
   calendar().continuousCalendar({
-    date: [30, 4, 2008],
+    startDate: [30, 4, 2008],
     weeksBefore: 0,
     weeksAfter: 0
   });
@@ -24,7 +24,7 @@ test("shows week days", function() {
 
 test("lists week days for vappu 2009", function() {
   calendar().continuousCalendar({
-    date: [30, 4, 2009],
+    startDate: [30, 4, 2009],
     weeksBefore: 0,
     weeksAfter: 0
   });
@@ -44,7 +44,7 @@ test("lists week days for vappu 2009", function() {
 
 test("lists given number of weeks before given date", function() {
   calendar().continuousCalendar({
-    date: [18, 4, 2009],
+    startDate: [18, 4, 2009],
     weeksBefore: 2,
     weeksAfter: 0
   });
@@ -57,7 +57,7 @@ test("lists given number of weeks before given date", function() {
 
 test("lists given number of weeks after given date", function() {
   calendar().continuousCalendar({
-    date: [18, 4, 2009],
+    startDate: [18, 4, 2009],
     weeksBefore: 0,
     weeksAfter: 2
   });
@@ -70,7 +70,7 @@ test("lists given number of weeks after given date", function() {
 
 test("shows month name on first row of full week", function() {
   calendar().continuousCalendar({
-    date: [30, 4, 2009],
+    startDate: [30, 4, 2009],
     weeksBefore: 0,
     weeksAfter: 5
   });
@@ -87,7 +87,7 @@ test("shows month name on first row of full week", function() {
 test("highlights current date", function() {
   var today = new Date();
   calendar().continuousCalendar({
-    date: [today.getDate(), today.getMonth() + 1, today.getFullYear()],
+    startDate: [today.getDate(), today.getMonth() + 1, today.getFullYear()],
     weeksBefore: 20,
     weeksAfter: 20
   });
@@ -96,13 +96,24 @@ test("highlights current date", function() {
   equals(cells.text(), today.getDate());
 });
 
-test("highlight selected date", function() {
+test("highlights selected date", function() {
   calendar().continuousCalendar({
-    date:  [30, 4, 2009],
+    startDate:  [30, 4, 2009],
     weeksBefore:2,
     weeksAfter:2
   });
   equals(calendar().find(".selected").text(), "30");
+});
+
+test("higlights selected date range", function() {
+  calendar().continuousCalendar({
+    startDate:  [29, 4, 2009],
+    endDate: [5, 5, 2009],
+    weeksBefore:2,
+    weeksAfter:2
+  });
+  //TODO implementing
+  //equals(calendar().find(".selected").size(), 7);
 });
 
 var testIndex = 0;
