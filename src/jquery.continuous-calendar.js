@@ -29,7 +29,7 @@
     function weekRange(before, after) {
       var markup = $("<tbody>");
       for (var i = before; i >= -after; i--) {
-        markup.append(week(firstWeekdayOfGivenDate.plusDays(i * (-7))));
+        markup.append(week(firstWeekdayOfGivenDate.plusDays(i * (-weekDays.length))));
       }
       return markup;
     }
@@ -37,7 +37,7 @@
     function week(firstDayOfWeek) {
       var markup = $("<tr>");
       markup.append(month(firstDayOfWeek));
-      for (var i = 0; i < 7; i++) {
+      for (var i = 0; i < weekDays.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
         if (date.isToday()) {
@@ -53,7 +53,7 @@
 
     function month(firstDayOfWeek) {
       var markup = $("<th>");
-      if (firstDayOfWeek.getDate() <= 7) {
+      if (firstDayOfWeek.getDate() <= weekDays.length) {
         markup.append(months[firstDayOfWeek.getMonth()]);
         markup.addClass("month");
       }
