@@ -36,16 +36,10 @@
 
     function week(firstDayOfWeek) {
       var markup = $("<tr>");
-      var monthCell = $("<th>");
-      if (firstDayOfWeek.getDate() <= 7) {
-        monthCell.append(months[firstDayOfWeek.getMonth()]);
-        monthCell.addClass("month");
-      }
-      monthCell.addClass(background(firstDayOfWeek));
-      markup.append(monthCell);
+      markup.append(month(firstDayOfWeek));
       for (var i = 0; i < 7; i++) {
         var date = firstDayOfWeek.plusDays(i);
-        var dateCell = $("<td>").addClass("date").addClass(background(date)).append(date.getDate());
+        var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
         if (date.isToday()) {
           dateCell.addClass("today");
         }
@@ -55,10 +49,20 @@
         markup.append(dateCell);
       }
       return markup;
+    }
 
-      function background(date) {
-        return date.isOddMonth() ? ' odd' : '';
+    function month(firstDayOfWeek) {
+      var markup = $("<th>");
+      if (firstDayOfWeek.getDate() <= 7) {
+        markup.append(months[firstDayOfWeek.getMonth()]);
+        markup.addClass("month");
       }
+      markup.addClass(backgroundBy(firstDayOfWeek));
+      return markup;
+    }
+
+    function backgroundBy(date) {
+      return date.isOddMonth() ? ' odd' : '';
     }
   };
 })(jQuery);
