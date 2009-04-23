@@ -1,4 +1,4 @@
-module("continuous calendar", {
+module("calendar rendering", {
   setup: createCalendarContainer
 });
 
@@ -113,6 +113,14 @@ test("higlights selected date range", function() {
     weeksAfter:2
   });
   equals(calendar().find(".selected").size(), 7);
+});
+
+module("calendar events", {
+  setup: createCalendarContainer
+});
+
+test("highlight clicked day", function() {
+  //TODO implement test
 });
 
 var testIndex = 0;
