@@ -112,8 +112,7 @@ test("higlights selected date range", function() {
     weeksBefore:2,
     weeksAfter:2
   });
-  //TODO implementing
-  //equals(calendar().find(".selected").size(), 7);
+  equals(calendar().find(".selected").size(), 7);
 });
 
 var testIndex = 0;

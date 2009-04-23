@@ -48,11 +48,16 @@
         if (date.isToday()) {
           dateCell.addClass("today");
         }
-        if (date.equalsOnlyDate(startDate)) {
+        if (isBetweenRange(date)) {
           dateCell.addClass("selected");
         }
         tr.append(dateCell);
       }
+
+      function isBetweenRange(date) {
+        return date.compareDateOnlyTo(startDate) >= 0 && date.compareDateOnlyTo(endDate) <= 0;
+      }
+
       return tr;
     }
 
