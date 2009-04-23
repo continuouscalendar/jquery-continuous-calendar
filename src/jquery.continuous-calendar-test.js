@@ -115,6 +115,9 @@ test("higlights selected date range", function() {
   equals(calendar().find(".selected").size(), 7);
 });
 
+//TODO render week numbers
+//TODO render year for first month
+
 module("calendar events", {
   setup: createCalendarContainer
 });
