@@ -5,7 +5,7 @@
     var startDate = createDateBy(params.startDate);
     var endDate = params.endDate ? createDateBy(params.endDate) : startDate;
     var firstWeekdayOfGivenDate = startDate.getFirstDateOfWeek(Date.MONDAY);
-
+    var calendarContainer = this;
     createCalendar(this);
 
     function createCalendar(container) {
@@ -45,6 +45,10 @@
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
+        dateCell.click(function() {
+          calendarContainer.find(".selected").removeClass("selected");
+          $(this).addClass("selected");
+        });
         if (date.isToday()) {
           dateCell.addClass("today");
         }

@@ -120,9 +120,18 @@ module("calendar events", {
 });
 
 test("highlight clicked day", function() {
-  //TODO implement test
+  calendar().continuousCalendar({
+    startDate: [30, 4, 2008],
+    weeksBefore: 0,
+    weeksAfter: 0
+  });
+  calendar().find(".date:eq(1)").click();
+  equals(calendar().find(".selected").text(), "29");
 });
 
+//TODO week number selects week
+//TODO month nam selects month
+//TODO kahva selectioniin
 var testIndex = 0;
 
 function createCalendarContainer() {
