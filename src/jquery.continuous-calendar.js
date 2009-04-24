@@ -11,15 +11,15 @@
 
     function createCalendar(container) {
       container.empty();
-      var headerTable = $("<table>").addClass("calendarHeader").append(header());
-      var bodyTable = $("<table>").addClass("calendarBody").append(weekRange(params.weeksBefore, params.weeksAfter));
+      var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
+      var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody(params.weeksBefore, params.weeksAfter));
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
       var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
       container.append(calendar);
     }
 
-    function header() {
-      var thead = $("<thead>").append(year());
+    function headerRow() {
+      var thead = $("<thead>").append(yearCell());
       thead.append('<th class="week"></th>');
       $(WEEK_DAYS).each(function() {
         var weekDay = $('<th>').append(this.toString()).addClass("weekDay");
@@ -27,22 +27,22 @@
       });
       return thead;
 
-      function year() {
+      function yearCell() {
         //TODO will react on scroll and depends on top left corner date
         return $("<th>").addClass("month").append(middleDate.getFullYear());
       }
     }
 
-    function weekRange(before, after) {
+    function calendarBody(before, after) {
       var tbody = $("<tbody>");
       for (var i = before; i >= -after; i--) {
-        tbody.append(week(firstWeekdayOfGivenDate.plusDays(i * (-WEEK_DAYS.length))));
+        tbody.append(calendarRow(firstWeekdayOfGivenDate.plusDays(i * (-WEEK_DAYS.length))));
       }
       return tbody;
     }
 
-    function week(firstDayOfWeek) {
-      var tr = $("<tr>").append(monthColumn(firstDayOfWeek)).append(weekNumber(firstDayOfWeek));
+    function calendarRow(firstDayOfWeek) {
+      var tr = $("<tr>").append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
@@ -69,7 +69,7 @@
       return tr;
     }
 
-    function monthColumn(firstDayOfWeek) {
+    function monthCell(firstDayOfWeek) {
       var th = $("<th>");
       th.addClass("month");
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
@@ -79,7 +79,7 @@
       return th;
     }
 
-    function weekNumber(firstDayOfWeek) {
+    function weekCell(firstDayOfWeek) {
       return $("<th>").addClass("week").addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear("ISO"));
     }
 
