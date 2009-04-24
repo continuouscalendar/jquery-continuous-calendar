@@ -61,7 +61,7 @@ test("shows month name on first row of full week", function() {
   equals(secondMonth.next().next().text(), "1");
 });
 
-test("highlights current date", function() {
+test("highlights current date and shows year for janary", function() {
   var today = new Date();
   calendar().continuousCalendar({startDate: [
     today.getDate(), today.getMonth() + 1, today.getFullYear()],
@@ -69,6 +69,7 @@ test("highlights current date", function() {
   var cells = calendar().find(".today");
   equals(cells.size(), 1);
   equals(cells.text(), today.getDate());
+  equals(calendar().find(".month:contains(tammikuu)").parent().next().find(".month").text(), "2009");
 });
 
 test("highlights selected date", function() {

@@ -68,6 +68,8 @@
       var th = $("<th>").addClass("month").addClass(backgroundBy(firstDayOfWeek));
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
         th.append(MONTHS[firstDayOfWeek.getMonth()]);
+      } else if(firstDayOfWeek.getDate() <= WEEK_DAYS.length*2 && firstDayOfWeek.getMonth() == 0) {
+        th.append(firstDayOfWeek.getFullYear());
       }
       return th;
     }
