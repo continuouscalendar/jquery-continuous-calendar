@@ -3,8 +3,8 @@ module("calendar rendering", {
 });
 
 test("shows year", function() {
-  calendarWithOneWeek();
-  assertHasValues(".continuousCalendar thead th.year",["2008"]);
+  createCalendarWithOneWeek();
+  assertHasValues(".continuousCalendar thead th.month",["2008"]);
 });
 
 test("shows week days", function() {
@@ -18,7 +18,8 @@ test("lists week days for vappu 2009", function() {
   calendar().continuousCalendar({startDate: [30, 4, 2009],weeksBefore: 0,weeksAfter: 0});
   equals($.trim(calendar().find(".continuousCalendar tbody").html()), [
     '<tr>',
-    '<th class="odd"></th>',
+    '<th class="month odd"></th>',
+    '<th class="week odd">18</th>',
     '<td class="date odd">27</td>',
     '<td class="date odd">28</td>',
     '<td class="date odd">29</td>',
@@ -50,14 +51,14 @@ test("lists given number of weeks after given date", function() {
 
 test("shows month name on first row of full week", function() {
   calendar().continuousCalendar({startDate: [30, 4, 2009],weeksBefore: 0,weeksAfter: 5});
-  var months = calendar().find(".month");
-  equals(months.size(), 2);
-  var firstMonth = months.eq(0);
+  var months = calendar().find(" tbody .month");
+  equals(months.size(), 6);
+  var firstMonth = months.eq(1);
   equals(firstMonth.text(), "toukokuu");
-  equals(firstMonth.next().text(), "4");
-  var secondMonth = months.eq(1);
+  equals(firstMonth.next().next().text(), "4");
+  var secondMonth = months.eq(5);
   equals(secondMonth.text(), "kesäkuu");
-  equals(secondMonth.next().text(), "1");
+  equals(secondMonth.next().next().text(), "1");
 });
 
 test("highlights current date", function() {
@@ -87,7 +88,10 @@ test("if start date not selected show around current day instead", function() {
   equals(calendar().find(".selected").size(), 0);
 });
 
-//TODO render week numbers
+test("render week numbers", function() {
+  createCalendarWithOneWeek();
+  equals(calendar().find(".week").text(), "18");
+});
 //TODO render year for first month
 
 module("calendar events", {
@@ -95,7 +99,7 @@ module("calendar events", {
 });
 
 test("highlight clicked day", function() {
-  calendarWithOneWeek();
+  createCalendarWithOneWeek();
   calendar().find(".date:eq(1)").click();
   equals(calendar().find(".selected").text(), "29");
 });
@@ -125,7 +129,7 @@ function calendarId() {
   return "continuousCalendar" + testIndex;
 }
 
-function calendarWithOneWeek() {
+function createCalendarWithOneWeek() {
   calendar().continuousCalendar({
     startDate: [30, 4, 2008],
     weeksBefore: 0,

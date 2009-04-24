@@ -19,7 +19,7 @@
 
 .calendarScrollContent {
   overflow-y: auto;
-  width: 200px;
+  width: 215px;
   height: 100px;
   border: 1px solid #999999;
 }
@@ -53,19 +53,23 @@
   cursor: pointer;
 }
 
-.continuousCalendar .calendarHeader .year,
-  .continuousCalendar .calendarBody th {
+.continuousCalendar  .month {
+  width: 45px;
+}
+.continuousCalendar .week {
   border-right: 1px solid #888888;
-  width: 60px;
+  width:15px;
+  font-size: 7pt;
 }
 
-.continuousCalendar .calendarHeader .year {
+.continuousCalendar .calendarHeader .month {
   text-align: center;
 }
-
 .continuousCalendar .calendarBody th {
-  text-align: left;
   font-weight: normal;
+}
+.continuousCalendar .calendarBody .month {
+  text-align: left;
 }
 
 .continuousCalendar td:hover {

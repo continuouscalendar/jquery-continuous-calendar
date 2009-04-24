@@ -20,6 +20,7 @@
 
     function header() {
       var thead = $("<thead>").append(year());
+      thead.append('<th class="week"></th>');
       $(WEEK_DAYS).each(function() {
         var weekDay = $('<th>').append(this.toString()).addClass("weekDay");
         thead.append(weekDay);
@@ -28,7 +29,7 @@
 
       function year() {
         //TODO will react on scroll and depends on top left corner date
-        return $("<th>").addClass("year").append(middleDate.getFullYear());
+        return $("<th>").addClass("month").append(middleDate.getFullYear());
       }
     }
 
@@ -41,8 +42,7 @@
     }
 
     function week(firstDayOfWeek) {
-      var tr = $("<tr>");
-      tr.append(month(firstDayOfWeek));
+      var tr = $("<tr>").append(monthColumn(firstDayOfWeek)).append(weekNumber(firstDayOfWeek));
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
@@ -69,14 +69,18 @@
       return tr;
     }
 
-    function month(firstDayOfWeek) {
+    function monthColumn(firstDayOfWeek) {
       var th = $("<th>");
+      th.addClass("month");
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
         th.append(MONTHS[firstDayOfWeek.getMonth()]);
-        th.addClass("month");
       }
       th.addClass(backgroundBy(firstDayOfWeek));
       return th;
+    }
+
+    function weekNumber(firstDayOfWeek) {
+      return $("<th>").addClass("week").addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear("ISO"));
     }
 
     function backgroundBy(date) {
