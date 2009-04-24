@@ -80,8 +80,11 @@ test("higlights selected date range", function() {
   equals(calendar().find(".selected").size(), 7);
 });
 
-test("if start date not selected show around current day", function() {
-
+test("if start date not selected show around current day instead", function() {
+  calendar().continuousCalendar({weeksBefore: 0,weeksAfter: 0});
+  var today = new Date();
+  assertHasValues(".date", ["20","21","22","23","24","25","26"]);
+  equals(calendar().find(".selected").size(), 0);
 });
 
 //TODO render week numbers
@@ -128,4 +131,10 @@ function calendarWithOneWeek() {
     weeksBefore: 0,
     weeksAfter: 0
   });
+}
+
+function assertHasValues(selector, expectedArray) {
+  same($.map(calendar().find(selector), function (elem) {
+    return $(elem).text();
+  }), expectedArray);
 }

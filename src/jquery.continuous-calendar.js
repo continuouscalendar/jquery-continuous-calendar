@@ -2,9 +2,10 @@
   $.fn.continuousCalendar = function(params) {
     var WEEK_DAYS = ["ma", "ti", "ke", "to", "pe", "la", "su"];
     var MONTHS = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
-    var startDate = createDateBy(params.startDate);
-    var endDate = params.endDate ? createDateBy(params.endDate) : startDate;
-    var firstWeekdayOfGivenDate = startDate.getFirstDateOfWeek(Date.MONDAY);
+    var startDate = params.startDate ? createDateBy(params.startDate) : null;
+    var middleDate = startDate ? startDate : new Date();
+    var endDate = params.endDate ? createDateBy(params.endDate) : middleDate;
+    var firstWeekdayOfGivenDate = middleDate.getFirstDateOfWeek(Date.MONDAY);
     var calendarContainer = this;
     createCalendar(this);
 
@@ -27,7 +28,7 @@
 
       function year() {
         //TODO will react on scroll and depends on top left corner date
-        return $("<th>").addClass("year").append(startDate.getFullYear());
+        return $("<th>").addClass("year").append(middleDate.getFullYear());
       }
     }
 
@@ -59,6 +60,9 @@
       }
 
       function isBetweenRange(date) {
+        if(!startDate) {
+          return false;
+        }
         return date.compareDateOnlyTo(startDate) >= 0 && date.compareDateOnlyTo(endDate) <= 0;
       }
 
