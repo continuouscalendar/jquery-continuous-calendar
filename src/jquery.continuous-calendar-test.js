@@ -4,14 +4,14 @@ module("calendar rendering", {
 
 test("shows year", function() {
   calendarWithOneWeek();
-  equals($.trim(calendar().find(".continuousCalendar thead th.year").text()), "2008");
+  assertHasValues(".continuousCalendar thead th.year",["2008"]);
 });
 
 test("shows week days", function() {
   calendar().continuousCalendar({startDate: [30, 4, 2008],weeksBefore: 0,weeksAfter: 0});
-  equals($.trim(calendar().find(".continuousCalendar thead th.weekDay").text()), [
+  assertHasValues(".continuousCalendar thead th.weekDay", [
     "ma", "ti", "ke", "to", "pe", "la", "su"
-  ].join(""));
+  ]);
 });
 
 test("lists week days for vappu 2009", function() {
@@ -32,20 +32,20 @@ test("lists week days for vappu 2009", function() {
 
 test("lists given number of weeks before given date", function() {
   calendar().continuousCalendar({startDate: [18, 4, 2009],weeksBefore: 2,weeksAfter: 0});
-  equals(calendar().find(".date").text(), [
+  assertHasValues(".date",[
     "30","31","1","2","3","4","5",
     "6","7","8","9","10","11","12",
     "13","14","15","16","17","18","19"
-  ].join(""));
+  ]);
 });
 
 test("lists given number of weeks after given date", function() {
   calendar().continuousCalendar({startDate: [18, 4, 2009],weeksBefore: 0,weeksAfter: 2});
-  equals($.trim(calendar().find(".date").text()), [
+  assertHasValues(".date",[
     "13","14","15","16","17","18","19",
     "20","21","22","23","24","25","26",
     "27","28","29","30","1","2","3"
-  ].join(""));
+  ]);
 });
 
 test("shows month name on first row of full week", function() {
