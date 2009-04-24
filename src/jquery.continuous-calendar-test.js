@@ -4,7 +4,7 @@ module("calendar rendering", {
 
 test("shows year", function() {
   createCalendarWithOneWeek();
-  assertHasValues(".continuousCalendar thead th.month",["2008"]);
+  assertHasValues(".continuousCalendar thead th.month", ["2008"]);
 });
 
 test("shows week days", function() {
@@ -33,7 +33,7 @@ test("lists week days for vappu 2009", function() {
 
 test("lists given number of weeks before given date", function() {
   calendar().continuousCalendar({startDate: [18, 4, 2009],weeksBefore: 2,weeksAfter: 0});
-  assertHasValues(".date",[
+  assertHasValues(".date", [
     "30","31","1","2","3","4","5",
     "6","7","8","9","10","11","12",
     "13","14","15","16","17","18","19"
@@ -42,7 +42,7 @@ test("lists given number of weeks before given date", function() {
 
 test("lists given number of weeks after given date", function() {
   calendar().continuousCalendar({startDate: [18, 4, 2009],weeksBefore: 0,weeksAfter: 2});
-  assertHasValues(".date",[
+  assertHasValues(".date", [
     "13","14","15","16","17","18","19",
     "20","21","22","23","24","25","26",
     "27","28","29","30","1","2","3"
@@ -84,7 +84,9 @@ test("higlights selected date range", function() {
 test("if start date not selected show around current day instead", function() {
   calendar().continuousCalendar({weeksBefore: 0,weeksAfter: 0});
   var today = new Date();
-  assertHasValues(".date", ["20","21","22","23","24","25","26"]);
+  equals(calendar().find(".date").size(), 7);
+  equals(calendar().find(".date:contains(" + today.getDay() + ")").size(), 1);
+  //assertHasValues(".date", ["20","21","22","23","24","25","26"]);
   equals(calendar().find(".selected").size(), 0);
 });
 
