@@ -3,31 +3,19 @@ module("calendar rendering", {
 });
 
 test("shows year", function() {
-  calendar().continuousCalendar({
-    startDate: [30, 4, 2008],
-    weeksBefore: 0,
-    weeksAfter: 0
-  });
+  calendarWithOneWeek();
   equals($.trim(calendar().find(".continuousCalendar thead th.year").text()), "2008");
 });
 
 test("shows week days", function() {
-  calendar().continuousCalendar({
-    startDate: [30, 4, 2008],
-    weeksBefore: 0,
-    weeksAfter: 0
-  });
+  calendar().continuousCalendar({startDate: [30, 4, 2008],weeksBefore: 0,weeksAfter: 0});
   equals($.trim(calendar().find(".continuousCalendar thead th.weekDay").text()), [
     "ma", "ti", "ke", "to", "pe", "la", "su"
   ].join(""));
 });
 
 test("lists week days for vappu 2009", function() {
-  calendar().continuousCalendar({
-    startDate: [30, 4, 2009],
-    weeksBefore: 0,
-    weeksAfter: 0
-  });
+  calendar().continuousCalendar({startDate: [30, 4, 2009],weeksBefore: 0,weeksAfter: 0});
   equals($.trim(calendar().find(".continuousCalendar tbody").html()), [
     '<tr>',
     '<th class="odd"></th>',
@@ -43,11 +31,7 @@ test("lists week days for vappu 2009", function() {
 });
 
 test("lists given number of weeks before given date", function() {
-  calendar().continuousCalendar({
-    startDate: [18, 4, 2009],
-    weeksBefore: 2,
-    weeksAfter: 0
-  });
+  calendar().continuousCalendar({startDate: [18, 4, 2009],weeksBefore: 2,weeksAfter: 0});
   equals(calendar().find(".date").text(), [
     "30","31","1","2","3","4","5",
     "6","7","8","9","10","11","12",
@@ -56,11 +40,7 @@ test("lists given number of weeks before given date", function() {
 });
 
 test("lists given number of weeks after given date", function() {
-  calendar().continuousCalendar({
-    startDate: [18, 4, 2009],
-    weeksBefore: 0,
-    weeksAfter: 2
-  });
+  calendar().continuousCalendar({startDate: [18, 4, 2009],weeksBefore: 0,weeksAfter: 2});
   equals($.trim(calendar().find(".date").text()), [
     "13","14","15","16","17","18","19",
     "20","21","22","23","24","25","26",
@@ -69,11 +49,7 @@ test("lists given number of weeks after given date", function() {
 });
 
 test("shows month name on first row of full week", function() {
-  calendar().continuousCalendar({
-    startDate: [30, 4, 2009],
-    weeksBefore: 0,
-    weeksAfter: 5
-  });
+  calendar().continuousCalendar({startDate: [30, 4, 2009],weeksBefore: 0,weeksAfter: 5});
   var months = calendar().find(".month");
   equals(months.size(), 2);
   var firstMonth = months.eq(0);
@@ -86,33 +62,26 @@ test("shows month name on first row of full week", function() {
 
 test("highlights current date", function() {
   var today = new Date();
-  calendar().continuousCalendar({
-    startDate: [today.getDate(), today.getMonth() + 1, today.getFullYear()],
-    weeksBefore: 20,
-    weeksAfter: 20
-  });
+  calendar().continuousCalendar({startDate: [
+    today.getDate(), today.getMonth() + 1, today.getFullYear()],
+    weeksBefore: 20,weeksAfter: 20});
   var cells = calendar().find(".today");
   equals(cells.size(), 1);
   equals(cells.text(), today.getDate());
 });
 
 test("highlights selected date", function() {
-  calendar().continuousCalendar({
-    startDate:  [30, 4, 2009],
-    weeksBefore:2,
-    weeksAfter:2
-  });
+  calendar().continuousCalendar({startDate:  [30, 4, 2009],weeksBefore:2,weeksAfter:2});
   equals(calendar().find(".selected").text(), "30");
 });
 
 test("higlights selected date range", function() {
-  calendar().continuousCalendar({
-    startDate:  [29, 4, 2009],
-    endDate: [5, 5, 2009],
-    weeksBefore:2,
-    weeksAfter:2
-  });
+  calendar().continuousCalendar({startDate:  [29, 4, 2009],endDate: [5, 5, 2009],weeksBefore:2,weeksAfter:2});
   equals(calendar().find(".selected").size(), 7);
+});
+
+test("if start date not selected show around current day", function() {
+
 });
 
 //TODO render week numbers
@@ -123,11 +92,7 @@ module("calendar events", {
 });
 
 test("highlight clicked day", function() {
-  calendar().continuousCalendar({
-    startDate: [30, 4, 2008],
-    weeksBefore: 0,
-    weeksAfter: 0
-  });
+  calendarWithOneWeek();
   calendar().find(".date:eq(1)").click();
   equals(calendar().find(".selected").text(), "29");
 });
@@ -155,4 +120,12 @@ function calendar() {
 
 function calendarId() {
   return "continuousCalendar" + testIndex;
+}
+
+function calendarWithOneWeek() {
+  calendar().continuousCalendar({
+    startDate: [30, 4, 2008],
+    weeksBefore: 0,
+    weeksAfter: 0
+  });
 }
