@@ -1,7 +1,8 @@
 (function($) {
   $.fn.continuousCalendar = function(params) {
     var WEEK_DAYS = ["ma", "ti", "ke", "to", "pe", "la", "su"];
-    var MONTHS = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
+    var MONTHS = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu",
+      "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
     var startDate = params.startDate ? createDateBy(params.startDate) : null;
     var middleDate = startDate ? startDate : new Date();
     var endDate = params.endDate ? createDateBy(params.endDate) : middleDate;
@@ -50,19 +51,13 @@
           calendarContainer.find(".selected").removeClass("selected");
           $(this).addClass("selected");
         });
-        if (date.isToday()) {
-          dateCell.addClass("today");
-        }
-        if (isBetweenRange(date)) {
-          dateCell.addClass("selected");
-        }
+        if (date.isToday()) dateCell.addClass("today");
+        if (isBetweenRange(date)) dateCell.addClass("selected");
         tr.append(dateCell);
       }
 
       function isBetweenRange(date) {
-        if(!startDate) {
-          return false;
-        }
+        if (!startDate) return false;
         return date.compareDateOnlyTo(startDate) >= 0 && date.compareDateOnlyTo(endDate) <= 0;
       }
 
@@ -70,12 +65,10 @@
     }
 
     function monthCell(firstDayOfWeek) {
-      var th = $("<th>");
-      th.addClass("month");
+      var th = $("<th>").addClass("month").addClass(backgroundBy(firstDayOfWeek));
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
         th.append(MONTHS[firstDayOfWeek.getMonth()]);
       }
-      th.addClass(backgroundBy(firstDayOfWeek));
       return th;
     }
 
