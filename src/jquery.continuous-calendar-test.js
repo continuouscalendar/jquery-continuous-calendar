@@ -96,7 +96,6 @@ test("render week numbers", function() {
   var today = new Date();
   ok(calendar().find(".week").text() >0);
 });
-//TODO render year for first month
 
 module("calendar events", {
   setup: createCalendarContainer
