@@ -8,7 +8,7 @@ test("shows year", function() {
 });
 
 test("shows week days", function() {
-  calendar().continuousCalendar({startDate: [30, 4, 2008],weeksBefore: 0,weeksAfter: 0});
+  calendar({startDate: "4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
   assertHasValues(".continuousCalendar thead th.weekDay", [
     "ma", "ti", "ke", "to", "pe", "la", "su"
   ]);
@@ -32,7 +32,7 @@ test("lists week days for vappu 2009", function() {
 });
 
 test("lists given number of weeks before given date", function() {
-  calendar().continuousCalendar({startDate: [18, 4, 2009],weeksBefore: 2,weeksAfter: 0});
+  calendar({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
   assertHasValues(".date", [
     "30","31","1","2","3","4","5",
     "6","7","8","9","10","11","12",
@@ -41,7 +41,7 @@ test("lists given number of weeks before given date", function() {
 });
 
 test("lists given number of weeks after given date", function() {
-  calendar().continuousCalendar({startDate: [18, 4, 2009],weeksBefore: 0,weeksAfter: 2});
+  calendar({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 2});
   assertHasValues(".date", [
     "13","14","15","16","17","18","19",
     "20","21","22","23","24","25","26",
@@ -50,7 +50,7 @@ test("lists given number of weeks after given date", function() {
 });
 
 test("shows month name on first row of full week", function() {
-  calendar().continuousCalendar({startDate: [30, 4, 2009],weeksBefore: 0,weeksAfter: 5});
+  calendar({startDate: "4/30/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 5});
   var months = calendar().find(" tbody .month");
   equals(months.size(), 6);
   var firstMonth = months.eq(1);
@@ -63,9 +63,7 @@ test("shows month name on first row of full week", function() {
 
 test("highlights current date and shows year for janary", function() {
   var today = new Date();
-  calendar().continuousCalendar({startDate: [
-    today.getDate(), today.getMonth() + 1, today.getFullYear()],
-    weeksBefore: 20,weeksAfter: 20});
+  calendar({startDate: new Date().format(dateFormat.masks.constructorFormat)}).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
   var cells = calendar().find(".today");
   equals(cells.size(), 1);
   equals(cells.text(), today.getDate());
@@ -73,12 +71,12 @@ test("highlights current date and shows year for janary", function() {
 });
 
 test("highlights selected date", function() {
-  calendar().continuousCalendar({startDate:  [30, 4, 2009],weeksBefore:2,weeksAfter:2});
+  calendar({startDate:"4/30/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
   equals(calendar().find(".selected").text(), "30");
 });
 
 test("higlights selected date range", function() {
-  calendar().continuousCalendar({startDate:  [29, 4, 2009],endDate: [5, 5, 2009],weeksBefore:2,weeksAfter:2});
+  calendar({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
   equals(calendar().find(".selected").size(), 7);
 });
 
@@ -142,11 +140,7 @@ function calendarId() {
 }
 
 function createCalendarWithOneWeek() {
-  calendar().continuousCalendar({
-    startDate: [30, 4, 2008],
-    weeksBefore: 0,
-    weeksAfter: 0
-  });
+  calendar({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
 }
 
 function assertHasValues(selector, expectedArray) {
