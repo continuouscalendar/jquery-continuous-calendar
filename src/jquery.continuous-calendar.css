@@ -90,3 +90,10 @@
 .continuousCalendar td.today {
   border: 1px solid red;
 }
+
+input.endDate,
+input.startDate {
+  width: 7em;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
