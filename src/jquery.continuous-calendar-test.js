@@ -15,18 +15,18 @@ test("shows week days", function() {
 });
 
 test("lists week days for vappu 2009", function() {
-  calendar().continuousCalendar({startDate: [20, 4, 2009],weeksBefore: 0,weeksAfter: 0});
+  calendar({startDate: "4/20/2009", endDate: "4/26/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
   equals($.trim(calendar().find(".continuousCalendar tbody").html()),
     '<tr>' +
     '<th class="month odd"></th>' +
     '<th class="week odd">17</th>' +
     '<td class="date odd selected">20</td>' +
-    '<td class="date odd">21</td>' +
-    '<td class="date odd">22</td>' +
-    '<td class="date odd">23</td>' +
-    '<td class="date odd">24</td>' +
-    '<td class="date odd">25</td>' +
-    '<td class="date odd">26</td>' +
+    '<td class="date odd selected">21</td>' +
+    '<td class="date odd selected">22</td>' +
+    '<td class="date odd selected">23</td>' +
+    '<td class="date odd selected">24</td>' +
+    '<td class="date odd selected">25</td>' +
+    '<td class="date odd selected">26</td>' +
     '</tr>'
     );
 });
@@ -94,7 +94,7 @@ test("if start date not selected show around current day instead", function() {
 test("render week numbers", function() {
   createCalendarWithOneWeek();
   var today = new Date();
-  ok(calendar().find(".week").text() >0);
+  ok(calendar().find(".week").text() > 0);
 });
 
 module("calendar events", {
@@ -124,8 +124,18 @@ function createCalendarContainer() {
   $("#main").append(index).append(container);
 }
 
-function calendar() {
-  return $("#" + calendarId());
+function calendar(params) {
+  var container = $("#" + calendarId());
+  addFieldIfRequired("startDate");
+  addFieldIfRequired("endDate");
+  function addFieldIfRequired(fieldName) {
+    if (params && params[fieldName]) {
+      console.log(params[fieldName]);
+      var field = $("<input>").attr("type", "text").addClass(fieldName).val(params[fieldName]);
+      container.append(field);
+    }
+  }
+  return container;
 }
 
 function calendarId() {

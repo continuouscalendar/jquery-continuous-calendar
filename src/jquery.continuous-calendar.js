@@ -3,15 +3,25 @@
     var WEEK_DAYS = ["ma", "ti", "ke", "to", "pe", "la", "su"];
     var MONTHS = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu",
       "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
+    var startField = this.find("input.startDate");
+    var endField = this.find("input.endDate");
     var startDate = params.startDate ? createDateBy(params.startDate) : null;
+    if(startField.size() > 0 ) {
+      startDate = new Date(startField.val());
+    }
     var middleDate = startDate ? startDate : new Date();
     var endDate = params.endDate ? createDateBy(params.endDate) : middleDate;
+    
+    if(endField.size() > 0 ) {
+      endDate = new Date(endField.val());
+    }
+
     var firstWeekdayOfGivenDate = middleDate.getFirstDateOfWeek(Date.MONDAY);
     var calendarContainer = this;
     createCalendar(this);
 
     function createCalendar(container) {
-      container.empty();
+      //container.empty();
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
       var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody(params.weeksBefore, params.weeksAfter));
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
