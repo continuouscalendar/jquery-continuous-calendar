@@ -15,20 +15,20 @@ test("shows week days", function() {
 });
 
 test("lists week days for vappu 2009", function() {
-  calendar().continuousCalendar({startDate: [30, 4, 2009],weeksBefore: 0,weeksAfter: 0});
-  equals($.trim(calendar().find(".continuousCalendar tbody").html()), [
-    '<tr>',
-    '<th class="month odd"></th>',
-    '<th class="week odd">18</th>',
-    '<td class="date odd">27</td>',
-    '<td class="date odd">28</td>',
-    '<td class="date odd">29</td>',
-    '<td class="date odd selected">30</td>',
-    '<td class="date">1</td>',
-    '<td class="date">2</td>',
-    '<td class="date">3</td>',
+  calendar().continuousCalendar({startDate: [20, 4, 2009],weeksBefore: 0,weeksAfter: 0});
+  equals($.trim(calendar().find(".continuousCalendar tbody").html()),
+    '<tr>' +
+    '<th class="month odd"></th>' +
+    '<th class="week odd">17</th>' +
+    '<td class="date odd selected">20</td>' +
+    '<td class="date odd">21</td>' +
+    '<td class="date odd">22</td>' +
+    '<td class="date odd">23</td>' +
+    '<td class="date odd">24</td>' +
+    '<td class="date odd">25</td>' +
+    '<td class="date odd">26</td>' +
     '</tr>'
-  ].join(""));
+    );
 });
 
 test("lists given number of weeks before given date", function() {
