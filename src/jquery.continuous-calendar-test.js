@@ -93,7 +93,6 @@ test("if start date not selected show around current day instead", function() {
 
 test("render week numbers", function() {
   createCalendarWithOneWeek();
-  var today = new Date();
   ok(calendar().find(".week").text() > 0);
 });
 
