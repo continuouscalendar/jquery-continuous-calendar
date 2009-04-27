@@ -60,6 +60,9 @@
   border-right: 1px solid #888888;
   width:15px;
   font-size: 7pt;
+}
+
+.continuousCalendar .range .week {
   cursor: pointer;
 }
 

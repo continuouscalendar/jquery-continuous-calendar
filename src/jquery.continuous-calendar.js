@@ -14,6 +14,9 @@
     function createCalendar(container) {
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
       var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody(params.weeksBefore, params.weeksAfter));
+      if (isRange()) {
+        bodyTable.addClass("range");
+      }
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
       var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
       container.append(calendar);
@@ -80,15 +83,20 @@
       var weekNumber = $("<th>");
       weekNumber.addClass("week").addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear("ISO"));
       weekNumber.click(function() {
-        $(".selected").removeClass("selected");
-        $(this).nextAll(".date").addClass("selected");
-        //selectRange(firstDayOfWeek, firstDayOfWeek.plusDays(7));
+        if (isRange()) {
+          $(".selected").removeClass("selected");
+          $(this).nextAll(".date").addClass("selected");
+        }
       });
       return weekNumber;
     }
 
     function backgroundBy(date) {
       return date.isOddMonth() ? ' odd' : '';
+    }
+    
+    function isRange() {
+      return endField.length > 0;
     }
   };
 })(jQuery);

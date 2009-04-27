@@ -94,6 +94,18 @@ test("render week numbers", function() {
   ok(calendar().find(".week").text() > 0);
 });
 
+test("calendar with no range has no range class", function() {
+  createCalendarWithOneWeek();
+  ok(!calendar().find(".calendarBody").hasClass("range"));
+});
+
+test("calendar with range has range class", function() {
+  calendar({startDate: "4/18/2009", endDate: "4/20/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
+  console.log(calendar());
+  ok(calendar().find(".calendarBody").hasClass("range"));
+});
+
+
 module("calendar events", {
   setup: createCalendarContainer
 });
@@ -106,9 +118,15 @@ test("highlights and selects clicked day", function() {
 });
 
 test("week number click selects whole week", function () {
-  calendar({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
+  calendar({startDate: "4/18/2009", endDate: "4/20/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
   calendar().find(".week:contains(15)").click();
   equals(calendar().find(".selected").size(), 7);
+});
+
+test("week number click on single date calendar does nothing", function () {
+  calendar({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
+  calendar().find(".week:contains(15)").click();
+  equals(calendar().find(".selected").size(), 1);
 });
 
 //TODO week number selects week
