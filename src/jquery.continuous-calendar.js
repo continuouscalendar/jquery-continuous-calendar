@@ -47,7 +47,7 @@
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
-        dateCell.data("date",date);
+        dateCell.data("date", date);
         dateCell.click(function() {
           calendarContainer.find(".selected").removeClass("selected");
           $(this).addClass("selected");
@@ -77,7 +77,14 @@
     }
 
     function weekCell(firstDayOfWeek) {
-      return $("<th>").addClass("week").addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear("ISO"));
+      var weekNumber = $("<th>");
+      weekNumber.addClass("week").addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear("ISO"));
+      weekNumber.click(function() {
+        $(".selected").removeClass("selected");
+        $(this).nextAll(".date").addClass("selected");
+        //selectRange(firstDayOfWeek, firstDayOfWeek.plusDays(7));
+      });
+      return weekNumber;
     }
 
     function backgroundBy(date) {

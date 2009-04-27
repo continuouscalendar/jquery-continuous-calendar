@@ -105,6 +105,12 @@ test("highlights and selects clicked day", function() {
   equals(calendar().find("input.startDate").val(), "4/29/2008");
 });
 
+test("week number click selects whole week", function () {
+  calendar({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
+  calendar().find(".week:contains(15)").click();
+  equals(calendar().find(".selected").size(), 7);
+});
+
 //TODO week number selects week
 //TODO month nam selects month
 //TODO kahva selectioniin
@@ -133,6 +139,7 @@ function calendar(params) {
       container.append(field);
     }
   }
+
   return container;
 }
 
