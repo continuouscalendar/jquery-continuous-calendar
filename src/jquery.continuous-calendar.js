@@ -12,7 +12,6 @@
     createCalendar(this);
 
     function createCalendar(container) {
-      //container.empty();
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
       var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody(params.weeksBefore, params.weeksAfter));
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
@@ -48,9 +47,11 @@
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
+        dateCell.data("date",date);
         dateCell.click(function() {
           calendarContainer.find(".selected").removeClass("selected");
           $(this).addClass("selected");
+          startField.val($(this).data("date").format(dateFormat.masks.constructorFormat));
         });
         if (date.isToday()) dateCell.addClass("today");
         if (isBetweenRange(date)) dateCell.addClass("selected");

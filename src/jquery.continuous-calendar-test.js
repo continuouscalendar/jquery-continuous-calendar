@@ -98,10 +98,11 @@ module("calendar events", {
   setup: createCalendarContainer
 });
 
-test("highlight clicked day", function() {
+test("highlights and selects clicked day", function() {
   createCalendarWithOneWeek();
   calendar().find(".date:eq(1)").click();
   equals(calendar().find(".selected").text(), "29");
+  equals(calendar().find("input.startDate").val(), "4/29/2008");
 });
 
 //TODO week number selects week
