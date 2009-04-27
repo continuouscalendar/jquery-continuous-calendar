@@ -5,18 +5,9 @@
       "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
     var startField = this.find("input.startDate");
     var endField = this.find("input.endDate");
-    var startDate = params.startDate ? createDateBy(params.startDate) : null;
-    if(startField.size() > 0 ) {
-      startDate = new Date(startField.val());
-    }
-    var middleDate = startDate ? startDate : new Date();
-    var endDate = params.endDate ? createDateBy(params.endDate) : middleDate;
-    
-    if(endField.size() > 0 ) {
-      endDate = new Date(endField.val());
-    }
-
-    var firstWeekdayOfGivenDate = middleDate.getFirstDateOfWeek(Date.MONDAY);
+    var startDate = startField.size() > 0 ? new Date(startField.val()) : null;
+    var endDate = endField.size() > 0 ? new Date(endField.val()) : startDate;
+    var firstWeekdayOfGivenDate = (startDate || new Date()).getFirstDateOfWeek(Date.MONDAY);
     var calendarContainer = this;
     createCalendar(this);
 
@@ -40,7 +31,7 @@
 
       function yearCell() {
         //TODO will react on scroll and depends on top left corner date
-        return $("<th>").addClass("month").append(middleDate.getFullYear());
+        return $("<th>").addClass("month").append(firstWeekdayOfGivenDate.getFullYear());
       }
     }
 
@@ -78,7 +69,7 @@
       var th = $("<th>").addClass("month").addClass(backgroundBy(firstDayOfWeek));
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
         th.append(MONTHS[firstDayOfWeek.getMonth()]);
-      } else if(firstDayOfWeek.getDate() <= WEEK_DAYS.length*2 && firstDayOfWeek.getMonth() == 0) {
+      } else if (firstDayOfWeek.getDate() <= WEEK_DAYS.length * 2 && firstDayOfWeek.getMonth() == 0) {
         th.append(firstDayOfWeek.getFullYear());
       }
       return th;
@@ -90,10 +81,6 @@
 
     function backgroundBy(date) {
       return date.isOddMonth() ? ' odd' : '';
-    }
-
-    function createDateBy(array) {
-      return new Date(array[1] + "/" + array[0] + "/" + array[2]);
     }
   };
 })(jQuery);
