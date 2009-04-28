@@ -84,19 +84,18 @@
 
     function initRangeCalendarEvents() {
       var dateCells = calendarContainer.find('.date');
-      dateCells.bind('mousedown', function () {
+      dateCells.mousedown(function () {
         rangeStart = $(this);
         rangeEnd = null;
         calendarContainer.find('.selected').removeClass('.selected');
-      }).bind('mouseover.range', function () {
+      }).mouseover(function () {
         rangeEnd = $(this);
         if (rangeStart) {
           selectRange();
         }
-      }).bind('mouseup', function() {
+      }).mouseup(function () {
         updateTextFields();
         rangeStart = null;
-        dateCells.unbind('mouseover.range');
       });
     }
 
@@ -129,13 +128,22 @@
     function selectRange() {
       var date1 = rangeStart.data("date");
       var date2 = rangeEnd.data("date");
+      var start = (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
+      var end = (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
+      //var start = (date1Comp > date2Comp) ? date1 : date2;
+      //var end = (date1Comp > date2Comp) ? date2 : date1;
+
+      console.log(start,end);
+
+      // date 1 is earlier than date 2
+
       console.log("selectRange:", rangeStart.index(), rangeEnd.index(), date1.getDate(), date2.getDate());
     }
 
     function updateTextFields() {
       var date1 = rangeStart.data("date");
       var date2 = rangeEnd.data("date");
-      console.log("selectRange:", rangeStart.index(), rangeEnd.index(), date1.getDate(), date2.getDate());
+      console.log("up:", rangeStart.index(), rangeEnd.index(), date1.getDate(), date2.getDate());
     }
 
     function isRange() {
