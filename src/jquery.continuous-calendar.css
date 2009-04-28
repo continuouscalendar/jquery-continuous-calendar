@@ -53,7 +53,7 @@
   cursor: pointer;
 }
 
-.continuousCalendar  .month {
+.continuousCalendar .month {
   width: 45px;
 }
 .continuousCalendar .week {
@@ -100,4 +100,23 @@ input.startDate {
   width: 7em;
   margin-right: 5px;
   margin-bottom: 5px;
+}
+
+
+.continuousCalendar .calendarBody ::-moz-selection{
+	background:none;
+	color:inherit;
+}
+
+.continuousCalendar .calendarBody ::selection {
+	background:none;
+	color:inherit;
+}
+
+.continuousCalendar .calendarBody code::-moz-selection {
+	background:none;
+}
+
+.continuousCalendar .calendarBody code::selection {
+	background:none;
 }

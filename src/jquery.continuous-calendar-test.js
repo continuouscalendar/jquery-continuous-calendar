@@ -63,7 +63,8 @@ test("shows month name on first row of full week", function() {
 
 test("highlights current date and shows year for janary", function() {
   var today = new Date();
-  calendar({startDate: new Date().format(dateFormat.masks.constructorFormat)}).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
+  var todayText = new Date().format(dateFormat.masks.constructorFormat)
+  calendar({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
   var cells = calendar().find(".today");
   equals(cells.size(), 1);
   equals(cells.text(), today.getDate());
@@ -101,7 +102,6 @@ test("calendar with no range has no range class", function() {
 
 test("calendar with range has range class", function() {
   calendar({startDate: "4/18/2009", endDate: "4/20/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
-  console.log(calendar());
   ok(calendar().find(".calendarBody").hasClass("range"));
 });
 
@@ -153,7 +153,6 @@ function calendar(params) {
   addFieldIfRequired("endDate");
   function addFieldIfRequired(fieldName) {
     if (params && params[fieldName]) {
-      console.log(params[fieldName]);
       var field = $("<input>").attr("type", "text").addClass(fieldName).val(params[fieldName]);
       container.append(field);
     }
