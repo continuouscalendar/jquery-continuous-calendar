@@ -26,7 +26,6 @@
       } else {
         initSingleDateCalendarEvents();
       }
-
     }
 
     function headerRow() {
@@ -52,20 +51,16 @@
       return tbody;
     }
 
-
     function calendarRow(firstDayOfWeek) {
       var tr = $("<tr>").append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
-
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
         dateCell.data("date", date);
-
         if (date.isToday()) dateCell.addClass("today");
         if (isBetweenRange(date)) dateCell.addClass("selected");
         tr.append(dateCell);
       }
-
       function isBetweenRange(date) {
         if (!startDate) return false;
         return date.compareDateOnlyTo(startDate) >= 0 && date.compareDateOnlyTo(endDate) <= 0;
@@ -84,19 +79,25 @@
 
     function initRangeCalendarEvents() {
       var dateCells = calendarContainer.find('.date');
-      dateCells.mousedown(function () {
-        rangeStart = $(this);
-        rangeEnd = null;
-        calendarContainer.find('.selected').removeClass('.selected');
-      }).mouseover(function () {
-        rangeEnd = $(this);
-        if (rangeStart) {
-          selectRange();
-        }
-      }).mouseup(function () {
-        updateTextFields();
-        rangeStart = null;
-      });
+      dateCells.mousedown(startSelection).mouseover(changeSelection).mouseup(endSelection);
+    }
+
+    function startSelection() {
+      rangeStart = $(this);
+      rangeEnd = null;
+      calendarContainer.find('.selected').removeClass('.selected');
+    }
+
+    function changeSelection() {
+      rangeEnd = $(this);
+      if (rangeStart) {
+        selectRange();
+      }
+    }
+
+    function endSelection() {
+      updateTextFields();
+      rangeStart = null;
     }
 
     function monthCell(firstDayOfWeek) {
@@ -130,14 +131,8 @@
       var date2 = rangeEnd.data("date");
       var start = (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
       var end = (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
-      //var start = (date1Comp > date2Comp) ? date1 : date2;
-      //var end = (date1Comp > date2Comp) ? date2 : date1;
-
-      console.log(start,end);
-
-      // date 1 is earlier than date 2
-
-      console.log("selectRange:", rangeStart.index(), rangeEnd.index(), date1.getDate(), date2.getDate());
+      console.log(start, end);
+      console.log("selectRange:", date1.getDate(), date2.getDate());
     }
 
     function updateTextFields() {
