@@ -63,7 +63,7 @@ test("shows month name on first row of full week", function() {
 
 test("highlights current date and shows year for janary", function() {
   var today = new Date();
-  var todayText = new Date().format(dateFormat.masks.constructorFormat)
+  var todayText = new Date().format(dateFormat.masks.constructorFormat);
   calendar({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
   var cells = calendar().find(".today");
   equals(cells.size(), 1);
@@ -77,7 +77,7 @@ test("highlights selected date", function() {
 });
 
 test("higlights selected date range", function() {
-  calendar({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
+  createRangeCalendarWithThreeWeeks();
   equals(calendar().find(".selected").size(), 7);
 });
 
@@ -101,7 +101,7 @@ test("calendar with no range has no range class", function() {
 });
 
 test("calendar with range has range class", function() {
-  calendar({startDate: "4/18/2009", endDate: "4/20/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
+  createRangeCalendarWithThreeWeeks();
   ok(calendar().find(".calendarBody").hasClass("range"));
 });
 
@@ -118,7 +118,7 @@ test("highlights and selects clicked day", function() {
 });
 
 test("week number click selects whole week", function () {
-  calendar({startDate: "4/18/2009", endDate: "4/20/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
+  createRangeCalendarWithThreeWeeks();
   calendar().find(".week:contains(15)").click();
   equals(calendar().find(".selected").size(), 7);
 });
@@ -127,6 +127,10 @@ test("week number click on single date calendar does nothing", function () {
   calendar({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
   calendar().find(".week:contains(15)").click();
   equals(calendar().find(".selected").size(), 1);
+});
+
+test("mouse click and drag highlights range", function() {
+
 });
 
 //TODO week number selects week
@@ -157,7 +161,6 @@ function calendar(params) {
       container.append(field);
     }
   }
-
   return container;
 }
 
@@ -167,6 +170,10 @@ function calendarId() {
 
 function createCalendarWithOneWeek() {
   calendar({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
+}
+
+function createRangeCalendarWithThreeWeeks() {
+  calendar({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
 }
 
 function assertHasValues(selector, expectedArray) {
