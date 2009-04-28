@@ -14,6 +14,10 @@
     var calendarContainer = this;
     createCalendar(this);
 
+    this.data("startSelection", startSelection);
+    this.data("changeSelection", changeSelection);
+    this.data("endSelection", endSelection);
+
     function createCalendar(container) {
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
       var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody(params.weeksBefore, params.weeksAfter));
@@ -84,10 +88,10 @@
 
     function startSelection(e) {
       var elem = e.target;
-      console.log("start:",elem);
       rangeStart = $(elem);
       rangeEnd = null;
-      calendarContainer.find('.selected').removeClass('.selected');
+      calendarContainer.find('.selected').removeClass('selected');
+      rangeStart.addClass("selected");
     }
 
     function changeSelection(e) {
@@ -122,6 +126,7 @@
         weekNumber.click(function () {
           $(".selected").removeClass("selected");
           $(this).nextAll(".date").addClass("selected");
+          //TODO update fields (test!)
         });
       }
       return weekNumber;
@@ -131,19 +136,27 @@
       return date.isOddMonth() ? ' odd' : '';
     }
 
+    //TODO refactor
     function selectRange() {
       var date1 = rangeStart.data("date");
       var date2 = rangeEnd.data("date");
-      var start = (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
-      var end = (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
-      console.log(start, end);
-      console.log("selectRange:", date1.getDate(), date2.getDate());
+      var start = (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
+      var end = (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
+      calendarContainer.find(".date").removeClass("selected").each(function(i, elem) {
+        var date = $(elem).data("date");
+        if (date.compareDateOnlyTo(start) >= 0 && date.compareDateOnlyTo(end) <= 0) {
+          $(elem).addClass("selected");
+        }
+      });
     }
 
     function updateTextFields() {
       var date1 = rangeStart.data("date");
       var date2 = rangeEnd.data("date");
-      console.log("up:", rangeStart.index(), rangeEnd.index(), date1.getDate(), date2.getDate());
+      var start = (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
+      var end = (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
+      startField.val(start.format(dateFormat.masks.constructorFormat));
+      endField.val(end.format(dateFormat.masks.constructorFormat));
     }
 
     function isRange() {

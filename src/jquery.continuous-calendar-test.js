@@ -105,7 +105,6 @@ test("calendar with range has range class", function() {
   ok(calendar().find(".calendarBody").hasClass("range"));
 });
 
-
 module("calendar events", {
   setup: createCalendarContainer
 });
@@ -114,7 +113,7 @@ test("highlights and selects clicked day", function() {
   createCalendarWithOneWeek();
   calendar().find(".date:eq(1)").click();
   equals(calendar().find(".selected").text(), "29");
-  equals(calendar().find("input.startDate").val(), "4/29/2008");
+  equals(startFieldValue(), "4/29/2008");
 });
 
 test("week number click selects whole week", function () {
@@ -129,8 +128,16 @@ test("week number click on single date calendar does nothing", function () {
   equals(calendar().find(".selected").size(), 1);
 });
 
-test("mouse click and drag highlights range", function() {
-
+test("mouse click and drag highlights range and updates fields", function() {
+  createRangeCalendarWithThreeWeeks();
+  mouseDown(".date:contains(27)");
+  mouseMove(".date:contains(27)");
+  mouseMove(".date:contains(28)");
+  mouseMove(".date:contains(29)");
+  mouseUp(".date:contains(29)");
+  equals(calendar().find(".selected").size(), 3);
+  equals(startFieldValue(), "4/27/2009");
+  equals(endFieldValue(), "4/29/2009");
 });
 
 //TODO week number selects week
@@ -142,7 +149,7 @@ function createCalendarContainer() {
   testIndex++;
   var container = $("<div style='margin:1em;float:left;'></div>");
   var index = $('<div></div>').append(testIndex).css({
-    
+
     "font-weight": "bold",
     "color": "green"
   });
@@ -161,13 +168,26 @@ function calendar(params) {
       container.append(field);
     }
   }
+
   return container;
 }
 
+function _mouseEvent(functionName, selector) {
+  calendar().data(functionName)({target:calendar().find(selector)});
+}
+
+function mouseDown(selector) {
+  _mouseEvent("startSelection", selector);
+}
+function mouseMove(selector) {
+  _mouseEvent("changeSelection", selector);
+}
+function mouseUp(selector) {
+  _mouseEvent("endSelection", selector);
+}
 function calendarId() {
   return "continuousCalendar" + testIndex;
 }
-
 function createCalendarWithOneWeek() {
   calendar({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
 }
@@ -180,4 +200,12 @@ function assertHasValues(selector, expectedArray) {
   same($.map(calendar().find(selector), function (elem) {
     return $(elem).text();
   }), expectedArray);
+}
+
+function startFieldValue() {
+  return calendar().find("input.startDate").val();
+}
+
+function endFieldValue() {
+  return calendar().find("input.endDate").val();
 }
