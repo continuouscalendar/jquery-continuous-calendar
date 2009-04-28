@@ -82,20 +82,25 @@
       dateCells.mousedown(startSelection).mouseover(changeSelection).mouseup(endSelection);
     }
 
-    function startSelection() {
-      rangeStart = $(this);
+    function startSelection(e) {
+      var elem = e.target;
+      console.log("start:",elem);
+      rangeStart = $(elem);
       rangeEnd = null;
       calendarContainer.find('.selected').removeClass('.selected');
     }
 
-    function changeSelection() {
-      rangeEnd = $(this);
+    function changeSelection(e) {
+      var elem = e.target;
+      rangeEnd = $(elem);
       if (rangeStart) {
         selectRange();
       }
     }
 
-    function endSelection() {
+    function endSelection(e) {
+      var elem = e.target;
+      if (!rangeEnd) rangeEnd = $(elem);
       updateTextFields();
       rangeStart = null;
     }
