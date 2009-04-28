@@ -84,7 +84,7 @@ test("if start date not selected show around current day instead", function() {
   calendar().continuousCalendar({weeksBefore: 0,weeksAfter: 0});
   var today = new Date();
   equals(calendar().find(".date").size(), 7);
-  equals(calendar().find(".date:contains(" + today.getDay() + ")").size(), 1);
+  equals(calendar().find(".date:contains(" + today.getDate() + ")").size(), 1);
   //assertHasValues(".date", ["20","21","22","23","24","25","26"]);
   equals(calendar().find(".selected").size(), 0);
 });
@@ -136,14 +136,15 @@ var testIndex = 0;
 
 function createCalendarContainer() {
   testIndex++;
-  var container = $("<div style='margin:1em'></div>");
+  var container = $("<div style='margin:1em;float:left;'></div>");
   var index = $('<div></div>').append(testIndex).css({
-    "float": "left",
+    
     "font-weight": "bold",
     "color": "green"
   });
   container.attr("id", calendarId());
-  $("#main").append(index).append(container);
+  container.append(index);
+  $("#main").append(container);
 }
 
 function calendar(params) {
