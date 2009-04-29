@@ -92,24 +92,21 @@
     }
 
     function startSelection(e) {
-      var elem = e.target;
-      rangeStart = $(elem);
+      rangeStart = $(e.target);
       rangeEnd = null;
       dateCells.removeClass('selected');
       rangeStart.addClass("selected");
     }
 
     function changeSelection(e) {
-      var elem = e.target;
-      rangeEnd = $(elem);
+      rangeEnd = $(e.target);
       if (rangeStart) {
         selectRange();
       }
     }
 
     function endSelection(e) {
-      var elem = e.target;
-      if (!rangeEnd) rangeEnd = $(elem);
+      if (!rangeEnd) rangeEnd = $(e.target);
       updateTextFields();
       rangeStart = null;
     }
