@@ -12,6 +12,7 @@
     var rangeStart = null;
     var rangeEnd = null;
     var calendarContainer = this;
+    var dateCells = null;
     createCalendar(this);
 
     if(!params.dateFormat) {
@@ -27,6 +28,7 @@
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
       var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
       container.append(calendar);
+      dateCells = calendarContainer.find('.date');
       if (isRange()) {
         bodyTable.addClass("range");
         initRangeCalendarEvents();
@@ -77,15 +79,15 @@
     }
 
     function initSingleDateCalendarEvents() {
-      calendarContainer.find('.date').click(function() {
-        calendarContainer.find(".selected").removeClass("selected");
-        $(this).addClass("selected");
-        startField.val($(this).data("date").format(dateFormat.masks.constructorFormat));
+      dateCells.click(function() {
+        dateCells.removeClass("selected");
+        var dateCell = $(this);
+        dateCell.addClass("selected");
+        startField.val(dateCell.data("date").format(params.dateFormat));
       });
     }
 
     function initRangeCalendarEvents() {
-      var dateCells = calendarContainer.find('.date');
       dateCells.mousedown(startSelection).mouseover(changeSelection).mouseup(endSelection);
     }
 
@@ -93,7 +95,7 @@
       var elem = e.target;
       rangeStart = $(elem);
       rangeEnd = null;
-      calendarContainer.find('.selected').removeClass('selected');
+      dateCells.removeClass('selected');
       rangeStart.addClass("selected");
     }
 
@@ -127,7 +129,7 @@
       weekNumber.addClass("week").addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear("ISO"));
       if (isRange()) {
         weekNumber.click(function () {
-          $(".selected").removeClass("selected");
+          dateCells.removeClass("selected");
           $(this).nextAll(".date").addClass("selected");
           startField.val(firstDayOfWeek.format(params.dateFormat));
           endField.val(firstDayOfWeek.plusDays(6).format(params.dateFormat));
@@ -141,7 +143,7 @@
     }
 
     function selectRange() {
-      calendarContainer.find(".date").removeClass("selected").each(function() {
+      dateCells.removeClass("selected").each(function() {
         var elem = arguments[1];
         var date = $(elem).data("date");
         if (date.isBetweenDates(earlierDate(), laterDate())) {
