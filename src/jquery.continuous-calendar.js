@@ -146,7 +146,8 @@
       var date2 = rangeEnd.data("date");
       var start = (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
       var end = (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
-      calendarContainer.find(".date").removeClass("selected").each(function(i, elem) {
+      calendarContainer.find(".date").removeClass("selected").each(function() {
+        var elem = arguments[1];
         var date = $(elem).data("date");
         if (date.compareDateOnlyTo(start) >= 0 && date.compareDateOnlyTo(end) <= 0) {
           $(elem).addClass("selected");
