@@ -71,49 +71,33 @@ Date.prototype.plusDays = function(days) {
   return newDate;
 };
 
-Date.prototype.addYears = function(years) {
-  this.setFullYear(this.getFullYear() + years);
-  return this;
+Date.prototype.plusYears = function(years) {
+  var newDate = this.clone();
+  newDate.setFullYear(this.getFullYear() + years);
+  return newDate();
 };
 
-Date.prototype.stripTime = function() {
-  this.setHours(0);
-  this.setMinutes(0);
-  this.setSeconds(0);
-  this.setMilliseconds(0);
+Date.prototype.stripped = function() {
+  var newDate = this.clone();
+  newDate.setHours(0);
+  newDate.setMinutes(0);
+  newDate.setSeconds(0);
+  newDate.setMilliseconds(0);
+  return newDate;
 };
 
 Date.prototype.compareTo = function(date) {
-  if (!date) {
-    return 1;
-  }
-
+  if (!date) return 1;
   var lhs = this.getTime();
   var rhs = date.getTime();
-
-  if (lhs < rhs) {
-    return -1;
-  } else if (lhs > rhs) {
-    return 1;
-  } else {
-    return 0;
-  }
+  if (lhs < rhs) return -1;
+  else if (lhs > rhs) return 1;
+  else return 0;
 };
 
 Date.prototype.compareDateOnlyTo = function(date) {
-  if (!date) {
-    return 1;
-  }
-
-  var lhs = new Date();
-  lhs.setTime(this.getTime());
-  lhs.stripTime();
-
-  var rhs = new Date();
-  rhs.setTime(date.getTime());
-  rhs.stripTime();
-
-  return lhs.compareTo(rhs);
+  if (!date) return 1;
+  return this.stripped().compareTo(date.stripped());
 };
 
 Date.prototype.isToday = function() {
@@ -182,12 +166,18 @@ Date.prototype.clone = function() {
 
 Date.prototype.isOddMonth = function() {
   return this.getMonth()%2 != 0;
-}
+};
 
 Date.prototype.equalsOnlyDate = function(date) {
   return this.compareDateOnlyTo(date) == 0;
-}
+};
 
 Date.prototype.isBetweenDates = function(start, end) {
   return this.compareDateOnlyTo(start) >= 0 && this.compareDateOnlyTo(end) <= 0;
-}
+};
+Date.prototype.firstDateOfMonth = function() {
+  return new Date(this.getMonth()+"/1/"+this.getFullYear());
+};
+Date.prototype.lastDateOfMonth = function() {
+  return new Date(this.getMonth()+"/"+this.getDaysInMonth()+"/"+this.getFullYear());
+};

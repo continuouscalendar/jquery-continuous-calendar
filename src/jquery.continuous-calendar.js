@@ -113,6 +113,10 @@
 
     function monthCell(firstDayOfWeek) {
       var th = $("<th>").addClass("month").addClass(backgroundBy(firstDayOfWeek));
+      th.click(function() {
+        startField.val(firstDayOfWeek.firstDateOfMonth().format(params.dateFormat));
+        endField.val(firstDayOfWeek.lastDateOfMonth().format(params.dateFormat));
+      });
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
         th.append(MONTHS[firstDayOfWeek.getMonth()]);
       } else if (firstDayOfWeek.getDate() <= WEEK_DAYS.length * 2 && firstDayOfWeek.getMonth() == 0) {

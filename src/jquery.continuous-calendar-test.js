@@ -142,8 +142,15 @@ test("mouse click and drag highlights range and updates fields", function() {
   equals(endFieldValue(), "4/29/2009");
 });
 
-//TODO week number selects week
-//TODO month nam selects month
+test("mouse click on month selects whole month", function() {
+  //TODO use calendar with a full month
+  createRangeCalendarWithThreeWeeks();
+  calendar().find(".month:contains(toukokuu)").click();
+  //equals(calendar().find(".selected").size(), 7*3);
+  equals(startFieldValue(), "4/1/2009");
+  equals(endFieldValue(), "5/1/2009");
+});
+
 //TODO kahva selectioniin
 var testIndex = 0;
 

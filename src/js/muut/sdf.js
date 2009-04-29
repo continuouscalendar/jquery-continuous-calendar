@@ -174,7 +174,7 @@ Wicket.SimpleDateFormat.prototype = {
 		var date = new Date();
 		date.setMonth(0);
 		date.setDate(1);
-		date.stripTime();
+		date.stripped();
 		date.proposedDay = null;
 
 		var pos = 0;
