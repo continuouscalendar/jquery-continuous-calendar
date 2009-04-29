@@ -14,6 +14,9 @@
     var calendarContainer = this;
     createCalendar(this);
 
+    if(!params.dateFormat) {
+      params.dateFormat = dateFormat.masks.constructorFormat;
+    }
     this.data("startSelection", startSelection);
     this.data("changeSelection", changeSelection);
     this.data("endSelection", endSelection);
@@ -126,7 +129,8 @@
         weekNumber.click(function () {
           $(".selected").removeClass("selected");
           $(this).nextAll(".date").addClass("selected");
-          //TODO update fields (test!)
+          startField.val(firstDayOfWeek.format(params.dateFormat));
+          endField.val(firstDayOfWeek.plusDays(6).format(params.dateFormat));
         });
       }
       return weekNumber;
@@ -155,8 +159,8 @@
       var date2 = rangeEnd.data("date");
       var start = (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
       var end = (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
-      startField.val(start.format(dateFormat.masks.constructorFormat));
-      endField.val(end.format(dateFormat.masks.constructorFormat));
+      startField.val(start.format(params.dateFormat));
+      endField.val(end.format(params.dateFormat));
     }
 
     function isRange() {

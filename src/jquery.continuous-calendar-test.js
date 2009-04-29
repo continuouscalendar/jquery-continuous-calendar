@@ -118,8 +118,10 @@ test("highlights and selects clicked day", function() {
 
 test("week number click selects whole week", function () {
   createRangeCalendarWithThreeWeeks();
-  calendar().find(".week:contains(15)").click();
-  equals(calendar().find(".selected").size(), 7);
+  calendar().find(".week:contains(18)").click();
+  assertHasValues(".selected", ["27","28","29","30","1","2","3"]);
+  equals(startFieldValue(), "4/27/2009");
+  equals(endFieldValue(), "5/3/2009");
 });
 
 test("week number click on single date calendar does nothing", function () {
