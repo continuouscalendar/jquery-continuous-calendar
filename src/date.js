@@ -187,3 +187,7 @@ Date.prototype.isOddMonth = function() {
 Date.prototype.equalsOnlyDate = function(date) {
   return this.compareDateOnlyTo(date) == 0;
 }
+
+Date.prototype.isBetweenDates = function(start, end) {
+  return this.compareDateOnlyTo(start) >= 0 && this.compareDateOnlyTo(end) <= 0;
+}

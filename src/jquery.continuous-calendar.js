@@ -140,28 +140,31 @@
       return date.isOddMonth() ? ' odd' : '';
     }
 
-    //TODO refactor
     function selectRange() {
-      var date1 = rangeStart.data("date");
-      var date2 = rangeEnd.data("date");
-      var start = (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
-      var end = (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
       calendarContainer.find(".date").removeClass("selected").each(function() {
         var elem = arguments[1];
         var date = $(elem).data("date");
-        if (date.compareDateOnlyTo(start) >= 0 && date.compareDateOnlyTo(end) <= 0) {
+        if (date.isBetweenDates(earlierDate(), laterDate())) {
           $(elem).addClass("selected");
         }
       });
     }
 
-    function updateTextFields() {
+    function earlierDate() {
       var date1 = rangeStart.data("date");
       var date2 = rangeEnd.data("date");
-      var start = (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
-      var end = (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
-      startField.val(start.format(params.dateFormat));
-      endField.val(end.format(params.dateFormat));
+      return  (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
+    }
+
+    function laterDate() {
+      var date1 = rangeStart.data("date");
+      var date2 = rangeEnd.data("date");
+      return (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
+    }
+
+    function updateTextFields() {
+      startField.val(earlierDate().format(params.dateFormat));
+      endField.val(laterDate().format(params.dateFormat));
     }
 
     function isRange() {
