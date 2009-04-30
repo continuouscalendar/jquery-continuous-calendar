@@ -151,7 +151,15 @@ test("mouse click on month selects whole month", function() {
   equals(endFieldValue(), "5/1/2009");
 });
 
-//TODO kahva selectioniin
+//TODO resize selection
+//TODO move selection
+//TODO tooltips (range size etc.)
+//TODO date format
+//TODO disabled fields
+//TODO todo holidays
+//TODO update year while dragging
+//TODO scroll to selection or current day
+//TODO performance
 var testIndex = 0;
 
 function createCalendarContainer() {
