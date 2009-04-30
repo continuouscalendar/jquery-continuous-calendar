@@ -11,8 +11,11 @@
     // TODO set corresponding range
     var rangeStart = null;
     var rangeEnd = null;
+    var rangeStartDate = null;
+    var rangeEndDate = null;
     var calendarContainer = this;
     var dateCells = null;
+    var dateCellDates = null;
     createCalendar(this);
 
     if(!params.dateFormat) {
@@ -29,6 +32,7 @@
       var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
       container.append(calendar);
       dateCells = calendarContainer.find('.date');
+      dateCellDates = dateCells.map(function() { return $(this).data("date");})
       if (isRange()) {
         bodyTable.addClass("range");
         initRangeCalendarEvents();
@@ -67,14 +71,9 @@
         var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
         dateCell.data("date", date);
         if (date.isToday()) dateCell.addClass("today");
-        if (isBetweenRange(date)) dateCell.addClass("selected");
+        if (date.isBetweenDates(startDate, endDate)) dateCell.addClass("selected");
         tr.append(dateCell);
       }
-      function isBetweenRange(date) {
-        if (!startDate) return false;
-        return date.compareDateOnlyTo(startDate) >= 0 && date.compareDateOnlyTo(endDate) <= 0;
-      }
-
       return tr;
     }
 
@@ -93,22 +92,29 @@
 
     function startSelection(e) {
       rangeStart = $(e.target);
+      rangeStartDate = rangeStart.data("date");
       rangeEnd = null;
+      rangeEndDate = null;
       dateCells.removeClass('selected');
       rangeStart.addClass("selected");
     }
 
     function changeSelection(e) {
       rangeEnd = $(e.target);
+      rangeEndDate = rangeEnd.data("date");
       if (rangeStart) {
         selectRange();
       }
     }
 
     function endSelection(e) {
-      if (!rangeEnd) rangeEnd = $(e.target);
+      if (!rangeEnd) {
+        rangeEnd = $(e.target);
+        rangeEndDate = rangeEnd.data("date");
+      }
       updateTextFields();
       rangeStart = null;
+      rangeStartDate = null;
     }
 
     function monthCell(firstDayOfWeek) {
@@ -144,25 +150,26 @@
     }
 
     function selectRange() {
-      dateCells.removeClass("selected").each(function() {
-        var elem = arguments[1];
-        var date = $(elem).data("date");
-        if (date.isBetweenDates(earlierDate(), laterDate())) {
+      //TODO fix performance issues:
+      //suurempi vai pienempi indeksi kuin edellisellä mouse overilla?
+      // maalaus edelliseen mouseoveriin saakka
+      //suurempi vai pienempi selection? jääkö startin ja edellisen mouseoverin väliin vai ei?
+
+      dateCells.each(function(i,elem) {
+        if (dateCellDates[i].isBetweenDates(earlierDate(), laterDate())) {
           $(elem).addClass("selected");
+        } else {
+          $(elem).removeClass("selected");
         }
       });
     }
 
     function earlierDate() {
-      var date1 = rangeStart.data("date");
-      var date2 = rangeEnd.data("date");
-      return  (date1.compareDateOnlyTo(date2) > 0) ? date2 : date1;
+      return  (rangeStartDate.compareTo(rangeEndDate) > 0) ? rangeEndDate : rangeStartDate;
     }
 
     function laterDate() {
-      var date1 = rangeStart.data("date");
-      var date2 = rangeEnd.data("date");
-      return (date1.compareDateOnlyTo(date2) > 0) ? date1 : date2;
+      return (rangeStartDate.compareTo(rangeEndDate) > 0) ? rangeStartDate : rangeEndDate;
     }
 
     function updateTextFields() {
