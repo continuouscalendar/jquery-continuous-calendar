@@ -18,7 +18,7 @@
     var dateCellDates = null;
     createCalendar(this);
 
-    if(!params.dateFormat) {
+    if (!params.dateFormat) {
       params.dateFormat = dateFormat.masks.constructorFormat;
     }
     this.data("startSelection", startSelection);
@@ -32,7 +32,9 @@
       var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
       container.append(calendar);
       dateCells = calendarContainer.find('.date');
-      dateCellDates = dateCells.map(function() { return $(this).data("date");})
+      dateCellDates = dateCells.map(function() {
+        return $(this).data("date");
+      });
       if (isRange()) {
         bodyTable.addClass("range");
         initRangeCalendarEvents();
@@ -155,7 +157,7 @@
       // maalaus edelliseen mouseoveriin saakka
       //suurempi vai pienempi selection? jääkö startin ja edellisen mouseoverin väliin vai ei?
 
-      dateCells.each(function(i,elem) {
+      dateCells.each(function(i, elem) {
         if (dateCellDates[i].isBetweenDates(earlierDate(), laterDate())) {
           $(elem).addClass("selected");
         } else {

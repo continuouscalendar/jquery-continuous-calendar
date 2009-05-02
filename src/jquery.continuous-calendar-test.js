@@ -85,8 +85,12 @@ test("if start date not selected show around current day instead", function() {
   calendar().continuousCalendar({weeksBefore: 0,weeksAfter: 0});
   var today = new Date();
   equals(calendar().find(".date").size(), 7);
-  equals(calendar().find(".date:contains(" + today.getDate() + ")").size(), 1);
-  //assertHasValues(".date", ["20","21","22","23","24","25","26"]);
+  var weekDays = [];
+  var firstDay = today.getFirstDateOfWeek(Date.MONDAY);
+  for (var i = 0; i < 7; i++) {
+    weekDays.push(firstDay.plusDays(i).getDate().toString());
+  }
+  assertHasValues(".date", weekDays);
   equals(calendar().find(".selected").size(), 0);
 });
 
