@@ -53,6 +53,9 @@ h2.fail {
   background-color: red;
 }
 
+#testresult {
+  clear:both;
+}
 div.testrunner-toolbar {
   background: #eee;
   border-top: 1px solid black;

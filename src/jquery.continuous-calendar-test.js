@@ -155,6 +155,11 @@ test("mouse click on month selects whole month", function() {
   equals(endFieldValue(), "5/1/2009");
 });
 
+test("range is movable", function() {
+  createRangeCalendarWithThreeWeeks();
+
+});
+
 //TODO resize selection
 //TODO move selection
 //TODO tooltips (range size etc.)
@@ -168,9 +173,12 @@ var testIndex = 0;
 
 function createCalendarContainer() {
   testIndex++;
-  var container = $("<div style='margin:1em;float:left;'></div>");
+  var container = $("<div>").css({
+    margin: "10px",
+    float: "left",
+    height: "160px"
+  });
   var index = $('<div></div>').append(testIndex).css({
-
     "font-weight": "bold",
     "color": "green"
   });
