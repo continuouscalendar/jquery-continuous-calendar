@@ -62,7 +62,8 @@
   font-size: 7pt;
 }
 
-.continuousCalendar .range .week {
+.continuousCalendar .range .week,
+.continuousCalendar .range .month {
   cursor: pointer;
 }
 
