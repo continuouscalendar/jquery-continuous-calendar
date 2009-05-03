@@ -1,9 +1,9 @@
 /*function sut() {
-  return jQuery("#systemUnderTest").get(0).contentWindow;
-}
-function $() {
-  return sut().jQuery.apply(null, arguments);
-}*/
+ return jQuery("#systemUnderTest").get(0).contentWindow;
+ }
+ function $() {
+ return sut().jQuery.apply(null, arguments);
+ }*/
 function click(selector) {
   $(selector).click();
 }
@@ -12,10 +12,10 @@ function setText(selector, value) {
 }
 function value(selector) {
   var elem = $(selector);
-  if(elem.is("input")) {
+  if (elem.is("input")) {
     return elem.val();
   } else {
-  return elem.text();
+    return elem.text();
   }
 }
 function assertEmpty(selector) {
@@ -27,3 +27,9 @@ function assertNotEmpty(selector) {
 function resetTextInputs() {
   setText("input:text", "");
 }
+
+$.fn.filterWithText = function(text) {
+  return this.filter(function() {
+    return $(this).text() == text.toString();
+  });
+};

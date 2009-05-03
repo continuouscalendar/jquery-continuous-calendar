@@ -68,7 +68,7 @@ test("highlights current date and shows year for janary", function() {
   var cells = calendar().find(".today");
   equals(cells.size(), 1);
   equals(cells.text(), today.getDate());
-  equals(calendar().find(".month:contains(tammikuu)").parent().next().find(".month").text(), "2009");
+  equals(calendar().find(".month").filterWithText("tammikuu").parent().next().find(".month").text(), "2009");
 });
 
 test("highlights selected date", function() {
@@ -122,7 +122,7 @@ test("highlights and selects clicked day", function() {
 
 test("week number click selects whole week", function () {
   createRangeCalendarWithThreeWeeks();
-  calendar().find(".week:contains(18)").click();
+  calendar().find(".week").filterWithText("18").click();
   assertHasValues(".selected", ["27","28","29","30","1","2","3"]);
   equals(startFieldValue(), "4/27/2009");
   equals(endFieldValue(), "5/3/2009");
@@ -130,7 +130,7 @@ test("week number click selects whole week", function () {
 
 test("week number click on single date calendar does nothing", function () {
   calendar({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
-  calendar().find(".week:contains(15)").click();
+  calendar().find(".week").filterWithText(15).click();
   equals(calendar().find(".selected").size(), 1);
 });
 
@@ -149,7 +149,7 @@ test("mouse click and drag highlights range and updates fields", function() {
 test("mouse click on month selects whole month", function() {
   //TODO use calendar with a full month
   createRangeCalendarWithThreeWeeks();
-  calendar().find(".month:contains(toukokuu)").click();
+  calendar().find(".month").filterWithText("toukokuu").click();
   //equals(calendar().find(".selected").size(), 7*3);
   equals(startFieldValue(), "4/1/2009");
   equals(endFieldValue(), "5/1/2009");
