@@ -163,15 +163,6 @@ test("range is movable", function() {
   assertHasValues(".selected", ["26","27","28","29","30","1","2"]);
 });
 
-//TODO resize selection
-//TODO move selection
-//TODO tooltips (range size etc.)
-//TODO date format
-//TODO disabled fields
-//TODO todo holidays
-//TODO update year while dragging
-//TODO scroll to selection or current day
-//TODO performance
 var testIndex = 0;
 
 function createCalendarContainer() {

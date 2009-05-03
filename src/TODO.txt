@@ -1,0 +1,14 @@
+TODO Resize selection
+TODO move selection
+TODO tooltips (range size etc.)
+TODO date format
+TODO disabled fields
+TODO todo holidays
+TODO update year while dragging
+TODO scroll to selection or current day
+TODO performance
+
+Suorityskyvyn parantelua:
+- suurempi vai pienempi indeksi kuin edellisellä mouse overilla?
+- maalaus edelliseen mouseoveriin saakka
+- suurempi vai pienempi selection? jääkö startin ja edellisen mouseoverin väliin vai ei?
