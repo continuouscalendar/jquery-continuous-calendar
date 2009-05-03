@@ -8,15 +8,15 @@ test("shows year", function() {
 });
 
 test("shows week days", function() {
-  calendar({startDate: "4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
+  cal({startDate: "4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
   assertHasValues(".continuousCalendar thead th.weekDay", [
     "ma", "ti", "ke", "to", "pe", "la", "su"
   ]);
 });
 
 test("lists week days for vappu 2009", function() {
-  calendar({startDate: "4/20/2009", endDate: "4/26/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
-  equals($.trim(calendar().find(".continuousCalendar tbody").html()),
+  cal({startDate: "4/20/2009", endDate: "4/26/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
+  equals($.trim(cal().find(".continuousCalendar tbody").html()),
     '<tr>' +
     '<th class="month odd"></th>' +
     '<th class="week odd">17</th>' +
@@ -32,26 +32,26 @@ test("lists week days for vappu 2009", function() {
 });
 
 test("lists given number of weeks before given date", function() {
-  calendar({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
+  cal({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
   assertHasValues(".date", [
-    "30","31","1","2","3","4","5",
-    "6","7","8","9","10","11","12",
-    "13","14","15","16","17","18","19"
+    30, 31, 1, 2, 3, 4, 5,
+    6, 7, 8, 9, 10, 11, 12,
+    13, 14, 15, 16, 17, 18, 19
   ]);
 });
 
 test("lists given number of weeks after given date", function() {
-  calendar({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 2});
+  cal({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 2});
   assertHasValues(".date", [
-    "13","14","15","16","17","18","19",
-    "20","21","22","23","24","25","26",
-    "27","28","29","30","1","2","3"
+    13, 14, 15, 16, 17, 18, 19,
+    20, 21, 22, 23, 24, 25, 26,
+    27, 28, 29, 30, 1, 2, 3
   ]);
 });
 
 test("shows month name on first row of full week", function() {
-  calendar({startDate: "4/30/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 5});
-  var months = calendar().find(" tbody .month");
+  cal({startDate: "4/30/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 5});
+  var months = cal().find(" tbody .month");
   equals(months.size(), 6);
   var firstMonth = months.eq(1);
   equals(firstMonth.text(), "toukokuu");
@@ -64,49 +64,49 @@ test("shows month name on first row of full week", function() {
 test("highlights current date and shows year for janary", function() {
   var today = new Date();
   var todayText = new Date().format(dateFormat.masks.constructorFormat);
-  calendar({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
-  var cells = calendar().find(".today");
+  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
+  var cells = cal().find(".today");
   equals(cells.size(), 1);
   equals(cells.text(), today.getDate());
-  equals(calendar().find(".month").filterWithText("tammikuu").parent().next().find(".month").text(), "2009");
+  equals(cal().find(".month").withText("tammikuu").parent().next().find(".month").text(), "2009");
 });
 
 test("highlights selected date", function() {
-  calendar({startDate:"4/30/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
-  equals(calendar().find(".selected").text(), "30");
+  cal({startDate:"4/30/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
+  equals(cal().find(".selected").text(), "30");
 });
 
 test("higlights selected date range", function() {
   createRangeCalendarWithThreeWeeks();
-  equals(calendar().find(".selected").size(), 7);
+  equals(cal().find(".selected").size(), 7);
 });
 
 test("if start date not selected show around current day instead", function() {
-  calendar().continuousCalendar({weeksBefore: 0,weeksAfter: 0});
+  cal().continuousCalendar({weeksBefore: 0,weeksAfter: 0});
   var today = new Date();
-  equals(calendar().find(".date").size(), 7);
+  equals(cal().find(".date").size(), 7);
   var weekDays = [];
   var firstDay = today.getFirstDateOfWeek(Date.MONDAY);
   for (var i = 0; i < 7; i++) {
     weekDays.push(firstDay.plusDays(i).getDate().toString());
   }
   assertHasValues(".date", weekDays);
-  equals(calendar().find(".selected").size(), 0);
+  equals(cal().find(".selected").size(), 0);
 });
 
 test("render week numbers", function() {
   createCalendarWithOneWeek();
-  ok(calendar().find(".week").text() > 0);
+  ok(cal().find(".week").text() > 0);
 });
 
 test("calendar with no range has no range class", function() {
   createCalendarWithOneWeek();
-  ok(!calendar().find(".calendarBody").hasClass("range"));
+  ok(!cal().find(".calendarBody").hasClass("range"));
 });
 
 test("calendar with range has range class", function() {
   createRangeCalendarWithThreeWeeks();
-  ok(calendar().find(".calendarBody").hasClass("range"));
+  ok(cal().find(".calendarBody").hasClass("range"));
 });
 
 module("calendar events", {
@@ -115,33 +115,33 @@ module("calendar events", {
 
 test("highlights and selects clicked day", function() {
   createCalendarWithOneWeek();
-  calendar().find(".date:eq(1)").click();
-  equals(calendar().find(".selected").text(), "29");
+  cal().find(".date:eq(1)").click();
+  equals(cal().find(".selected").text(), "29");
   equals(startFieldValue(), "4/29/2008");
 });
 
 test("week number click selects whole week", function () {
   createRangeCalendarWithThreeWeeks();
-  calendar().find(".week").filterWithText("18").click();
-  assertHasValues(".selected", ["27","28","29","30","1","2","3"]);
+  cal().find(".week").withText(18).click();
+  assertHasValues(".selected", [27,28,29,30,1,2,3]);
   equals(startFieldValue(), "4/27/2009");
   equals(endFieldValue(), "5/3/2009");
 });
 
 test("week number click on single date calendar does nothing", function () {
-  calendar({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
-  calendar().find(".week").filterWithText(15).click();
-  equals(calendar().find(".selected").size(), 1);
+  cal({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
+  cal().find(".week").withText(15).click();
+  equals(cal().find(".selected").size(), 1);
 });
 
 test("mouse click and drag highlights range and updates fields", function() {
   createRangeCalendarWithThreeWeeks();
-  mouseDown(".date:contains(27)");
-  mouseMove(".date:contains(27)");
-  mouseMove(".date:contains(28)");
-  mouseMove(".date:contains(29)");
-  mouseUp(".date:contains(29)");
-  equals(calendar().find(".selected").size(), 3);
+  mouseDownOnDay("27");
+  mouseMoveOnDay("27");
+  mouseMoveOnDay("28");
+  mouseMoveOnDay("29");
+  mouseUpOnDay("29");
+  equals(cal().find(".selected").size(), 3);
   equals(startFieldValue(), "4/27/2009");
   equals(endFieldValue(), "4/29/2009");
 });
@@ -149,7 +149,7 @@ test("mouse click and drag highlights range and updates fields", function() {
 test("mouse click on month selects whole month", function() {
   //TODO use calendar with a full month
   createRangeCalendarWithThreeWeeks();
-  calendar().find(".month").filterWithText("toukokuu").click();
+  cal().find(".month").withText("toukokuu").click();
   //equals(calendar().find(".selected").size(), 7*3);
   equals(startFieldValue(), "4/1/2009");
   equals(endFieldValue(), "5/1/2009");
@@ -157,10 +157,10 @@ test("mouse click on month selects whole month", function() {
 
 test("range is movable", function() {
   createRangeCalendarWithThreeWeeks();
-  mouseDown(".date:contains(30)");
-  mouseMove(".date:contains(27)");
-  mouseUp(".date:contains(27)");
-  assertHasValues(".selected", ["26","27","28","29","30","1","2"]);
+  mouseDownOnDay("30");
+  mouseMoveOnDay("27");
+  mouseUpOnDay("27");
+  assertHasValues(".selected", [26,27,28,29,30,1,2]);
 });
 
 var testIndex = 0;
@@ -181,7 +181,7 @@ function createCalendarContainer() {
   $("#main").append(container);
 }
 
-function calendar(params) {
+function cal(params) {
   var container = $("#" + calendarId());
   addFieldIfRequired("startDate");
   addFieldIfRequired("endDate");
@@ -195,43 +195,48 @@ function calendar(params) {
   return container;
 }
 
-function _mouseEvent(functionName, selector) {
-  calendar().data(functionName)({
-    target:calendar().find(selector),
-    preventDefault: function() {}
+function _mouseEvent(functionName, date) {
+  cal().data(functionName)({
+    target:cal().find(".date").withText(date),
+    preventDefault: function() {
+    }
   });
 }
 
-function mouseDown(selector) {
-  _mouseEvent("mouseDown", selector);
+function mouseDownOnDay(date) {
+  _mouseEvent("mouseDown", date);
 }
-function mouseMove(selector) {
-  _mouseEvent("mouseMove", selector);
+
+function mouseMoveOnDay(date) {
+  _mouseEvent("mouseMove", date);
 }
-function mouseUp(selector) {
-  _mouseEvent("mouseUp", selector);
+
+function mouseUpOnDay(date) {
+  _mouseEvent("mouseUp", date);
 }
+
 function calendarId() {
   return "continuousCalendar" + testIndex;
 }
+
 function createCalendarWithOneWeek() {
-  calendar({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
+  cal({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
 }
 
 function createRangeCalendarWithThreeWeeks() {
-  calendar({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
+  cal({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
 }
 
 function assertHasValues(selector, expectedArray) {
-  same($.map(calendar().find(selector), function (elem) {
+  same($.map(cal().find(selector), function (elem) {
     return $(elem).text();
-  }), expectedArray);
+  }), $.map(expectedArray, function(i) { return i.toString();}));
 }
 
 function startFieldValue() {
-  return calendar().find("input.startDate").val();
+  return cal().find("input.startDate").val();
 }
 
 function endFieldValue() {
-  return calendar().find("input.endDate").val();
+  return cal().find("input.endDate").val();
 }

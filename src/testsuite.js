@@ -28,7 +28,7 @@ function resetTextInputs() {
   setText("input:text", "");
 }
 
-$.fn.filterWithText = function(text) {
+$.fn.withText = function(text) {
   return this.filter(function() {
     return $(this).text() == text.toString();
   });
