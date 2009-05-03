@@ -87,8 +87,11 @@
     function monthCell(firstDayOfWeek) {
       var th = $("<th>").addClass("month").addClass(backgroundBy(firstDayOfWeek));
       th.click(function() {
-        startField.val(firstDayOfWeek.firstDateOfMonth().format(params.dateFormat));
-        endField.val(firstDayOfWeek.lastDateOfMonth().format(params.dateFormat));
+        var start = firstDayOfWeek.firstDateOfMonth();
+        var end = firstDayOfWeek.lastDateOfMonth();
+        startField.val(start.format(params.dateFormat));
+        endField.val(end.format(params.dateFormat));
+        selectRangeBetweenDates(start, end);
       });
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
         th.append(MONTHS[firstDayOfWeek.getMonth()]);
@@ -187,14 +190,17 @@
       moveStartDate = date;
     }
 
-    function selectRange() {
+    function selectRangeBetweenDates(start, end) {
       dateCells.each(function(i, elem) {
-        if (dateCellDates[i].isBetweenDates(earlierDate(), laterDate())) {
+        if (dateCellDates[i].isBetweenDates(start, end)) {
           $(elem).addClass("selected");
         } else {
           $(elem).removeClass("selected");
         }
       });
+    }
+    function selectRange() {
+      selectRangeBetweenDates(earlierDate(), laterDate());
     }
 
     function earlierDate() {

@@ -178,11 +178,11 @@ Date.prototype.isBetweenDates = function(start, end) {
 };
 
 Date.prototype.firstDateOfMonth = function() {
-  return new Date(this.getMonth() + "/1/" + this.getFullYear());
+  return new Date((this.getMonth()+1) + "/1/" + this.getFullYear());
 };
 
 Date.prototype.lastDateOfMonth = function() {
-  return new Date(this.getMonth() + "/" + this.getDaysInMonth() + "/" + this.getFullYear());
+  return new Date((this.getMonth()+1) + "/" + this.getDaysInMonth() + "/" + this.getFullYear());
 };
 
 Date.prototype.distanceInDays = function(date) {

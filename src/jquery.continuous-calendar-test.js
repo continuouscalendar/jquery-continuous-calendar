@@ -63,8 +63,7 @@ test("shows month name on first row of full week", function() {
 
 test("highlights current date and shows year for janary", function() {
   var today = new Date();
-  var todayText = new Date().format(dateFormat.masks.constructorFormat);
-  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
+  createBigCalendar();
   var cells = cal().find(".today");
   equals(cells.size(), 1);
   equals(cells.text(), today.getDate());
@@ -88,7 +87,7 @@ test("if start date not selected show around current day instead", function() {
   var weekDays = [];
   var firstDay = today.getFirstDateOfWeek(Date.MONDAY);
   for (var i = 0; i < 7; i++) {
-    weekDays.push(firstDay.plusDays(i).getDate().toString());
+    weekDays.push(firstDay.plusDays(i).getDate());
   }
   assertHasValues(".date", weekDays);
   equals(cal().find(".selected").size(), 0);
@@ -148,11 +147,12 @@ test("mouse click and drag highlights range and updates fields", function() {
 
 test("mouse click on month selects whole month", function() {
   //TODO use calendar with a full month
-  createRangeCalendarWithThreeWeeks();
+  createBigCalendar();
   cal().find(".month").withText("toukokuu").click();
-  //equals(calendar().find(".selected").size(), 7*3);
-  equals(startFieldValue(), "4/1/2009");
-  equals(endFieldValue(), "5/1/2009");
+  equals(cal().find(".selected").size(), 31);
+  equals(startFieldValue(), "5/1/2009");
+  equals(endFieldValue(), "5/31/2009");
+  
 });
 
 test("range is movable", function() {
@@ -225,6 +225,10 @@ function createCalendarWithOneWeek() {
 
 function createRangeCalendarWithThreeWeeks() {
   cal({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
+}
+function createBigCalendar() {
+  var todayText = new Date().format(dateFormat.masks.constructorFormat);
+  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
 }
 
 function assertHasValues(selector, expectedArray) {
