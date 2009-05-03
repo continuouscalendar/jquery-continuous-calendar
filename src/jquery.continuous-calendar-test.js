@@ -157,7 +157,10 @@ test("mouse click on month selects whole month", function() {
 
 test("range is movable", function() {
   createRangeCalendarWithThreeWeeks();
-
+  mouseDown(".date:contains(30)");
+  mouseMove(".date:contains(27)");
+  mouseUp(".date:contains(27)");
+  assertHasValues(".selected", ["26","27","28","29","30","1","2"]);
 });
 
 //TODO resize selection
@@ -202,17 +205,20 @@ function calendar(params) {
 }
 
 function _mouseEvent(functionName, selector) {
-  calendar().data(functionName)({target:calendar().find(selector)});
+  calendar().data(functionName)({
+    target:calendar().find(selector),
+    preventDefault: function() {}
+  });
 }
 
 function mouseDown(selector) {
-  _mouseEvent("startSelection", selector);
+  _mouseEvent("mouseDown", selector);
 }
 function mouseMove(selector) {
-  _mouseEvent("changeSelection", selector);
+  _mouseEvent("mouseMove", selector);
 }
 function mouseUp(selector) {
-  _mouseEvent("endSelection", selector);
+  _mouseEvent("mouseUp", selector);
 }
 function calendarId() {
   return "continuousCalendar" + testIndex;

@@ -11,19 +11,25 @@
     // TODO set corresponding range
     var rangeStart = null;
     var rangeEnd = null;
-    var rangeStartDate = null;
-    var rangeEndDate = null;
+    var rangeStartDate = startDate;
+    var rangeEndDate = endDate;
     var calendarContainer = this;
     var dateCells = null;
     var dateCellDates = null;
+    var moveStartDate = null;
+    var status = {
+      create:false,
+      move:false,
+      expand:false
+    };
     createCalendar(this);
 
     if (!params.dateFormat) {
       params.dateFormat = dateFormat.masks.constructorFormat;
     }
-    this.data("startSelection", startSelection);
-    this.data("changeSelection", changeSelection);
-    this.data("endSelection", endSelection);
+    this.data("mouseDown", mouseDown);
+    this.data("mouseMove", mouseMove);
+    this.data("mouseUp", mouseUp);
 
     function createCalendar(container) {
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
@@ -89,34 +95,63 @@
     }
 
     function initRangeCalendarEvents() {
-      dateCells.mousedown(startSelection).mouseover(changeSelection).mouseup(endSelection);
+      dateCells.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
     }
 
-    function startSelection(e) {
-      rangeStart = $(e.target);
-      rangeStartDate = rangeStart.data("date");
-      rangeEnd = null;
-      rangeEndDate = null;
-      dateCells.removeClass('selected');
-      rangeStart.addClass("selected");
+    function mouseDown(e) {
+      var elem = $(e.target);
+      var date = elem.data("date");
+      console.log(date.getDate(),",",rangeStartDate.getDate(),",",rangeEndDate.getDate());
+      //TODO make range as object
+      if (date.isBetweenDates(rangeStartDate, rangeEndDate) || date.isBetweenDates(rangeEndDate, rangeStartDate)) {
+        startMoveSelection(date);
+      } else {
+        startNewSelection(elem);
+      }
+      e.preventDefault();
     }
 
-    function changeSelection(e) {
-      rangeEnd = $(e.target);
-      rangeEndDate = rangeEnd.data("date");
-      if (rangeStart) {
+    function mouseMove(e) {
+      var elem = $(e.target);
+      var date = elem.data("date");
+      if (status.move) {
+        var deltaDays = moveStartDate.distanceInDays(date);
+        rangeStartDate = rangeStartDate.plusDays(deltaDays);
+        rangeEndDate = rangeEndDate.plusDays(deltaDays);
+        selectRange();
+      } else if (status.create) {
+        rangeEnd = $(e.target);
+        rangeEndDate = rangeEnd.data("date");
         selectRange();
       }
     }
 
-    function endSelection(e) {
-      if (!rangeEnd) {
-        rangeEnd = $(e.target);
+    function mouseUp(e) {
+      if (status.move) {
+        updateTextFields();
+        moveStartDate = null;
+        status.move = false;
+      } else if (status.create) {
+        status.create = false;
+        rangeEnd = rangeEnd || $(e.target);
         rangeEndDate = rangeEnd.data("date");
+        updateTextFields();
       }
-      updateTextFields();
-      rangeStart = null;
-      rangeStartDate = null;
+    }
+
+    function startNewSelection(elem) {
+      status.create = true;
+      rangeStart = elem;
+      rangeStartDate = rangeStart.data("date");
+      rangeEndDate = rangeStartDate;
+      dateCells.removeClass("selected");
+      rangeStart.addClass("selected");
+    }
+
+    function startMoveSelection(date) {
+      console.log("startMove");
+      status.move = true;
+      moveStartDate = date;
     }
 
     function monthCell(firstDayOfWeek) {

@@ -15,6 +15,7 @@
 /*
  * @author Igor Vaynberg (ivaynberg)
  * @author Karri-Pekka Laakso (kplaakso)
+ * @author Eero Anttila (eeroan)
  */
 
 Date.DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -165,7 +166,7 @@ Date.prototype.clone = function() {
 };
 
 Date.prototype.isOddMonth = function() {
-  return this.getMonth()%2 != 0;
+  return this.getMonth() % 2 != 0;
 };
 
 Date.prototype.equalsOnlyDate = function(date) {
@@ -175,9 +176,17 @@ Date.prototype.equalsOnlyDate = function(date) {
 Date.prototype.isBetweenDates = function(start, end) {
   return this.compareDateOnlyTo(start) >= 0 && this.compareDateOnlyTo(end) <= 0;
 };
+
 Date.prototype.firstDateOfMonth = function() {
-  return new Date(this.getMonth()+"/1/"+this.getFullYear());
+  return new Date(this.getMonth() + "/1/" + this.getFullYear());
 };
+
 Date.prototype.lastDateOfMonth = function() {
-  return new Date(this.getMonth()+"/"+this.getDaysInMonth()+"/"+this.getFullYear());
+  return new Date(this.getMonth() + "/" + this.getDaysInMonth() + "/" + this.getFullYear());
+};
+
+Date.prototype.distanceInDays = function(date) {
+  var first = this.clone().stripped();
+  var last = date.clone().stripped();
+  return (last - first) / 1000 / 3600 / 24;
 };

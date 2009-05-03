@@ -66,6 +66,10 @@
   cursor: pointer;
 }
 
+.continuousCalendar .range .selected:hover {
+  cursor: move;
+}
+
 .continuousCalendar .calendarHeader .month {
   text-align: center;
 }
@@ -100,23 +104,4 @@ input.startDate {
   width: 7em;
   margin-right: 5px;
   margin-bottom: 5px;
-}
-
-
-.continuousCalendar .calendarBody ::-moz-selection{
-	background:none;
-	color:inherit;
-}
-
-.continuousCalendar .calendarBody ::selection {
-	background:none;
-	color:inherit;
-}
-
-.continuousCalendar .calendarBody code::-moz-selection {
-	background:none;
-}
-
-.continuousCalendar .calendarBody code::selection {
-	background:none;
 }
