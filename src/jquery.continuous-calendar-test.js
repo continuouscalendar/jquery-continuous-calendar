@@ -133,9 +133,10 @@ test("week number click on single date calendar does nothing", function () {
   equals(cal().find(".selected").size(), 1);
 });
 
-var preventDefaultIsCalled = false;
+var preventDefaultIsCalled;
 
 test("mouse click and drag highlights range and updates fields", function() {
+  preventDefaultIsCalled = false;
   createRangeCalendarWithThreeWeeks();
   mouseDownOnDay(27);
   mouseMoveOnDay(27);
