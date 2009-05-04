@@ -1,5 +1,4 @@
 TODO Resize selection
-TODO move selection
 TODO tooltips (range size etc.)
 TODO date format
 TODO disabled fields
