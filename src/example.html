@@ -6,6 +6,11 @@
 <head>
   <title>Examples of using continuous caledar</title>
   <link rel="stylesheet" href="jquery.continuous-calendar.css" type="text/css" media="screen" />
+  <style type="text/css">
+    .calendarScrollContent {
+      height:250px;
+    }
+  </style>
 </head>
 <body>
 
@@ -15,8 +20,14 @@
 
   <h2>Single date select</h2>
 
-  <div id="singleDate">
-    <input type="text" class="startDate" name="singleDate" />
+  <div id="singleDate1">
+    <input type="text" class="startDate" name="singleDate1" />
+  </div>
+
+  <h2>Single date select with value</h2>
+
+  <div id="singleDate2">
+    <input type="text" class="startDate" name="singleDate2" value="5/15/2009"/>
   </div>
 
   <h2>Range select</h2>
@@ -38,9 +49,10 @@
 <script type="text/javascript" src="dateformat.js"></script>
 <script type="text/javascript" src="jquery.continuous-calendar.js"></script>
 <script type="text/javascript" language="JavaScript">
-  $("#singleDate").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
+  $("#singleDate1").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
+  $("#singleDate2").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
   $("#range1").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
-  $("#range2").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
+  $("#range2").continuousCalendar({weeksBefore: 30,weeksAfter: 30});
 </script>
 </body>
 </html>
