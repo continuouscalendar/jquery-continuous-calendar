@@ -133,6 +133,8 @@ test("week number click on single date calendar does nothing", function () {
   equals(cal().find(".selected").size(), 1);
 });
 
+var preventDefaultIsCalled = false;
+
 test("mouse click and drag highlights range and updates fields", function() {
   createRangeCalendarWithThreeWeeks();
   mouseDownOnDay(27);
@@ -143,6 +145,7 @@ test("mouse click and drag highlights range and updates fields", function() {
   equals(cal().find(".selected").size(), 3);
   equals(startFieldValue(), "4/27/2009");
   equals(endFieldValue(), "4/29/2009");
+  ok(preventDefaultIsCalled, "prevent default is called");
 });
 
 test("mouse click on month selects whole month", function() {
@@ -198,7 +201,7 @@ function cal(params) {
 function _mouseEvent(functionName, date) {
   cal().data(functionName)({
     target:cal().find(".date").withText(date),
-    preventDefault: function() {
+    preventDefault: function() {preventDefaultIsCalled = true;
     }
   });
 }
