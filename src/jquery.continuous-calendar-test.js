@@ -149,14 +149,19 @@ test("mouse click and drag highlights range and updates fields", function() {
   ok(preventDefaultIsCalled, "prevent default is called");
 });
 
-test("mouse click on month selects whole month", function() {
-  //TODO use calendar with a full month
+test("mouse click on month on range calendar selects whole month", function() {
   createBigCalendar();
   cal().find(".month").withText("toukokuu").click();
   equals(cal().find(".selected").size(), 31);
   equals(startFieldValue(), "5/1/2009");
   equals(endFieldValue(), "5/31/2009");
-  
+});
+
+test("mouse click on month in singe date calendar does nothing", function() {
+  createBigCalendarForSingleDate();
+  cal().find(".month").withText("toukokuu").click();
+  equals(cal().find(".selected").size(), 0);
+  equals(startFieldValue(), "");
 });
 
 test("range is movable", function() {
@@ -198,12 +203,11 @@ function cal(params) {
   addFieldIfRequired("startDate");
   addFieldIfRequired("endDate");
   function addFieldIfRequired(fieldName) {
-    if (params && params[fieldName]) {
+    if (params && params[fieldName] != undefined) {
       var field = $("<input>").attr("type", "text").addClass(fieldName).val(params[fieldName]);
       container.append(field);
     }
   }
-
   return container;
 }
 
@@ -241,6 +245,10 @@ function createRangeCalendarWithThreeWeeks() {
 function createBigCalendar() {
   var todayText = new Date().format(dateFormat.masks.constructorFormat);
   cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
+}
+
+function createBigCalendarForSingleDate() {
+  cal({startDate: ""}).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
 }
 
 function assertHasValues(selector, expectedArray) {

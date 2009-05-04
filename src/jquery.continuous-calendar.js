@@ -14,12 +14,10 @@
     var moveStartDate = null;
     var mouseDownDate = null;
     var range;
-    if(isRange()) {
-      if(startDate && endDate) {
-        range = new DateRange(startDate, endDate);
-      } else {
-        range = new NullDateRange();
-      }
+    if (startDate && endDate) {
+      range = new DateRange(startDate, endDate);
+    } else {
+      range = new NullDateRange();
     }
     var status = {
       create:false,
@@ -35,13 +33,6 @@
     this.data("mouseDown", mouseDown);
     this.data("mouseMove", mouseMove);
     this.data("mouseUp", mouseUp);
-
-    function fieldDate(field) {
-      if (field.size() > 0 && field.val().length>0)
-        return new Date(field.val());
-      else
-        return null;
-    }
 
     function createCalendar(container) {
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
@@ -103,11 +94,13 @@
 
     function monthCell(firstDayOfWeek) {
       var th = $("<th>").addClass("month").addClass(backgroundBy(firstDayOfWeek));
-      th.click(function() {
-        range = new DateRange(firstDayOfWeek.firstDateOfMonth(), firstDayOfWeek.lastDateOfMonth());
-        updateTextFields();
-        selectRange();
-      });
+      if (isRange()) {
+        th.click(function() {
+          range = new DateRange(firstDayOfWeek.firstDateOfMonth(), firstDayOfWeek.lastDateOfMonth());
+          updateTextFields();
+          selectRange();
+        });
+      }
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
         th.append(MONTHS[firstDayOfWeek.getMonth()]);
       } else if (firstDayOfWeek.getDate() <= WEEK_DAYS.length * 2 && firstDayOfWeek.getMonth() == 0) {
@@ -216,12 +209,24 @@
       return endField && endField.length > 0;
     }
 
+    function fieldDate(field) {
+      if (field.size() > 0 && field.val().length > 0)
+        return new Date(field.val());
+      else
+        return null;
+    }
+
     function NullDateRange() {
       this.start = null;
       this.end = null;
-      this.days = function() {return 0;};
-      this.shiftDays = function() {};
-      this.hasDate = function() {return false;};
+      this.days = function() {
+        return 0;
+      };
+      this.shiftDays = function() {
+      };
+      this.hasDate = function() {
+        return false;
+      };
     }
 
     function DateRange(date1, date2) {
