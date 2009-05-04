@@ -5,15 +5,22 @@
       "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
     var startField = this.find("input.startDate");
     var endField = this.find("input.endDate");
-    var startDate = startField.size() > 0 ? new Date(startField.val()) : null;
-    var endDate = endField.size() > 0 ? new Date(endField.val()) : startDate;
+    var startDate = fieldDate(startField);
+    var endDate = fieldDate(endField);
     var firstWeekdayOfGivenDate = (startDate || new Date()).getFirstDateOfWeek(Date.MONDAY);
     var calendarContainer = this;
     var dateCells = null;
     var dateCellDates = null;
     var moveStartDate = null;
     var mouseDownDate = null;
-    var range = startDate ? new DateRange(startDate, endDate) : null;
+    var range;
+    if(isRange()) {
+      if(startDate && endDate) {
+        range = new DateRange(startDate, endDate);
+      } else {
+        range = new NullDateRange();
+      }
+    }
     var status = {
       create:false,
       move:false,
@@ -30,9 +37,10 @@
     this.data("mouseUp", mouseUp);
 
     function fieldDate(field) {
-      if (field.size() > 0 && field.text().length > 0)
+      if (field.size() > 0 && field.val().length>0)
         return new Date(field.val());
-      else return null;
+      else
+        return null;
     }
 
     function createCalendar(container) {
@@ -83,7 +91,11 @@
         var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
         dateCell.data("date", date);
         if (date.isToday()) dateCell.addClass("today");
-        if (range && range.hasDate(date)) dateCell.addClass("selected");
+        if (isRange()) {
+          dateCell.toggleClass("selected", range.hasDate(date));
+        } else {
+          dateCell.toggleClass("selected", date.equalsOnlyDate(startDate));
+        }
         tr.append(dateCell);
       }
       return tr;
@@ -201,7 +213,15 @@
     }
 
     function isRange() {
-      return endField.length > 0;
+      return endField && endField.length > 0;
+    }
+
+    function NullDateRange() {
+      this.start = null;
+      this.end = null;
+      this.days = function() {return 0;};
+      this.shiftDays = function() {};
+      this.hasDate = function() {return false;};
     }
 
     function DateRange(date1, date2) {
