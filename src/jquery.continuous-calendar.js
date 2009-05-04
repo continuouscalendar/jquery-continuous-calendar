@@ -13,7 +13,7 @@
     var dateCellDates = null;
     var moveStartDate = null;
     var mouseDownDate = null;
-    var range = startDate ?  new DateRange(startDate, endDate) : null;
+    var range = startDate ? new DateRange(startDate, endDate) : null;
     var status = {
       create:false,
       move:false,
@@ -28,6 +28,12 @@
     this.data("mouseDown", mouseDown);
     this.data("mouseMove", mouseMove);
     this.data("mouseUp", mouseUp);
+
+    function fieldDate(field) {
+      if (field.size() > 0 && field.text().length > 0)
+        return new Date(field.val());
+      else return null;
+    }
 
     function createCalendar(container) {
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
@@ -86,7 +92,7 @@
     function monthCell(firstDayOfWeek) {
       var th = $("<th>").addClass("month").addClass(backgroundBy(firstDayOfWeek));
       th.click(function() {
-        range =  new DateRange(firstDayOfWeek.firstDateOfMonth(),firstDayOfWeek.lastDateOfMonth());
+        range = new DateRange(firstDayOfWeek.firstDateOfMonth(), firstDayOfWeek.lastDateOfMonth());
         updateTextFields();
         selectRange();
       });
@@ -103,7 +109,7 @@
       weekNumber.addClass("week").addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear("ISO"));
       if (isRange()) {
         weekNumber.click(function () {
-          range = new DateRange(firstDayOfWeek,firstDayOfWeek.plusDays(6));
+          range = new DateRange(firstDayOfWeek, firstDayOfWeek.plusDays(6));
           updateTextFields();
           selectRange();
         });
@@ -132,7 +138,7 @@
       var elem = $(e.target);
       var date = elem.data("date");
       mouseDownDate = date;
-      if(range.hasDate(date)) {
+      if (range.hasDate(date)) {
         startMovingRange(date);
       } else {
         startCreatingRange(elem);
@@ -161,6 +167,11 @@
       }
     }
 
+    function startMovingRange(date) {
+      status.move = true;
+      moveStartDate = date;
+    }
+
     function moveRange(date) {
       var deltaDays = moveStartDate.distanceInDays(date);
       moveStartDate = date;
@@ -175,22 +186,14 @@
       elem.addClass("selected");
     }
 
-    function startMovingRange(date) {
-      status.move = true;
-      moveStartDate = date;
+    function selectRange() {
+      selectRangeBetweenDates(range.start, range.end);
     }
 
     function selectRangeBetweenDates(start, end) {
       dateCells.each(function(i, elem) {
-        if (dateCellDates[i].isBetweenDates(start, end)) {
-          $(elem).addClass("selected");
-        } else {
-          $(elem).removeClass("selected");
-        }
+        $(elem).toggleClass("selected", dateCellDates[i].isBetweenDates(start, end));
       });
-    }
-    function selectRange() {
-      selectRangeBetweenDates(range.start, range.end);
     }
 
     function updateTextFields() {
@@ -203,7 +206,7 @@
     }
 
     function DateRange(date1, date2) {
-      if(!date1 || !date2) {
+      if (!date1 || !date2) {
         throw("two dates must be specified, date1=" + date1 + ", date2=" + date2);
       }
       this.start = date1.compareTo(date2) > 0 ? date2 : date1;
