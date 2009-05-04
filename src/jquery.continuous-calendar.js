@@ -136,10 +136,9 @@
 
     function mouseDown(e) {
       var elem = $(e.target);
-      var date = elem.data("date");
-      mouseDownDate = date;
-      if (range.hasDate(date)) {
-        startMovingRange(date);
+      mouseDownDate = elem.data("date");
+      if (range.hasDate(mouseDownDate)) {
+        startMovingRange(mouseDownDate);
       } else {
         startCreatingRange(elem);
       }
@@ -157,11 +156,11 @@
     }
 
     function mouseUp(e) {
-      range = new DateRange(mouseDownDate, $(e.target).data("date"));
       if (status.move) {
         updateTextFields();
         status.move = false;
       } else if (status.create) {
+        range = new DateRange(mouseDownDate, $(e.target).data("date"));
         status.create = false;
         updateTextFields();
       }

@@ -165,6 +165,14 @@ test("range is movable", function() {
   mouseMoveOnDay(27);
   mouseUpOnDay(27);
   assertHasValues(".selected", [26,27,28,29,30,1,2]);
+  equals(startFieldValue(), "4/26/2009");
+  equals(endFieldValue(), "5/2/2009");
+  mouseDownOnDay(28);
+  mouseMoveOnDay(29);
+  mouseUpOnDay(29);
+  assertHasValues(".selected", [27,28,29,30,1,2,3]);
+  equals(startFieldValue(), "4/27/2009");
+  equals(endFieldValue(), "5/3/2009");
 });
 
 var testIndex = 0;
