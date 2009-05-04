@@ -145,7 +145,7 @@
       if (status.move) {
         moveRange(date);
       } else if (status.create) {
-        range = new DateRange(mouseDownDate, $(e.target).data("date"));
+        range = new DateRange(mouseDownDate, date);
         selectRange();
       }
     }

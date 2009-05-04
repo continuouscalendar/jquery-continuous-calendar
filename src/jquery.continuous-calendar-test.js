@@ -135,11 +135,11 @@ test("week number click on single date calendar does nothing", function () {
 
 test("mouse click and drag highlights range and updates fields", function() {
   createRangeCalendarWithThreeWeeks();
-  mouseDownOnDay("27");
-  mouseMoveOnDay("27");
-  mouseMoveOnDay("28");
-  mouseMoveOnDay("29");
-  mouseUpOnDay("29");
+  mouseDownOnDay(27);
+  mouseMoveOnDay(27);
+  mouseMoveOnDay(28);
+  mouseMoveOnDay(29);
+  mouseUpOnDay(29);
   equals(cal().find(".selected").size(), 3);
   equals(startFieldValue(), "4/27/2009");
   equals(endFieldValue(), "4/29/2009");
@@ -157,9 +157,9 @@ test("mouse click on month selects whole month", function() {
 
 test("range is movable", function() {
   createRangeCalendarWithThreeWeeks();
-  mouseDownOnDay("30");
-  mouseMoveOnDay("27");
-  mouseUpOnDay("27");
+  mouseDownOnDay(30);
+  mouseMoveOnDay(27);
+  mouseUpOnDay(27);
   assertHasValues(".selected", [26,27,28,29,30,1,2]);
 });
 
