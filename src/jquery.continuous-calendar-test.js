@@ -180,6 +180,12 @@ test("range is movable", function() {
   equals(endFieldValue(), "5/3/2009");
 });
 
+test("range is expandable by clicking with shift key", function() {
+  createRangeCalendarWithThreeWeeks();
+  clickWithShiftOnDay(7);
+  assertHasValues(".selected", [ 29, 30, 1, 2, 3, 4, 5, 6, 7]);
+});
+
 var testIndex = 0;
 
 function createCalendarContainer() {
@@ -208,27 +214,37 @@ function cal(params) {
       container.append(field);
     }
   }
+
   return container;
 }
 
-function _mouseEvent(functionName, date) {
-  cal().data(functionName)({
+function _mouseEvent(functionName, date, options) {
+  var e = {
     target:cal().find(".date").withText(date),
-    preventDefault: function() {preventDefaultIsCalled = true;
+    preventDefault: function() {
+      preventDefaultIsCalled = true;
     }
-  });
+  };
+  for(var i in options) {
+    e[i] = options[i];
+  }
+  cal().data(functionName)(e);
 }
-
-function mouseDownOnDay(date) {
-  _mouseEvent("mouseDown", date);
+function clickWithShiftOnDay(date) {
+  var options = {shiftKey:true};
+  mouseDownOnDay(date, options);
+  mouseUpOnDay(date, options);
+}
+function mouseDownOnDay(date, options) {
+  _mouseEvent("mouseDown", date, options);
 }
 
 function mouseMoveOnDay(date) {
   _mouseEvent("mouseMove", date);
 }
 
-function mouseUpOnDay(date) {
-  _mouseEvent("mouseUp", date);
+function mouseUpOnDay(date, options) {
+  _mouseEvent("mouseUp", date, options);
 }
 
 function calendarId() {
@@ -254,7 +270,9 @@ function createBigCalendarForSingleDate() {
 function assertHasValues(selector, expectedArray) {
   same($.map(cal().find(selector), function (elem) {
     return $(elem).text();
-  }), $.map(expectedArray, function(i) { return i.toString();}));
+  }), $.map(expectedArray, function(i) {
+    return i.toString();
+  }));
 }
 
 function startFieldValue() {

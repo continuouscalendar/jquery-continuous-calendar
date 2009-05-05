@@ -6,7 +6,8 @@
     var Status = {
       CREATE:"create",
       MOVE:"move",
-      EXPAND:"expand",
+      SHIFT_EXPAND:"shift_expand",
+      DRAG_EXPAND:"drag_expand",
       NONE:"none"
     };
     var startField = this.find("input.startDate");
@@ -148,10 +149,17 @@
       if (range.hasDate(mouseDownDate)) {
         startMovingRange(mouseDownDate);
       } else {
-        startCreatingRange(elem);
+        if (e.shiftKey) {
+          range.expandTo(mouseDownDate);
+          selectRange();
+          updateTextFields();
+        } else {
+          startCreatingRange(elem);
+        }
       }
       e.preventDefault();
     }
+
 
     function mouseMove(e) {
       var date = $(e.target).data("date");
@@ -257,6 +265,13 @@
       };
       this.hasDate = function(date) {
         return date.isBetweenDates(this.start, this.end);
+      };
+      this.expandTo = function(date) {
+        if(date.compareTo(this.start) < 0) {
+          this.start = date;
+        } else if(date.compareTo(this.end) > 0) {
+          this.end = date;
+        }
       };
     }
   };
