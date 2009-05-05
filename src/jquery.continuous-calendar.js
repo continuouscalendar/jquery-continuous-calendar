@@ -3,6 +3,12 @@
     var WEEK_DAYS = ["ma", "ti", "ke", "to", "pe", "la", "su"];
     var MONTHS = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu",
       "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
+    var Status = {
+      CREATE:"create",
+      MOVE:"move",
+      EXPAND:"expand",
+      NONE:"none"
+    };
     var startField = this.find("input.startDate");
     var endField = this.find("input.endDate");
     var startDate = fieldDate(startField);
@@ -19,12 +25,7 @@
     } else {
       range = new NullDateRange();
     }
-    var status = {
-      create:false,
-      move:false,
-      expand:false
-    };
-
+    var status = Status.NONE;
     createCalendar(this);
 
     if (!params.dateFormat) {
@@ -154,27 +155,27 @@
 
     function mouseMove(e) {
       var date = $(e.target).data("date");
-      if (status.move) {
+      if (status == Status.MOVE) {
         moveRange(date);
-      } else if (status.create) {
+      } else if (status == Status.CREATE) {
         range = new DateRange(mouseDownDate, date);
         selectRange();
       }
     }
 
     function mouseUp(e) {
-      if (status.move) {
+      if (status == Status.MOVE) {
         updateTextFields();
-        status.move = false;
-      } else if (status.create) {
+        status = Status.NONE;
+      } else if (status == Status.CREATE) {
         range = new DateRange(mouseDownDate, $(e.target).data("date"));
-        status.create = false;
+        status = Status.NONE;
         updateTextFields();
       }
     }
 
     function startMovingRange(date) {
-      status.move = true;
+      status = Status.MOVE;
       moveStartDate = date;
     }
 
@@ -186,7 +187,7 @@
     }
 
     function startCreatingRange(elem) {
-      status.create = true;
+      status = Status.CREATE;
       range = new DateRange(mouseDownDate, mouseDownDate);
       dateCells.removeClass("selected");
       elem.addClass("selected");
