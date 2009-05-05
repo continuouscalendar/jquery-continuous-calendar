@@ -1,6 +1,7 @@
 TODO Resize selection
 TODO tooltips (range size etc.)
 TODO date format
+TODO enable drag on weeks and months
 TODO disabled fields
 TODO todo holidays
 TODO update year while dragging
