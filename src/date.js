@@ -79,12 +79,7 @@ Date.prototype.plusYears = function(years) {
 };
 
 Date.prototype.stripped = function() {
-  var newDate = this.clone();
-  newDate.setHours(0);
-  newDate.setMinutes(0);
-  newDate.setSeconds(0);
-  newDate.setMilliseconds(0);
-  return newDate;
+  return new Date(parseInt(this.getTime() / Date.DAY));
 };
 
 Date.prototype.compareTo = function(date) {
@@ -102,7 +97,7 @@ Date.prototype.compareDateOnlyTo = function(date) {
 };
 
 Date.prototype.isToday = function() {
-  return (this.compareDateOnlyTo(new Date()) == 0);
+  return this.equalsOnlyDate(new Date());
 };
 
 Date.prototype.getWeekInYear = function(weekNumberingSystem) {
@@ -170,11 +165,14 @@ Date.prototype.isOddMonth = function() {
 };
 
 Date.prototype.equalsOnlyDate = function(date) {
-  return this.compareDateOnlyTo(date) == 0;
+  if(!date) {
+    return false;
+  }
+  return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getYear() == date.getYear();
 };
 
 Date.prototype.isBetweenDates = function(start, end) {
-  return this.compareDateOnlyTo(start) >= 0 && this.compareDateOnlyTo(end) <= 0;
+  return this.compareTo(start) >= 0 && this.compareTo(end) <= 0;
 };
 
 Date.prototype.firstDateOfMonth = function() {
@@ -186,7 +184,7 @@ Date.prototype.lastDateOfMonth = function() {
 };
 
 Date.prototype.distanceInDays = function(date) {
-  var first = this.clone().stripped();
-  var last = date.clone().stripped();
-  return (last - first) / 1000 / 3600 / 24;
+  var first = parseInt(this.getTime() / Date.DAY);
+  var last = parseInt(date.getTime() / Date.DAY);
+  return (last - first);
 };

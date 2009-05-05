@@ -88,7 +88,7 @@
       var tr = $("<tr>").append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
-        var dateCell = $("<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
+        var dateCell = $("date<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
         dateCell.data("date", date);
         if (date.isToday()) dateCell.addClass("today");
         if (isRange()) {
