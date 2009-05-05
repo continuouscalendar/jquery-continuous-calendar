@@ -45,7 +45,7 @@
       container.append(calendar);
       dateCells = calendarContainer.find('.date');
       dateCellDates = dateCells.map(function() {
-        return $(this).data("date");
+        return this.date;
       });
       if (isRange()) {
         var daysContainer = $("<em>");
@@ -89,7 +89,7 @@
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $("date<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
-        dateCell.data("date", date);
+        dateCell.get(0).date=date;
         if (date.isToday()) dateCell.addClass("today");
         if (isRange()) {
           dateCell.toggleClass("selected", range.hasDate(date));
@@ -140,7 +140,7 @@
         dateCells.removeClass("selected");
         var dateCell = $(this);
         dateCell.addClass("selected");
-        startField.val(dateCell.data("date").format(params.dateFormat));
+        startField.val(dateCell.get(0).date.format(params.dateFormat));
       });
     }
 
@@ -149,8 +149,8 @@
     }
 
     function mouseDown(e) {
-      var elem = $(e.target);
-      mouseDownDate = elem.data("date");
+      var elem = e.target;
+      mouseDownDate = elem.date;
       if (range.hasDate(mouseDownDate)) {
         startMovingRange(mouseDownDate);
       } else {
@@ -159,14 +159,14 @@
           selectRange();
           updateTextFields();
         } else {
-          startCreatingRange(elem);
+          startCreatingRange($(elem));
         }
       }
       e.preventDefault();
     }
 
     function mouseMove(e) {
-      var date = $(e.target).data("date");
+      var date = e.target.date;
       switch (status) {
         case Status.MOVE:
           moveRange(date);
@@ -187,7 +187,7 @@
           status = Status.NONE;
           break;
         case Status.CREATE:
-          range = new DateRange(mouseDownDate, $(e.target).data("date"));
+          range = new DateRange(mouseDownDate, e.target.date);
           status = Status.NONE;
           updateTextFields();
           break;
