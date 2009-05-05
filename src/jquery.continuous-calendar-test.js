@@ -224,7 +224,7 @@ function cal(params) {
 
 function _mouseEvent(functionName, date, options) {
   var e = {
-    target:cal().find(".date").withText(date),
+    target:cal().find(".date").withText(date).get(0),
     preventDefault: function() {
       preventDefaultIsCalled = true;
     }
