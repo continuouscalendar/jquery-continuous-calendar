@@ -50,6 +50,8 @@
       } else {
         initSingleDateCalendarEvents();
       }
+      var selected = scrollContent.find(".today, .selected").get(0);
+      scrollContent.scrollTop(selected.offsetTop - (scrollContent.height() - selected.offsetHeight) / 2);
     }
 
     function headerRow() {
