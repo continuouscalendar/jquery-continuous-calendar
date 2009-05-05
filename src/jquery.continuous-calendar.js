@@ -155,22 +155,32 @@
 
     function mouseMove(e) {
       var date = $(e.target).data("date");
-      if (status == Status.MOVE) {
-        moveRange(date);
-      } else if (status == Status.CREATE) {
-        range = new DateRange(mouseDownDate, date);
-        selectRange();
+      switch (status) {
+        case Status.MOVE:
+          moveRange(date);
+          break;
+        case Status.CREATE:
+          range = new DateRange(mouseDownDate, date);
+          selectRange();
+          break;
+        default:
+          break;
       }
     }
 
     function mouseUp(e) {
-      if (status == Status.MOVE) {
-        updateTextFields();
-        status = Status.NONE;
-      } else if (status == Status.CREATE) {
-        range = new DateRange(mouseDownDate, $(e.target).data("date"));
-        status = Status.NONE;
-        updateTextFields();
+      switch (status) {
+        case Status.MOVE:
+          updateTextFields();
+          status = Status.NONE;
+          break;
+        case Status.CREATE:
+          range = new DateRange(mouseDownDate, $(e.target).data("date"));
+          status = Status.NONE;
+          updateTextFields();
+          break;
+        default:
+          break;
       }
     }
 
