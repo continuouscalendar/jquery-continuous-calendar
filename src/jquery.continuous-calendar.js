@@ -12,6 +12,7 @@
     };
     var startField = this.find("input.startDate");
     var endField = this.find("input.endDate");
+    var days = $("<span>");
     var startDate = fieldDate(startField);
     var endDate = fieldDate(endField);
     var firstWeekdayOfGivenDate = (startDate || new Date()).getFirstDateOfWeek(Date.MONDAY);
@@ -47,6 +48,10 @@
         return $(this).data("date");
       });
       if (isRange()) {
+        var daysContainer = $("<em>");
+        days.text(range.days());
+        daysContainer.append(days).append(" Päivää");
+        container.append(daysContainer);
         bodyTable.addClass("range");
         initRangeCalendarEvents();
       } else {
@@ -160,7 +165,6 @@
       e.preventDefault();
     }
 
-
     function mouseMove(e) {
       var date = $(e.target).data("date");
       switch (status) {
@@ -209,10 +213,12 @@
       range = new DateRange(mouseDownDate, mouseDownDate);
       dateCells.removeClass("selected");
       elem.addClass("selected");
+      days.text(range.days());      
     }
 
     function selectRange() {
       selectRangeBetweenDates(range.start, range.end);
+      days.text(range.days());
     }
 
     function selectRangeBetweenDates(start, end) {
@@ -257,7 +263,7 @@
       this.start = date1.compareTo(date2) > 0 ? date2 : date1;
       this.end = date1.compareTo(date2) > 0 ? date1 : date2;
       this.days = function() {
-        this.start.distanceInDays(this.end);
+        return Math.round(this.start.distanceInDays(this.end)+1);
       };
       this.shiftDays = function(days) {
         this.start = this.start.plusDays(days);
@@ -267,9 +273,9 @@
         return date.isBetweenDates(this.start, this.end);
       };
       this.expandTo = function(date) {
-        if(date.compareTo(this.start) < 0) {
+        if (date.compareTo(this.start) < 0) {
           this.start = date;
-        } else if(date.compareTo(this.end) > 0) {
+        } else if (date.compareTo(this.end) > 0) {
           this.end = date;
         }
       };

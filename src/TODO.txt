@@ -4,7 +4,6 @@ TODO date format
 TODO disabled fields
 TODO todo holidays
 TODO update year while dragging
-TODO scroll to selection or current day
 TODO performance
 TODO authoring concerns http://docs.jquery.com/Plugins/Authoring
 
