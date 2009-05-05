@@ -78,6 +78,7 @@ test("highlights selected date", function() {
 test("higlights selected date range", function() {
   createRangeCalendarWithThreeWeeks();
   equals(cal().find(".selected").size(), 7);
+  equals(cal().find("em span").text(), "7");
 });
 
 test("if start date not selected show around current day instead", function() {
@@ -125,6 +126,7 @@ test("week number click selects whole week", function () {
   assertHasValues(".selected", [27,28,29,30,1,2,3]);
   equals(startFieldValue(), "4/27/2009");
   equals(endFieldValue(), "5/3/2009");
+  equals(cal().find("em span").text(), "7");
 });
 
 test("week number click on single date calendar does nothing", function () {
@@ -146,6 +148,7 @@ test("mouse click and drag highlights range and updates fields", function() {
   equals(cal().find(".selected").size(), 3);
   equals(startFieldValue(), "4/27/2009");
   equals(endFieldValue(), "4/29/2009");
+  equals(cal().find("em span").text(), "3");
   ok(preventDefaultIsCalled, "prevent default is called");
 });
 
@@ -155,6 +158,7 @@ test("mouse click on month on range calendar selects whole month", function() {
   equals(cal().find(".selected").size(), 31);
   equals(startFieldValue(), "5/1/2009");
   equals(endFieldValue(), "5/31/2009");
+  equals(cal().find("em span").text(), "31");
 });
 
 test("mouse click on month in singe date calendar does nothing", function() {
