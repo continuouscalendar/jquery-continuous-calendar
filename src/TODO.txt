@@ -1,14 +1,8 @@
 TODO Resize selection
-TODO tooltips (range size etc.)
+TODO disabled fields + calendar size as dates
 TODO date format
 TODO enable drag on weeks and months
-TODO disabled fields
-TODO todo holidays
 TODO update year while dragging
+TODO todo holidays
 TODO performance
 TODO authoring concerns http://docs.jquery.com/Plugins/Authoring
-
-Suorityskyvyn parantelua:
-- suurempi vai pienempi indeksi kuin edellisellä mouse overilla?
-- maalaus edelliseen mouseoveriin saakka
-- suurempi vai pienempi selection? jääkö startin ja edellisen mouseoverin väliin vai ei?
