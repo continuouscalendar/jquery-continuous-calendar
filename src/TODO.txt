@@ -1,8 +1,5 @@
-TODO Resize selection
 TODO disabled fields + calendar size as dates
 TODO date format
 TODO enable drag on weeks and months
 TODO update year while dragging
-TODO todo holidays
-TODO performance
 TODO authoring concerns http://docs.jquery.com/Plugins/Authoring
