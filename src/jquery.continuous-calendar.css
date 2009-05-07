@@ -109,6 +109,7 @@
 
 .continuousCalendar .range td.rangeStart:hover {
   cursor: w-resize;
+  cursor: ew-resize;
 }
 
 .continuousCalendar .range  td.rangeEnd {
@@ -117,6 +118,7 @@
 
 .continuousCalendar .range  td.rangeEnd:hover {
   cursor: e-resize;
+  cursor: ew-resize;
 }
 
 input.endDate,
