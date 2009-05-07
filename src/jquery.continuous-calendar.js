@@ -7,7 +7,8 @@
       CREATE:"create",
       MOVE:"move",
       SHIFT_EXPAND:"shift_expand",
-      DRAG_EXPAND:"drag_expand",
+      DRAG_EXPAND_START:"drag_expand_start",
+      DRAG_EXPAND_END:"drag_expand_end",
       NONE:"none"
     };
     var startField = this.find("input.startDate");
@@ -89,7 +90,7 @@
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $("date<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
-        dateCell.get(0).date=date;
+        dateCell.get(0).date = date;
         if (date.isToday()) dateCell.addClass("today");
         if (isRange()) {
           dateCell.toggleClass("selected", range.hasDate(date));
@@ -153,7 +154,11 @@
     function mouseDown(e) {
       var elem = e.target;
       mouseDownDate = elem.date;
-      if (range.hasDate(mouseDownDate)) {
+      if (range.start.equalsOnlyDate(mouseDownDate)) {
+        status = Status.DRAG_EXPAND_START;
+      } else if (range.end.equalsOnlyDate(mouseDownDate)) {
+        status = Status.DRAG_EXPAND_END;
+      } else if (range.hasDate(mouseDownDate)) {
         startMovingRange(mouseDownDate);
       } else {
         if (e.shiftKey) {
@@ -177,6 +182,18 @@
           range = new DateRange(mouseDownDate, date);
           selectRange();
           break;
+        case Status.DRAG_EXPAND_START:
+          if (date.compareTo(range.end) < 0) {
+            range = new DateRange(date, range.end);
+            selectRange();
+          }
+          break;
+        case Status.DRAG_EXPAND_END:
+          if (date.compareTo(range.start) > 0) {
+            range = new DateRange(range.start, date);
+            selectRange();
+          }
+          break;
         default:
           break;
       }
@@ -190,6 +207,12 @@
           break;
         case Status.CREATE:
           range = new DateRange(mouseDownDate, e.target.date);
+          status = Status.NONE;
+          selectRange();
+          updateTextFields();
+          break;
+        case Status.DRAG_EXPAND_START:
+        case Status.DRAG_EXPAND_END:
           status = Status.NONE;
           updateTextFields();
           break;
@@ -215,7 +238,7 @@
       range = new DateRange(mouseDownDate, mouseDownDate);
       dateCells.removeClass("selected");
       elem.addClass("selected");
-      days.text(range.days());      
+      days.text(range.days());
     }
 
     function selectRange() {
@@ -269,7 +292,7 @@
       this.start = date1.compareTo(date2) > 0 ? date2 : date1;
       this.end = date1.compareTo(date2) > 0 ? date1 : date2;
       this.days = function() {
-        return Math.round(this.start.distanceInDays(this.end)+1);
+        return Math.round(this.start.distanceInDays(this.end) + 1);
       };
       this.shiftDays = function(days) {
         this.start = this.start.plusDays(days);
