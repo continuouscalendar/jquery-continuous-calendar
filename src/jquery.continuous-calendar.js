@@ -225,7 +225,11 @@
 
     function selectRangeBetweenDates(start, end) {
       dateCells.each(function(i, elem) {
-        $(elem).toggleClass("selected", dateCellDates[i].isBetweenDates(start, end));
+        var element = $(elem);
+        var date = dateCellDates[i];
+        element.toggleClass("selected", date.isBetweenDates(start, end));
+        element.toggleClass("rangeStart", date.equalsOnlyDate(start));
+        element.toggleClass("rangeEnd", date.equalsOnlyDate(end));
       });
     }
 
