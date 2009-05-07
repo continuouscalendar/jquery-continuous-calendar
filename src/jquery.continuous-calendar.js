@@ -93,6 +93,8 @@
         if (date.isToday()) dateCell.addClass("today");
         if (isRange()) {
           dateCell.toggleClass("selected", range.hasDate(date));
+          dateCell.toggleClass("rangeStart", range.start.equalsOnlyDate(date));
+          dateCell.toggleClass("rangeEnd", range.end.equalsOnlyDate(date));
         } else {
           dateCell.toggleClass("selected", date.equalsOnlyDate(startDate));
         }

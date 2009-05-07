@@ -56,14 +56,15 @@
 .continuousCalendar .month {
   width: 50px;
 }
+
 .continuousCalendar .week {
   border-right: 1px solid #888888;
-  width:15px;
+  width: 15px;
   font-size: 7pt;
 }
 
 .continuousCalendar .range .week,
-.continuousCalendar .range .month {
+  .continuousCalendar .range .month {
   cursor: pointer;
 }
 
@@ -74,9 +75,11 @@
 .continuousCalendar .calendarHeader .month {
   text-align: center;
 }
+
 .continuousCalendar .calendarBody th {
   font-weight: normal;
 }
+
 .continuousCalendar .calendarBody .month {
   text-align: left;
 }
@@ -90,18 +93,34 @@
   background-color: #e8e8e8;
 }
 
+.continuousCalendar td.today {
+  border: 1px solid red;
+}
+
 .continuousCalendar td.selected {
   background-color: rgb(0, 65, 196);
   color: white;
   font-weight: bold;
 }
 
-.continuousCalendar td.today {
-  border: 1px solid red;
+.continuousCalendar .range td.rangeStart {
+  background: rgb(0, 100, 230);
+}
+
+.continuousCalendar .range td.rangeStart:hover {
+  cursor: w-resize;
+}
+
+.continuousCalendar .range  td.rangeEnd {
+  background: rgb(0, 100, 230);
+}
+
+.continuousCalendar .range  td.rangeEnd:hover {
+  cursor: e-resize;
 }
 
 input.endDate,
-input.startDate {
+  input.startDate {
   width: 7em;
   margin-right: 5px;
   margin-bottom: 5px;

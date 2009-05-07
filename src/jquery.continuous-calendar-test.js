@@ -20,13 +20,13 @@ test("lists week days for vappu 2009", function() {
     '<tr>' +
     '<th class="month odd"></th>' +
     '<th class="week odd">17</th>' +
-    '<td class="date odd selected">20</td>' +
+    '<td class="date odd selected rangeStart">20</td>' +
     '<td class="date odd selected">21</td>' +
     '<td class="date odd selected">22</td>' +
     '<td class="date odd selected">23</td>' +
     '<td class="date odd selected">24</td>' +
     '<td class="date odd selected">25</td>' +
-    '<td class="date odd selected">26</td>' +
+    '<td class="date odd selected rangeEnd">26</td>' +
     '</tr>'
     );
 });
@@ -75,10 +75,11 @@ test("highlights selected date", function() {
   equals(cal().find(".selected").text(), "30");
 });
 
-test("higlights selected date range", function() {
+test("higlights selected date range with move handles in first and last data", function() {
   createRangeCalendarWithThreeWeeks();
   equals(cal().find(".selected").size(), 7);
   equals(cal().find("em span").text(), "7");
+  ok(cal().find(".selected:first").hasClass("rangeStart"), "has class rangeStart");
 });
 
 test("if start date not selected show around current day instead", function() {
