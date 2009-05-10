@@ -154,9 +154,9 @@
     function mouseDown(e) {
       var elem = e.target;
       mouseDownDate = elem.date;
-      if (range.start.equalsOnlyDate(mouseDownDate)) {
+      if (mouseDownDate.equalsOnlyDate(range.start)) {
         status = Status.DRAG_EXPAND_START;
-      } else if (range.end.equalsOnlyDate(mouseDownDate)) {
+      } else if (mouseDownDate.equalsOnlyDate(range.end)) {
         status = Status.DRAG_EXPAND_END;
       } else if (range.hasDate(mouseDownDate)) {
         startMovingRange(mouseDownDate);

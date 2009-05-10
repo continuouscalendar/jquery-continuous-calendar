@@ -153,6 +153,16 @@ test("mouse click and drag highlights range and updates fields", function() {
   ok(preventDefaultIsCalled, "prevent default is called");
 });
 
+test("mouse click and drag works with no initial selection", function() {
+  cal({startDate: "", endDate: ""}).continuousCalendar({weeksBefore:3,weeksAfter:3});
+  mouseDownOnDay(22);
+  mouseMoveOnDay(22);
+  mouseMoveOnDay(23);
+  mouseUpOnDay(23);
+  equals(cal().find(".selected").size(), 2);
+  equals(cal().find("em span").text(), "2");
+});
+
 test("mouse click on month on range calendar selects whole month", function() {
   createBigCalendar();
   cal().find(".month").withText("toukokuu").click();
