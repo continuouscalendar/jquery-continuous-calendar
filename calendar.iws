@@ -2,10 +2,7 @@
 <project relativePaths="false" version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" name="Default" comment="" />
-    <list name="Don't commit" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calendar.iws" afterPath="$PROJECT_DIR$/calendar.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calendar.ipr" afterPath="$PROJECT_DIR$/calendar.ipr" />
-    </list>
+    <list name="Don't commit" comment="" />
     <ignored path="calendar.iws" />
     <ignored path=".idea/workspace.xml" />
   </component>
@@ -61,7 +58,7 @@
       <file leaf-file-name="jquery.continuous-calendar-test.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/jquery.continuous-calendar-test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="0" selection-start="3558" selection-end="3558" vertical-scroll-proportion="0.49623352">
+            <state line="98" column="0" selection-start="3464" selection-end="3464" vertical-scroll-proportion="0.011100832">
               <folding />
             </state>
           </provider>
@@ -79,7 +76,7 @@
       <file leaf-file-name="jquery.continuous-calendar.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/jquery.continuous-calendar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="38" selection-start="2307" selection-end="2307" vertical-scroll-proportion="0.0">
+            <state line="50" column="22" selection-start="2004" selection-end="2004" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -107,7 +104,18 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectPane">
-    <subPane />
+    <subPane>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="calendar" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Calendar" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+    </subPane>
   </component>
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
@@ -127,14 +135,14 @@
     </navigator>
   </component>
   <component name="PropertiesComponent">
-    <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.proportion" value="0.0" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="project.structure.side.proportion" value="0.0" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
   </component>
   <component name="RunManager">
@@ -234,11 +242,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="80" y="49" width="1241" height="1415" extended-state="0" />
-    <editor active="false" />
+    <frame x="5" y="22" width="989" height="1437" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1509288" sideWeight="0.9974895" order="7" side_tool="false" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15068494" sideWeight="0.9974895" order="7" side_tool="false" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" />
@@ -339,14 +347,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/jquery.continuous-calendar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="38" selection-start="2307" selection-end="2307" vertical-scroll-proportion="0.0">
+        <state line="50" column="22" selection-start="2004" selection-end="2004" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/jquery.continuous-calendar-test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="0" selection-start="3558" selection-end="3558" vertical-scroll-proportion="0.49623352">
+        <state line="98" column="0" selection-start="3464" selection-end="3464" vertical-scroll-proportion="0.011100832">
           <folding />
         </state>
       </provider>
