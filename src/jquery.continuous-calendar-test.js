@@ -71,7 +71,7 @@ test("highlights current date and shows year for janary", function() {
 });
 
 test("highlights selected date", function() {
-  cal({startDate:"4/30/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
+  cal({startDate:"30.4.2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2, dateFormat: Date.patterns.FiShortDatePattern});
   equals(cal().find(".selected").text(), "30");
 });
 
@@ -167,8 +167,8 @@ test("mouse click on month on range calendar selects whole month", function() {
   createBigCalendar();
   cal().find(".month").withText("toukokuu").click();
   equals(cal().find(".selected").size(), 31);
-  equals(startFieldValue(), "5/1/2009");
-  equals(endFieldValue(), "5/31/2009");
+  equals(startFieldValue(), "1.5.2009");
+  equals(endFieldValue(), "31.5.2009");
   equals(cal().find("em span").text(), "31");
 });
 
@@ -274,8 +274,8 @@ function createRangeCalendarWithThreeWeeks() {
   cal({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
 }
 function createBigCalendar() {
-  var todayText = new Date().format(dateFormat.masks.constructorFormat);
-  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
+  var todayText = new Date().dateFormat(Date.patterns.FiShortDatePattern);
+  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 20,weeksAfter: 20, dateFormat: Date.patterns.FiShortDatePattern});
 }
 
 function createBigCalendarForSingleDate() {

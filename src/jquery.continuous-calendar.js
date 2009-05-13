@@ -11,6 +11,12 @@
       DRAG_EXPAND_END:"drag_expand_end",
       NONE:"none"
     };
+    if (!params.dateFormat) {
+      params.dateFormat = Date.patterns.ShortDatePattern;
+      //params.dateFormat = "j.n.Y";
+      //params.dateFormat = "m/d/Y";
+      //params.dateFormat = "d.m.Y";
+    }
     var startField = this.find("input.startDate");
     var endField = this.find("input.endDate");
     var days = $("<span>");
@@ -31,9 +37,6 @@
     var status = Status.NONE;
     createCalendar(this);
 
-    if (!params.dateFormat) {
-      params.dateFormat = dateFormat.masks.constructorFormat;
-    }
     this.data("mouseDown", mouseDown);
     this.data("mouseMove", mouseMove);
     this.data("mouseUp", mouseUp);
@@ -143,7 +146,7 @@
         dateCells.removeClass("selected");
         var dateCell = $(this);
         dateCell.addClass("selected");
-        startField.val(dateCell.get(0).date.format(params.dateFormat));
+        startField.val(dateCell.get(0).date.dateFormat(params.dateFormat));
       });
     }
 
@@ -257,8 +260,8 @@
     }
 
     function updateTextFields() {
-      startField.val(range.start.format(params.dateFormat));
-      endField.val(range.end.format(params.dateFormat));
+      startField.val(range.start.dateFormat(params.dateFormat));
+      endField.val(range.end.dateFormat(params.dateFormat));
     }
 
     function isRange() {
@@ -267,7 +270,7 @@
 
     function fieldDate(field) {
       if (field.size() > 0 && field.val().length > 0)
-        return new Date(field.val());
+        return Date.parseDate(field.val(), params.dateFormat);
       else
         return null;
     }
