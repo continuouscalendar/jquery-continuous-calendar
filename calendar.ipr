@@ -34,7 +34,7 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
-  <component name="IdProvider" IDEtalkID="E72BD5D90D6B523A13519BA111CFA87E" />
+  <component name="IdProvider" IDEtalkID="8C557D484E4BB72E66CA8BB155EBA54B" />
   <component name="InspectionProjectProfileManager">
     <option name="PROJECT_PROFILE" value="Project Default" />
     <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
@@ -102,6 +102,7 @@
           </option>
         </inspection_tool>
         <inspection_tool class="ReservedWordUsedAsNameJS" level="WARNING" enabled="false" />
+        <inspection_tool class="JSUnresolvedFunction" level="INFO" enabled="false" />
       </profile>
     </profiles>
     <list size="0" />
@@ -135,9 +136,9 @@
       <module fileurl="file://$PROJECT_DIR$/Calendar.iml" filepath="$PROJECT_DIR$/Calendar.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" />
   <component name="SvnBranchConfigurationManager">
-    <option name="myVersion" value="124" />
+    <option name="myVersion" value="123" />
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">

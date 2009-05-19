@@ -239,8 +239,11 @@
     function startCreatingRange(elem) {
       status = Status.CREATE;
       range = new DateRange(mouseDownDate, mouseDownDate);
-      dateCells.removeClass("selected");
-      elem.addClass("selected");
+      dateCells.each(function(i) {
+        this.className = "date"+backgroundBy(dateCellDates[i]);
+      });
+      var domElem = elem.get(0);
+      domElem.className = "date"+backgroundBy(domElem.date)+" selected rangeStart";
       days.text(range.days());
     }
 
@@ -251,11 +254,16 @@
 
     function selectRangeBetweenDates(start, end) {
       dateCells.each(function(i, elem) {
-        var element = $(elem);
         var date = dateCellDates[i];
-        element.toggleClass("selected", date.isBetweenDates(start, end));
-        element.toggleClass("rangeStart", date.equalsOnlyDate(start));
-        element.toggleClass("rangeEnd", date.equalsOnlyDate(end));
+        var class = ["date"+ backgroundBy(date)];
+        if(date.equalsOnlyDate(end)) {
+          class.push("selected rangeEnd");
+        } else if(date.equalsOnlyDate(start)) {
+          class.push("selected rangeStart");
+        } else if(date.isBetweenDates(start, end)) {
+          class.push("selected");
+        }
+        elem.className = class.join(" ");
       });
     }
 
