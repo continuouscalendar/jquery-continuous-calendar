@@ -45,6 +45,8 @@
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
       var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody(params.weeksBefore, params.weeksAfter));
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
+
+
       var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
       container.append(calendar);
       dateCells = calendarContainer.find('.date');
@@ -61,6 +63,13 @@
       } else {
         initSingleDateCalendarEvents();
       }
+      scrollContent.scroll(function() {
+        var table = $(this).find("table").get(0);
+        var averageHeight = parseInt(table.clientHeight / table.rows.length);
+        var rowNumber = parseInt(this.scrollTop / averageHeight);
+        var date = table.rows[rowNumber].cells[2].date;
+        headerTable.find("th.month").text(date.getFullYear());
+      });
       var selected = scrollContent.find(".today, .selected").get(0);
       scrollContent.scrollTop(selected.offsetTop - (scrollContent.height() - selected.offsetHeight) / 2);
     }
