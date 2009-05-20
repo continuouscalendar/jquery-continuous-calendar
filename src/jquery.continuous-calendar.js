@@ -28,6 +28,8 @@
     var dateCellDates = null;
     var moveStartDate = null;
     var mouseDownDate = null;
+    var averageCellHeight;
+    var yearTitle;
     var range;
     if (startDate && endDate) {
       range = new DateRange(startDate, endDate);
@@ -63,17 +65,22 @@
       } else {
         initSingleDateCalendarEvents();
       }
+      averageCellHeight = parseInt(bodyTable.height() / bodyTable.find("tr").size());
+      yearTitle = headerTable.find("th.month");
       scrollContent.scroll(function() {
-        var table = $(this).find("table").get(0);
-        var averageHeight = parseInt(table.clientHeight / table.rows.length);
-        var rowNumber = parseInt(this.scrollTop / averageHeight);
-        var date = table.rows[rowNumber].cells[2].date;
-        headerTable.find("th.month").text(date.getFullYear());
+        setYearLabel(this);
       });
+
       var selected = scrollContent.find(".today, .selected").get(0);
       scrollContent.scrollTop(selected.offsetTop - (scrollContent.height() - selected.offsetHeight) / 2);
     }
 
+    function setYearLabel(scrollContent) {
+        var table = $(scrollContent).find("table").get(0);
+        var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight);
+        var date = table.rows[rowNumber].cells[2].date;
+        yearTitle.text(date.getFullYear());
+    }
     function headerRow() {
       var thead = $("<thead>").append(yearCell());
       thead.append('<th class="week"></th>');
