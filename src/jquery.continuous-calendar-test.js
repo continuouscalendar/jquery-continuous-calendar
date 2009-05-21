@@ -76,7 +76,7 @@ test("highlights selected date", function() {
 });
 
 test("higlights selected date range with move handles in first and last data", function() {
-  createRangeCalendarWithThreeWeeks();
+  createRangeCalendarWithFiveWeeks();
   equals(cal().find(".selected").size(), 7);
   equals(cal().find("em span").text(), "7");
   ok(cal().find(".selected:first").hasClass("rangeStart"), "has class rangeStart");
@@ -106,7 +106,7 @@ test("calendar with no range has no range class", function() {
 });
 
 test("calendar with range has range class", function() {
-  createRangeCalendarWithThreeWeeks();
+  createRangeCalendarWithFiveWeeks();
   ok(cal().find(".calendarBody").hasClass("range"));
 });
 
@@ -122,7 +122,7 @@ test("highlights and selects clicked day", function() {
 });
 
 test("week number click selects whole week", function () {
-  createRangeCalendarWithThreeWeeks();
+  createRangeCalendarWithFiveWeeks();
   cal().find(".week").withText(18).click();
   assertHasValues(".selected", [27,28,29,30,1,2,3]);
   equals(startFieldValue(), "4/27/2009");
@@ -140,7 +140,7 @@ var preventDefaultIsCalled;
 
 test("mouse click and drag highlights range and updates fields", function() {
   preventDefaultIsCalled = false;
-  createRangeCalendarWithThreeWeeks();
+  createRangeCalendarWithFiveWeeks();
   mouseDownOnDay(27);
   mouseMoveOnDay(27);
   mouseMoveOnDay(28);
@@ -180,7 +180,7 @@ test("mouse click on month in singe date calendar does nothing", function() {
 });
 
 test("range is movable", function() {
-  createRangeCalendarWithThreeWeeks();
+  createRangeCalendarWithFiveWeeks();
   mouseDownOnDay(30);
   mouseMoveOnDay(27);
   mouseUpOnDay(27);
@@ -196,9 +196,13 @@ test("range is movable", function() {
 });
 
 test("range is expandable by clicking with shift key", function() {
-  createRangeCalendarWithThreeWeeks();
+  createRangeCalendarWithFiveWeeks();
   clickWithShiftOnDay(7);
   assertHasValues(".selected", [ 29, 30, 1, 2, 3, 4, 5, 6, 7]);
+  clickWithShiftOnDay(13);
+  //assertHasValues(".selected", [ 29, 30, 1, 2, 3, 4, 5, 6, 7]);
+  equals(cal().find(".disabled").size(), 7, "disabled");
+  //4/15/2009",lastDate:"5/12/2009
 });
 var testIndex = 0;
 
@@ -269,7 +273,7 @@ function createCalendarWithOneWeek() {
   cal({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
 }
 
-function createRangeCalendarWithThreeWeeks() {
+function createRangeCalendarWithFiveWeeks() {
   cal({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009"});
 
 }

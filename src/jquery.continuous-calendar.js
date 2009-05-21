@@ -31,12 +31,10 @@
     var averageCellHeight;
     var yearTitle;
     var range;
-    if (startDate && endDate) {
-      range = new DateRange(startDate, endDate);
-    } else {
-      range = new NullDateRange();
-    }
+    var firstDate;
+    var lastDate;
     var status = Status.NONE;
+
     createCalendar(this);
 
     this.data("mouseDown", mouseDown);
@@ -44,10 +42,22 @@
     this.data("mouseUp", mouseUp);
 
     function createCalendar(container) {
+      if (startDate && endDate) {
+        range = new DateRange(startDate, endDate);
+      } else {
+        range = new NullDateRange();
+      }
+      if (params.firstDate != undefined && params.lastDate != undefined) {
+        firstDate = Date.parseDate(params.firstDate, params.dateFormat);
+        lastDate = Date.parseDate(params.lastDate, params.dateFormat);
+      } else {
+        firstDate = firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * WEEK_DAYS.length));
+        lastDate = firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length -1);
+      }
+
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
       var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody());
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
-
       var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
       container.append(calendar);
       dateCells = calendarContainer.find('.date');
@@ -100,20 +110,10 @@
 
     function calendarBody() {
       var tbody = $("<tbody>");
-      if (params.firstDate != undefined && params.lastDate != undefined) {
-        var firstDate = Date.parseDate(params.firstDate, params.dateFormat);
-        var lastDate = Date.parseDate(params.lastDate, params.dateFormat);
-        var currentMonday = firstDate.getFirstDateOfWeek(Date.MONDAY);
-        while (currentMonday.compareTo(lastDate) < 0) {
-          tbody.append(calendarRow(currentMonday.clone()));
-          currentMonday = currentMonday.plusDays(WEEK_DAYS.length);
-        }
-      } else {
-        var before = params.weeksBefore;
-        var after = params.weeksAfter;
-        for (var i = -before; i <= after; i++) {
-          tbody.append(calendarRow(firstWeekdayOfGivenDate.plusDays(i * WEEK_DAYS.length)));
-        }
+      var currentMonday = firstDate.getFirstDateOfWeek(Date.MONDAY);
+      while (currentMonday.compareTo(lastDate) <= 0) {
+        tbody.append(calendarRow(currentMonday.clone()));
+        currentMonday = currentMonday.plusDays(WEEK_DAYS.length);
       }
       return tbody;
     }
@@ -122,7 +122,7 @@
       var tr = $("<tr>").append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
-        var dateCell = $("date<td>").addClass("date").addClass(backgroundBy(date)).append(date.getDate());
+        var dateCell = $("<td>").addClass("date"+backgroundBy(date)+disabledOrNot(date)).append(date.getDate());
         dateCell.get(0).date = date;
         if (date.isToday()) dateCell.addClass("today");
         if (isRange()) {
@@ -170,7 +170,9 @@
     function backgroundBy(date) {
       return date.isOddMonth() ? ' odd' : '';
     }
-
+    function disabledOrNot(date) {
+      return date.isBetweenDates(firstDate, lastDate) ? "" : " disabled";
+    }
     function initSingleDateCalendarEvents() {
       dateCells.click(function() {
         dateCells.removeClass("selected");
@@ -270,10 +272,10 @@
       status = Status.CREATE;
       range = new DateRange(mouseDownDate, mouseDownDate);
       dateCells.each(function(i) {
-        this.className = "date" + backgroundBy(dateCellDates[i]);
+        this.className = "date" + backgroundBy(dateCellDates[i])+disabledOrNot(dateCellDates[i]);
       });
       var domElem = elem.get(0);
-      domElem.className = "date" + backgroundBy(domElem.date) + " selected rangeStart";
+      domElem.className = "date" + backgroundBy(domElem.date)+ disabledOrNot(domElem.date) + " selected rangeStart";
       days.text(range.days());
     }
 
@@ -285,7 +287,7 @@
     function selectRangeBetweenDates(start, end) {
       dateCells.each(function(i, elem) {
         var date = dateCellDates[i];
-        var class = ["date" + backgroundBy(date)];
+        var class = ["date" + backgroundBy(date)+ disabledOrNot(date)];
         if (date.equalsOnlyDate(end)) {
           class.push("selected rangeEnd");
         } else if (date.equalsOnlyDate(start)) {

@@ -132,3 +132,6 @@ input.endDate,
   margin-right: 5px;
   margin-bottom: 5px;
 }
+.continuousCalendar td.disabled {
+  color:gray;
+}
