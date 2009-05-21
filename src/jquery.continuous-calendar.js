@@ -52,7 +52,7 @@
         lastDate = Date.parseDate(params.lastDate, params.dateFormat);
       } else {
         firstDate = firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * WEEK_DAYS.length));
-        lastDate = firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length -1);
+        lastDate = firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length - 1);
       }
 
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
@@ -103,7 +103,6 @@
       return thead;
 
       function yearCell() {
-        //TODO will react on scroll and depends on top left corner date
         return $("<th>").addClass("month").append(firstWeekdayOfGivenDate.getFullYear());
       }
     }
@@ -122,7 +121,7 @@
       var tr = $("<tr>").append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
-        var dateCell = $("<td>").addClass("date"+backgroundBy(date)+disabledOrNot(date)).append(date.getDate());
+        var dateCell = $("<td>").addClass("date" + backgroundBy(date) + disabledOrNot(date)).append(date.getDate());
         dateCell.get(0).date = date;
         if (date.isToday()) dateCell.addClass("today");
         if (isRange()) {
@@ -170,9 +169,11 @@
     function backgroundBy(date) {
       return date.isOddMonth() ? ' odd' : '';
     }
+
     function disabledOrNot(date) {
       return date.isBetweenDates(firstDate, lastDate) ? "" : " disabled";
     }
+
     function initSingleDateCalendarEvents() {
       dateCells.click(function() {
         dateCells.removeClass("selected");
@@ -195,7 +196,7 @@
         status = Status.DRAG_EXPAND_END;
       } else if (range.hasDate(mouseDownDate)) {
         startMovingRange(mouseDownDate);
-      } else {
+      } else if (isEnabled(elem)) {
         if (e.shiftKey) {
           range.expandTo(mouseDownDate);
           selectRange();
@@ -207,52 +208,62 @@
       e.preventDefault();
     }
 
+    function isEnabled(elem) {
+      return !$(elem).hasClass("disabled");
+    }
+
     function mouseMove(e) {
       var date = e.target.date;
-      switch (status) {
-        case Status.MOVE:
-          moveRange(date);
-          break;
-        case Status.CREATE:
-          range = new DateRange(mouseDownDate, date);
-          selectRange();
-          break;
-        case Status.DRAG_EXPAND_START:
-          if (date.compareTo(range.end) < 0) {
-            range = new DateRange(date, range.end);
+      if (isEnabled(e.target)) {
+        switch (status) {
+          case Status.MOVE:
+            moveRange(date);
+            break;
+          case Status.CREATE:
+            range = new DateRange(mouseDownDate, date);
             selectRange();
-          }
-          break;
-        case Status.DRAG_EXPAND_END:
-          if (date.compareTo(range.start) > 0) {
-            range = new DateRange(range.start, date);
-            selectRange();
-          }
-          break;
-        default:
-          break;
+            break;
+          case Status.DRAG_EXPAND_START:
+            if (date.compareTo(range.end) < 0) {
+              range = new DateRange(date, range.end);
+              selectRange();
+            }
+            break;
+          case Status.DRAG_EXPAND_END:
+            if (date.compareTo(range.start) > 0) {
+              range = new DateRange(range.start, date);
+              selectRange();
+            }
+            break;
+          default:
+            break;
+        }
       }
     }
 
     function mouseUp(e) {
-      switch (status) {
-        case Status.MOVE:
-          updateTextFields();
-          status = Status.NONE;
-          break;
-        case Status.CREATE:
-          range = new DateRange(mouseDownDate, e.target.date);
-          status = Status.NONE;
-          selectRange();
-          updateTextFields();
-          break;
-        case Status.DRAG_EXPAND_START:
-        case Status.DRAG_EXPAND_END:
-          status = Status.NONE;
-          updateTextFields();
-          break;
-        default:
-          break;
+      if (isEnabled(e.target)) {
+        switch (status) {
+          case Status.MOVE:
+            updateTextFields();
+            status = Status.NONE;
+            break;
+          case Status.CREATE:
+            range = new DateRange(mouseDownDate, e.target.date);
+            status = Status.NONE;
+            selectRange();
+            updateTextFields();
+            break;
+          case Status.DRAG_EXPAND_START:
+          case Status.DRAG_EXPAND_END:
+            status = Status.NONE;
+            updateTextFields();
+            break;
+          default:
+            break;
+        }
+      } else {
+        status = Status.NONE;
       }
     }
 
@@ -265,6 +276,7 @@
       var deltaDays = moveStartDate.distanceInDays(date);
       moveStartDate = date;
       range.shiftDays(deltaDays);
+      range = range.and(new DateRange(firstDate, lastDate));
       selectRange();
     }
 
@@ -272,10 +284,10 @@
       status = Status.CREATE;
       range = new DateRange(mouseDownDate, mouseDownDate);
       dateCells.each(function(i) {
-        this.className = "date" + backgroundBy(dateCellDates[i])+disabledOrNot(dateCellDates[i]);
+        this.className = "date" + backgroundBy(dateCellDates[i]) + disabledOrNot(dateCellDates[i]);
       });
       var domElem = elem.get(0);
-      domElem.className = "date" + backgroundBy(domElem.date)+ disabledOrNot(domElem.date) + " selected rangeStart";
+      domElem.className = "date" + backgroundBy(domElem.date) + disabledOrNot(domElem.date) + " selected rangeStart";
       days.text(range.days());
     }
 
@@ -287,7 +299,8 @@
     function selectRangeBetweenDates(start, end) {
       dateCells.each(function(i, elem) {
         var date = dateCellDates[i];
-        var class = ["date" + backgroundBy(date)+ disabledOrNot(date)];
+        var class = ["date" + backgroundBy(date) + disabledOrNot(date)];
+
         if (date.equalsOnlyDate(end)) {
           class.push("selected rangeEnd");
         } else if (date.equalsOnlyDate(start)) {
@@ -349,6 +362,15 @@
           this.start = date;
         } else if (date.compareTo(this.end) > 0) {
           this.end = date;
+        }
+      };
+      this.and = function(that) {
+        var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start;
+        var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end;
+        if(latestStart.compareTo(earliestEnd) < 0) {
+          return new DateRange(latestStart, earliestEnd);
+        } else {
+          return new NullDateRange();
         }
       };
     }

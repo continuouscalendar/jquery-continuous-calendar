@@ -200,7 +200,7 @@ test("range is expandable by clicking with shift key", function() {
   clickWithShiftOnDay(7);
   assertHasValues(".selected", [ 29, 30, 1, 2, 3, 4, 5, 6, 7]);
   clickWithShiftOnDay(13);
-  //assertHasValues(".selected", [ 29, 30, 1, 2, 3, 4, 5, 6, 7]);
+  assertHasValues(".selected", [ 29, 30, 1, 2, 3, 4, 5, 6, 7]);
   equals(cal().find(".disabled").size(), 7, "disabled");
   //4/15/2009",lastDate:"5/12/2009
 });
