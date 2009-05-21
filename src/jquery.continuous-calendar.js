@@ -44,12 +44,11 @@
       if (startDate && endDate) {
         selection = new DateRange(startDate, endDate);
       } else {
-        selection = new NullDateRange();
+        selection = DateRange.emptyRange();
       }
+      //TODO fix logic; smart defaults
       if (params.firstDate != undefined && params.lastDate != undefined) {
-        var rangeStart = Date.parseDate(params.firstDate, params.dateFormat);
-        var rangeEnd = Date.parseDate(params.lastDate, params.dateFormat);
-        calendarRange = new DateRange(rangeStart, rangeEnd);
+        calendarRange = DateRange.parse(params.firstDate, params.lastDate, params.dateFormat);
       } else {
         var rangeStart = firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * WEEK_DAYS.length));
         var rangeEnd = firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length - 1);
@@ -122,7 +121,7 @@
       var tr = $("<tr>").append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
-        var dateCell = $("<td>").addClass("date" + backgroundBy(date) + disabledOrNot(date)).append(date.getDate());
+        var dateCell = $("<td>").addClass(dateStyles(date)).append(date.getDate());
         dateCell.get(0).date = date;
         if (date.isToday()) dateCell.addClass("today");
         if (isRange()) {
@@ -167,12 +166,20 @@
       return weekNumber;
     }
 
+    function dateStyles(date) {
+      return "date " + backgroundBy(date) + disabledOrNot(date) + todayStyle(date);
+    }
+
     function backgroundBy(date) {
       return date.isOddMonth() ? ' odd' : '';
     }
 
     function disabledOrNot(date) {
       return calendarRange.hasDate(date) ? "" : " disabled";
+    }
+
+    function todayStyle(date) {
+      return date.isToday() ? " today" : "";
     }
 
     function initSingleDateCalendarEvents() {
@@ -285,10 +292,10 @@
       status = Status.CREATE;
       selection = new DateRange(mouseDownDate, mouseDownDate);
       dateCells.each(function(i) {
-        this.className = "date" + backgroundBy(dateCellDates[i]) + disabledOrNot(dateCellDates[i]);
+        this.className = dateStyles(dateCellDates[i]);
       });
       var domElem = elem.get(0);
-      domElem.className = "date" + backgroundBy(domElem.date) + disabledOrNot(domElem.date) + " selected rangeStart";
+      domElem.className = dateStyles(domElem.date) + " selected rangeStart";
       rangeLengthLabel.text(selection.days());
     }
 
@@ -300,7 +307,7 @@
     function selectRangeBetweenDates(start, end) {
       dateCells.each(function(i, elem) {
         var date = dateCellDates[i];
-        var class = ["date" + backgroundBy(date) + disabledOrNot(date)];
+        var class = [dateStyles(date)];
 
         if (date.equalsOnlyDate(end)) {
           class.push("selected rangeEnd");
@@ -329,51 +336,58 @@
         return null;
     }
 
-    function NullDateRange() {
-      this.start = null;
-      this.end = null;
-      this.days = function() {
-        return 0;
-      };
-      this.shiftDays = function() {
-      };
-      this.hasDate = function() {
-        return false;
-      };
-    }
-
-    function DateRange(date1, date2) {
-      if (!date1 || !date2) {
-        throw("two dates must be specified, date1=" + date1 + ", date2=" + date2);
-      }
-      this.start = date1.compareTo(date2) > 0 ? date2 : date1;
-      this.end = date1.compareTo(date2) > 0 ? date1 : date2;
-      this.days = function() {
-        return Math.round(this.start.distanceInDays(this.end) + 1);
-      };
-      this.shiftDays = function(days) {
-        this.start = this.start.plusDays(days);
-        this.end = this.end.plusDays(days);
-      };
-      this.hasDate = function(date) {
-        return date.isBetweenDates(this.start, this.end);
-      };
-      this.expandTo = function(date) {
-        if (date.compareTo(this.start) < 0) {
-          this.start = date;
-        } else if (date.compareTo(this.end) > 0) {
-          this.end = date;
-        }
-      };
-      this.and = function(that) {
-        var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start;
-        var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end;
-        if(latestStart.compareTo(earliestEnd) < 0) {
-          return new DateRange(latestStart, earliestEnd);
-        } else {
-          return new NullDateRange();
-        }
-      };
-    }
   };
 })(jQuery);
+
+function NullDateRange() {
+  this.start = null;
+  this.end = null;
+  this.days = function() {
+    return 0;
+  };
+  this.shiftDays = function() {
+  };
+  this.hasDate = function() {
+    return false;
+  };
+}
+
+function DateRange(date1, date2) {
+  if (!date1 || !date2) {
+    throw("two dates must be specified, date1=" + date1 + ", date2=" + date2);
+  }
+  this.start = date1.compareTo(date2) > 0 ? date2 : date1;
+  this.end = date1.compareTo(date2) > 0 ? date1 : date2;
+  this.days = function() {
+    return Math.round(this.start.distanceInDays(this.end) + 1);
+  };
+  this.shiftDays = function(days) {
+    this.start = this.start.plusDays(days);
+    this.end = this.end.plusDays(days);
+  };
+  this.hasDate = function(date) {
+    return date.isBetweenDates(this.start, this.end);
+  };
+  this.expandTo = function(date) {
+    if (date.compareTo(this.start) < 0) {
+      this.start = date;
+    } else if (date.compareTo(this.end) > 0) {
+      this.end = date;
+    }
+  };
+  this.and = function(that) {
+    var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start;
+    var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end;
+    if (latestStart.compareTo(earliestEnd) < 0) {
+      return new DateRange(latestStart, earliestEnd);
+    } else {
+      return new NullDateRange();
+    }
+  };
+}
+DateRange.emptyRange = function() {
+  return new NullDateRange();
+};
+DateRange.parse = function(date1, date2, dateFormat) {
+  return new DateRange(Date.parseDate(date1, dateFormat), Date.parseDate(date2, dateFormat));
+};
