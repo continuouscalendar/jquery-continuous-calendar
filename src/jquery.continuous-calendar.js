@@ -45,9 +45,8 @@
 
     function createCalendar(container) {
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
-      var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody(params.weeksBefore, params.weeksAfter));
+      var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody());
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
-
 
       var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
       container.append(calendar);
@@ -72,15 +71,18 @@
       });
 
       var selected = scrollContent.find(".today, .selected").get(0);
-      scrollContent.scrollTop(selected.offsetTop - (scrollContent.height() - selected.offsetHeight) / 2);
+      if (selected) {
+        scrollContent.scrollTop(selected.offsetTop - (scrollContent.height() - selected.offsetHeight) / 2);
+      }
     }
 
     function setYearLabel(scrollContent) {
-        var table = $(scrollContent).find("table").get(0);
-        var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight);
-        var date = table.rows[rowNumber].cells[2].date;
-        yearTitle.text(date.getFullYear());
+      var table = $(scrollContent).find("table").get(0);
+      var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight);
+      var date = table.rows[rowNumber].cells[2].date;
+      yearTitle.text(date.getFullYear());
     }
+
     function headerRow() {
       var thead = $("<thead>").append(yearCell());
       thead.append('<th class="week"></th>');
@@ -96,10 +98,22 @@
       }
     }
 
-    function calendarBody(before, after) {
+    function calendarBody() {
       var tbody = $("<tbody>");
-      for (var i = before; i >= -after; i--) {
-        tbody.append(calendarRow(firstWeekdayOfGivenDate.plusDays(i * (-WEEK_DAYS.length))));
+      if (params.firstDate != undefined && params.lastDate != undefined) {
+        var firstDate = Date.parseDate(params.firstDate, params.dateFormat);
+        var lastDate = Date.parseDate(params.lastDate, params.dateFormat);
+        var currentMonday = firstDate.getFirstDateOfWeek(Date.MONDAY);
+        while (currentMonday.compareTo(lastDate) < 0) {
+          tbody.append(calendarRow(currentMonday.clone()));
+          currentMonday = currentMonday.plusDays(WEEK_DAYS.length);
+        }
+      } else {
+        var before = params.weeksBefore;
+        var after = params.weeksAfter;
+        for (var i = -before; i <= after; i++) {
+          tbody.append(calendarRow(firstWeekdayOfGivenDate.plusDays(i * WEEK_DAYS.length)));
+        }
       }
       return tbody;
     }
@@ -256,10 +270,10 @@
       status = Status.CREATE;
       range = new DateRange(mouseDownDate, mouseDownDate);
       dateCells.each(function(i) {
-        this.className = "date"+backgroundBy(dateCellDates[i]);
+        this.className = "date" + backgroundBy(dateCellDates[i]);
       });
       var domElem = elem.get(0);
-      domElem.className = "date"+backgroundBy(domElem.date)+" selected rangeStart";
+      domElem.className = "date" + backgroundBy(domElem.date) + " selected rangeStart";
       days.text(range.days());
     }
 
@@ -271,12 +285,12 @@
     function selectRangeBetweenDates(start, end) {
       dateCells.each(function(i, elem) {
         var date = dateCellDates[i];
-        var class = ["date"+ backgroundBy(date)];
-        if(date.equalsOnlyDate(end)) {
+        var class = ["date" + backgroundBy(date)];
+        if (date.equalsOnlyDate(end)) {
           class.push("selected rangeEnd");
-        } else if(date.equalsOnlyDate(start)) {
+        } else if (date.equalsOnlyDate(start)) {
           class.push("selected rangeStart");
-        } else if(date.isBetweenDates(start, end)) {
+        } else if (date.isBetweenDates(start, end)) {
           class.push("selected");
         }
         elem.className = class.join(" ");

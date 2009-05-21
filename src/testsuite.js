@@ -33,3 +33,11 @@ $.fn.withText = function(text) {
     return $(this).text() == text.toString();
   });
 };
+
+function assertHasValues(selector, expectedArray) {
+  same($.map(cal().find(selector), function (elem) {
+    return $(elem).text();
+  }), $.map(expectedArray, function(i) {
+    return i.toString();
+  }));
+}

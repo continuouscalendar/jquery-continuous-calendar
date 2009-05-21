@@ -200,7 +200,6 @@ test("range is expandable by clicking with shift key", function() {
   clickWithShiftOnDay(7);
   assertHasValues(".selected", [ 29, 30, 1, 2, 3, 4, 5, 6, 7]);
 });
-
 var testIndex = 0;
 
 function createCalendarContainer() {
@@ -240,7 +239,7 @@ function _mouseEvent(functionName, date, options) {
       preventDefaultIsCalled = true;
     }
   };
-  for(var i in options) {
+  for (var i in options) {
     e[i] = options[i];
   }
   cal().data(functionName)(e);
@@ -250,10 +249,10 @@ function clickWithShiftOnDay(date) {
   mouseDownOnDay(date, options);
   mouseUpOnDay(date, options);
 }
+
 function mouseDownOnDay(date, options) {
   _mouseEvent("mouseDown", date, options);
 }
-
 function mouseMoveOnDay(date) {
   _mouseEvent("mouseMove", date);
 }
@@ -271,7 +270,8 @@ function createCalendarWithOneWeek() {
 }
 
 function createRangeCalendarWithThreeWeeks() {
-  cal({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
+  cal({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009"});
+
 }
 function createBigCalendar() {
   var todayText = new Date().dateFormat(Date.patterns.FiShortDatePattern);
@@ -280,14 +280,6 @@ function createBigCalendar() {
 
 function createBigCalendarForSingleDate() {
   cal({startDate: ""}).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
-}
-
-function assertHasValues(selector, expectedArray) {
-  same($.map(cal().find(selector), function (elem) {
-    return $(elem).text();
-  }), $.map(expectedArray, function(i) {
-    return i.toString();
-  }));
 }
 
 function startFieldValue() {
