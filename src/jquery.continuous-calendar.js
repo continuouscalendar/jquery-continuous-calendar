@@ -19,7 +19,7 @@
     }
     var startField = this.find("input.startDate");
     var endField = this.find("input.endDate");
-    var days = $("<span>");
+    var rangeLengthLabel = $("<span>");
     var startDate = fieldDate(startField);
     var endDate = fieldDate(endField);
     var firstWeekdayOfGivenDate = (startDate || new Date()).getFirstDateOfWeek(Date.MONDAY);
@@ -30,9 +30,8 @@
     var mouseDownDate = null;
     var averageCellHeight;
     var yearTitle;
-    var range;
-    var firstDate;
-    var lastDate;
+    var selection;
+    var calendarRange;
     var status = Status.NONE;
 
     createCalendar(this);
@@ -43,16 +42,18 @@
 
     function createCalendar(container) {
       if (startDate && endDate) {
-        range = new DateRange(startDate, endDate);
+        selection = new DateRange(startDate, endDate);
       } else {
-        range = new NullDateRange();
+        selection = new NullDateRange();
       }
       if (params.firstDate != undefined && params.lastDate != undefined) {
-        firstDate = Date.parseDate(params.firstDate, params.dateFormat);
-        lastDate = Date.parseDate(params.lastDate, params.dateFormat);
+        var rangeStart = Date.parseDate(params.firstDate, params.dateFormat);
+        var rangeEnd = Date.parseDate(params.lastDate, params.dateFormat);
+        calendarRange = new DateRange(rangeStart, rangeEnd);
       } else {
-        firstDate = firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * WEEK_DAYS.length));
-        lastDate = firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length - 1);
+        var rangeStart = firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * WEEK_DAYS.length));
+        var rangeEnd = firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length - 1);
+        calendarRange = new DateRange(rangeStart, rangeEnd);
       }
 
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
@@ -66,8 +67,8 @@
       });
       if (isRange()) {
         var daysContainer = $("<em>");
-        days.text(range.days());
-        daysContainer.append(days).append(" Päivää");
+        rangeLengthLabel.text(selection.days());
+        daysContainer.append(rangeLengthLabel).append(" Päivää");
         container.append(daysContainer);
         bodyTable.addClass("range");
         initRangeCalendarEvents();
@@ -109,8 +110,8 @@
 
     function calendarBody() {
       var tbody = $("<tbody>");
-      var currentMonday = firstDate.getFirstDateOfWeek(Date.MONDAY);
-      while (currentMonday.compareTo(lastDate) <= 0) {
+      var currentMonday = calendarRange.start.getFirstDateOfWeek(Date.MONDAY);
+      while (currentMonday.compareTo(calendarRange.end) <= 0) {
         tbody.append(calendarRow(currentMonday.clone()));
         currentMonday = currentMonday.plusDays(WEEK_DAYS.length);
       }
@@ -125,9 +126,9 @@
         dateCell.get(0).date = date;
         if (date.isToday()) dateCell.addClass("today");
         if (isRange()) {
-          dateCell.toggleClass("selected", range.hasDate(date));
-          dateCell.toggleClass("rangeStart", date.equalsOnlyDate(range.start));
-          dateCell.toggleClass("rangeEnd", date.equalsOnlyDate(range.end));
+          dateCell.toggleClass("selected", selection.hasDate(date));
+          dateCell.toggleClass("rangeStart", date.equalsOnlyDate(selection.start));
+          dateCell.toggleClass("rangeEnd", date.equalsOnlyDate(selection.end));
         } else {
           dateCell.toggleClass("selected", date.equalsOnlyDate(startDate));
         }
@@ -140,7 +141,7 @@
       var th = $("<th>").addClass("month").addClass(backgroundBy(firstDayOfWeek));
       if (isRange()) {
         th.click(function() {
-          range = new DateRange(firstDayOfWeek.firstDateOfMonth(), firstDayOfWeek.lastDateOfMonth());
+          selection = new DateRange(firstDayOfWeek.firstDateOfMonth(), firstDayOfWeek.lastDateOfMonth());
           updateTextFields();
           selectRange();
         });
@@ -158,7 +159,7 @@
       weekNumber.addClass("week").addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear("ISO"));
       if (isRange()) {
         weekNumber.click(function () {
-          range = new DateRange(firstDayOfWeek, firstDayOfWeek.plusDays(6));
+          selection = new DateRange(firstDayOfWeek, firstDayOfWeek.plusDays(6));
           updateTextFields();
           selectRange();
         });
@@ -171,7 +172,7 @@
     }
 
     function disabledOrNot(date) {
-      return date.isBetweenDates(firstDate, lastDate) ? "" : " disabled";
+      return calendarRange.hasDate(date) ? "" : " disabled";
     }
 
     function initSingleDateCalendarEvents() {
@@ -190,15 +191,15 @@
     function mouseDown(e) {
       var elem = e.target;
       mouseDownDate = elem.date;
-      if (mouseDownDate.equalsOnlyDate(range.start)) {
+      if (mouseDownDate.equalsOnlyDate(selection.start)) {
         status = Status.DRAG_EXPAND_START;
-      } else if (mouseDownDate.equalsOnlyDate(range.end)) {
+      } else if (mouseDownDate.equalsOnlyDate(selection.end)) {
         status = Status.DRAG_EXPAND_END;
-      } else if (range.hasDate(mouseDownDate)) {
+      } else if (selection.hasDate(mouseDownDate)) {
         startMovingRange(mouseDownDate);
       } else if (isEnabled(elem)) {
         if (e.shiftKey) {
-          range.expandTo(mouseDownDate);
+          selection.expandTo(mouseDownDate);
           selectRange();
           updateTextFields();
         } else {
@@ -220,18 +221,18 @@
             moveRange(date);
             break;
           case Status.CREATE:
-            range = new DateRange(mouseDownDate, date);
+            selection = new DateRange(mouseDownDate, date);
             selectRange();
             break;
           case Status.DRAG_EXPAND_START:
-            if (date.compareTo(range.end) < 0) {
-              range = new DateRange(date, range.end);
+            if (date.compareTo(selection.end) < 0) {
+              selection = new DateRange(date, selection.end);
               selectRange();
             }
             break;
           case Status.DRAG_EXPAND_END:
-            if (date.compareTo(range.start) > 0) {
-              range = new DateRange(range.start, date);
+            if (date.compareTo(selection.start) > 0) {
+              selection = new DateRange(selection.start, date);
               selectRange();
             }
             break;
@@ -249,7 +250,7 @@
             status = Status.NONE;
             break;
           case Status.CREATE:
-            range = new DateRange(mouseDownDate, e.target.date);
+            selection = new DateRange(mouseDownDate, e.target.date);
             status = Status.NONE;
             selectRange();
             updateTextFields();
@@ -275,25 +276,25 @@
     function moveRange(date) {
       var deltaDays = moveStartDate.distanceInDays(date);
       moveStartDate = date;
-      range.shiftDays(deltaDays);
-      range = range.and(new DateRange(firstDate, lastDate));
+      selection.shiftDays(deltaDays);
+      selection = selection.and(calendarRange);
       selectRange();
     }
 
     function startCreatingRange(elem) {
       status = Status.CREATE;
-      range = new DateRange(mouseDownDate, mouseDownDate);
+      selection = new DateRange(mouseDownDate, mouseDownDate);
       dateCells.each(function(i) {
         this.className = "date" + backgroundBy(dateCellDates[i]) + disabledOrNot(dateCellDates[i]);
       });
       var domElem = elem.get(0);
       domElem.className = "date" + backgroundBy(domElem.date) + disabledOrNot(domElem.date) + " selected rangeStart";
-      days.text(range.days());
+      rangeLengthLabel.text(selection.days());
     }
 
     function selectRange() {
-      selectRangeBetweenDates(range.start, range.end);
-      days.text(range.days());
+      selectRangeBetweenDates(selection.start, selection.end);
+      rangeLengthLabel.text(selection.days());
     }
 
     function selectRangeBetweenDates(start, end) {
@@ -313,8 +314,8 @@
     }
 
     function updateTextFields() {
-      startField.val(range.start.dateFormat(params.dateFormat));
-      endField.val(range.end.dateFormat(params.dateFormat));
+      startField.val(selection.start.dateFormat(params.dateFormat));
+      endField.val(selection.end.dateFormat(params.dateFormat));
     }
 
     function isRange() {
