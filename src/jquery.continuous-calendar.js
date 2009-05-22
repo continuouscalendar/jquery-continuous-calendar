@@ -402,6 +402,8 @@ DateRange.emptyRange = function() {
 
   return new NullDateRange();
 };
-DateRange.parse = function(date1, date2, dateFormat) {
-  return new DateRange(Date.parseDate(date1, dateFormat), Date.parseDate(date2, dateFormat));
+DateRange.parse = function(dateStr1, dateStr2, dateFormat) {
+  var date1 = dateStr1 == "today" ? new Date() : Date.parseDate(dateStr1, dateFormat);
+  var date2 = dateStr2 == "today" ? new Date() : Date.parseDate(dateStr2, dateFormat);
+  return new DateRange(date1, date2);
 };
