@@ -1,4 +1,3 @@
-TODO disabled fields + calendar size as dates
 TODO enable drag on weeks and months
 TODO authoring concerns http://docs.jquery.com/Plugins/Authoring
 TODO testing with different browsers

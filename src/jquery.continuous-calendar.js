@@ -22,7 +22,6 @@
 
     setDefaultParams();
 
-
     var rangeLengthLabel = $("<span>");
     var startDate = fieldDate(params.startField);
     var endDate = fieldDate(params.endField);
