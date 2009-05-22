@@ -11,12 +11,15 @@
       DRAG_EXPAND_END:"drag_expand_end",
       NONE:"none"
     };
-    if (!params.dateFormat) {
-      params.dateFormat = Date.patterns.ShortDatePattern;
-      //params.dateFormat = "j.n.Y";
-      //params.dateFormat = "m/d/Y";
-      //params.dateFormat = "d.m.Y";
-    }
+    
+    var defaultParams = {
+      weeksBefore: 52,
+      weeksAfter: 52,
+      dateFormat: Date.patterns.ShortDatePattern
+    };
+
+    setDefaultParams();
+
     var startField = this.find("input.startDate");
     var endField = this.find("input.endDate");
     var rangeLengthLabel = $("<span>");
@@ -33,16 +36,7 @@
     var selection;
     var calendarRange;
     var status = Status.NONE;
-    var defaultParams = {};
-    setDefaultParams();
 
-    function setDefaultParams() {
-      for(var i in defaultParams) {
-        if (params[i] == undefined) {
-          params[i] = defaultParams[i];
-        }
-      }
-    }
     createCalendar(this);
 
     this.data("mouseDown", mouseDown);
@@ -92,6 +86,17 @@
       var selected = scrollContent.find(".today, .selected").get(0);
       if (selected) {
         scrollContent.scrollTop(selected.offsetTop - (scrollContent.height() - selected.offsetHeight) / 2);
+      }
+    }
+
+    function setDefaultParams() {
+      if(params == undefined) {
+        params = {};
+      }
+      for (var i in defaultParams) {
+        if (params[i] == undefined) {
+          params[i] = defaultParams[i];
+        }
       }
     }
 
@@ -348,8 +353,6 @@
   };
 })(jQuery);
 
-
-
 function DateRange(date1, date2) {
   if (!date1 || !date2) {
     throw("two dates must be specified, date1=" + date1 + ", date2=" + date2);
@@ -386,17 +389,18 @@ function DateRange(date1, date2) {
 
 DateRange.emptyRange = function() {
   function NullDateRange() {
-  this.start = null;
-  this.end = null;
-  this.days = function() {
-    return 0;
-  };
-  this.shiftDays = function() {
-  };
-  this.hasDate = function() {
-    return false;
-  };
-}
+    this.start = null;
+    this.end = null;
+    this.days = function() {
+      return 0;
+    };
+    this.shiftDays = function() {
+    };
+    this.hasDate = function() {
+      return false;
+    };
+  }
+
   return new NullDateRange();
 };
 DateRange.parse = function(date1, date2, dateFormat) {
