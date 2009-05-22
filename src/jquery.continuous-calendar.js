@@ -13,8 +13,8 @@
     };
     
     var defaultParams = {
-      weeksBefore: 52,
-      weeksAfter: 52,
+      weeksBefore: 26,
+      weeksAfter: 26,
       dateFormat: Date.patterns.ShortDatePattern
     };
 

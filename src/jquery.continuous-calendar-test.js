@@ -207,7 +207,7 @@ test("range is expandable by clicking with shift key", function() {
 
 test("range has default of on year per direction", function() {
   cal({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar();
-  equals(cal().find(".date").size(),7*(52*2+1));
+  equals(cal().find(".date").size(),7*(26*2+1));
 });
 
 var testIndex = 0;
