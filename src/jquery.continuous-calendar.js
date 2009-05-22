@@ -33,7 +33,16 @@
     var selection;
     var calendarRange;
     var status = Status.NONE;
+    var defaultParams = {};
+    setDefaultParams();
 
+    function setDefaultParams() {
+      for(var i in defaultParams) {
+        if (params[i] == undefined) {
+          params[i] = defaultParams[i];
+        }
+      }
+    }
     createCalendar(this);
 
     this.data("mouseDown", mouseDown);
@@ -339,18 +348,7 @@
   };
 })(jQuery);
 
-function NullDateRange() {
-  this.start = null;
-  this.end = null;
-  this.days = function() {
-    return 0;
-  };
-  this.shiftDays = function() {
-  };
-  this.hasDate = function() {
-    return false;
-  };
-}
+
 
 function DateRange(date1, date2) {
   if (!date1 || !date2) {
@@ -381,11 +379,24 @@ function DateRange(date1, date2) {
     if (latestStart.compareTo(earliestEnd) < 0) {
       return new DateRange(latestStart, earliestEnd);
     } else {
-      return new NullDateRange();
+      return DateRange.emptyRange();
     }
   };
 }
+
 DateRange.emptyRange = function() {
+  function NullDateRange() {
+  this.start = null;
+  this.end = null;
+  this.days = function() {
+    return 0;
+  };
+  this.shiftDays = function() {
+  };
+  this.hasDate = function() {
+    return false;
+  };
+}
   return new NullDateRange();
 };
 DateRange.parse = function(date1, date2, dateFormat) {
