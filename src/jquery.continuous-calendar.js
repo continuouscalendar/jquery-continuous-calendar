@@ -15,16 +15,17 @@
     var defaultParams = {
       weeksBefore: 26,
       weeksAfter: 26,
-      dateFormat: Date.patterns.ShortDatePattern
+      dateFormat: Date.patterns.ShortDatePattern,
+      startField: this.find("input.startDate"),
+      endField: this.find("input.endDate")
     };
 
     setDefaultParams();
 
-    var startField = this.find("input.startDate");
-    var endField = this.find("input.endDate");
+
     var rangeLengthLabel = $("<span>");
-    var startDate = fieldDate(startField);
-    var endDate = fieldDate(endField);
+    var startDate = fieldDate(params.startField);
+    var endDate = fieldDate(params.endField);
     var firstWeekdayOfGivenDate = (startDate || new Date()).getFirstDateOfWeek(Date.MONDAY);
     var calendarContainer = this;
     var dateCells = null;
@@ -90,9 +91,7 @@
     }
 
     function setDefaultParams() {
-      if(params == undefined) {
-        params = {};
-      }
+      if(params == undefined) params = {};
       for (var i in defaultParams) {
         if (!(i in params)) {
           params[i] = defaultParams[i];
@@ -201,7 +200,7 @@
         dateCells.removeClass("selected");
         var dateCell = $(this);
         dateCell.addClass("selected");
-        startField.val(dateCell.get(0).date.dateFormat(params.dateFormat));
+        params.startField.val(dateCell.get(0).date.dateFormat(params.dateFormat));
       });
     }
 
@@ -335,12 +334,12 @@
     }
 
     function updateTextFields() {
-      startField.val(selection.start.dateFormat(params.dateFormat));
-      endField.val(selection.end.dateFormat(params.dateFormat));
+      params.startField.val(selection.start.dateFormat(params.dateFormat));
+      params.endField.val(selection.end.dateFormat(params.dateFormat));
     }
 
     function isRange() {
-      return endField && endField.length > 0;
+      return params.endField && params.endField.length > 0;
     }
 
     function fieldDate(field) {
