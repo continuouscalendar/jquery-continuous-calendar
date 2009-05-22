@@ -50,7 +50,7 @@
         selection = DateRange.emptyRange();
       }
       //TODO fix logic; smart defaults
-      if (params.firstDate != undefined && params.lastDate != undefined) {
+      if ("firstDate" in params && "lastDate" in params) {
         calendarRange = DateRange.parse(params.firstDate, params.lastDate, params.dateFormat);
       } else {
         var rangeStart = firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * WEEK_DAYS.length));
@@ -94,7 +94,7 @@
         params = {};
       }
       for (var i in defaultParams) {
-        if (params[i] == undefined) {
+        if (!(i in params)) {
           params[i] = defaultParams[i];
         }
       }
