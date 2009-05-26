@@ -319,16 +319,15 @@
     function selectRangeBetweenDates(start, end) {
       dateCells.each(function(i, elem) {
         var date = dateCellDates[i];
-        var class = [dateStyles(date)];
-
+        var styleClass = [dateStyles(date)];
         if (date.equalsOnlyDate(end)) {
-          class.push("selected rangeEnd");
+          styleClass.push("selected rangeEnd");
         } else if (date.equalsOnlyDate(start)) {
-          class.push("selected rangeStart");
+          styleClass.push("selected rangeStart");
         } else if (date.isBetweenDates(start, end)) {
-          class.push("selected");
+          styleClass.push("selected");
         }
-        elem.className = class.join(" ");
+        elem.className = styleClass.join(" ");
       });
     }
 
