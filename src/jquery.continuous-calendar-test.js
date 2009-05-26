@@ -106,7 +106,9 @@ test("highlights and selects clicked day", function() {
 
 test("week number click selects whole week", function () {
   createRangeCalendarWithFiveWeeks();
-  cal().find(".week").withText(18).click();
+  var weekNumber = cal().find(".week").withText(18);
+  mouseEvent("mouseDown", weekNumber);
+  mouseEvent("mouseUp", weekNumber);
   assertHasValues(".selected", [27,28,29,30,1,2,3]);
   equals(startFieldValue(), "4/27/2009");
   equals(endFieldValue(), "5/3/2009");
@@ -148,7 +150,9 @@ test("mouse click and drag works with no initial selection", function() {
 
 test("mouse click on month on range calendar selects whole month", function() {
   createBigCalendar();
-  cal().find(".month").withText("toukokuu").click();
+  var monthName = cal().find(".month").withText("toukokuu");
+  mouseEvent("mouseDown", monthName);
+  mouseEvent("mouseUp", monthName);
   equals(cal().find(".selected").size(), 31);
   equals(startFieldValue(), "1.5.2009");
   equals(endFieldValue(), "31.5.2009");
@@ -225,9 +229,13 @@ function cal(params) {
   return container;
 }
 
-function _mouseEvent(functionName, date, options) {
+function mouseEventOnDay(functionName, date, options) {
+  mouseEvent(functionName, cal().find(".date").withText(date), options);
+}
+
+function mouseEvent(functionName, elements, options) {
   var e = {
-    target:cal().find(".date").withText(date).get(0),
+    target:elements.get(0),
     preventDefault: function() {
       preventDefaultIsCalled = true;
     }
@@ -237,6 +245,7 @@ function _mouseEvent(functionName, date, options) {
   }
   cal().data(functionName)(e);
 }
+
 function clickWithShiftOnDay(date) {
   var options = {shiftKey:true};
   mouseDownOnDay(date, options);
@@ -244,14 +253,14 @@ function clickWithShiftOnDay(date) {
 }
 
 function mouseDownOnDay(date, options) {
-  _mouseEvent("mouseDown", date, options);
+  mouseEventOnDay("mouseDown", date, options);
 }
 function mouseMoveOnDay(date) {
-  _mouseEvent("mouseMove", date);
+  mouseEventOnDay("mouseMove", date);
 }
 
 function mouseUpOnDay(date, options) {
-  _mouseEvent("mouseUp", date, options);
+  mouseEventOnDay("mouseUp", date, options);
 }
 
 function calendarId() {

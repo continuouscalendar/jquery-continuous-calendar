@@ -11,7 +11,7 @@
       DRAG_EXPAND_END:"drag_expand_end",
       NONE:"none"
     };
-    
+
     var defaultParams = {
       weeksBefore: 26,
       weeksAfter: 26,
@@ -73,7 +73,7 @@
         daysContainer.append(rangeLengthLabel).append(" Päivää");
         container.append(daysContainer);
         bodyTable.addClass("range");
-        initRangeCalendarEvents();
+        bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
       } else {
         initSingleDateCalendarEvents();
       }
@@ -90,7 +90,7 @@
     }
 
     function setDefaultParams() {
-      if(params == undefined) params = {};
+      if (params == undefined) params = {};
       for (var i in defaultParams) {
         if (!(i in params)) {
           params[i] = defaultParams[i];
@@ -150,13 +150,7 @@
 
     function monthCell(firstDayOfWeek) {
       var th = $("<th>").addClass("month").addClass(backgroundBy(firstDayOfWeek));
-      if (isRange()) {
-        th.click(function() {
-          selection = new DateRange(firstDayOfWeek.firstDateOfMonth(), firstDayOfWeek.lastDateOfMonth());
-          updateTextFields();
-          selectRange();
-        });
-      }
+
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
         th.append(MONTHS[firstDayOfWeek.getMonth()]);
       } else if (firstDayOfWeek.getDate() <= WEEK_DAYS.length * 2 && firstDayOfWeek.getMonth() == 0) {
@@ -168,13 +162,7 @@
     function weekCell(firstDayOfWeek) {
       var weekNumber = $("<th>");
       weekNumber.addClass("week").addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear("ISO"));
-      if (isRange()) {
-        weekNumber.click(function () {
-          selection = new DateRange(firstDayOfWeek, firstDayOfWeek.plusDays(6));
-          updateTextFields();
-          selectRange();
-        });
-      }
+
       return weekNumber;
     }
 
@@ -203,26 +191,40 @@
       });
     }
 
-    function initRangeCalendarEvents() {
-      dateCells.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
-    }
-
     function mouseDown(e) {
       var elem = e.target;
-      mouseDownDate = elem.date;
-      if (mouseDownDate.equalsOnlyDate(selection.start)) {
-        status = Status.DRAG_EXPAND_START;
-      } else if (mouseDownDate.equalsOnlyDate(selection.end)) {
-        status = Status.DRAG_EXPAND_END;
-      } else if (selection.hasDate(mouseDownDate)) {
-        startMovingRange(mouseDownDate);
-      } else if (isEnabled(elem)) {
-        if (e.shiftKey) {
-          selection.expandTo(mouseDownDate);
-          selectRange();
+      if ($(elem).hasClass("date")) {
+        mouseDownDate = elem.date;
+        if (mouseDownDate.equalsOnlyDate(selection.start)) {
+          status = Status.DRAG_EXPAND_START;
+        } else if (mouseDownDate.equalsOnlyDate(selection.end)) {
+          status = Status.DRAG_EXPAND_END;
+        } else if (selection.hasDate(mouseDownDate)) {
+          startMovingRange(mouseDownDate);
+        } else if (isEnabled(elem)) {
+          if (e.shiftKey) {
+            selection.expandTo(mouseDownDate);
+            selectRange();
+            updateTextFields();
+          } else {
+            startCreatingRange($(elem));
+          }
+        }
+      } else if ($(elem).hasClass("week")) {
+        if (isRange()) {
+          console.log("week select");
+          var dayInWeek = $(elem).next().get(0).date;
+          selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
           updateTextFields();
-        } else {
-          startCreatingRange($(elem));
+          selectRange();
+        }
+      } else if ($(elem).hasClass("month")) {
+        if (isRange()) {
+          var dayInMonth = $(elem).next().next().get(0).date;
+          selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
+          updateTextFields();
+          selectRange();
+
         }
       }
       e.preventDefault();
