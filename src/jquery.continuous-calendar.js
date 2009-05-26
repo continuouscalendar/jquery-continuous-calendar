@@ -193,7 +193,7 @@
 
     function mouseDown(e) {
       var elem = e.target;
-      if ($(elem).hasClass("date")) {
+      if (isDateCell(elem)) {
         mouseDownDate = elem.date;
         if (mouseDownDate.equalsOnlyDate(selection.start)) {
           status = Status.DRAG_EXPAND_START;
@@ -210,24 +210,31 @@
             startCreatingRange($(elem));
           }
         }
-      } else if ($(elem).hasClass("week")) {
-        if (isRange()) {
-          console.log("week select");
-          var dayInWeek = $(elem).next().get(0).date;
-          selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
-          updateTextFields();
-          selectRange();
-        }
-      } else if ($(elem).hasClass("month")) {
-        if (isRange()) {
-          var dayInMonth = $(elem).next().next().get(0).date;
-          selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
-          updateTextFields();
-          selectRange();
-
-        }
+      } else if (isWeekCell(elem)) {
+        var dayInWeek = $(elem).siblings(".date").get(0).date;
+        selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
+        updateTextFields();
+        selectRange();
+      } else if (isMonthCell(elem)) {
+        var dayInMonth = $(elem).siblings(".date").get(0).date;
+        selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
+        updateTextFields();
+        selectRange();
       }
       e.preventDefault();
+      e.cancelBubble = true;
+    }
+
+    function isDateCell(elem) {
+      return $(elem).hasClass("date");
+    }
+
+    function isWeekCell(elem) {
+      return $(elem).hasClass("week");
+    }
+
+    function isMonthCell(elem) {
+      return $(elem).hasClass("month");
     }
 
     function isEnabled(elem) {
@@ -261,6 +268,8 @@
             break;
         }
       }
+      e.preventDefault();
+      e.cancelBubble = true;
     }
 
     function mouseUp(e) {
@@ -287,6 +296,8 @@
       } else {
         status = Status.NONE;
       }
+      e.preventDefault();
+      e.cancelBubble = true;
     }
 
     function startMovingRange(date) {
