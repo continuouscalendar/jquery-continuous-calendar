@@ -191,8 +191,8 @@
       });
     }
 
-    function mouseDown(e) {
-      var elem = e.target;
+    function mouseDown(event) {
+      var elem = event.target;
       if (isDateCell(elem)) {
         mouseDownDate = elem.date;
         if (mouseDownDate.equalsOnlyDate(selection.start)) {
@@ -202,7 +202,7 @@
         } else if (selection.hasDate(mouseDownDate)) {
           startMovingRange(mouseDownDate);
         } else if (isEnabled(elem)) {
-          if (e.shiftKey) {
+          if (event.shiftKey) {
             selection.expandTo(mouseDownDate);
             selectRange();
             updateTextFields();
@@ -221,8 +221,8 @@
         updateTextFields();
         selectRange();
       }
-      e.preventDefault();
-      e.cancelBubble = true;
+      event.preventDefault();
+      event.cancelBubble = true;
     }
 
     function isDateCell(elem) {
@@ -241,9 +241,9 @@
       return !$(elem).hasClass("disabled");
     }
 
-    function mouseMove(e) {
-      var date = e.target.date;
-      if (isEnabled(e.target)) {
+    function mouseMove(event) {
+      var date = event.target.date;
+      if (isEnabled(event.target)) {
         switch (status) {
           case Status.MOVE:
             moveRange(date);
@@ -268,19 +268,19 @@
             break;
         }
       }
-      e.preventDefault();
-      e.cancelBubble = true;
+      event.preventDefault();
+      event.cancelBubble = true;
     }
 
-    function mouseUp(e) {
-      if (isEnabled(e.target)) {
+    function mouseUp(event) {
+      if (isEnabled(event.target)) {
         switch (status) {
           case Status.MOVE:
             updateTextFields();
             status = Status.NONE;
             break;
           case Status.CREATE:
-            selection = new DateRange(mouseDownDate, e.target.date);
+            selection = new DateRange(mouseDownDate, event.target.date);
             status = Status.NONE;
             selectRange();
             updateTextFields();
@@ -296,8 +296,8 @@
       } else {
         status = Status.NONE;
       }
-      e.preventDefault();
-      e.cancelBubble = true;
+      event.preventDefault();
+      event.cancelBubble = true;
     }
 
     function startMovingRange(date) {

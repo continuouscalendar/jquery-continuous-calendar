@@ -17,11 +17,9 @@
  * @author Eero Anttila (eeroan)
  */
 
-.calendarScrollContent {
-  overflow-y: auto;
-  width: 215px;
-  height: 100px;
-  border: 1px solid #999999;
+
+.continuousCalendar {
+
 }
 
 .continuousCalendar table {
@@ -38,15 +36,23 @@
   border-bottom: none;
   text-align: center;
   margin-left: 1px;
+  position:relative;
 }
 
 .continuousCalendar .calendarHeader .weekDay,
   .continuousCalendar .calendarBody td {
   text-align: right;
-  background-color: white;
   width: 13px;
   padding: 1px;
   padding-right: 3px;
+}
+
+.calendarScrollContent {
+  overflow-y: auto;
+  width: 215px;
+  height: 100px;
+  border: 1px solid #999999;
+  position:relative;
 }
 
 .continuousCalendar .calendarBody td {
