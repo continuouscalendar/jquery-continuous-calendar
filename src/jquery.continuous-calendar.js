@@ -74,6 +74,7 @@
         container.append(daysContainer);
         bodyTable.addClass("range");
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
+        disableTextSelection(bodyTable.get(0));
       } else {
         initSingleDateCalendarEvents();
       }
@@ -221,8 +222,6 @@
         updateTextFields();
         selectRange();
       }
-      event.preventDefault();
-      event.cancelBubble = true;
     }
 
     function isDateCell(elem) {
@@ -268,8 +267,6 @@
             break;
         }
       }
-      event.preventDefault();
-      event.cancelBubble = true;
     }
 
     function mouseUp(event) {
@@ -296,8 +293,6 @@
       } else {
         status = Status.NONE;
       }
-      event.preventDefault();
-      event.cancelBubble = true;
     }
 
     function startMovingRange(date) {
@@ -358,6 +353,20 @@
         return Date.parseDate(field.val(), params.dateFormat);
       else
         return null;
+    }
+
+    function disableTextSelection(elem) {
+      if ($.browser.mozilla) {//Firefox
+        $(elem).css('MozUserSelect', 'none');
+      } else if ($.browser.msie) {//IE
+        $(elem).bind('selectstart', function() {
+          return false;
+        });
+      } else {//Opera, etc.
+        $(elem).mousedown(function() {
+          return false;
+        });
+      }
     }
 
   };
