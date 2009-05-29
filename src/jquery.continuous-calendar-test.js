@@ -232,7 +232,7 @@ function mouseEventOnDay(functionName, date, options) {
 
 function mouseEvent(functionName, elements, options) {
   var e = {
-    target:elements.get(0),
+    target:elements.get(0)
   };
   for (var i in options) {
     e[i] = options[i];
