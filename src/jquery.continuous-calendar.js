@@ -17,7 +17,8 @@
       weeksAfter: 26,
       dateFormat: Date.patterns.ShortDatePattern,
       startField: this.find("input.startDate"),
-      endField: this.find("input.endDate")
+      endField: this.find("input.endDate"),
+      isPopup: false
     };
 
     setDefaultParams();
@@ -64,22 +65,28 @@
       var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
       container.append(calendar);
       dateCells = calendarContainer.find('.date');
-      dateCellDates = dateCells.map(function() {
-        return this.date;
-      });
+      dateCellDates = dateCells.map(function() { return this.date; });
       if (isRange()) {
-        var daysContainer = $("<em>");
-        rangeLengthLabel.text(selection.days());
-        daysContainer.append(rangeLengthLabel).append(" Päivää");
-        container.append(daysContainer);
-        bodyTable.addClass("range");
-        bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
-        disableTextSelection(bodyTable.get(0));
+        initRangeCalendarEvents(container, bodyTable);
       } else {
         initSingleDateCalendarEvents();
       }
       averageCellHeight = parseInt(bodyTable.height() / bodyTable.find("tr").size());
       yearTitle = headerTable.find("th.month");
+      setScrollBehaviors(scrollContent);
+    }
+
+    function initRangeCalendarEvents(container, bodyTable) {
+      var daysContainer = $("<em>");
+      rangeLengthLabel.text(selection.days());
+      daysContainer.append(rangeLengthLabel).append(" Päivää");
+      container.append(daysContainer);
+      bodyTable.addClass("range");
+      bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
+      disableTextSelection(bodyTable.get(0));
+    }
+
+    function setScrollBehaviors(scrollContent) {
       scrollContent.scroll(function() {
         setYearLabel(this);
       });
