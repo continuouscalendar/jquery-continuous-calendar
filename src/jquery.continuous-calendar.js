@@ -107,11 +107,12 @@
     }
 
     function headerRow() {
-      var thead = $("<thead>").append(yearCell());
-      thead.append('<th class="week"></th>');
+      var tr = $("<tr>").append(yearCell());
+      var thead = $("<thead>").append(tr);
+      tr.append('<th class="week"></th>');
       $(WEEK_DAYS).each(function() {
         var weekDay = $('<th>').append(this.toString()).addClass("weekDay");
-        thead.append(weekDay);
+        tr.append(weekDay);
       });
       return thead;
 

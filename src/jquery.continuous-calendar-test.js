@@ -44,13 +44,14 @@ test("shows month name on first row of full week", function() {
   equals(secondMonth.next().next().text(), "1");
 });
 
-test("highlights current date and shows year for janary", function() {
+test("highlights current date and shows year for january", function() {
   var today = new Date();
   createBigCalendar();
   var cells = cal().find(".today");
   equals(cells.size(), 1);
   equals(cells.text(), today.getDate());
-  equals(cal().find(".month").withText("tammikuu").parent().next().find(".month").text(), "2009");
+  var year = cal().find(".month").withText("tammikuu").eq(0).parent().next().find(".month").text();
+  ok(parseInt(year) == new Date().getFullYear());
 });
 
 test("highlights selected date", function() {
@@ -271,7 +272,7 @@ function createRangeCalendarWithFiveWeeks() {
 }
 function createBigCalendar() {
   var todayText = new Date().dateFormat(Date.patterns.FiShortDatePattern);
-  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 20,weeksAfter: 20, dateFormat: Date.patterns.FiShortDatePattern});
+  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 30,weeksAfter: 30, dateFormat: Date.patterns.FiShortDatePattern});
 }
 
 function createBigCalendarForSingleDate() {
