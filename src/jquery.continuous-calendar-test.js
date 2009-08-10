@@ -34,8 +34,7 @@ test("lists given number of weeks after given date", function() {
 
 test("shows month name on first row of full week", function() {
   cal({startDate: "4/30/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 5});
-  var months = cal().find(" tbody .month");
-  equals(months.size(), 6);
+  var months = cal().find("tbody .month");
   var firstMonth = months.eq(1);
   equals(firstMonth.text(), "toukokuu");
   equals(firstMonth.next().next().text(), "4");
@@ -272,7 +271,7 @@ function createRangeCalendarWithFiveWeeks() {
 }
 function createBigCalendar() {
   var todayText = new Date().dateFormat(Date.patterns.FiShortDatePattern);
-  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 30,weeksAfter: 30, dateFormat: Date.patterns.FiShortDatePattern});
+  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30, dateFormat: Date.patterns.FiShortDatePattern});
 }
 
 function createBigCalendarForSingleDate() {

@@ -63,9 +63,20 @@
       var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody());
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
       var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
+      if (params.isPopup) {
+        //calendar.hide();
+        calendar.css({position:"absolute", "z-index":99});
+        var icon = $('<a href="#" class="calendarIcon"><span>kalenteri</span></a>').click(function() {
+          calendar.show();
+          return false;
+        });
+        container.append(icon);
+      }
       container.append(calendar);
       dateCells = calendarContainer.find('.date');
-      dateCellDates = dateCells.map(function() { return this.date; });
+      dateCellDates = dateCells.map(function() {
+        return this.date;
+      });
       if (isRange()) {
         initRangeCalendarEvents(container, bodyTable);
       } else {
@@ -74,13 +85,14 @@
       averageCellHeight = parseInt(bodyTable.height() / bodyTable.find("tr").size());
       yearTitle = headerTable.find("th.month");
       setScrollBehaviors(scrollContent);
+      if(params.isPopup) calendar.hide();
     }
 
     function initRangeCalendarEvents(container, bodyTable) {
       var daysContainer = $("<em>");
       rangeLengthLabel.text(selection.days());
       daysContainer.append(rangeLengthLabel).append(" Päivää");
-      container.append(daysContainer);
+      container.find(".continuousCalendar").append(daysContainer);
       bodyTable.addClass("range");
       bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
       disableTextSelection(bodyTable.get(0));
@@ -121,6 +133,14 @@
         var weekDay = $('<th>').append(this.toString()).addClass("weekDay");
         tr.append(weekDay);
       });
+      if (params.isPopup) {
+        var close = $('<th><a href="#"><span>sulje</span></a>');
+        close.find("a").click(function() {
+          $(this).parents(".continuousCalendar").hide();
+          return false;
+        });
+        tr.append(close);
+      }
       return thead;
 
       function yearCell() {

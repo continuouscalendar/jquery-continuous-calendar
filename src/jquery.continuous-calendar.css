@@ -17,9 +17,21 @@
  * @author Eero Anttila (eeroan)
  */
 
-
 .continuousCalendar {
+  clear: both;
+  background: white;
+}
 
+a.calendarIcon span {
+  display: none;
+}
+
+a.calendarIcon {
+  display: block;
+  background: url("calendar.gif") no-repeat 0 0;
+  width: 16px;
+  height: 16px;
+  float: left;
 }
 
 .continuousCalendar table {
@@ -36,7 +48,18 @@
   border-bottom: none;
   text-align: center;
   margin-left: 1px;
-  position:relative;
+  position: relative;
+}
+
+.continuousCalendar .calendarHeader a {
+  background: url("close.gif") no-repeat 0 0;
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.continuousCalendar .calendarHeader a span {
+  display: none;
 }
 
 .continuousCalendar .calendarHeader .weekDay,
@@ -52,7 +75,7 @@
   width: 215px;
   height: 100px;
   border: 1px solid #999999;
-  position:relative;
+  position: relative;
 }
 
 .continuousCalendar .calendarBody td {
@@ -138,6 +161,7 @@ input.endDate,
   margin-right: 5px;
   margin-bottom: 5px;
 }
+
 .continuousCalendar td.disabled {
-  color:gray;
+  color: gray;
 }

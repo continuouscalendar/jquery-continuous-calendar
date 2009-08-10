@@ -15,6 +15,9 @@
       border:none;
       background:none;
     }
+    #singleDate1, #singleDate2, #range1, #range2 {
+    position:relative;
+    }
   </style>
 </head>
 <body>
@@ -57,7 +60,7 @@
 <script type="text/javascript" language="JavaScript">
   $("#singleDate1").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
   $("#singleDate2").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
-  $("#range1").continuousCalendar({firstDate:"2/15/2009",lastDate:"9/10/2009"});
+  $("#range1").continuousCalendar({firstDate:"2/15/2009",lastDate:"9/10/2009", isPopup:true});
   $("#range2").continuousCalendar({weeksBefore: 30,weeksAfter: 30, dateFormat: Date.patterns.FiShortDatePattern});
 </script>
 </body>
