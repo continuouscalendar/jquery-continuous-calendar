@@ -38,6 +38,7 @@
     var calendarRange;
     var status = Status.NONE;
 
+
     createCalendar(this);
 
     this.data("mouseDown", mouseDown);
@@ -72,6 +73,12 @@
         });
         container.append(icon);
       }
+      var dateLabelContainer = $('<div class="label">');
+      dateLabelContainer.append('<span class="startDateLabel"/>');
+      if(isRange()) {
+        dateLabelContainer.append(' - <span class="endDateLabel"/>');
+      }
+      container.append(dateLabelContainer);
       container.append(calendar);
       dateCells = calendarContainer.find('.date');
       dateCellDates = dateCells.map(function() {
@@ -96,6 +103,8 @@
       bodyTable.addClass("range");
       bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
       disableTextSelection(bodyTable.get(0));
+      setStartLabel(params.startField.val());
+      setEndLabel(params.endField.val())
     }
 
     function setScrollBehaviors(scrollContent) {
@@ -135,10 +144,7 @@
       });
       if (params.isPopup) {
         var close = $('<th><a href="#"><span>sulje</span></a>');
-        close.find("a").click(function() {
-          $(this).parents(".continuousCalendar").hide();
-          return false;
-        });
+        close.find("a").click(hideCalendar);
         tr.append(close);
       }
       return thead;
@@ -148,6 +154,10 @@
       }
     }
 
+    function hideCalendar() {
+      $(this).parents(".continuousCalendar").hide();
+      return false;
+    }
     function calendarBody() {
       var tbody = $("<tbody>");
       var currentMonday = calendarRange.start.getFirstDateOfWeek(Date.MONDAY);
@@ -216,8 +226,14 @@
         dateCells.removeClass("selected");
         var dateCell = $(this);
         dateCell.addClass("selected");
-        params.startField.val(dateCell.get(0).date.dateFormat(params.dateFormat));
+        var formattedDate = dateCell.get(0).date.dateFormat(params.dateFormat);
+        params.startField.val(formattedDate);
+        setStartLabel(formattedDate);
+        if (params.isPopup) {
+          hideCalendar.call(this);
+        }
       });
+      setStartLabel(params.startField.val());
     }
 
     function mouseDown(event) {
@@ -368,9 +384,17 @@
     }
 
     function updateTextFields() {
-      params.startField.val(selection.start.dateFormat(params.dateFormat));
-      params.endField.val(selection.end.dateFormat(params.dateFormat));
+      var formattedStart = selection.start.dateFormat(params.dateFormat);
+      var formattedEnd = selection.end.dateFormat(params.dateFormat);
+      params.startField.val(formattedStart);
+      params.endField.val(formattedEnd);
+      setStartLabel(formattedStart);
+      setEndLabel(formattedEnd);
+
     }
+
+    function setStartLabel(val) { calendarContainer.find("span.startDateLabel").text(val);}
+    function setEndLabel(val) { calendarContainer.find("span.endDateLabel").text(val);}
 
     function isRange() {
       return params.endField && params.endField.length > 0;

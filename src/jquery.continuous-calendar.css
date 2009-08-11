@@ -157,11 +157,21 @@ a.calendarIcon {
 
 input.endDate,
   input.startDate {
-  width: 7em;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  display:none;
 }
 
 .continuousCalendar td.disabled {
   color: gray;
+}
+
+div.label {
+  height:1em;
+  margin-left:5pt;
+  margin-bottom:2pt;
+  float:left;
+
+}
+
+div.label span {
+  font-size: 10pt;
 }

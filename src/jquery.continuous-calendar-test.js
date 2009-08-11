@@ -102,6 +102,7 @@ test("highlights and selects clicked day", function() {
   cal().find(".date:eq(1)").click();
   equals(cal().find(".selected").text(), "29");
   equals(startFieldValue(), "4/29/2008");
+  equals(startLabelValue(), "4/29/2008");
 });
 
 test("week number click selects whole week", function () {
@@ -281,7 +282,9 @@ function createBigCalendarForSingleDate() {
 function startFieldValue() {
   return cal().find("input.startDate").val();
 }
-
+function startLabelValue() {
+  return cal().find("span.startDateLabel").text();
+}
 function endFieldValue() {
   return cal().find("input.endDate").val();
 }

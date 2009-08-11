@@ -9,48 +9,54 @@
   <link rel="stylesheet" href="jquery.continuous-calendar.css" type="text/css" media="screen" />
   <style type="text/css">
     .calendarScrollContent {
-      height:250px;
+      height: 250px;
     }
+
     input {
-      border:none;
-      background:none;
+      border: none;
+      background: none;
     }
-    #singleDate1, #singleDate2, #range1, #range2 {
-    position:relative;
+
+    #singleDate1, #singleDate2,#singleDate3, #range1, #range2 {
+      position: relative;
+      clear: both;
+    }
+
+    h2 {
+      clear: both;
+    }
+
+    #range1 .continuousCalendar, #singleDate3 .continuousCalendar {
+      top: 15pt;
     }
   </style>
 </head>
 <body>
-
 <h1>Examples of using continuous caledar</h1>
-
 <form action="" method="get">
-
   <h2>Single date select</h2>
-
   <div id="singleDate1">
     <input type="text" class="startDate" name="singleDate1" />
   </div>
-
   <h2>Single date select with value</h2>
-
   <div id="singleDate2">
-    <input type="text" class="startDate" name="singleDate2" value="5/15/2009" disabled="disabled"/>
+    <input type="text" class="startDate" name="singleDate2" value="5/15/2009" disabled="disabled" />
   </div>
-
-  <h2>Range select</h2>
-
+  <h2>Single date select popup</h2>
+  <div id="singleDate3">
+    <input type="hidden" class="startDate" name="singleDate3"  />
+  </div>
+  <h2>Range select popup</h2>
   <div id="range1">
-    <input type="text" class="startDate" name="range1_start" disabled="disabled" /> - 
-    <input type="text" class="endDate" name="range1_end"  disabled="disabled"/>
+    <input type="text" class="startDate" name="range1_start" disabled="disabled" />
+    <input type="text" class="endDate" name="range1_end" disabled="disabled" />
   </div>
-
   <h2>Range select with initial day</h2>
-
   <div id="range2">
-    <input type="text" class="startDate" name="range1_start" value="13.5.2009" disabled="disabled"/> -
-    <input type="text" class="endDate" name="range1_end" value="23.5.2009" disabled="disabled"/>
+    <input type="text" class="startDate" name="range1_start" value="13.5.2009" disabled="disabled" />
+    <input type="text" class="endDate" name="range1_end" value="23.5.2009" disabled="disabled" />
   </div>
+
 </form>
 <script type="text/javascript" src="jquery-1.3.2.js"></script>
 <script type="text/javascript" src="date.js"></script>
@@ -60,6 +66,7 @@
 <script type="text/javascript" language="JavaScript">
   $("#singleDate1").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
   $("#singleDate2").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
+  $("#singleDate3").continuousCalendar({weeksBefore: 60,weeksAfter: 1, isPopup: true, dateFormat: Date.patterns.FiShortDatePattern});
   $("#range1").continuousCalendar({firstDate:"2/15/2009",lastDate:"9/10/2009", isPopup:true});
   $("#range2").continuousCalendar({weeksBefore: 30,weeksAfter: 30, dateFormat: Date.patterns.FiShortDatePattern});
 </script>
