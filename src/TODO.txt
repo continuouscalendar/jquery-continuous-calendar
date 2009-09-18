@@ -1,7 +1,5 @@
-TODO enable popup
-TODO hide text fields and show labels for selection
 TODO enable drag on weeks and months
 TODO authoring concerns http://docs.jquery.com/Plugins/Authoring
-TODO testing with different browsers
 TODO BUG IE6, IE7: Move cursor and expand-cursor not showing
 TODO scroll while dragging
+TODO test autoscroll with different browsers
