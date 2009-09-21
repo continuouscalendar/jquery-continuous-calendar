@@ -63,7 +63,8 @@
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
       var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody());
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
-      var calendar = $("<div>").addClass("continuousCalendar").append(headerTable).append(scrollContent);
+      var calendar = getCalendarContainer(container);
+      calendar.append(headerTable).append(scrollContent);
       if (params.isPopup) {
         //calendar.hide();
         calendar.css({position:"absolute", "z-index":99});
@@ -92,6 +93,11 @@
       yearTitle = headerTable.find("th.month");
       setScrollBehaviors(scrollContent);
       if(params.isPopup) calendar.hide();
+    }
+
+    function getCalendarContainer(container) {
+      var existingContainer = container.find(".continuousCalendar");
+      return existingContainer.exists() ? existingContainer : $("<div>").addClass("continuousCalendar");
     }
 
     function addDateLabels(container) {
