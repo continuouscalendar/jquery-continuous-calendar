@@ -18,12 +18,19 @@
       dateFormat: Date.patterns.ShortDatePattern,
       startField: this.find("input.startDate"),
       endField: this.find("input.endDate"),
-      isPopup: false
+      isPopup: false,
+      selectToday: false
     };
 
     setDefaultParams();
 
     var rangeLengthLabel = $("<span>");
+
+    if(params.selectToday) {
+      var formattedToday = formatDate(new Date());
+      setStartField(formattedToday);
+      setEndField(formattedToday);
+    }
     var startDate = fieldDate(params.startField);
     var endDate = fieldDate(params.endField);
     var firstWeekdayOfGivenDate = (startDate || new Date()).getFirstDateOfWeek(Date.MONDAY);
@@ -403,15 +410,17 @@
     }
 
     function updateTextFields() {
-      var formattedStart = selection.start.dateFormat(params.dateFormat);
-      var formattedEnd = selection.end.dateFormat(params.dateFormat);
-      params.startField.val(formattedStart);
-      params.endField.val(formattedEnd);
+      var formattedStart = formatDate(selection.start);
+      var formattedEnd = formatDate(selection.end);
+      setStartField(formattedStart);
+      setEndField(formattedEnd);
       setStartLabel(formattedStart);
       setEndLabel(formattedEnd);
-
     }
 
+    function setStartField(value) {params.startField.val(value);}
+    function setEndField(value) {params.endField.val(value);}
+    function formatDate(date) {return date.dateFormat(params.dateFormat);}
     function setStartLabel(val) { calendarContainer.find("span.startDateLabel").text(val);}
     function setEndLabel(val) { calendarContainer.find("span.endDateLabel").text(val);}
 

@@ -195,6 +195,11 @@ test("range has default of on year per direction", function() {
   equals(cal().find(".date").size(),7*(26*2+1));
 });
 
+test("range has current day selected as default when configured so", function() {
+  cal({startDate: "", endDate: ""}).continuousCalendar({weeksBefore:2, weeksAfter:2, selectToday:true});
+  equals(cal().find('.selected').size(), 1);
+});
+
 var testIndex = 0;
 
 function createCalendarContainer() {
