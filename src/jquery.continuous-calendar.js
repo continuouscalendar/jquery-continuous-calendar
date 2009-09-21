@@ -73,12 +73,11 @@
         });
         container.append(icon);
       }
-      var dateLabelContainer = $('<div class="label">');
-      dateLabelContainer.append('<span class="startDateLabel"/>');
-      if(isRange()) {
-        dateLabelContainer.append('<span class="separator">').append('<span class="endDateLabel"/>');
+
+      if(container.find('.startDateLabel').isEmpty()) {
+        addDateLabels(container);
       }
-      container.append(dateLabelContainer);
+
       container.append(calendar);
       dateCells = calendarContainer.find('.date');
       dateCellDates = dateCells.map(function() {
@@ -93,6 +92,15 @@
       yearTitle = headerTable.find("th.month");
       setScrollBehaviors(scrollContent);
       if(params.isPopup) calendar.hide();
+    }
+
+    function addDateLabels(container) {
+      var dateLabelContainer = $('<div class="label">');
+      dateLabelContainer.append('<span class="startDateLabel"/>');
+      if (isRange()) {
+        dateLabelContainer.append('<span class="separator">').append('<span class="endDateLabel"/>');
+      }
+      container.append(dateLabelContainer);
     }
 
     function initRangeCalendarEvents(container, bodyTable) {
@@ -423,6 +431,14 @@
 
   };
 })(jQuery);
+
+$.fn.exists = function() {
+  return this.length > 0;
+};
+
+$.fn.isEmpty = function() {
+  return this.length == 0;
+};
 
 function DateRange(date1, date2) {
   if (!date1 || !date2) {
