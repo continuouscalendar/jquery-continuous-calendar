@@ -79,7 +79,6 @@
         addDateLabels(container);
       }
 
-      container.append(calendar);
       dateCells = calendarContainer.find('.date');
       dateCellDates = dateCells.map(function() {
         return this.date;
@@ -97,7 +96,13 @@
 
     function getCalendarContainer(container) {
       var existingContainer = container.find(".continuousCalendar");
-      return existingContainer.exists() ? existingContainer : $("<div>").addClass("continuousCalendar");
+      if(existingContainer.exists()) {
+        return existingContainer;
+      } else {
+        var newContainer = $("<div>").addClass("continuousCalendar");
+        container.append(newContainer);
+        return newContainer;
+      }
     }
 
     function addDateLabels(container) {
