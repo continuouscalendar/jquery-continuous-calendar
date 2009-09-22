@@ -1,5 +1,15 @@
 (function($) {
-  $.fn.continuousCalendar = function(params) {
+  $.fn.continuousCalendar = function(options) {
+    var defaults = {
+      weeksBefore: 26,
+      weeksAfter: 26,
+      dateFormat: Date.patterns.ShortDatePattern,
+      startField: this.find("input.startDate"),
+      endField: this.find("input.endDate"),
+      isPopup: false,
+      selectToday: false
+    };
+    var params = $.extend(defaults, options);
     var WEEK_DAYS = ["ma", "ti", "ke", "to", "pe", "la", "su"];
     var MONTHS = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu",
       "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
@@ -12,17 +22,6 @@
       NONE:"none"
     };
 
-    var defaultParams = {
-      weeksBefore: 26,
-      weeksAfter: 26,
-      dateFormat: Date.patterns.ShortDatePattern,
-      startField: this.find("input.startDate"),
-      endField: this.find("input.endDate"),
-      isPopup: false,
-      selectToday: false
-    };
-
-    setDefaultParams();
 
     var rangeLengthLabel = $("<span>");
 
@@ -135,15 +134,6 @@
       var selected = scrollContent.find(".today, .selected").get(0);
       if (selected) {
         scrollContent.scrollTop(selected.offsetTop - (scrollContent.height() - selected.offsetHeight) / 2);
-      }
-    }
-
-    function setDefaultParams() {
-      if (params == undefined) params = {};
-      for (var i in defaultParams) {
-        if (!(i in params)) {
-          params[i] = defaultParams[i];
-        }
       }
     }
 
