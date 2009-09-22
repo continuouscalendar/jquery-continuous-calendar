@@ -200,6 +200,11 @@ test("range has current day selected as default when configured so", function() 
   equals(cal().find('.selected').size(), 1);
 });
 
+test("range can be specified with weeks and dates mixed", function() {
+  cal({startDate: "", endDate: ""}).continuousCalendar({weeksBefore:20, lastDate:'today'});
+  equals(cal().find('.week').length, 22);
+});
+
 var testIndex = 0;
 
 function createCalendarContainer() {

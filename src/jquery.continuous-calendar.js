@@ -45,7 +45,6 @@
     var calendarRange;
     var status = Status.NONE;
 
-
     createCalendar(this);
 
     this.data("mouseDown", mouseDown);
@@ -58,14 +57,9 @@
       } else {
         selection = DateRange.emptyRange();
       }
-      //TODO fix logic; smart defaults
-      if ("firstDate" in params && "lastDate" in params) {
-        calendarRange = DateRange.parse(params.firstDate, params.lastDate, params.dateFormat);
-      } else {
-        var rangeStart = firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * WEEK_DAYS.length));
-        var rangeEnd = firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length - 1);
-        calendarRange = new DateRange(rangeStart, rangeEnd);
-      }
+      var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * WEEK_DAYS.length));
+      var rangeEnd = "lastDate" in params ? Date.parseDate(params.lastDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length - 1);
+      calendarRange = new DateRange(rangeStart, rangeEnd);
 
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
       var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody());
@@ -130,7 +124,7 @@
       bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
       disableTextSelection(bodyTable.get(0));
       setStartLabel(params.startField.val());
-      setEndLabel(params.endField.val())
+      setEndLabel(params.endField.val());
     }
 
     function setScrollBehaviors(scrollContent) {
@@ -511,7 +505,5 @@ DateRange.emptyRange = function() {
   return new NullDateRange();
 };
 DateRange.parse = function(dateStr1, dateStr2, dateFormat) {
-  var date1 = dateStr1 == "today" ? new Date() : Date.parseDate(dateStr1, dateFormat);
-  var date2 = dateStr2 == "today" ? new Date() : Date.parseDate(dateStr2, dateFormat);
-  return new DateRange(date1, date2);
+  return new DateRange(Date.parseDate(dateStr1, dateFormat), Date.parseDate(dateStr2, dateFormat));
 };
