@@ -316,13 +316,12 @@
             selectRange();
             break;
           case Status.DRAG_EXPAND_START:
+            case Status.DRAG_EXPAND_END:
             if (date.compareTo(selection.end) < 0) {
               selection = new DateRange(date, selection.end);
               selectRange();
             }
-            break;
-          case Status.DRAG_EXPAND_END:
-            if (date.compareTo(selection.start) > 0) {
+            else if (date.compareTo(selection.start) > 0) {
               selection = new DateRange(selection.start, date);
               selectRange();
             }
