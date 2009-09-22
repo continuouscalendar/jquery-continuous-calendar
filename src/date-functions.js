@@ -403,6 +403,7 @@ Date.patterns = {
   ISO8601ShortPattern:"Y-m-d",
   ShortDatePattern: "n/j/Y",
   FiShortDatePattern: "j.n.Y",
+  FiWeekdayDatePattern: "D j.n.Y",
   LongDatePattern: "l, F d, Y",
   FullDateTimePattern: "l, F d, Y g:i:s A",
   MonthDayPattern: "F d",
