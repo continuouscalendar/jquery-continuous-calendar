@@ -205,6 +205,19 @@ test("range can be specified with weeks and dates mixed", function() {
   equals(cal().find('.week').length, 22);
 });
 
+test("calendar executes callback-function when range is created or changed", function() {
+  function testFunction(range) {
+    window.calendarCallBack = range.days();
+  }
+  cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"4/26/2009", lastDate:"5/2/2009", callback:testFunction});
+  equals(window.calendarCallBack, 0);
+  mouseDownOnDay(28);
+  mouseMoveOnDay(29);
+  mouseUpOnDay(29);
+  equals(window.calendarCallBack, 2);
+
+});
+
 var testIndex = 0;
 
 function createCalendarContainer() {

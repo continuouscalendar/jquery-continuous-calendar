@@ -7,7 +7,8 @@
       startField: this.find("input.startDate"),
       endField: this.find("input.endDate"),
       isPopup: false,
-      selectToday: false
+      selectToday: false,
+      callback: function(){}
     };
     var params = $.extend(defaults, options);
     var WEEK_DAYS = ["ma", "ti", "ke", "to", "pe", "la", "su"];
@@ -92,6 +93,7 @@
       yearTitle = headerTable.find("th.month");
       setScrollBehaviors(scrollContent);
       if(params.isPopup) calendar.hide();
+      params.callback(selection);
     }
 
     function getCalendarContainer(container) {
@@ -399,6 +401,7 @@
       setEndField(formattedEnd);
       setStartLabel(formattedStart);
       setEndLabel(formattedEnd);
+      params.callback(selection);
     }
 
     function setStartField(value) {params.startField.val(value);}
