@@ -34,7 +34,7 @@
     var startDate = fieldDate(params.startField);
     var endDate = fieldDate(params.endField);
     var firstWeekdayOfGivenDate = (startDate || new Date()).getFirstDateOfWeek(Date.MONDAY);
-    var calendarContainer = this;
+    var container = this;
     var dateCells = null;
     var dateCellDates = null;
     var moveStartDate = null;
@@ -45,13 +45,12 @@
     var calendarRange;
     var status = Status.NONE;
 
-    createCalendar(this);
-
+    createCalendar();
     this.data("mouseDown", mouseDown);
     this.data("mouseMove", mouseMove);
     this.data("mouseUp", mouseUp);
 
-    function createCalendar(container) {
+    function createCalendar() {
       if (startDate && endDate) {
         selection = new DateRange(startDate, endDate);
       } else {
@@ -64,7 +63,7 @@
       var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
       var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody());
       var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
-      var calendar = getCalendarContainer(container);
+      var calendar = getCalendarContainerOrCreateOne();
       calendar.append(headerTable).append(scrollContent);
       if (params.isPopup) {
         //calendar.hide();
@@ -80,7 +79,7 @@
         addDateLabels(container);
       }
 
-      dateCells = calendarContainer.find('.date');
+      dateCells = container.find('.date');
       dateCellDates = dateCells.map(function() {
         return this.date;
       });
@@ -93,10 +92,10 @@
       yearTitle = headerTable.find("th.month");
       setScrollBehaviors(scrollContent);
       if(params.isPopup) calendar.hide();
-      params.callback(selection);
+      params.callback.call(container, selection);
     }
 
-    function getCalendarContainer(container) {
+    function getCalendarContainerOrCreateOne() {
       var existingContainer = container.find(".continuousCalendar");
       if(existingContainer.exists()) {
         return existingContainer;
@@ -401,14 +400,14 @@
       setEndField(formattedEnd);
       setStartLabel(formattedStart);
       setEndLabel(formattedEnd);
-      params.callback(selection);
+      params.callback.call(container, selection);
     }
 
     function setStartField(value) {params.startField.val(value);}
     function setEndField(value) {params.endField.val(value);}
     function formatDate(date) {return date.dateFormat(params.dateFormat);}
-    function setStartLabel(val) { calendarContainer.find("span.startDateLabel").text(val);}
-    function setEndLabel(val) { calendarContainer.find("span.endDateLabel").text(val);}
+    function setStartLabel(val) { container.find("span.startDateLabel").text(val);}
+    function setEndLabel(val) { container.find("span.endDateLabel").text(val);}
 
     function isRange() {
       return params.endField && params.endField.length > 0;
