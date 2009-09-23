@@ -448,14 +448,25 @@ $.fn.isEmpty = function() {
 };
 
 function DateRange(date1, date2) {
+  var times = false;
   if (!date1 || !date2) {
     throw("two dates must be specified, date1=" + date1 + ", date2=" + date2);
   }
   this.start = date1.compareTo(date2) > 0 ? date2 : date1;
   this.end = date1.compareTo(date2) > 0 ? date1 : date2;
   this.days = function() {
-    return Math.round(this.start.distanceInDays(this.end) + 1);
+    if (times) {
+      return getDaysHoursAndMinutes()[0];
+    } else {
+      return Math.round(this.start.distanceInDays(this.end) + 1);
+    }
   };
+  this.hours = function() {
+    return getDaysHoursAndMinutes()[1];
+  }
+  this.minutes = function() {
+    return getDaysHoursAndMinutes()[2];
+  }
   this.shiftDays = function(days) {
     this.start = this.start.plusDays(days);
     this.end = this.end.plusDays(days);
@@ -479,6 +490,43 @@ function DateRange(date1, date2) {
       return DateRange.emptyRange();
     }
   };
+  this.setTimes = function(startTimeStr, endTimeStr) {
+    setTime(this.start, startTimeStr);
+    setTime(this.end, endTimeStr);
+    times = true;
+  }
+  function getDaysHoursAndMinutes() {
+    if (times) {
+      var ms = parseInt((this.end.getTime() - this.start.getTime()));
+      var days = parseInt(ms / Date.DAY);
+      ms = ms - (days * Date.DAY);
+      var hours = parseInt(ms / Date.HOUR);
+      ms = ms - (hours * Date.HOUR);
+      var minutes = parseInt(ms / Date.MINUTE);
+      return [days, hours, minutes];
+    } else {
+      return [this.days(),0,0];
+    }
+  }
+  function setTime(date, timeStr) {
+    var parsedTime = parseTime(timeStr);
+    date.setHours(parsedTime[0]);
+    date.setMinutes(parsedTime[1]);
+    date.setMilliseconds(0);
+  }
+  function parseTime(timeStr) {
+    return timeStr.split(':').map(function(elem) {
+      return parseInt(elem);
+    });
+  }
+
+  this.toString = function() {
+    if (times) {
+      return this.days() + ' Päivää ' + this.hours() + ' tuntia ' + this.minutes() + ' minuuttia';
+    } else {
+      return this.start.dateFormat(Date.patterns.ShortDatePattern) + ' - ' + this.end.dateFormat(Date.patterns.ShortDatePattern);
+    }
+  }
 }
 
 DateRange.emptyRange = function() {
