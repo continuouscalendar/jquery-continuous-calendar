@@ -402,9 +402,9 @@
       setEndField(formattedEnd);
       setStartLabel(formattedStart);
       setEndLabel(formattedEnd);
+      container.data('calendarRange', selection);
       params.callback.call(container, selection);
       container.trigger('calendarChange');
-      container.data('calendarRange', selection);
     }
 
     function setStartField(value) {params.startField.val(value);}
