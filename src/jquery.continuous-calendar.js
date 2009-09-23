@@ -401,6 +401,7 @@
       setStartLabel(formattedStart);
       setEndLabel(formattedEnd);
       params.callback.call(container, selection);
+      container.trigger('calendarChange');
     }
 
     function setStartField(value) {params.startField.val(value);}
