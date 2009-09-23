@@ -226,6 +226,11 @@ test("calendar executes callback-function and triggers event when range is creat
   delete window.calendarChanged;
 });
 
+test("calendar provides selection as public field", function() {
+  createRangeCalendarWithFiveWeeks();
+  equals(cal().calendarRange().days(),0);
+});
+
 var testIndex = 0;
 
 function createCalendarContainer() {

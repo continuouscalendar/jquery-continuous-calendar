@@ -56,6 +56,7 @@
       } else {
         selection = DateRange.emptyRange();
       }
+      container.data('calendarRange', selection);
       var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * WEEK_DAYS.length));
       var rangeEnd = "lastDate" in params ? Date.parseDate(params.lastDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length - 1);
       calendarRange = new DateRange(rangeStart, rangeEnd);
@@ -403,6 +404,7 @@
       setEndLabel(formattedEnd);
       params.callback.call(container, selection);
       container.trigger('calendarChange');
+      container.data('calendarRange', selection);
     }
 
     function setStartField(value) {params.startField.val(value);}
@@ -436,6 +438,9 @@
       }
     }
 
+  };
+  $.fn.calendarRange = function() {
+    return $(this).data('calendarRange');
   };
 })(jQuery);
 
