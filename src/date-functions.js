@@ -21,7 +21,7 @@ Date.prototype.dateFormat = function(format) {
   }
   var func = Date.formatFunctions[format];
   return this[func]();
-}
+};
 
 Date.createNewFormat = function(format) {
   var funcName = "format" + Date.formatFunctions.count++;
@@ -43,7 +43,7 @@ Date.createNewFormat = function(format) {
     }
   }
   eval(code.substring(0, code.length - 3) + ";}");
-}
+};
 
 Date.getFormatCode = function(character) {
   switch (character) {
@@ -104,7 +104,7 @@ Date.getFormatCode = function(character) {
     default:
       return "'" + String.escape(character) + "' + ";
   }
-}
+};
 
 Date.parseDate = function(input, format) {
   if (input == 'today') {
@@ -115,7 +115,7 @@ Date.parseDate = function(input, format) {
   }
   var func = Date.parseFunctions[format];
   return Date[func](input);
-}
+};
 
 Date.createParser = function(format) {
   var funcName = "parse" + Date.parseFunctions.count++;
@@ -170,7 +170,7 @@ Date.createParser = function(format) {
 
   Date.parseRegexes[regexNum] = new RegExp("^" + regex + "$");
   eval(code);
-}
+};
 
 Date.formatCodeToRegex = function(character, currentGroup) {
   switch (character) {
@@ -277,19 +277,19 @@ Date.formatCodeToRegex = function(character, currentGroup) {
         c:null,
         s:String.escape(character)};
   }
-}
+};
 
 Date.prototype.getTimezone = function() {
   return this.toString().replace(
     /^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(
     /^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3");
-}
+};
 
 Date.prototype.getGMTOffset = function() {
   return (this.getTimezoneOffset() > 0 ? "-" : "+")
     + String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0")
     + String.leftPad(this.getTimezoneOffset() % 60, 2, "0");
-}
+};
 
 Date.prototype.getDayOfYear = function() {
   var num = 0;
@@ -298,7 +298,7 @@ Date.prototype.getDayOfYear = function() {
     num += Date.daysInMonth[i];
   }
   return num + this.getDate() - 1;
-}
+};
 
 Date.prototype.getWeekOfYear = function() {
   // Skip to Thursday of this week
@@ -308,27 +308,27 @@ Date.prototype.getWeekOfYear = function() {
   var then = (7 - jan1.getDay() + 4);
   document.write(then);
   return String.leftPad(((now - then) / 7) + 1, 2, "0");
-}
+};
 
 Date.prototype.isLeapYear = function() {
   var year = this.getFullYear();
   return ((year & 3) == 0 && (year % 100 || (year % 400 == 0 && year)));
-}
+};
 
 Date.prototype.getFirstDayOfMonth = function() {
   var day = (this.getDay() - (this.getDate() - 1)) % 7;
   return (day < 0) ? (day + 7) : day;
-}
+};
 
 Date.prototype.getLastDayOfMonth = function() {
   var day = (this.getDay() + (Date.daysInMonth[this.getMonth()] - this.getDate())) % 7;
   return (day < 0) ? (day + 7) : day;
-}
+};
 
 Date.prototype.getDaysInMonth = function() {
   Date.daysInMonth[1] = this.isLeapYear() ? 29 : 28;
   return Date.daysInMonth[this.getMonth()];
-}
+};
 
 Date.prototype.getSuffix = function() {
   switch (this.getDate()) {
@@ -345,11 +345,11 @@ Date.prototype.getSuffix = function() {
     default:
       return "th";
   }
-}
+};
 
 String.escape = function(string) {
   return string.replace(/('|\\)/g, "\\$1");
-}
+};
 
 String.leftPad = function (val, size, ch) {
   var result = new String(val);
@@ -360,7 +360,7 @@ String.leftPad = function (val, size, ch) {
     result = ch + result;
   }
   return result;
-}
+};
 
 Date.daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
 Date.monthNames =

@@ -8,7 +8,8 @@
       endField: this.find("input.endDate"),
       isPopup: false,
       selectToday: false,
-      callback: function(){}
+      callback: function() {
+      }
     };
     var params = $.extend(defaults, options);
     var WEEK_DAYS = ["ma", "ti", "ke", "to", "pe", "la", "su"];
@@ -23,10 +24,9 @@
       NONE:"none"
     };
 
-
     var rangeLengthLabel = $("<span>");
 
-    if(params.selectToday) {
+    if (params.selectToday) {
       var formattedToday = formatDate(new Date());
       setStartField(formattedToday);
       setEndField(formattedToday);
@@ -75,7 +75,7 @@
         container.append(icon);
       }
 
-      if(container.find('.startDateLabel').isEmpty()) {
+      if (container.find('.startDateLabel').isEmpty()) {
         addDateLabels(container);
       }
 
@@ -91,13 +91,13 @@
       averageCellHeight = parseInt(bodyTable.height() / bodyTable.find("tr").size());
       yearTitle = headerTable.find("th.month");
       setScrollBehaviors(scrollContent);
-      if(params.isPopup) calendar.hide();
+      if (params.isPopup) calendar.hide();
       params.callback.call(container, selection);
     }
 
     function getCalendarContainerOrCreateOne() {
       var existingContainer = container.find(".continuousCalendar");
-      if(existingContainer.exists()) {
+      if (existingContainer.exists()) {
         return existingContainer;
       } else {
         var newContainer = $("<div>").addClass("continuousCalendar");
@@ -169,6 +169,7 @@
       $(this).parents(".continuousCalendar").hide();
       return false;
     }
+
     function calendarBody() {
       var tbody = $("<tbody>");
       var currentMonday = calendarRange.start.getFirstDateOfWeek(Date.MONDAY);
@@ -307,7 +308,7 @@
             selectRange();
             break;
           case Status.DRAG_EXPAND_START:
-            case Status.DRAG_EXPAND_END:
+          case Status.DRAG_EXPAND_END:
             if (date.compareTo(selection.end) < 0) {
               selection = new DateRange(date, selection.end);
               selectRange();
