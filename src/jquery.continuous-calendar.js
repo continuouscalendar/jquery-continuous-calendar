@@ -459,18 +459,21 @@ function DateRange(date1, date2) {
   }
   this.start = date1.compareTo(date2) > 0 ? date2 : date1;
   this.end = date1.compareTo(date2) > 0 ? date1 : date2;
+  var days;
+  var hours;
+  var minutes;
   this.days = function() {
     if (times) {
-      return getDaysHoursAndMinutes()[0];
+      return days;
     } else {
       return Math.round(this.start.distanceInDays(this.end) + 1);
     }
   };
   this.hours = function() {
-    return getDaysHoursAndMinutes()[1];
+    return hours;
   };
   this.minutes = function() {
-    return getDaysHoursAndMinutes()[2];
+    return minutes;
   };
   this.shiftDays = function(days) {
     this.start = this.start.plusDays(days);
@@ -496,28 +499,31 @@ function DateRange(date1, date2) {
     }
   };
   this.setTimes = function(startTimeStr, endTimeStr) {
-    setTime(this.start, startTimeStr);
-    setTime(this.end, endTimeStr);
+    this.start = dateWithTime(this.start, startTimeStr);
+    console.log('setTimes',this.end);
+    this.end = dateWithTime(this.end, endTimeStr);
+    console.log('setTimes',this.end);
     times = true;
+    setDaysHoursAndMinutes.call(this);
   };
-  function getDaysHoursAndMinutes() {
+  function setDaysHoursAndMinutes() {
     if (times) {
+      console.log('set',this.end);
       var ms = parseInt((this.end.getTime() - this.start.getTime()));
-      var days = parseInt(ms / Date.DAY);
+      days = parseInt(ms / Date.DAY);
       ms = ms - (days * Date.DAY);
-      var hours = parseInt(ms / Date.HOUR);
+      hours = parseInt(ms / Date.HOUR);
       ms = ms - (hours * Date.HOUR);
-      var minutes = parseInt(ms / Date.MINUTE);
-      return [days, hours, minutes];
-    } else {
-      return [this.days(),0,0];
+      minutes = parseInt(ms / Date.MINUTE);
     }
   }
-  function setTime(date, timeStr) {
+  function dateWithTime(dateWithoutTime, timeStr) {
     var parsedTime = parseTime(timeStr);
+    var date = dateWithoutTime.clone();
     date.setHours(parsedTime[0]);
     date.setMinutes(parsedTime[1]);
     date.setMilliseconds(0);
+    return date;
   }
   function parseTime(timeStr) {
     return timeStr.split(':').map(function(elem) {
