@@ -530,7 +530,8 @@ function DateRange(date1, date2) {
 
   this.toString = function() {
     if (times) {
-      return this.days() + ' Päivää ' + this.hours() + ' tuntia ' + this.minutes() + ' minuuttia';
+      var minutes = this.minutes()>0 ? ","+(this.minutes()/6) : "";
+      return this.days() + ' Päivää ' + this.hours() + minutes+' tuntia';
     } else {
       return this.start.dateFormat(Date.patterns.ShortDatePattern) + ' - ' + this.end.dateFormat(Date.patterns.ShortDatePattern);
     }
