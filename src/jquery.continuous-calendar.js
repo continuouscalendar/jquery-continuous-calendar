@@ -500,15 +500,12 @@ function DateRange(date1, date2) {
   };
   this.setTimes = function(startTimeStr, endTimeStr) {
     this.start = dateWithTime(this.start, startTimeStr);
-    console.log('setTimes',this.end);
     this.end = dateWithTime(this.end, endTimeStr);
-    console.log('setTimes',this.end);
     times = true;
     setDaysHoursAndMinutes.call(this);
   };
   function setDaysHoursAndMinutes() {
     if (times) {
-      console.log('set',this.end);
       var ms = parseInt((this.end.getTime() - this.start.getTime()));
       days = parseInt(ms / Date.DAY);
       ms = ms - (days * Date.DAY);
