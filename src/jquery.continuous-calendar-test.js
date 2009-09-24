@@ -228,7 +228,7 @@ test("calendar executes callback-function and triggers event when range is creat
 
 test("calendar provides selection as public field", function() {
   createRangeCalendarWithFiveWeeks();
-  equals(cal().calendarRange().days(),0);
+  equals(cal().calendarRange().days(),7);
 });
 
 var testIndex = 0;

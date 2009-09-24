@@ -468,10 +468,10 @@ function DateRange(date1, date2) {
   };
   this.hours = function() {
     return getDaysHoursAndMinutes()[1];
-  }
+  };
   this.minutes = function() {
     return getDaysHoursAndMinutes()[2];
-  }
+  };
   this.shiftDays = function(days) {
     this.start = this.start.plusDays(days);
     this.end = this.end.plusDays(days);
@@ -499,7 +499,7 @@ function DateRange(date1, date2) {
     setTime(this.start, startTimeStr);
     setTime(this.end, endTimeStr);
     times = true;
-  }
+  };
   function getDaysHoursAndMinutes() {
     if (times) {
       var ms = parseInt((this.end.getTime() - this.start.getTime()));
@@ -531,7 +531,7 @@ function DateRange(date1, date2) {
     } else {
       return this.start.dateFormat(Date.patterns.ShortDatePattern) + ' - ' + this.end.dateFormat(Date.patterns.ShortDatePattern);
     }
-  }
+  };
 }
 
 DateRange.emptyRange = function() {
