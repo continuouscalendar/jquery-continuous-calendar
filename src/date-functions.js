@@ -404,6 +404,7 @@ Date.patterns = {
   ShortDatePattern: "n/j/Y",
   FiShortDatePattern: "j.n.Y",
   FiWeekdayDatePattern: "D j.n.Y",
+  FiWeekdayDateTimePattern: "D j.n.Y k\\lo H:i",
   LongDatePattern: "l, F d, Y",
   FullDateTimePattern: "l, F d, Y g:i:s A",
   MonthDayPattern: "F d",
