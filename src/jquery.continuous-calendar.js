@@ -25,14 +25,18 @@
     };
 
     var rangeLengthLabel = $("<span>");
+    var startDate = fieldDate(params.startField);
+    var endDate = fieldDate(params.endField);
 
     if (params.selectToday) {
-      var formattedToday = formatDate(new Date());
+      var today = new Date();
+      var formattedToday = formatDate(today);
+      startDate = today;
+      endDate = today;
       setStartField(formattedToday);
       setEndField(formattedToday);
     }
-    var startDate = fieldDate(params.startField);
-    var endDate = fieldDate(params.endField);
+
     var firstWeekdayOfGivenDate = (startDate || new Date()).getFirstDateOfWeek(Date.MONDAY);
     var container = this;
     var dateCells = null;
@@ -46,6 +50,7 @@
     var status = Status.NONE;
 
     createCalendar();
+    container.trigger('calendarChange');
     this.data("mouseDown", mouseDown);
     this.data("mouseMove", mouseMove);
     this.data("mouseUp", mouseUp);
@@ -418,7 +423,7 @@
     }
 
     function fieldDate(field) {
-      if (field.size() > 0 && field.val().length > 0)
+      if (field.length > 0 && field.val().length > 0)
         return Date.parseDate(field.val(), params.dateFormat);
       else
         return null;
