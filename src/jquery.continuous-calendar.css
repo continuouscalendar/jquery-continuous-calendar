@@ -79,7 +79,8 @@ a.calendarIcon {
 }
 
 .continuousCalendar .calendarBody td {
-  cursor: pointer;
+  cursor: w-resize;
+  cursor: ew-resize;
 }
 
 .continuousCalendar .month {
