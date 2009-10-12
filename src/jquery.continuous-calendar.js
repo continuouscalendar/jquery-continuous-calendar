@@ -4,27 +4,27 @@
       weeksBefore: 26,
       weeksAfter: 26,
       dateFormat: Date.patterns.ShortDatePattern,
-      startField: this.find("input.startDate"),
-      endField: this.find("input.endDate"),
+      startField: this.find('input.startDate'),
+      endField: this.find('input.endDate'),
       isPopup: false,
       selectToday: false,
       callback: function() {
       }
     };
     var params = $.extend(defaults, options);
-    var WEEK_DAYS = ["ma", "ti", "ke", "to", "pe", "la", "su"];
-    var MONTHS = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu",
-      "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
+    var WEEK_DAYS = ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'];
+    var MONTHS = ['tammikuu', 'helmikuu', 'maaliskuu', 'huhtikuu', 'toukokuu', 'kesäkuu', 'heinäkuu', 'elokuu',
+      'syyskuu', 'lokakuu', 'marraskuu', 'joulukuu'];
     var Status = {
-      CREATE:"create",
-      MOVE:"move",
-      SHIFT_EXPAND:"shift_expand",
-      DRAG_EXPAND_START:"drag_expand_start",
-      DRAG_EXPAND_END:"drag_expand_end",
-      NONE:"none"
+      CREATE:'create',
+      MOVE:'move',
+      SHIFT_EXPAND:'shift_expand',
+      DRAG_EXPAND_START:'drag_expand_start',
+      DRAG_EXPAND_END:'drag_expand_end',
+      NONE:'none'
     };
 
-    var rangeLengthLabel = $("<span>");
+    var rangeLengthLabel = $('<span>');
     var startDate = fieldDate(params.startField);
     var endDate = fieldDate(params.endField);
 
@@ -51,9 +51,9 @@
 
     createCalendar();
     container.trigger('calendarChange');
-    this.data("mouseDown", mouseDown);
-    this.data("mouseMove", mouseMove);
-    this.data("mouseUp", mouseUp);
+    this.data('mouseDown', mouseDown);
+    this.data('mouseMove', mouseMove);
+    this.data('mouseUp', mouseUp);
 
     function createCalendar() {
       if (startDate && endDate) {
@@ -63,17 +63,16 @@
       }
       container.data('calendarRange', selection);
       var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * WEEK_DAYS.length));
-      var rangeEnd = "lastDate" in params ? Date.parseDate(params.lastDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length - 1);
+      var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * WEEK_DAYS.length + WEEK_DAYS.length - 1);
       calendarRange = new DateRange(rangeStart, rangeEnd);
 
-      var headerTable = $("<table>").addClass("calendarHeader").append(headerRow());
-      var bodyTable = $("<table>").addClass("calendarBody").append(calendarBody());
-      var scrollContent = $("<div>").addClass("calendarScrollContent").append(bodyTable);
+      var headerTable = $('<table>').addClass('calendarHeader').append(headerRow());
+      var bodyTable = $('<table>').addClass('calendarBody').append(calendarBody());
+      var scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable);
       var calendar = getCalendarContainerOrCreateOne();
       calendar.append(headerTable).append(scrollContent);
       if (params.isPopup) {
-        //calendar.hide();
-        calendar.css({position:"absolute", "z-index":99});
+        calendar.css({position:'absolute', 'z-index':99});
         var icon = $('<a href="#" class="calendarIcon"><span>kalenteri</span></a>').click(function() {
           calendar.show();
           return false;
@@ -94,19 +93,19 @@
       } else {
         initSingleDateCalendarEvents();
       }
-      averageCellHeight = parseInt(bodyTable.height() / bodyTable.find("tr").size());
-      yearTitle = headerTable.find("th.month");
+      averageCellHeight = parseInt(bodyTable.height() / bodyTable.find('tr').size());
+      yearTitle = headerTable.find('th.month');
       setScrollBehaviors(scrollContent);
       if (params.isPopup) calendar.hide();
       params.callback.call(container, selection);
     }
 
     function getCalendarContainerOrCreateOne() {
-      var existingContainer = container.find(".continuousCalendar");
+      var existingContainer = container.find('.continuousCalendar');
       if (existingContainer.exists()) {
         return existingContainer;
       } else {
-        var newContainer = $("<div>").addClass("continuousCalendar");
+        var newContainer = $('<div>').addClass('continuousCalendar');
         container.append(newContainer);
         return newContainer;
       }
@@ -122,11 +121,11 @@
     }
 
     function initRangeCalendarEvents(container, bodyTable) {
-      var daysContainer = $("<em>");
+      var daysContainer = $('<em>');
       rangeLengthLabel.text(selection.days());
-      daysContainer.append(rangeLengthLabel).append(" Päivää");
-      container.find(".continuousCalendar").append(daysContainer);
-      bodyTable.addClass("range");
+      daysContainer.append(rangeLengthLabel).append(' Päivää');
+      container.find('.continuousCalendar').append(daysContainer);
+      bodyTable.addClass('range');
       bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
       disableTextSelection(bodyTable.get(0));
       setStartLabel(params.startField.val());
@@ -138,46 +137,46 @@
         setYearLabel(this);
       });
 
-      var selected = scrollContent.find(".today, .selected").get(0);
+      var selected = scrollContent.find('.today, .selected').get(0);
       if (selected) {
         scrollContent.scrollTop(selected.offsetTop - (scrollContent.height() - selected.offsetHeight) / 2);
       }
     }
 
     function setYearLabel(scrollContent) {
-      var table = $(scrollContent).find("table").get(0);
+      var table = $(scrollContent).find('table').get(0);
       var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight);
       var date = table.rows[rowNumber].cells[2].date;
       yearTitle.text(date.getFullYear());
     }
 
     function headerRow() {
-      var tr = $("<tr>").append(yearCell());
-      var thead = $("<thead>").append(tr);
+      var tr = $('<tr>').append(yearCell());
+      var thead = $('<thead>').append(tr);
       tr.append('<th class="week"></th>');
       $(WEEK_DAYS).each(function() {
-        var weekDay = $('<th>').append(this.toString()).addClass("weekDay");
+        var weekDay = $('<th>').append(this.toString()).addClass('weekDay');
         tr.append(weekDay);
       });
       if (params.isPopup) {
         var close = $('<th><a href="#"><span>sulje</span></a>');
-        close.find("a").click(hideCalendar);
+        close.find('a').click(hideCalendar);
         tr.append(close);
       }
       return thead;
 
       function yearCell() {
-        return $("<th>").addClass("month").append(firstWeekdayOfGivenDate.getFullYear());
+        return $('<th>').addClass('month').append(firstWeekdayOfGivenDate.getFullYear());
       }
     }
 
     function hideCalendar() {
-      $(this).parents(".continuousCalendar").hide();
+      $(this).parents('.continuousCalendar').hide();
       return false;
     }
 
     function calendarBody() {
-      var tbody = $("<tbody>");
+      var tbody = $('<tbody>');
       var currentMonday = calendarRange.start.getFirstDateOfWeek(Date.MONDAY);
       while (currentMonday.compareTo(calendarRange.end) <= 0) {
         tbody.append(calendarRow(currentMonday.clone()));
@@ -187,18 +186,18 @@
     }
 
     function calendarRow(firstDayOfWeek) {
-      var tr = $("<tr>").append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
+      var tr = $('<tr>').append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
       for (var i = 0; i < WEEK_DAYS.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
-        var dateCell = $("<td>").addClass(dateStyles(date)).append(date.getDate());
+        var dateCell = $('<td>').addClass(dateStyles(date)).append(date.getDate());
         dateCell.get(0).date = date;
-        if (date.isToday()) dateCell.addClass("today");
+        if (date.isToday()) dateCell.addClass('today');
         if (isRange()) {
-          dateCell.toggleClass("selected", selection.hasDate(date));
-          dateCell.toggleClass("rangeStart", date.equalsOnlyDate(selection.start));
-          dateCell.toggleClass("rangeEnd", date.equalsOnlyDate(selection.end));
+          dateCell.toggleClass('selected', selection.hasDate(date));
+          dateCell.toggleClass('rangeStart', date.equalsOnlyDate(selection.start));
+          dateCell.toggleClass('rangeEnd', date.equalsOnlyDate(selection.end));
         } else {
-          dateCell.toggleClass("selected", date.equalsOnlyDate(startDate));
+          dateCell.toggleClass('selected', date.equalsOnlyDate(startDate));
         }
         tr.append(dateCell);
       }
@@ -206,7 +205,7 @@
     }
 
     function monthCell(firstDayOfWeek) {
-      var th = $("<th>").addClass("month").addClass(backgroundBy(firstDayOfWeek));
+      var th = $('<th>').addClass('month').addClass(backgroundBy(firstDayOfWeek));
 
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
         th.append(MONTHS[firstDayOfWeek.getMonth()]);
@@ -217,14 +216,14 @@
     }
 
     function weekCell(firstDayOfWeek) {
-      var weekNumber = $("<th>");
-      weekNumber.addClass("week").addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear("ISO"));
+      var weekNumber = $('<th>');
+      weekNumber.addClass('week').addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear('ISO'));
 
       return weekNumber;
     }
 
     function dateStyles(date) {
-      return "date " + backgroundBy(date) + disabledOrNot(date) + todayStyle(date);
+      return 'date ' + backgroundBy(date) + disabledOrNot(date) + todayStyle(date);
     }
 
     function backgroundBy(date) {
@@ -232,18 +231,18 @@
     }
 
     function disabledOrNot(date) {
-      return calendarRange.hasDate(date) ? "" : " disabled";
+      return calendarRange.hasDate(date) ? '' : ' disabled';
     }
 
     function todayStyle(date) {
-      return date.isToday() ? " today" : "";
+      return date.isToday() ? ' today' : '';
     }
 
     function initSingleDateCalendarEvents() {
       dateCells.click(function() {
-        dateCells.removeClass("selected");
+        dateCells.removeClass('selected');
         var dateCell = $(this);
-        dateCell.addClass("selected");
+        dateCell.addClass('selected');
         var formattedDate = dateCell.get(0).date.dateFormat(params.dateFormat);
         params.startField.val(formattedDate);
         setStartLabel(formattedDate);
@@ -274,12 +273,12 @@
           }
         }
       } else if (isWeekCell(elem)) {
-        var dayInWeek = $(elem).siblings(".date").get(0).date;
+        var dayInWeek = $(elem).siblings('.date').get(0).date;
         selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
         updateTextFields();
         selectRange();
       } else if (isMonthCell(elem)) {
-        var dayInMonth = $(elem).siblings(".date").get(0).date;
+        var dayInMonth = $(elem).siblings('.date').get(0).date;
         selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
         updateTextFields();
         selectRange();
@@ -287,19 +286,19 @@
     }
 
     function isDateCell(elem) {
-      return $(elem).hasClass("date");
+      return $(elem).hasClass('date');
     }
 
     function isWeekCell(elem) {
-      return $(elem).hasClass("week");
+      return $(elem).hasClass('week');
     }
 
     function isMonthCell(elem) {
-      return $(elem).hasClass("month");
+      return $(elem).hasClass('month');
     }
 
     function isEnabled(elem) {
-      return !$(elem).hasClass("disabled");
+      return !$(elem).hasClass('disabled');
     }
 
     function mouseMove(event) {
@@ -377,7 +376,7 @@
         this.className = dateStyles(dateCellDates[i]);
       });
       var domElem = elem.get(0);
-      domElem.className = dateStyles(domElem.date) + " selected rangeStart";
+      domElem.className = dateStyles(domElem.date) + ' selected rangeStart';
       rangeLengthLabel.text(selection.days());
     }
 
@@ -391,13 +390,13 @@
         var date = dateCellDates[i];
         var styleClass = [dateStyles(date)];
         if (date.equalsOnlyDate(end)) {
-          styleClass.push("selected rangeEnd");
+          styleClass.push('selected rangeEnd');
         } else if (date.equalsOnlyDate(start)) {
-          styleClass.push("selected rangeStart");
+          styleClass.push('selected rangeStart');
         } else if (date.isBetweenDates(start, end)) {
-          styleClass.push("selected");
+          styleClass.push('selected');
         }
-        elem.className = styleClass.join(" ");
+        elem.className = styleClass.join(' ');
       });
     }
 
@@ -416,8 +415,8 @@
     function setStartField(value) {params.startField.val(value);}
     function setEndField(value) {params.endField.val(value);}
     function formatDate(date) {return date.dateFormat(params.dateFormat);}
-    function setStartLabel(val) { container.find("span.startDateLabel").text(val);}
-    function setEndLabel(val) { container.find("span.endDateLabel").text(val);}
+    function setStartLabel(val) { container.find('span.startDateLabel').text(val);}
+    function setEndLabel(val) { container.find('span.endDateLabel').text(val);}
 
     function isRange() {
       return params.endField && params.endField.length > 0;
@@ -461,7 +460,7 @@ $.fn.isEmpty = function() {
 function DateRange(date1, date2) {
   var times = false;
   if (!date1 || !date2) {
-    throw("two dates must be specified, date1=" + date1 + ", date2=" + date2);
+    throw('two dates must be specified, date1=' + date1 + ', date2=' + date2);
   }
   this.start = date1.compareTo(date2) > 0 ? date2 : date1;
   this.end = date1.compareTo(date2) > 0 ? date1 : date2;
@@ -536,7 +535,7 @@ function DateRange(date1, date2) {
 
   this.toString = function() {
     if (times) {
-      var minutes = this.minutes()>0 ? ","+(this.minutes()/6) : "";
+      var minutes = this.minutes()>0 ? ','+(this.minutes()/6) : '';
       return this.days() + ' Päivää ' + this.hours() + minutes+' tuntia';
     } else {
       return this.start.dateFormat(Date.patterns.ShortDatePattern) + ' - ' + this.end.dateFormat(Date.patterns.ShortDatePattern);
