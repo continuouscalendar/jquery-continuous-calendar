@@ -533,6 +533,10 @@ function DateRange(date1, date2) {
     });
   }
 
+  this.isValid = function() {
+    return this.end.getTime() - this.start.getTime() >=0;
+  };
+
   this.toString = function() {
     if (times) {
       var minutes = this.minutes()>0 ? ','+(this.minutes()/6) : '';

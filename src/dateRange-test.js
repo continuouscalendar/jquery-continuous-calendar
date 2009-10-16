@@ -49,8 +49,20 @@ test("date range can have times", function() {
   equals(range.days(), 1);
   equals(range.hours(), 23);
   equals(range.minutes(), 0);
+});
 
-
+test("one day range with start time after end time is not valid", function() {
+  ok(range.isValid());
+  range.start = new Date('09/13/2009');
+  ok(!range.isValid());
+  range.start = new Date('09/12/2009');
+  ok(range.isValid());
+  range.setTimes('15:00','14:30');
+  ok(!range.isValid());
+  range.setTimes('15:00','15:00');
+  ok(range.isValid());
+  range.setTimes('15:00','15:30');
+  ok(range.isValid());
 });
 
 function resetRange() {
