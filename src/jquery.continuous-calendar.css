@@ -79,8 +79,7 @@ a.calendarIcon {
 }
 
 .continuousCalendar .calendarBody td {
-  cursor: w-resize;
-  cursor: ew-resize;
+  cursor:pointer;
 }
 
 .continuousCalendar .month {
@@ -138,6 +137,12 @@ a.calendarIcon {
   background-position:left top;
   */
 }
+
+.continuousCalendar .range td {
+  cursor: w-resize;
+  cursor: ew-resize;
+}
+
 
 .continuousCalendar .range td.rangeStart:hover {
   cursor: w-resize;
