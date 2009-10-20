@@ -122,7 +122,6 @@ test("week number click on single date calendar does nothing", function () {
   equals(cal().find(".selected").size(), 1);
 });
 
-
 test("mouse click and drag highlights range and updates fields", function() {
   createRangeCalendarWithFiveWeeks();
   mouseDownOnDay(27);
@@ -192,7 +191,7 @@ test("range is expandable by clicking with shift key", function() {
 
 test("range has default of on year per direction", function() {
   cal({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar();
-  equals(cal().find(".date").size(),7*(26*2+1));
+  equals(cal().find(".date").size(), 7 * (26 * 2 + 1));
 });
 
 test("range has current day selected as default when configured so", function() {
@@ -210,6 +209,7 @@ test("calendar executes callback-function and triggers event when range is creat
     window.calendarContainer = this;
     window.calendarCallBack = range.days();
   }
+
   cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"4/26/2009", lastDate:"5/2/2009", callback:testFunction});
   cal().bind('calendarChange', function() {
     window.calendarChanged = $(this).find('.selected').length;
@@ -228,7 +228,7 @@ test("calendar executes callback-function and triggers event when range is creat
 
 test("calendar provides selection as public field", function() {
   createRangeCalendarWithFiveWeeks();
-  equals(cal().calendarRange().days(),7);
+  equals(cal().calendarRange().days(), 7);
 });
 
 var testIndex = 0;

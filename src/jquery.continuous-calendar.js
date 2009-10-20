@@ -412,11 +412,25 @@
       container.trigger('calendarChange');
     }
 
-    function setStartField(value) {params.startField.val(value);}
-    function setEndField(value) {params.endField.val(value);}
-    function formatDate(date) {return date.dateFormat(params.dateFormat);}
-    function setStartLabel(val) { container.find('span.startDateLabel').text(val);}
-    function setEndLabel(val) { container.find('span.endDateLabel').text(val);}
+    function setStartField(value) {
+      params.startField.val(value);
+    }
+
+    function setEndField(value) {
+      params.endField.val(value);
+    }
+
+    function formatDate(date) {
+      return date.dateFormat(params.dateFormat);
+    }
+
+    function setStartLabel(val) {
+      container.find('span.startDateLabel').text(val);
+    }
+
+    function setEndLabel(val) {
+      container.find('span.endDateLabel').text(val);
+    }
 
     function isRange() {
       return params.endField && params.endField.length > 0;
@@ -519,6 +533,7 @@ function DateRange(date1, date2) {
       minutes = parseInt(ms / Date.MINUTE);
     }
   }
+
   function dateWithTime(dateWithoutTime, timeStr) {
     var parsedTime = parseTime(timeStr);
     var date = dateWithoutTime.clone();
@@ -527,6 +542,7 @@ function DateRange(date1, date2) {
     date.setMilliseconds(0);
     return date;
   }
+
   function parseTime(timeStr) {
     return timeStr.split(':').map(function(elem) {
       return parseInt(elem);
@@ -534,13 +550,13 @@ function DateRange(date1, date2) {
   }
 
   this.isValid = function() {
-    return this.end.getTime() - this.start.getTime() >=0;
+    return this.end.getTime() - this.start.getTime() >= 0;
   };
 
   this.toString = function() {
     if (times) {
-      var minutes = this.minutes()>0 ? ','+(this.minutes()/6) : '';
-      return this.days() + ' Päivää ' + this.hours() + minutes+' tuntia';
+      var minutes = this.minutes() > 0 ? ',' + (this.minutes() / 6) : '';
+      return this.days() + ' Päivää ' + this.hours() + minutes + ' tuntia';
     } else {
       return this.start.dateFormat(Date.patterns.ShortDatePattern) + ' - ' + this.end.dateFormat(Date.patterns.ShortDatePattern);
     }

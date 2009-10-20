@@ -63,7 +63,7 @@ a.calendarIcon {
 }
 
 .continuousCalendar .calendarHeader .weekDay,
-  .continuousCalendar .calendarBody td {
+.continuousCalendar .calendarBody td {
   text-align: right;
   width: 13px;
   padding: 1px;
@@ -94,7 +94,7 @@ a.calendarIcon {
 }
 
 .continuousCalendar .range .week,
-  .continuousCalendar .range .month {
+.continuousCalendar .range .month {
   cursor: pointer;
 }
 
@@ -157,8 +157,8 @@ a.calendarIcon {
 }
 
 input.endDate,
-  input.startDate {
-  display:none;
+input.startDate {
+  display: none;
 }
 
 .continuousCalendar td.disabled {
@@ -166,10 +166,10 @@ input.endDate,
 }
 
 div.label {
-  height:1em;
-  margin-left:5pt;
-  margin-bottom:2pt;
-  float:left;
+  height: 1em;
+  margin-left: 5pt;
+  margin-bottom: 2pt;
+  float: left;
 
 }
 

@@ -40,7 +40,7 @@ module("date range with time behavior", {
 });
 
 test("date range can have times", function() {
-  range.setTimes('10:00','14:30');
+  range.setTimes('10:00', '14:30');
   equals(range.days(), 2);
   equals(range.hours(), 4);
   equals(range.minutes(), 30);
@@ -57,11 +57,11 @@ test("one day range with start time after end time is not valid", function() {
   ok(!range.isValid());
   range.start = new Date('09/12/2009');
   ok(range.isValid());
-  range.setTimes('15:00','14:30');
+  range.setTimes('15:00', '14:30');
   ok(!range.isValid());
-  range.setTimes('15:00','15:00');
+  range.setTimes('15:00', '15:00');
   ok(range.isValid());
-  range.setTimes('15:00','15:30');
+  range.setTimes('15:00', '15:30');
   ok(range.isValid());
 });
 
