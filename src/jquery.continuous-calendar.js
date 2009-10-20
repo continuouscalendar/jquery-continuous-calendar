@@ -48,6 +48,7 @@
     var selection;
     var calendarRange;
     var status = Status.NONE;
+    var calendar;
 
     createCalendar();
     container.trigger('calendarChange');
@@ -69,14 +70,11 @@
       var headerTable = $('<table>').addClass('calendarHeader').append(headerRow());
       var bodyTable = $('<table>').addClass('calendarBody').append(calendarBody());
       var scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable);
-      var calendar = getCalendarContainerOrCreateOne();
+      calendar = getCalendarContainerOrCreateOne();
       calendar.append(headerTable).append(scrollContent);
       if (params.isPopup) {
         calendar.css({position:'absolute', 'z-index':99});
-        var icon = $('<a href="#" class="calendarIcon"><span>kalenteri</span></a>').click(function() {
-          calendar.show();
-          return false;
-        });
+        var icon = $('<a href="#" class="calendarIcon"><span>kalenteri</span></a>').click(toggleCalendar);
         container.append(icon);
       }
 
@@ -160,7 +158,7 @@
       });
       if (params.isPopup) {
         var close = $('<th><a href="#"><span>sulje</span></a>');
-        close.find('a').click(hideCalendar);
+        close.find('a').click(toggleCalendar);
         tr.append(close);
       }
       return thead;
@@ -170,8 +168,8 @@
       }
     }
 
-    function hideCalendar() {
-      $(this).parents('.continuousCalendar').hide();
+    function toggleCalendar() {
+      calendar.toggle();
       return false;
     }
 
@@ -247,7 +245,7 @@
         params.startField.val(formattedDate);
         setStartLabel(formattedDate);
         if (params.isPopup) {
-          hideCalendar.call(this);
+          toggleCalendar.call(this);
         }
       });
       setStartLabel(params.startField.val());
