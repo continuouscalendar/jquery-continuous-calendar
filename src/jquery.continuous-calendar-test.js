@@ -10,7 +10,6 @@ test("shows year", function() {
 test("shows week days", function() {
   cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
   assertHasValues(".continuousCalendar thead th.weekDay", [
-    //"ma", "ti", "ke", "to", "pe", "la", "su"
     "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"
   ]);
 });
