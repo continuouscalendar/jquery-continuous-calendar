@@ -554,10 +554,10 @@ function DateRange(date1, date2) {
     return this.end.getTime() - this.start.getTime() >= 0;
   };
 
-  this.toString = function() {
+  this.toString = function(locale) {
     if (times) {
       var minutes = this.minutes() > 0 ? ',' + (this.minutes() / 6) : '';
-      return this.days() + ' ' + params.locale.daysLabel + ' ' + this.hours() + minutes + ' ' + params.locale.hoursLabel;
+      return this.days() + ' ' + locale.daysLabel + ' ' + this.hours() + minutes + ' ' + locale.hoursLabel;
     } else {
       return this.start.dateFormat(Date.patterns.ShortDatePattern) + ' - ' + this.end.dateFormat(Date.patterns.ShortDatePattern);
     }
