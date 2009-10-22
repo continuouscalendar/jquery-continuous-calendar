@@ -1,0 +1,2 @@
+var WEEKDAYS_FI = ["ma", "ti", "ke", "to", "pe", "la", "su"];
+var MONTHS_FI = ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"];
