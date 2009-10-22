@@ -236,6 +236,14 @@ test("calendar provides selection as public field", function() {
   equals(cal().calendarRange().days(), 7);
 });
 
+test("month and day names are localizable", function() {
+  var finnishWeekDays = ["ma", "ti", "ke", "to", "pe", "la", "su"];
+  var finnishMonths = ["tammi", "helmi", "maalis", "huhti", "touko", "kesä", "heinä", "elo", "syys", "loka", "marras", "joulu"];
+  cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009", weekDays:finnishWeekDays, months:finnishMonths});
+  assertHasValues(".continuousCalendar thead th.weekDay", finnishWeekDays);
+  assertHasValues(".monthName", finnishMonths);
+});
+
 var testIndex = 0;
 
 function createCalendarContainer() {
