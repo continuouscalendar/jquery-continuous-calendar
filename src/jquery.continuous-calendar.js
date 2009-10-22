@@ -8,8 +8,8 @@
       endField: this.find('input.endDate'),
       isPopup: false,
       selectToday: false,
-      WEEK_DAYS: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-      MONTHS: Date.monthNames,
+      weekDays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+      months: Date.monthNames,
       callback: function() {
       }
     };
@@ -62,8 +62,8 @@
         selection = DateRange.emptyRange();
       }
       container.data('calendarRange', selection);
-      var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * defaults.WEEK_DAYS.length));
-      var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * defaults.WEEK_DAYS.length + defaults.WEEK_DAYS.length - 1);
+      var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * defaults.weekDays.length));
+      var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * defaults.weekDays.length + defaults.weekDays.length - 1);
       calendarRange = new DateRange(rangeStart, rangeEnd);
 
       var headerTable = $('<table>').addClass('calendarHeader').append(headerRow());
@@ -151,7 +151,7 @@
       var tr = $('<tr>').append(yearCell());
       var thead = $('<thead>').append(tr);
       tr.append('<th class="week"></th>');
-      $(defaults.WEEK_DAYS).each(function() {
+      $(defaults.weekDays).each(function() {
         var weekDay = $('<th>').append(this.toString()).addClass('weekDay');
         tr.append(weekDay);
       });
@@ -177,14 +177,14 @@
       var currentMonday = calendarRange.start.getFirstDateOfWeek(Date.MONDAY);
       while (currentMonday.compareTo(calendarRange.end) <= 0) {
         tbody.append(calendarRow(currentMonday.clone()));
-        currentMonday = currentMonday.plusDays(defaults.WEEK_DAYS.length);
+        currentMonday = currentMonday.plusDays(defaults.weekDays.length);
       }
       return tbody;
     }
 
     function calendarRow(firstDayOfWeek) {
       var tr = $('<tr>').append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
-      for (var i = 0; i < defaults.WEEK_DAYS.length; i++) {
+      for (var i = 0; i < defaults.weekDays.length; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $('<td>').addClass(dateStyles(date)).append(date.getDate());
         dateCell.get(0).date = date;
@@ -204,9 +204,9 @@
     function monthCell(firstDayOfWeek) {
       var th = $('<th>').addClass('month').addClass(backgroundBy(firstDayOfWeek));
 
-      if (firstDayOfWeek.getDate() <= defaults.WEEK_DAYS.length) {
-        th.append(defaults.MONTHS[firstDayOfWeek.getMonth()]).addClass('monthName');
-      } else if (firstDayOfWeek.getDate() <= defaults.WEEK_DAYS.length * 2 && firstDayOfWeek.getMonth() == 0) {
+      if (firstDayOfWeek.getDate() <= defaults.weekDays.length) {
+        th.append(defaults.months[firstDayOfWeek.getMonth()]).addClass('monthName');
+      } else if (firstDayOfWeek.getDate() <= defaults.weekDays.length * 2 && firstDayOfWeek.getMonth() == 0) {
         th.append(firstDayOfWeek.getFullYear());
       }
       return th;

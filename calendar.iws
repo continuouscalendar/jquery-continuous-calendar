@@ -18,7 +18,6 @@
     <list default="true" readonly="true" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calendar.iws" afterPath="$PROJECT_DIR$/calendar.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jquery.continuous-calendar.js" afterPath="$PROJECT_DIR$/src/jquery.continuous-calendar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calendar.ipr" afterPath="$PROJECT_DIR$/calendar.ipr" />
     </list>
     <list name="Don't commit" comment="" />
     <ignored path=".idea/workspace.xml" />
@@ -117,7 +116,7 @@
       <file leaf-file-name="jquery.continuous-calendar.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/jquery.continuous-calendar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="198" column="25" selection-start="7339" selection-end="7339" vertical-scroll-proportion="2.560345">
+            <state line="11" column="11" selection-start="390" selection-end="390" vertical-scroll-proportion="0.14224137">
               <folding />
             </state>
           </provider>
@@ -520,7 +519,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/jquery.continuous-calendar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="198" column="25" selection-start="7339" selection-end="7339" vertical-scroll-proportion="2.560345">
+        <state line="11" column="11" selection-start="390" selection-end="390" vertical-scroll-proportion="0.14224137">
           <folding />
         </state>
       </provider>
