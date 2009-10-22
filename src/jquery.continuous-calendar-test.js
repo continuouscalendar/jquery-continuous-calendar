@@ -8,10 +8,16 @@ test("shows year", function() {
 });
 
 test("shows week days", function() {
-  cal({startDate: "4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});
+  cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
   assertHasValues(".continuousCalendar thead th.weekDay", [
-    "ma", "ti", "ke", "to", "pe", "la", "su"
+    //"ma", "ti", "ke", "to", "pe", "la", "su"
+    "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"
   ]);
+});
+
+test("shows months", function() {
+  cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
+  assertHasValues(".monthName", Date.monthNames);
 });
 
 test("lists given number of weeks before given date", function() {
@@ -36,10 +42,10 @@ test("shows month name on first row of full week", function() {
   cal({startDate: "4/30/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 5});
   var months = cal().find("tbody .month");
   var firstMonth = months.eq(1);
-  equals(firstMonth.text(), "toukokuu");
+  equals(firstMonth.text(), "May");
   equals(firstMonth.next().next().text(), "4");
   var secondMonth = months.eq(5);
-  equals(secondMonth.text(), "kesäkuu");
+  equals(secondMonth.text(), "June");
   equals(secondMonth.next().next().text(), "1");
 });
 
@@ -49,7 +55,7 @@ test("highlights current date and shows year for january", function() {
   var cells = cal().find(".today");
   equals(cells.size(), 1);
   equals(cells.text(), today.getDate());
-  var year = cal().find(".month").withText("tammikuu").eq(0).parent().next().find(".month").text();
+  var year = cal().find(".month").withText("January").eq(0).parent().next().find(".month").text();
   ok(parseInt(year) == new Date().getFullYear());
 });
 
@@ -147,7 +153,7 @@ test("mouse click and drag works with no initial selection", function() {
 
 test("mouse click on month on range calendar selects whole month", function() {
   createBigCalendar();
-  var monthName = cal().find(".month").withText("toukokuu");
+  var monthName = cal().find(".month").withText("May");
   mouseEvent("mouseDown", monthName);
   mouseEvent("mouseUp", monthName);
   equals(cal().find(".selected").size(), 31);
@@ -158,7 +164,7 @@ test("mouse click on month on range calendar selects whole month", function() {
 
 test("mouse click on month in singe date calendar does nothing", function() {
   createBigCalendarForSingleDate();
-  cal().find(".month").withText("toukokuu").click();
+  cal().find(".month").withText("May").click();
   equals(cal().find(".selected").size(), 0);
   equals(startFieldValue(), "");
 });

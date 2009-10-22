@@ -12,9 +12,8 @@
       }
     };
     var params = $.extend(defaults, options);
-    var WEEK_DAYS = ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'];
-    var MONTHS = ['tammikuu', 'helmikuu', 'maaliskuu', 'huhtikuu', 'toukokuu', 'kesäkuu', 'heinäkuu', 'elokuu',
-      'syyskuu', 'lokakuu', 'marraskuu', 'joulukuu'];
+    var WEEK_DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+    var MONTHS = Date.monthNames;
     var Status = {
       CREATE:'create',
       MOVE:'move',
@@ -206,7 +205,7 @@
       var th = $('<th>').addClass('month').addClass(backgroundBy(firstDayOfWeek));
 
       if (firstDayOfWeek.getDate() <= WEEK_DAYS.length) {
-        th.append(MONTHS[firstDayOfWeek.getMonth()]);
+        th.append(MONTHS[firstDayOfWeek.getMonth()]).addClass('monthName');
       } else if (firstDayOfWeek.getDate() <= WEEK_DAYS.length * 2 && firstDayOfWeek.getMonth() == 0) {
         th.append(firstDayOfWeek.getFullYear());
       }
