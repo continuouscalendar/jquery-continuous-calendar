@@ -237,9 +237,9 @@ test("calendar provides selection as public field", function() {
 });
 
 test("month and day names are localizable", function() {
-  cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009", weekDays:WEEKDAYS_FI, months:MONTHS_FI});
-  assertHasValues(".continuousCalendar thead th.weekDay", WEEKDAYS_FI);
-  assertHasValues(".monthName", MONTHS_FI);
+  cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009", locale: DATE_LOCALE_FI});
+  assertHasValues(".continuousCalendar thead th.weekDay", DATE_LOCALE_FI.weekDays);
+  assertHasValues(".monthName", DATE_LOCALE_FI.months);
 });
 
 var testIndex = 0;
