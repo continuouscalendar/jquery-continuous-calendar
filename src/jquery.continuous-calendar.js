@@ -123,8 +123,7 @@
       bodyTable.addClass('range');
       bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
       disableTextSelection(bodyTable.get(0));
-      setStartLabel(params.startField.val());
-      setEndLabel(params.endField.val());
+      setRangeLabels();
     }
 
     function setScrollBehaviors(scrollContent) {
@@ -240,12 +239,12 @@
         dateCell.addClass('selected');
         var formattedDate = dateCell.get(0).date.dateFormat(params.locale.shortDateFormat);
         params.startField.val(formattedDate);
-        setStartLabel(formattedDate);
+        setDateLabel(formattedDate);
         if (params.isPopup) {
           toggleCalendar.call(this);
         }
       });
-      setStartLabel(params.startField.val());
+      setDateLabel(params.startField.val());
     }
 
     function mouseDown(event) {
@@ -398,11 +397,10 @@
     function updateTextFields() {
       var formattedStart = formatDate(selection.start);
       var formattedEnd = formatDate(selection.end);
+      container.data('calendarRange', selection);
       setStartField(formattedStart);
       setEndField(formattedEnd);
-      setStartLabel(formattedStart);
-      setEndLabel(formattedEnd);
-      container.data('calendarRange', selection);
+      setRangeLabels();
       params.callback.call(container, selection);
       container.trigger('calendarChange');
     }
@@ -419,12 +417,16 @@
       return date.dateFormat(params.locale.shortDateFormat);
     }
 
-    function setStartLabel(val) {
+    function setDateLabel(val) {
       container.find('span.startDateLabel').text(val);
     }
 
-    function setEndLabel(val) {
-      container.find('span.endDateLabel').text(val);
+    function setRangeLabels() {
+      if (selection.start && selection.end) {
+        var format = params.locale.weekDateFormat;
+        container.find('span.startDateLabel').text(selection.start.dateFormat(format));
+        container.find('span.endDateLabel').text(selection.end.dateFormat(format));
+      }
     }
 
     function isRange() {
