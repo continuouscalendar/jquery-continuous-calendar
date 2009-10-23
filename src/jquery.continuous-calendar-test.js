@@ -1,3 +1,6 @@
+
+var locale = DATE_LOCALE_FI;
+
 module("calendar rendering", {
   setup: createCalendarContainer
 });
@@ -59,7 +62,7 @@ test("highlights current date and shows year for january", function() {
 });
 
 test("highlights selected date", function() {
-  cal({startDate:"30.4.2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2, dateFormat: Date.patterns.FiShortDatePattern});
+  cal({startDate:"30.4.2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2, dateFormat: locale.shortDateFormat});
   equals(cal().find(".selected").text(), "30");
 });
 
@@ -200,7 +203,7 @@ test("range has default of on year per direction", function() {
 });
 
 test("range has current day selected as default when configured so", function() {
-  cal({startDate: "", endDate: ""}).continuousCalendar({weeksBefore:20, lastDate:'today', selectToday:true, dateFormat: Date.patterns.FiWeekdayDatePattern});
+  cal({startDate: "", endDate: ""}).continuousCalendar({weeksBefore:20, lastDate:'today', selectToday:true, dateFormat: locale.shortDateFormat});
   equals(cal().find('.selected').size(), 1);
 });
 
@@ -318,8 +321,8 @@ function createRangeCalendarWithFiveWeeks() {
 
 }
 function createBigCalendar() {
-  var todayText = new Date().dateFormat(Date.patterns.FiShortDatePattern);
-  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30, dateFormat: Date.patterns.FiShortDatePattern});
+  var todayText = new Date().dateFormat(locale.shortDateFormat);
+  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30, dateFormat: locale.shortDateFormat});
 }
 
 function createBigCalendarForSingleDate() {

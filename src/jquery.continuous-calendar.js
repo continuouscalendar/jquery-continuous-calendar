@@ -3,16 +3,19 @@
     var defaults = {
       weeksBefore: 26,
       weeksAfter: 26,
-      dateFormat: Date.patterns.ShortDatePattern,
       startField: this.find('input.startDate'),
       endField: this.find('input.endDate'),
       isPopup: false,
       selectToday: false,
+      dateFormat: "n/j/Y",
       locale: {
         weekDays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
         months: Date.monthNames,
         daysLabel: "Days",
-        hoursLabel: "hours"
+        hoursLabel: "hours",
+        shortDateFormat: "n/j/Y",
+        weekDateFormat: "D n/j/Y",
+        dateTimeFormat: "D n/j/Y G:i"
       },
       callback: function() {
       }
@@ -559,7 +562,7 @@ function DateRange(date1, date2) {
       var minutes = this.minutes() > 0 ? ',' + (this.minutes() / 6) : '';
       return this.days() + ' ' + locale.daysLabel + ' ' + this.hours() + minutes + ' ' + locale.hoursLabel;
     } else {
-      return this.start.dateFormat(locale.dateFormat) + ' - ' + this.end.dateFormat(locale.dateFormat);
+      return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat);
     }
   };
 }
