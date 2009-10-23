@@ -8,15 +8,7 @@
       isPopup: false,
       selectToday: false,
       dateFormat: "n/j/Y",
-      locale: {
-        weekDays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-        months: Date.monthNames,
-        daysLabel: "Days",
-        hoursLabel: "hours",
-        shortDateFormat: "n/j/Y",
-        weekDateFormat: "D n/j/Y",
-        dateTimeFormat: "D n/j/Y G:i"
-      },
+      locale: DATE_LOCALE_EN,
       callback: function() {
       }
     };
