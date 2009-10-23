@@ -118,7 +118,7 @@
     function initRangeCalendarEvents(container, bodyTable) {
       var daysContainer = $('<em>');
       rangeLengthLabel.text(selection.days());
-      daysContainer.append(rangeLengthLabel).append(' Päivää');
+      daysContainer.append(rangeLengthLabel).append(' ' + params.locale.daysLabel);
       container.find('.continuousCalendar').append(daysContainer);
       bodyTable.addClass('range');
       bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
