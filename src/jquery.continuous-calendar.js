@@ -559,7 +559,7 @@ function DateRange(date1, date2) {
       var minutes = this.minutes() > 0 ? ',' + (this.minutes() / 6) : '';
       return this.days() + ' ' + locale.daysLabel + ' ' + this.hours() + minutes + ' ' + locale.hoursLabel;
     } else {
-      return this.start.dateFormat(Date.patterns.ShortDatePattern) + ' - ' + this.end.dateFormat(Date.patterns.ShortDatePattern);
+      return this.start.dateFormat(locale.dateFormat) + ' - ' + this.end.dateFormat(locale.dateFormat);
     }
   };
 }
