@@ -7,7 +7,6 @@
       endField: this.find('input.endDate'),
       isPopup: false,
       selectToday: false,
-      dateFormat: "n/j/Y",
       locale: DATE_LOCALE_EN,
       callback: function() {
       }
@@ -61,8 +60,8 @@
         selection = DateRange.emptyRange();
       }
       container.data('calendarRange', selection);
-      var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * params.locale.weekDays.length));
-      var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.dateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * params.locale.weekDays.length + params.locale.weekDays.length - 1);
+      var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * params.locale.weekDays.length));
+      var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * params.locale.weekDays.length + params.locale.weekDays.length - 1);
       calendarRange = new DateRange(rangeStart, rangeEnd);
 
       var headerTable = $('<table>').addClass('calendarHeader').append(headerRow());
@@ -239,7 +238,7 @@
         dateCells.removeClass('selected');
         var dateCell = $(this);
         dateCell.addClass('selected');
-        var formattedDate = dateCell.get(0).date.dateFormat(params.dateFormat);
+        var formattedDate = dateCell.get(0).date.dateFormat(params.locale.shortDateFormat);
         params.startField.val(formattedDate);
         setStartLabel(formattedDate);
         if (params.isPopup) {
@@ -417,7 +416,7 @@
     }
 
     function formatDate(date) {
-      return date.dateFormat(params.dateFormat);
+      return date.dateFormat(params.locale.shortDateFormat);
     }
 
     function setStartLabel(val) {
@@ -434,7 +433,7 @@
 
     function fieldDate(field) {
       if (field.length > 0 && field.val().length > 0)
-        return Date.parseDate(field.val(), params.dateFormat);
+        return Date.parseDate(field.val(), params.locale.shortDateFormat);
       else
         return null;
     }

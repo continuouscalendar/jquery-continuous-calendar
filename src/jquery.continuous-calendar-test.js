@@ -1,6 +1,3 @@
-
-var locale = DATE_LOCALE_FI;
-
 module("calendar rendering", {
   setup: createCalendarContainer
 });
@@ -62,7 +59,7 @@ test("highlights current date and shows year for january", function() {
 });
 
 test("highlights selected date", function() {
-  cal({startDate:"30.4.2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2, dateFormat: locale.shortDateFormat});
+  cal({startDate:"4/30/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
   equals(cal().find(".selected").text(), "30");
 });
 
@@ -159,8 +156,8 @@ test("mouse click on month on range calendar selects whole month", function() {
   mouseEvent("mouseDown", monthName);
   mouseEvent("mouseUp", monthName);
   equals(cal().find(".selected").size(), 31);
-  equals(startFieldValue(), "1.5.2009");
-  equals(endFieldValue(), "31.5.2009");
+  equals(startFieldValue(), "5/1/2009");
+  equals(endFieldValue(), "5/31/2009");
   equals(cal().find("em span").text(), "31");
 });
 
@@ -203,7 +200,7 @@ test("range has default of on year per direction", function() {
 });
 
 test("range has current day selected as default when configured so", function() {
-  cal({startDate: "", endDate: ""}).continuousCalendar({weeksBefore:20, lastDate:'today', selectToday:true, dateFormat: locale.shortDateFormat});
+  cal({startDate: "", endDate: ""}).continuousCalendar({weeksBefore:20, lastDate:'today', selectToday:true});
   equals(cal().find('.selected').size(), 1);
 });
 
@@ -240,7 +237,7 @@ test("calendar provides selection as public field", function() {
 });
 
 test("month and day names are localizable", function() {
-  cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009", locale: DATE_LOCALE_FI});
+  cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1.1.2009", lastDate:"31.12.2009", locale: DATE_LOCALE_FI});
   assertHasValues(".continuousCalendar thead th.weekDay", DATE_LOCALE_FI.weekDays);
   assertHasValues(".monthName", DATE_LOCALE_FI.months);
 });
@@ -321,8 +318,8 @@ function createRangeCalendarWithFiveWeeks() {
 
 }
 function createBigCalendar() {
-  var todayText = new Date().dateFormat(locale.shortDateFormat);
-  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30, dateFormat: locale.shortDateFormat});
+  var todayText = new Date().dateFormat(DATE_LOCALE_EN.shortDateFormat);
+  cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30});
 }
 
 function createBigCalendarForSingleDate() {
