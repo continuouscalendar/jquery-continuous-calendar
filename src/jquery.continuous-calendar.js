@@ -534,15 +534,15 @@ function DateRange(date1, date2) {
   function dateWithTime(dateWithoutTime, timeStr) {
     var parsedTime = parseTime(timeStr);
     var date = dateWithoutTime.clone();
-    date.setHours(parsedTime[0]);
-    date.setMinutes(parsedTime[1]);
+    date.setHours(parsedTime.get(0));
+    date.setMinutes(parsedTime.get(1));
     date.setMilliseconds(0);
     return date;
   }
 
   function parseTime(timeStr) {
-    return timeStr.split(':').map(function(elem) {
-      return parseInt(elem);
+    return $(timeStr.split(':')).map(function() {
+      return parseInt(this);
     });
   }
 

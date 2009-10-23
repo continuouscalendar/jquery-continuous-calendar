@@ -44,7 +44,7 @@ test("date range can have times", function() {
   equals(range.days(), 2);
   equals(range.hours(), 4);
   equals(range.minutes(), 30);
-  equals(range.toString(), "2 Päivää 4,5 tuntia");
+  equals(range.toString(DATE_LOCALE_FI), "2 Päivää 4,5 tuntia");
   range.setTimes('17:00', '16:00');
   equals(range.days(), 1);
   equals(range.hours(), 23);
