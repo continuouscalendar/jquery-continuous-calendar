@@ -209,6 +209,7 @@ test("range can be specified with weeks and dates mixed", function() {
   equals(cal().find('.week').length, 22);
 });
 
+//TODO fails with IE7
 test("calendar executes callback-function and triggers event when range is created or changed", function() {
   function testFunction(range) {
     window.calendarContainer = this;
