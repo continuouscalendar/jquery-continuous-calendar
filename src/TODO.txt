@@ -2,4 +2,8 @@ TODO enable drag on weeks and months
 TODO authoring concerns http://docs.jquery.com/Plugins/Authoring
 TODO BUG IE6, IE7: Move cursor and expand-cursor not showing
 TODO scroll while dragging
-TODO test autoscroll with different browsers
+TODO test auto scroll with different browsers
+TODO default values for everything
+TODO create input fields if does not exist
+TODO wrap pop-up around div
+TODO good examples of use
