@@ -21,6 +21,7 @@
       NONE:'none'
     };
 
+    params.locale.init();
     var rangeLengthLabel = $('<span>');
     var startDate = fieldDate(params.startField);
     var endDate = fieldDate(params.endField);
@@ -60,8 +61,8 @@
         selection = DateRange.emptyRange();
       }
       container.data('calendarRange', selection);
-      var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * params.locale.weekDays.length));
-      var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * params.locale.weekDays.length + params.locale.weekDays.length - 1);
+      var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7));
+      var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6);
       calendarRange = new DateRange(rangeStart, rangeEnd);
 
       var headerTable = $('<table>').addClass('calendarHeader').append(headerRow());
@@ -118,7 +119,7 @@
     function initRangeCalendarEvents(container, bodyTable) {
       var daysContainer = $('<em>');
       rangeLengthLabel.text(selection.days());
-      daysContainer.append(rangeLengthLabel).append(' ' + params.locale.daysLabel);
+      daysContainer.append(rangeLengthLabel).append(' ' + Date.daysLabel);
       container.find('.continuousCalendar').append(daysContainer);
       bodyTable.addClass('range');
       bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
@@ -148,8 +149,8 @@
       var tr = $('<tr>').append(yearCell());
       var thead = $('<thead>').append(tr);
       tr.append('<th class="week"></th>');
-      $(params.locale.weekDays).each(function() {
-        var weekDay = $('<th>').append(this.toString()).addClass('weekDay');
+      $([1,2,3,4,5,6,0]).each(function() {
+        var weekDay = $('<th>').append(Date.dayNames[this].substr(0,2)).addClass('weekDay');
         tr.append(weekDay);
       });
       if (params.isPopup) {
@@ -174,14 +175,14 @@
       var currentMonday = calendarRange.start.getFirstDateOfWeek(Date.MONDAY);
       while (currentMonday.compareTo(calendarRange.end) <= 0) {
         tbody.append(calendarRow(currentMonday.clone()));
-        currentMonday = currentMonday.plusDays(params.locale.weekDays.length);
+        currentMonday = currentMonday.plusDays(7);
       }
       return tbody;
     }
 
     function calendarRow(firstDayOfWeek) {
       var tr = $('<tr>').append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
-      for (var i = 0; i < params.locale.weekDays.length; i++) {
+      for (var i = 0; i < 7; i++) {
         var date = firstDayOfWeek.plusDays(i);
         var dateCell = $('<td>').addClass(dateStyles(date)).append(date.getDate());
         dateCell.get(0).date = date;
@@ -201,9 +202,9 @@
     function monthCell(firstDayOfWeek) {
       var th = $('<th>').addClass('month').addClass(backgroundBy(firstDayOfWeek));
 
-      if (firstDayOfWeek.getDate() <= params.locale.weekDays.length) {
-        th.append(params.locale.months[firstDayOfWeek.getMonth()]).addClass('monthName');
-      } else if (firstDayOfWeek.getDate() <= params.locale.weekDays.length * 2 && firstDayOfWeek.getMonth() == 0) {
+      if (firstDayOfWeek.getDate() <= 7) {
+        th.append(Date.monthNames[firstDayOfWeek.getMonth()]).addClass('monthName');
+      } else if (firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 0) {
         th.append(firstDayOfWeek.getFullYear());
       }
       return th;
@@ -553,7 +554,7 @@ function DateRange(date1, date2) {
   this.toString = function(locale) {
     if (times) {
       var minutes = this.minutes() > 0 ? ',' + (this.minutes() / 6) : '';
-      return this.days() + ' ' + locale.daysLabel + ' ' + this.hours() + minutes + ' ' + locale.hoursLabel;
+      return this.days() + ' ' + Date.daysLabel + ' ' + this.hours() + minutes + ' ' + Date.hoursLabel;
     } else {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat);
     }

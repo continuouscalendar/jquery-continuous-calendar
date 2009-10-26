@@ -181,6 +181,7 @@ test("range is movable", function() {
   mouseUpOnDay(29);
   assertHasValues(".selected", [27,28,29,30,1,2,3]);
   equals(startFieldValue(), "4/27/2009");
+  equals(startLabelValue(), "Mon 4/27/2009");
   equals(endFieldValue(), "5/3/2009");
 });
 
@@ -239,8 +240,24 @@ test("calendar provides selection as public field", function() {
 
 test("month and day names are localizable", function() {
   cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1.1.2009", lastDate:"31.12.2009", locale: DATE_LOCALE_FI});
-  assertHasValues(".continuousCalendar thead th.weekDay", DATE_LOCALE_FI.weekDays);
-  assertHasValues(".monthName", DATE_LOCALE_FI.months);
+  assertHasValues(".continuousCalendar thead th.weekDay", ['Ma','Ti','Ke','To','Pe','La','Su']);
+  assertHasValues(".monthName", [
+    "tammikuu",
+    "helmikuu",
+    "maaliskuu",
+    "huhtikuu",
+    "toukokuu",
+    "kesäkuu",
+    "heinäkuu",
+    "elokuu",
+    "syyskuu",
+    "lokakuu",
+    "marraskuu",
+    "joulukuu"]);
+  mouseDownOnDay(1);
+  mouseUpOnDay(1);
+  equals(startFieldValue(), "1.1.2009");
+  equals(startLabelValue(), "To 1.1.2009");
 });
 
 var testIndex = 0;

@@ -65,14 +65,14 @@ a.calendarIcon {
 .continuousCalendar .calendarHeader .weekDay,
 .continuousCalendar .calendarBody td {
   text-align: right;
-  width: 13px;
+  width: 14px;
   padding: 1px;
   padding-right: 3px;
 }
 
 .calendarScrollContent {
   overflow-y: auto;
-  width: 215px;
+  width: 218px;
   height: 100px;
   border: 1px solid #999999;
   position: relative;
@@ -83,7 +83,7 @@ a.calendarIcon {
 }
 
 .continuousCalendar .month {
-  width: 50px;
+  width: 53px;
 }
 
 .continuousCalendar .week {
