@@ -111,7 +111,7 @@
       var dateLabelContainer = $('<div class="label">');
       dateLabelContainer.append('<span class="startDateLabel"/>');
       if (isRange()) {
-        dateLabelContainer.append('<span class="separator">').append('<span class="endDateLabel"/>');
+        dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"/>');
       }
       container.append(dateLabelContainer);
     }
