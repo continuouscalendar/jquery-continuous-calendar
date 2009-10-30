@@ -15,9 +15,6 @@
     var Status = {
       CREATE:'create',
       MOVE:'move',
-      SHIFT_EXPAND:'shift_expand',
-      DRAG_EXPAND_START:'drag_expand_start',
-      DRAG_EXPAND_END:'drag_expand_end',
       NONE:'none'
     };
 
@@ -250,23 +247,23 @@
 
     function mouseDown(event) {
       var elem = event.target;
-      if (isDateCell(elem)) {
+      if (isDateCell(elem) && isEnabled(elem)) {
         mouseDownDate = elem.date;
         if (mouseDownDate.equalsOnlyDate(selection.end)) {
-          status = Status.DRAG_EXPAND_END;
-        }
-        else if (mouseDownDate.equalsOnlyDate(selection.start)) {
-          status = Status.DRAG_EXPAND_START;
+          status = Status.CREATE;
+          mouseDownDate = selection.start;
+        } else if (mouseDownDate.equalsOnlyDate(selection.start)) {
+          status = Status.CREATE;
+          mouseDownDate = selection.end;
         } else if (selection.hasDate(mouseDownDate)) {
           startMovingRange(mouseDownDate);
-        } else if (isEnabled(elem)) {
-          if (event.shiftKey) {
-            selection.expandTo(mouseDownDate);
-            selectRange();
-            updateTextFields();
-          } else {
-            startCreatingRange($(elem));
-          }
+        } else if (event.shiftKey) {
+          selection.expandTo(mouseDownDate);
+          selectRange();
+          updateTextFields();
+        } else {
+          status = Status.CREATE;
+          startCreatingRange($(elem));
         }
       } else if (isWeekCell(elem)) {
         var dayInWeek = $(elem).siblings('.date').get(0).date;
@@ -297,18 +294,6 @@
             selection = new DateRange(mouseDownDate, date);
             selectRange();
             break;
-          case Status.DRAG_EXPAND_START:
-            if (date.compareTo(selection.end) < 0) {
-              selection = new DateRange(date, selection.end);
-              selectRange();
-            }
-            break;
-          case Status.DRAG_EXPAND_END:
-            if (date.compareTo(selection.start) > 0) {
-              selection = new DateRange(selection.start, date);
-              selectRange();
-            }
-            break;
           default:
             break;
         }
@@ -326,11 +311,6 @@
             selection = new DateRange(mouseDownDate, event.target.date);
             status = Status.NONE;
             selectRange();
-            updateTextFields();
-            break;
-          case Status.DRAG_EXPAND_START:
-          case Status.DRAG_EXPAND_END:
-            status = Status.NONE;
             updateTextFields();
             break;
           default:
@@ -355,7 +335,6 @@
     }
 
     function startCreatingRange(elem) {
-      status = Status.CREATE;
       selection = new DateRange(mouseDownDate, mouseDownDate);
       dateCells.each(function(i) {
         this.className = dateStyles(dateCellDates[i]);

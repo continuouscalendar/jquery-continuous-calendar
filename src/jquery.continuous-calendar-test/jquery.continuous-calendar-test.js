@@ -262,16 +262,22 @@ test("month and day names are localizable", function() {
 
 test("forward drag after one day selection expands selection", function() {
   createRangeCalendarWithFiveWeeks();
-  mouseDownOnDay(16);
-  mouseUpOnDay(16);
+  mouseDownAndUpOnDay(16);
   assertHasValues('.selected',[16]);
 
   mouseDownOnDay(16);
-  mouseMoveOnDay(16);
   mouseMoveOnDay(17);
   mouseMoveOnDay(18);
   mouseUpOnDay(18);
   assertHasValues('.selected',[16,17,18]);
+
+  mouseDownAndUpOnDay(19);
+  assertHasValues('.selected', [19]);
+  mouseDownOnDay(19);
+  mouseMoveOnDay(18);
+  mouseMoveOnDay(17);
+  mouseUpOnDay(17);
+  assertHasValues('.selected', [17,18,19]);
 });
 
 var testIndex = 0;
@@ -326,7 +332,13 @@ function clickWithShiftOnDay(date) {
   mouseUpOnDay(date, options);
 }
 
-function mouseDownOnDay(date, options) {
+function mouseDownAndUpOnDay(date) {
+  mouseDownOnDay(date);
+  mouseUpOnDay(date);
+}
+
+function mouseDownOnDay(date) {
+  var options = arguments[1];
   mouseEventOnDay("mouseDown", date, options);
 }
 function mouseMoveOnDay(date) {
