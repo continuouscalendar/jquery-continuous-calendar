@@ -24,7 +24,7 @@
     var endDate = fieldDate(params.endField);
 
     if (params.selectToday) {
-      var today = new Date();
+      var today = Date.NOW;
       var formattedToday = formatDate(today);
       startDate = today;
       endDate = today;
@@ -32,7 +32,7 @@
       setEndField(formattedToday);
     }
 
-    var firstWeekdayOfGivenDate = (startDate || new Date()).getFirstDateOfWeek(Date.MONDAY);
+    var firstWeekdayOfGivenDate = (startDate || Date.NOW).getFirstDateOfWeek(Date.MONDAY);
     var container = this;
     var dateCells = null;
     var dateCellDates = null;

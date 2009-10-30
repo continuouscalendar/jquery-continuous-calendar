@@ -26,7 +26,7 @@ Date.DAY = 24 * Date.HOUR;
 Date.WEEK = 7 * Date.DAY;
 Date.MONDAY = 1;
 Date.SUNDAY = 0;
-
+Date.NOW = new Date();
 Date.getDaysInMonth = function(year, month) {
   if (((0 == (year % 4)) && ( (0 != (year % 100)) || (0 == (year % 400)))) && month == 1) {
     return 29;
@@ -97,7 +97,7 @@ Date.prototype.compareDateOnlyTo = function(date) {
 };
 
 Date.prototype.isToday = function() {
-  return this.equalsOnlyDate(new Date());
+  return this.equalsOnlyDate(Date.NOW);
 };
 
 Date.prototype.getWeekInYear = function(weekNumberingSystem) {
@@ -299,7 +299,7 @@ Date.getFormatCode = function(character) {
 
 Date.parseDate = function(input, format) {
   if (input == 'today') {
-    return new Date();
+    return Date.NOW;
   }
   if (Date.parseFunctions[format] == null) {
     Date.createParser(format);
@@ -316,7 +316,7 @@ Date.createParser = function(format) {
 
   var code = "Date." + funcName + " = function(input){\n"
     + "var y = -1, m = -1, d = -1, h = -1, i = -1, s = -1;\n"
-    + "var d = new Date();\n"
+    + "var d = Date.NOW;\n"
     + "y = d.getFullYear();\n"
     + "m = d.getMonth();\n"
     + "d = d.getDate();\n"
