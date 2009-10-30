@@ -252,10 +252,11 @@
       var elem = event.target;
       if (isDateCell(elem)) {
         mouseDownDate = elem.date;
-        if (mouseDownDate.equalsOnlyDate(selection.start)) {
-          status = Status.DRAG_EXPAND_START;
-        } else if (mouseDownDate.equalsOnlyDate(selection.end)) {
+        if (mouseDownDate.equalsOnlyDate(selection.end)) {
           status = Status.DRAG_EXPAND_END;
+        }
+        else if (mouseDownDate.equalsOnlyDate(selection.start)) {
+          status = Status.DRAG_EXPAND_START;
         } else if (selection.hasDate(mouseDownDate)) {
           startMovingRange(mouseDownDate);
         } else if (isEnabled(elem)) {
@@ -280,21 +281,10 @@
       }
     }
 
-    function isDateCell(elem) {
-      return $(elem).hasClass('date');
-    }
-
-    function isWeekCell(elem) {
-      return $(elem).hasClass('week');
-    }
-
-    function isMonthCell(elem) {
-      return $(elem).hasClass('month');
-    }
-
-    function isEnabled(elem) {
-      return !$(elem).hasClass('disabled');
-    }
+    function isDateCell(elem) {return $(elem).hasClass('date');}
+    function isWeekCell(elem) {return $(elem).hasClass('week');}
+    function isMonthCell(elem) {return $(elem).hasClass('month');}
+    function isEnabled(elem) {return !$(elem).hasClass('disabled');}
 
     function mouseMove(event) {
       var date = event.target.date;

@@ -260,6 +260,20 @@ test("month and day names are localizable", function() {
   equals(startLabelValue(), "To 1.1.2009");
 });
 
+test("forward drag after one day selection expands selection", function() {
+  createRangeCalendarWithFiveWeeks();
+  mouseDownOnDay(16);
+  mouseUpOnDay(16);
+  assertHasValues('.selected',[16]);
+
+  mouseDownOnDay(16);
+  mouseMoveOnDay(16);
+  mouseMoveOnDay(17);
+  mouseMoveOnDay(18);
+  mouseUpOnDay(18);
+  assertHasValues('.selected',[16,17,18]);
+});
+
 var testIndex = 0;
 
 function createCalendarContainer() {
