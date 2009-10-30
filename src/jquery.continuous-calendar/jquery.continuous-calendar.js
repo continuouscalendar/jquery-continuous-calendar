@@ -220,7 +220,7 @@
         dateCells.removeClass('selected');
         var dateCell = $(this);
         dateCell.addClass('selected');
-        var formattedDate = dateCell.get(0).date.dateFormat(params.locale.shortDateFormat);
+        var formattedDate = date(dateCell).dateFormat(params.locale.shortDateFormat);
         params.startField.val(formattedDate);
         setDateLabel(formattedDate);
         if (params.isPopup) {
@@ -249,11 +249,11 @@
         }
       } else if (isWeekCell(elem)) {
         status = Status.NONE;
-        var dayInWeek = $(elem).siblings('.date').get(0).date;
+        var dayInWeek = date($(elem).siblings('.date'));
         selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
       } else if (isMonthCell(elem)) {
         status = Status.NONE;
-        var dayInMonth = $(elem).siblings('.date').get(0).date;
+        var dayInMonth = date($(elem).siblings('.date'));
         selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
       }
     }
@@ -262,6 +262,7 @@
     function isWeekCell(elem) {return $(elem).hasClass('week');}
     function isMonthCell(elem) {return $(elem).hasClass('month');}
     function isEnabled(elem) {return !$(elem).hasClass('disabled');}
+    function date(elem) {return elem.get(0).date;}
 
     function mouseMove(event) {
       var date = event.target.date;
@@ -273,8 +274,6 @@
           case Status.CREATE:
             selection = new DateRange(mouseDownDate, date);
             selectRange();
-            break;
-          default:
             break;
         }
       }
@@ -289,8 +288,6 @@
           case Status.CREATE:
             selection = new DateRange(mouseDownDate, event.target.date);
             status = Status.NONE;
-            break;
-          default:
             break;
         }
       } else {
