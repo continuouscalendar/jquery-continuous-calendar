@@ -185,9 +185,9 @@
         dateCell.get(0).date = date;
         if (date.isToday()) dateCell.addClass('today');
         if (isRange()) {
-          dateCell.toggleClass('selected', selection.hasDate(date));
-          dateCell.toggleClass('rangeStart', date.equalsOnlyDate(selection.start));
-          dateCell.toggleClass('rangeEnd', date.equalsOnlyDate(selection.end));
+          dateCell.toggleClass('selected', selection.hasDate(date))
+          .toggleClass('rangeStart', date.equalsOnlyDate(selection.start))
+          .toggleClass('rangeEnd', date.equalsOnlyDate(selection.end));
         } else {
           dateCell.toggleClass('selected', date.equalsOnlyDate(startDate));
         }
@@ -198,7 +198,6 @@
 
     function monthCell(firstDayOfWeek) {
       var th = $('<th>').addClass('month').addClass(backgroundBy(firstDayOfWeek));
-
       if (firstDayOfWeek.getDate() <= 7) {
         th.append(Date.monthNames[firstDayOfWeek.getMonth()]).addClass('monthName');
       } else if (firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 0) {
@@ -208,27 +207,13 @@
     }
 
     function weekCell(firstDayOfWeek) {
-      var weekNumber = $('<th>');
-      weekNumber.addClass('week').addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear('ISO'));
-
-      return weekNumber;
+      return $('<th>').addClass('week').addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear('ISO'));
     }
 
-    function dateStyles(date) {
-      return 'date ' + backgroundBy(date) + disabledOrNot(date) + todayStyle(date);
-    }
-
-    function backgroundBy(date) {
-      return date.isOddMonth() ? ' odd' : '';
-    }
-
-    function disabledOrNot(date) {
-      return calendarRange.hasDate(date) ? '' : ' disabled';
-    }
-
-    function todayStyle(date) {
-      return date.isToday() ? ' today' : '';
-    }
+    function dateStyles(date) {return 'date ' + backgroundBy(date) + disabledOrNot(date) + todayStyle(date);}
+    function backgroundBy(date) {return date.isOddMonth() ? ' odd' : '';}
+    function disabledOrNot(date) {return calendarRange.hasDate(date) ? '' : ' disabled';}
+    function todayStyle(date) {return date.isToday() ? ' today' : '';}
 
     function initSingleDateCalendarEvents() {
       dateCells.click(function() {
@@ -248,33 +233,28 @@
     function mouseDown(event) {
       var elem = event.target;
       if (isDateCell(elem) && isEnabled(elem)) {
+        status = Status.CREATE;
         mouseDownDate = elem.date;
         if (mouseDownDate.equalsOnlyDate(selection.end)) {
-          status = Status.CREATE;
           mouseDownDate = selection.start;
         } else if (mouseDownDate.equalsOnlyDate(selection.start)) {
-          status = Status.CREATE;
           mouseDownDate = selection.end;
         } else if (selection.hasDate(mouseDownDate)) {
           startMovingRange(mouseDownDate);
         } else if (event.shiftKey) {
+          status = Status.NONE;
           selection.expandTo(mouseDownDate);
-          selectRange();
-          updateTextFields();
         } else {
-          status = Status.CREATE;
           startCreatingRange($(elem));
         }
       } else if (isWeekCell(elem)) {
+        status = Status.NONE;
         var dayInWeek = $(elem).siblings('.date').get(0).date;
         selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
-        updateTextFields();
-        selectRange();
       } else if (isMonthCell(elem)) {
+        status = Status.NONE;
         var dayInMonth = $(elem).siblings('.date').get(0).date;
         selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
-        updateTextFields();
-        selectRange();
       }
     }
 
@@ -304,14 +284,11 @@
       if (isEnabled(event.target)) {
         switch (status) {
           case Status.MOVE:
-            updateTextFields();
             status = Status.NONE;
             break;
           case Status.CREATE:
             selection = new DateRange(mouseDownDate, event.target.date);
             status = Status.NONE;
-            selectRange();
-            updateTextFields();
             break;
           default:
             break;
@@ -319,6 +296,8 @@
       } else {
         status = Status.NONE;
       }
+      selectRange();
+      updateTextFields();
     }
 
     function startMovingRange(date) {
@@ -375,21 +354,10 @@
       container.trigger('calendarChange');
     }
 
-    function setStartField(value) {
-      params.startField.val(value);
-    }
-
-    function setEndField(value) {
-      params.endField.val(value);
-    }
-
-    function formatDate(date) {
-      return date.dateFormat(params.locale.shortDateFormat);
-    }
-
-    function setDateLabel(val) {
-      container.find('span.startDateLabel').text(val);
-    }
+    function setStartField(value) {params.startField.val(value);}
+    function setEndField(value) {params.endField.val(value);}
+    function formatDate(date) {return date.dateFormat(params.locale.shortDateFormat);}
+    function setDateLabel(val) {container.find('span.startDateLabel').text(val);}
 
     function setRangeLabels() {
       if (selection.start && selection.end) {
@@ -399,9 +367,7 @@
       }
     }
 
-    function isRange() {
-      return params.endField && params.endField.length > 0;
-    }
+    function isRange() {return params.endField && params.endField.length > 0;}
 
     function fieldDate(field) {
       if (field.length > 0 && field.val().length > 0)
@@ -455,19 +421,13 @@ function DateRange(date1, date2) {
       return Math.round(this.start.distanceInDays(this.end) + 1);
     }
   };
-  this.hours = function() {
-    return hours;
-  };
-  this.minutes = function() {
-    return minutes;
-  };
+  this.hours = function() {return hours;};
+  this.minutes = function() {return minutes;};
   this.shiftDays = function(days) {
     this.start = this.start.plusDays(days);
     this.end = this.end.plusDays(days);
   };
-  this.hasDate = function(date) {
-    return date.isBetweenDates(this.start, this.end);
-  };
+  this.hasDate = function(date) {return date.isBetweenDates(this.start, this.end);};
   this.expandTo = function(date) {
     if (date.compareTo(this.start) < 0) {
       this.start = date;
@@ -516,9 +476,7 @@ function DateRange(date1, date2) {
     });
   }
 
-  this.isValid = function() {
-    return this.end.getTime() - this.start.getTime() >= 0;
-  };
+  this.isValid = function() {return this.end.getTime() - this.start.getTime() >= 0;};
 
   this.toString = function(locale) {
     if (times) {
@@ -534,14 +492,9 @@ DateRange.emptyRange = function() {
   function NullDateRange() {
     this.start = null;
     this.end = null;
-    this.days = function() {
-      return 0;
-    };
-    this.shiftDays = function() {
-    };
-    this.hasDate = function() {
-      return false;
-    };
+    this.days = function() {return 0;};
+    this.shiftDays = function() {};
+    this.hasDate = function() {return false;};
   }
 
   return new NullDateRange();
