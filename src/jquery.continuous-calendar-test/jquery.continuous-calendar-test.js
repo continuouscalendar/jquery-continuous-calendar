@@ -308,7 +308,6 @@ function cal(params) {
       container.append(field);
     }
   }
-
   return container;
 }
 
@@ -341,6 +340,7 @@ function mouseDownOnDay(date) {
   var options = arguments[1];
   mouseEventOnDay("mouseDown", date, options);
 }
+
 function mouseMoveOnDay(date) {
   mouseEventOnDay("mouseMove", date);
 }
@@ -359,8 +359,8 @@ function createCalendarWithOneWeek() {
 
 function createRangeCalendarWithFiveWeeks() {
   cal({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009"});
-
 }
+
 function createBigCalendar() {
   var todayText = new Date().dateFormat(DATE_LOCALE_EN.shortDateFormat);
   cal({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30});
@@ -373,9 +373,11 @@ function createBigCalendarForSingleDate() {
 function startFieldValue() {
   return cal().find("input.startDate").val();
 }
+
 function startLabelValue() {
   return cal().find("span.startDateLabel").text();
 }
+
 function endFieldValue() {
   return cal().find("input.endDate").val();
 }

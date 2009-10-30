@@ -106,9 +106,9 @@
 
     function addDateLabels(container) {
       var dateLabelContainer = $('<div class="label">');
-      dateLabelContainer.append('<span class="startDateLabel"/>');
+      dateLabelContainer.append('<span class="startDateLabel">');
       if (isRange()) {
-        dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"/>');
+        dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel">');
       }
       container.append(dateLabelContainer);
     }
@@ -358,6 +358,7 @@
     function setEndField(value) {params.endField.val(value);}
     function formatDate(date) {return date.dateFormat(params.locale.shortDateFormat);}
     function setDateLabel(val) {container.find('span.startDateLabel').text(val);}
+    function isRange() {return params.endField && params.endField.length > 0;}
 
     function setRangeLabels() {
       if (selection.start && selection.end) {
@@ -366,8 +367,6 @@
         container.find('span.endDateLabel').text(selection.end.dateFormat(format));
       }
     }
-
-    function isRange() {return params.endField && params.endField.length > 0;}
 
     function fieldDate(field) {
       if (field.length > 0 && field.val().length > 0)
@@ -414,6 +413,12 @@ function DateRange(date1, date2) {
   var days;
   var hours;
   var minutes;
+
+  this.hours = function() {return hours;};
+  this.minutes = function() {return minutes;};
+  this.hasDate = function(date) {return date.isBetweenDates(this.start, this.end);};
+  this.isValid = function() {return this.end.getTime() - this.start.getTime() >= 0;};
+
   this.days = function() {
     if (times) {
       return days;
@@ -421,13 +426,12 @@ function DateRange(date1, date2) {
       return Math.round(this.start.distanceInDays(this.end) + 1);
     }
   };
-  this.hours = function() {return hours;};
-  this.minutes = function() {return minutes;};
+  
   this.shiftDays = function(days) {
     this.start = this.start.plusDays(days);
     this.end = this.end.plusDays(days);
   };
-  this.hasDate = function(date) {return date.isBetweenDates(this.start, this.end);};
+
   this.expandTo = function(date) {
     if (date.compareTo(this.start) < 0) {
       this.start = date;
@@ -435,6 +439,7 @@ function DateRange(date1, date2) {
       this.end = date;
     }
   };
+
   this.and = function(that) {
     var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start;
     var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end;
@@ -444,12 +449,14 @@ function DateRange(date1, date2) {
       return DateRange.emptyRange();
     }
   };
+
   this.setTimes = function(startTimeStr, endTimeStr) {
     this.start = dateWithTime(this.start, startTimeStr);
     this.end = dateWithTime(this.end, endTimeStr);
     times = true;
     setDaysHoursAndMinutes.call(this);
   };
+
   function setDaysHoursAndMinutes() {
     if (times) {
       var ms = parseInt((this.end.getTime() - this.start.getTime()));
@@ -475,8 +482,6 @@ function DateRange(date1, date2) {
       return parseInt(this);
     });
   }
-
-  this.isValid = function() {return this.end.getTime() - this.start.getTime() >= 0;};
 
   this.toString = function(locale) {
     if (times) {
