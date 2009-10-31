@@ -240,12 +240,13 @@
         } else if (mouseDownDate.equalsOnlyDate(selection.start)) {
           mouseDownDate = selection.end;
         } else if (selection.hasDate(mouseDownDate)) {
-          startMovingRange(mouseDownDate);
+          status = Status.MOVE;
+          moveStartDate = mouseDownDate;
         } else if (event.shiftKey) {
           status = Status.NONE;
           selection.expandTo(mouseDownDate);
         } else {
-          startCreatingRange($(elem));
+          selection = new DateRange(mouseDownDate, mouseDownDate);
         }
       } else if (isWeekCell(elem)) {
         status = Status.NONE;
@@ -258,62 +259,36 @@
       }
     }
 
-    function isDateCell(elem) {return $(elem).hasClass('date');}
-    function isWeekCell(elem) {return $(elem).hasClass('week');}
-    function isMonthCell(elem) {return $(elem).hasClass('month');}
-    function isEnabled(elem) {return !$(elem).hasClass('disabled');}
-    function date(elem) {return elem.get(0).date;}
-
     function mouseMove(event) {
       var date = event.target.date;
       if (isEnabled(event.target)) {
         switch (status) {
           case Status.MOVE:
-            moveRange(date);
+            var deltaDays = moveStartDate.distanceInDays(date);
+            moveStartDate = date;
+            selection.shiftDays(deltaDays);
+            selection = selection.and(calendarRange);
             break;
           case Status.CREATE:
             selection = new DateRange(mouseDownDate, date);
-            selectRange();
             break;
         }
+        drawSelection();
       }
     }
 
     function mouseUp() {
       status = Status.NONE;
-      selectRange();
-      updateTextFields();
+      drawSelection();
+      afterSelection();
     }
 
-    function startMovingRange(date) {
-      status = Status.MOVE;
-      moveStartDate = date;
-    }
-
-    function moveRange(date) {
-      var deltaDays = moveStartDate.distanceInDays(date);
-      moveStartDate = date;
-      selection.shiftDays(deltaDays);
-      selection = selection.and(calendarRange);
-      selectRange();
-    }
-
-    function startCreatingRange(elem) {
-      selection = new DateRange(mouseDownDate, mouseDownDate);
-      dateCells.each(function(i) {
-        this.className = dateStyles(dateCellDates[i]);
-      });
-      var domElem = elem.get(0);
-      domElem.className = dateStyles(domElem.date) + ' selected rangeStart';
+    function drawSelection() {
+      drawSelectionBetweenDates(selection.start, selection.end);
       rangeLengthLabel.text(selection.days());
     }
 
-    function selectRange() {
-      selectRangeBetweenDates(selection.start, selection.end);
-      rangeLengthLabel.text(selection.days());
-    }
-
-    function selectRangeBetweenDates(start, end) {
+    function drawSelectionBetweenDates(start, end) {
       dateCells.each(function(i, elem) {
         var date = dateCellDates[i];
         var styleClass = [dateStyles(date)];
@@ -328,7 +303,7 @@
       });
     }
 
-    function updateTextFields() {
+    function afterSelection() {
       var formattedStart = formatDate(selection.start);
       var formattedEnd = formatDate(selection.end);
       container.data('calendarRange', selection);
@@ -338,12 +313,6 @@
       params.callback.call(container, selection);
       container.trigger('calendarChange');
     }
-
-    function setStartField(value) {params.startField.val(value);}
-    function setEndField(value) {params.endField.val(value);}
-    function formatDate(date) {return date.dateFormat(params.locale.shortDateFormat);}
-    function setDateLabel(val) {container.find('span.startDateLabel').text(val);}
-    function isRange() {return params.endField && params.endField.length > 0;}
 
     function setRangeLabels() {
       if (selection.start && selection.end) {
@@ -374,6 +343,16 @@
       }
     }
 
+    function isDateCell(elem) {return $(elem).hasClass('date');}
+    function isWeekCell(elem) {return $(elem).hasClass('week');}
+    function isMonthCell(elem) {return $(elem).hasClass('month');}
+    function isEnabled(elem) {return !$(elem).hasClass('disabled');}
+    function date(elem) {return elem.get(0).date;}
+    function setStartField(value) {params.startField.val(value);}
+    function setEndField(value) {params.endField.val(value);}
+    function formatDate(date) {return date.dateFormat(params.locale.shortDateFormat);}
+    function setDateLabel(val) {container.find('span.startDateLabel').text(val);}
+    function isRange() {return params.endField && params.endField.length > 0;}
   };
   $.fn.calendarRange = function() {
     return $(this).data('calendarRange');
@@ -389,7 +368,7 @@ $.fn.isEmpty = function() {
 };
 
 function DateRange(date1, date2) {
-  var times = false;
+  var hasTimes = false;
   if (!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2);
   }
@@ -405,7 +384,7 @@ function DateRange(date1, date2) {
   this.isValid = function() {return this.end.getTime() - this.start.getTime() >= 0;};
 
   this.days = function() {
-    if (times) {
+    if (hasTimes) {
       return days;
     } else {
       return Math.round(this.start.distanceInDays(this.end) + 1);
@@ -438,12 +417,12 @@ function DateRange(date1, date2) {
   this.setTimes = function(startTimeStr, endTimeStr) {
     this.start = dateWithTime(this.start, startTimeStr);
     this.end = dateWithTime(this.end, endTimeStr);
-    times = true;
+    hasTimes = true;
     setDaysHoursAndMinutes.call(this);
   };
 
   function setDaysHoursAndMinutes() {
-    if (times) {
+    if (hasTimes) {
       var ms = parseInt((this.end.getTime() - this.start.getTime()));
       days = parseInt(ms / Date.DAY);
       ms = ms - (days * Date.DAY);
@@ -469,7 +448,7 @@ function DateRange(date1, date2) {
   }
 
   this.toString = function(locale) {
-    if (times) {
+    if (hasTimes) {
       var minutes = this.minutes() > 0 ? ',' + (this.minutes() / 6) : '';
       return this.days() + ' ' + Date.daysLabel + ' ' + this.hours() + minutes + ' ' + Date.hoursLabel;
     } else {
