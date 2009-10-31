@@ -151,7 +151,7 @@
         tr.append(weekDay);
       });
       if (params.isPopup) {
-        var close = $('<th><a href="#"><span>sulje</span></a>');
+        var close = $('<th><a href="#"><span>close</span></a>');
         close.find('a').click(toggleCalendar);
         tr.append(close);
       }
