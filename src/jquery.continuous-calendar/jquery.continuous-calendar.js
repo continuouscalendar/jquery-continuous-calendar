@@ -32,7 +32,7 @@
       setEndField(formattedToday);
     }
 
-    var firstWeekdayOfGivenDate = (startDate || Date.NOW).getFirstDateOfWeek(Date.MONDAY);
+    var firstWeekdayOfGivenDate = (startDate || Date.NOW).getFirstDateOfWeek(params.locale.firstWeekday);
     var container = this;
     var dateCells = null;
     var dateCellDates = null;
@@ -146,8 +146,8 @@
       var tr = $('<tr>').append(yearCell());
       var thead = $('<thead>').append(tr);
       tr.append('<th class="week"></th>');
-      $([1,2,3,4,5,6,0]).each(function() {
-        var weekDay = $('<th>').append(Date.dayNames[this].substr(0,2)).addClass('weekDay');
+      $(Date.dayNames).each(function(index) {
+        var weekDay = $('<th>').append(Date.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay');
         tr.append(weekDay);
       });
       if (params.isPopup) {
@@ -169,10 +169,10 @@
 
     function calendarBody() {
       var tbody = $('<tbody>');
-      var currentMonday = calendarRange.start.getFirstDateOfWeek(Date.MONDAY);
-      while (currentMonday.compareTo(calendarRange.end) <= 0) {
-        tbody.append(calendarRow(currentMonday.clone()));
-        currentMonday = currentMonday.plusDays(7);
+      var firstWeekDay = calendarRange.start.getFirstDateOfWeek(params.locale.firstWeekday);
+      while (firstWeekDay.compareTo(calendarRange.end) <= 0) {
+        tbody.append(calendarRow(firstWeekDay.clone()));
+        firstWeekDay = firstWeekDay.plusDays(7);
       }
       return tbody;
     }

@@ -19,7 +19,8 @@ var DATE_LOCALE_FI = {
   },
   shortDateFormat: "j.n.Y",
   weekDateFormat: "D j.n.Y",
-  dateTimeFormat: "D j.n.Y k\\lo G:i"
+  dateTimeFormat: "D j.n.Y k\\lo G:i",
+  firstWeekday: Date.MONDAY
 };
 var DATE_LOCALE_EN = {
   init: function() {
@@ -47,5 +48,6 @@ var DATE_LOCALE_EN = {
   },
   shortDateFormat: "n/j/Y",
   weekDateFormat: "D n/j/Y",
-  dateTimeFormat: "D n/j/Y G:i"
+  dateTimeFormat: "D n/j/Y G:i",
+  firstWeekday: Date.SUNDAY
 };
