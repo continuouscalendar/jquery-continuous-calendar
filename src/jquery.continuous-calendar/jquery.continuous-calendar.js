@@ -69,7 +69,7 @@
       calendar.append(headerTable).append(scrollContent);
       if (params.isPopup) {
         calendar.css({position:'absolute', 'z-index':99});
-        var icon = $('<a href="#" class="calendarIcon"><span>kalenteri</span></a>').click(toggleCalendar);
+        var icon = $('<a href="#" class="calendarIcon"><span>calendar</span></a>').click(toggleCalendar);
         container.append(icon);
       }
 
@@ -279,20 +279,8 @@
       }
     }
 
-    function mouseUp(event) {
-      if (isEnabled(event.target)) {
-        switch (status) {
-          case Status.MOVE:
-            status = Status.NONE;
-            break;
-          case Status.CREATE:
-            selection = new DateRange(mouseDownDate, event.target.date);
-            status = Status.NONE;
-            break;
-        }
-      } else {
-        status = Status.NONE;
-      }
+    function mouseUp() {
+      status = Status.NONE;
       selectRange();
       updateTextFields();
     }
