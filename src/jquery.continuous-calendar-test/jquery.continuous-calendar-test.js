@@ -10,7 +10,7 @@ test("shows year", function() {
 test("shows week days", function() {
   cal({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
   assertHasValues(".continuousCalendar thead th.weekDay", [
-    "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"
+    "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" 
   ]);
 });
 
@@ -22,30 +22,31 @@ test("shows months", function() {
 test("lists given number of weeks before given date", function() {
   cal({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
   assertHasValues(".date", [
-    30, 31, 1, 2, 3, 4, 5,
+    29, 30, 31, 1, 2, 3, 4, 5,
     6, 7, 8, 9, 10, 11, 12,
-    13, 14, 15, 16, 17, 18, 19
+    13, 14, 15, 16, 17, 18
   ]);
 });
 
 test("lists given number of weeks after given date", function() {
   cal({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 2});
   assertHasValues(".date", [
-    13, 14, 15, 16, 17, 18, 19,
+    12, 13, 14, 15, 16, 17, 18, 19,
     20, 21, 22, 23, 24, 25, 26,
-    27, 28, 29, 30, 1, 2, 3
+    27, 28, 29, 30, 1, 2
   ]);
 });
 
 test("shows month name on first row of full week", function() {
-  cal({startDate: "4/30/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 5});
+  cal({startDate: "5/3/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 5});
   var months = cal().find("tbody .month");
-  var firstMonth = months.eq(1);
+  var firstMonth = months.eq(0);
   equals(firstMonth.text(), "May");
-  equals(firstMonth.next().next().text(), "4");
+  equals(firstMonth.next().next().text(), "3");
   var secondMonth = months.eq(5);
+  console.log(months)
   equals(secondMonth.text(), "June");
-  equals(secondMonth.next().next().text(), "1");
+  equals(secondMonth.next().next().text(), "7");
 });
 
 test("highlights current date and shows year for january", function() {
@@ -75,7 +76,7 @@ test("if start date not selected show around current day instead", function() {
   var today = new Date();
   equals(cal().find(".date").size(), 7);
   var weekDays = [];
-  var firstDay = today.getFirstDateOfWeek(Date.MONDAY);
+  var firstDay = today.getFirstDateOfWeek(Date.SUNDAY);
   for (var i = 0; i < 7; i++) {
     weekDays.push(firstDay.plusDays(i).getDate());
   }
@@ -105,9 +106,9 @@ module("calendar events", {
 test("highlights and selects clicked day", function() {
   createCalendarWithOneWeek();
   cal().find(".date:eq(1)").click();
-  equals(cal().find(".selected").text(), "29");
-  equals(startFieldValue(), "4/29/2008");
-  equals(startLabelValue(), "4/29/2008");
+  equals(cal().find(".selected").text(), "28");
+  equals(startFieldValue(), "4/28/2008");
+  equals(startLabelValue(), "4/28/2008");
 });
 
 test("week number click selects whole week", function () {
@@ -115,9 +116,9 @@ test("week number click selects whole week", function () {
   var weekNumber = cal().find(".week").withText(18);
   mouseEvent("mouseDown", weekNumber);
   mouseEvent("mouseUp", weekNumber);
-  assertHasValues(".selected", [27,28,29,30,1,2,3]);
-  equals(startFieldValue(), "4/27/2009");
-  equals(endFieldValue(), "5/3/2009");
+  assertHasValues(".selected", [3,4,5,6,7,8,9]);
+  equals(startFieldValue(), "5/3/2009");
+  equals(endFieldValue(), "5/9/2009");
   equals(cal().find("em span").text(), "7");
 });
 
