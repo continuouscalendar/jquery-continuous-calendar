@@ -115,8 +115,8 @@
 
     function initRangeCalendarEvents(container, bodyTable) {
       var daysContainer = $('<em>');
-      rangeLengthLabel.text(selection.days());
-      daysContainer.append(rangeLengthLabel).append(' ' + Date.daysLabel);
+      rangeLengthLabel.text(Date.daysLabel(selection.days()));
+      daysContainer.append(rangeLengthLabel);
       container.find('.continuousCalendar').append(daysContainer);
       bodyTable.addClass('range');
       bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
@@ -260,6 +260,8 @@
     }
 
     function mouseMove(event) {
+      if(status == Status.NONE)
+        return;
       var date = event.target.date;
       if (isEnabled(event.target)) {
         switch (status) {
@@ -285,7 +287,7 @@
 
     function drawSelection() {
       drawSelectionBetweenDates(selection.start, selection.end);
-      rangeLengthLabel.text(selection.days());
+      rangeLengthLabel.text(Date.daysLabel(selection.days()));
     }
 
     function drawSelectionBetweenDates(start, end) {
@@ -450,7 +452,7 @@ function DateRange(date1, date2) {
   this.toString = function(locale) {
     if (hasTimes) {
       var minutes = this.minutes() > 0 ? ',' + (this.minutes() / 6) : '';
-      return this.days() + ' ' + Date.daysLabel + ' ' + this.hours() + minutes + ' ' + Date.hoursLabel;
+      return  Date.daysLabel(this.days())  + ' ' + Date.hoursLabel(this.hours() + minutes);
     } else {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat);
     }

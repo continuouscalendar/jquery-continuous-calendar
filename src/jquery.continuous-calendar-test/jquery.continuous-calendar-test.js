@@ -44,7 +44,6 @@ test("shows month name on first row of full week", function() {
   equals(firstMonth.text(), "May");
   equals(firstMonth.next().next().text(), "3");
   var secondMonth = months.eq(5);
-  console.log(months)
   equals(secondMonth.text(), "June");
   equals(secondMonth.next().next().text(), "7");
 });
@@ -67,7 +66,7 @@ test("highlights selected date", function() {
 test("higlights selected date range with move handles in first and last data", function() {
   createRangeCalendarWithFiveWeeks();
   equals(cal().find(".selected").size(), 7);
-  equals(cal().find("em span").text(), "7");
+  equals(cal().find("em span").text(), "7 Days");
   ok(cal().find(".selected:first").hasClass("rangeStart"), "has class rangeStart");
 });
 
@@ -119,7 +118,7 @@ test("week number click selects whole week", function () {
   assertHasValues(".selected", [3,4,5,6,7,8,9]);
   equals(startFieldValue(), "5/3/2009");
   equals(endFieldValue(), "5/9/2009");
-  equals(cal().find("em span").text(), "7");
+  equals(cal().find("em span").text(), "7 Days");
 });
 
 test("week number click on single date calendar does nothing", function () {
@@ -138,7 +137,7 @@ test("mouse click and drag highlights range and updates fields", function() {
   equals(cal().find(".selected").size(), 3);
   equals(startFieldValue(), "4/27/2009");
   equals(endFieldValue(), "4/29/2009");
-  equals(cal().find("em span").text(), "3");
+  equals(cal().find("em span").text(), "3 Days");
 });
 
 test("mouse click and drag works with no initial selection", function() {
@@ -148,7 +147,7 @@ test("mouse click and drag works with no initial selection", function() {
   mouseMoveOnDay(23);
   mouseUpOnDay(23);
   equals(cal().find(".selected").size(), 2);
-  equals(cal().find("em span").text(), "2");
+  equals(cal().find("em span").text(), "2 Days");
 });
 
 test("mouse click on month on range calendar selects whole month", function() {
@@ -159,7 +158,7 @@ test("mouse click on month on range calendar selects whole month", function() {
   equals(cal().find(".selected").size(), 31);
   equals(startFieldValue(), "5/1/2009");
   equals(endFieldValue(), "5/31/2009");
-  equals(cal().find("em span").text(), "31");
+  equals(cal().find("em span").text(), "31 Days");
 });
 
 test("mouse click on month in singe date calendar does nothing", function() {
