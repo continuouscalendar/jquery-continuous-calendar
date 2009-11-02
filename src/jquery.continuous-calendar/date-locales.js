@@ -14,7 +14,7 @@ var DATE_LOCALE_FI = {
       'marraskuu',
       'joulukuu'];
     Date.dayNames = ['Su','Ma','Ti','Ke','To','Pe','La'];
-    Date.daysLabel = function(days) {return days + ' ' + (days == '1' ? 'Päivä' : 'Päivää');};
+    Date.daysLabel = function(days) {return days + ' ' + (days == '1' ? 'päivä' : 'päivää');};
     Date.hoursLabel = function(hours) {return hours + ' ' + (hours == '1' ? 'tunti' : 'tuntia');};
   },
   shortDateFormat: 'j.n.Y',
@@ -44,7 +44,7 @@ var DATE_LOCALE_EN = {
       'Friday',
       'Saturday'];
     Date.daysLabel = function(days) {return days + ' ' + (days == '1' ? 'Day' : 'Days');};
-    Date.hoursLabel = function(hours) {return hours + ' ' + (hours == '1' ? 'hour' : 'hours');};
+    Date.hoursLabel = function(hours) {return hours + ' ' + (hours == '1' ? 'Hour' : 'Hours');};
   },
   shortDateFormat: 'n/j/Y',
   weekDateFormat: 'D n/j/Y',
