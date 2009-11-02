@@ -171,6 +171,8 @@ test("mouse click on month in singe date calendar does nothing", function() {
 test("range is movable", function() {
   createRangeCalendarWithFiveWeeks();
   mouseDownOnDay(30);
+  mouseMoveOnDay(29);
+  mouseMoveOnDay(28);
   mouseMoveOnDay(27);
   mouseUpOnDay(27);
   assertHasValues(".selected", [26,27,28,29,30,1,2]);
@@ -228,9 +230,6 @@ test("calendar executes callback-function and triggers event when range is creat
   equals(window.calendarCallBack, 2);
   equals(window.calendarContainer.find('.selected').length, 2);
   equals(window.calendarChanged, 2);
-  delete window.calendarCallBack;
-  delete window.calendarContainer;
-  delete window.calendarChanged;
 });
 
 test("calendar provides selection as public field", function() {
@@ -311,6 +310,10 @@ function cal(params) {
   return container;
 }
 
+function mouseClick(selector) {
+  mouseEvent('mouseDown',cal().find(selector));
+  mouseEvent('mouseUp',cal().find(selector));
+}
 function mouseEventOnDay(functionName, date, options) {
   mouseEvent(functionName, cal().find(".date").withText(date), options);
 }

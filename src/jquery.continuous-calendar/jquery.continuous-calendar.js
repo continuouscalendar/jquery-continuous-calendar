@@ -106,9 +106,9 @@
 
     function addDateLabels(container) {
       var dateLabelContainer = $('<div class="label">');
-      dateLabelContainer.append('<span class="startDateLabel">');
+      dateLabelContainer.append('<span class="startDateLabel"></span>');
       if (isRange()) {
-        dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel">');
+        dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>');
       }
       container.append(dateLabelContainer);
     }
