@@ -1,4 +1,4 @@
-var DATE_LOCALE_FI = {
+window.DATE_LOCALE_FI = {
   init: function() {
     Date.monthNames = [
       'tammikuu',
@@ -22,7 +22,7 @@ var DATE_LOCALE_FI = {
   dateTimeFormat: 'D j.n.Y k\\lo G:i',
   firstWeekday: Date.MONDAY
 };
-var DATE_LOCALE_EN = {
+window.DATE_LOCALE_EN = {
   init: function() {
     Date.monthNames = ['January',
       'February',
