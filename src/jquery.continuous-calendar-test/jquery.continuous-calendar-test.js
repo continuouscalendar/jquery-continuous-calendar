@@ -1,8 +1,11 @@
+
 module("calendar rendering", {
   setup: createCalendarContainer
 });
 
 test("shows year", function() {
+  $('#tests').hide();
+  $('#calendars').show();
   createCalendarWithOneWeek();
   assertHasValues(".continuousCalendar thead th.month", ["2008"]);
 });
@@ -277,7 +280,13 @@ test("forward drag after one day selection expands selection", function() {
   mouseMoveOnDay(17);
   mouseUpOnDay(17);
   assertHasValues('.selected', [17,18,19]);
+
 });
+
+QUnit.done = function() {
+  $('#tests').show();
+  $('#calendars').hide();
+};
 
 var testIndex = 0;
 
@@ -294,7 +303,7 @@ function createCalendarContainer() {
   });
   container.attr("id", calendarId());
   container.append(index);
-  $("#main").append(container);
+  $("#calendars").append(container);
 }
 
 function cal() {
