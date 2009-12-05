@@ -1,25 +1,51 @@
 
-module("calendar rendering", {
-  setup: createCalendarContainer
+QUnit.moduleStart = function(name) {
+  console.log("module:",name);
+};
+
+module("empty calendar of full year");
+
+test("module init", function() {
+  $('#tests').hide();
+  createCalendarContainer();
+  createCalendarFromJanuary();
 });
 
 test("shows year", function() {
-  $('#tests').hide();
-  $('#calendars').show();
-  createCalendarWithOneWeek();
-  assertHasValues(".continuousCalendar thead th.month", ["2008"]);
+  assertHasValues(".continuousCalendar thead th.month", ["2009"]);
 });
 
 test("shows week days", function() {
-  createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
   assertHasValues(".continuousCalendar thead th.weekDay", [
     "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" 
   ]);
 });
 
 test("shows months", function() {
-  createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
   assertHasValues(".monthName", Date.monthNames);
+});
+
+test("shows month name on first row of full week", function() {
+  var months = cal().find("tbody .month");
+  var firstMonth = months.eq(1);
+  equals(firstMonth.text(), "January");
+  equals(firstMonth.next().next().text(), "4");
+  var secondMonth = months.eq(5);
+  equals(secondMonth.text(), "February");
+  equals(secondMonth.next().next().text(), "1");
+});
+
+test("shows year for january", function() {
+  var year = cal().find(".month").withText("January").eq(0).parent().next().find(".month").text();
+  equals(year, '2009');
+});
+
+test("render week numbers", function() {
+  ok(cal().find(".week").text() > 0);
+});
+
+module("calendar bounds", {
+  setup: createCalendarContainer
 });
 
 test("lists given number of weeks before given date", function() {
@@ -40,39 +66,6 @@ test("lists given number of weeks after given date", function() {
   ]);
 });
 
-test("shows month name on first row of full week", function() {
-  createCalendarFields({startDate: "5/3/2009"}).continuousCalendar({weeksBefore: 0,weeksAfter: 5});
-  var months = cal().find("tbody .month");
-  var firstMonth = months.eq(0);
-  equals(firstMonth.text(), "May");
-  equals(firstMonth.next().next().text(), "3");
-  var secondMonth = months.eq(5);
-  equals(secondMonth.text(), "June");
-  equals(secondMonth.next().next().text(), "7");
-});
-
-test("highlights current date and shows year for january", function() {
-  var today = new Date();
-  createBigCalendar();
-  var cells = cal().find(".today");
-  equals(cells.size(), 1);
-  equals(cells.text(), today.getDate());
-  var year = cal().find(".month").withText("January").eq(0).parent().next().find(".month").text();
-  ok(parseInt(year) == new Date().getFullYear());
-});
-
-test("highlights selected date", function() {
-  createCalendarFields({startDate:"4/30/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
-  equals(cal().find(".selected").text(), "30");
-});
-
-test("higlights selected date range with move handles in first and last data", function() {
-  createRangeCalendarWithFiveWeeks();
-  equals(cal().find(".selected").size(), 7);
-  equals(cal().find("em span").text(), "7 Days");
-  ok(cal().find(".selected:first").hasClass("rangeStart"), "has class rangeStart");
-});
-
 test("if start date not selected show around current day instead", function() {
   createCalendarFields().continuousCalendar({weeksBefore: 0,weeksAfter: 0});
   var today = new Date();
@@ -86,14 +79,35 @@ test("if start date not selected show around current day instead", function() {
   equals(cal().find(".selected").size(), 0);
 });
 
-test("render week numbers", function() {
-  createCalendarWithOneWeek();
-  ok(cal().find(".week").text() > 0);
+module("date picker calendar with day selected", {
+  setup: createCalendarContainer
 });
 
 test("calendar with no range has no range class", function() {
   createCalendarWithOneWeek();
   ok(!cal().find(".calendarBody").hasClass("range"));
+});
+
+test("highlights selected date", function() {
+  createCalendarFields({startDate:"4/30/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2});
+  equals(cal().find(".selected").text(), "30");
+});
+
+test("week number click on single date calendar does nothing", function () {
+  createCalendarFields({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
+  cal().find(".week").withText(15).click();
+  equals(cal().find(".selected").size(), 1);
+});
+
+module("calendar range selection", {
+  setup: createCalendarContainer
+});
+
+test("higlights selected date range with move handles in first and last data", function() {
+  createRangeCalendarWithFiveWeeks();
+  equals(cal().find(".selected").size(), 7);
+  equals(cal().find("em span").text(), "7 Days");
+  ok(cal().find(".selected:first").hasClass("rangeStart"), "has class rangeStart");
 });
 
 test("calendar with range has range class", function() {
@@ -122,12 +136,6 @@ test("week number click selects whole week", function () {
   equals(startFieldValue(), "5/3/2009");
   equals(endFieldValue(), "5/9/2009");
   equals(cal().find("em span").text(), "7 Days");
-});
-
-test("week number click on single date calendar does nothing", function () {
-  createCalendarFields({startDate: "4/18/2009"}).continuousCalendar({weeksBefore: 2,weeksAfter: 0});
-  cal().find(".week").withText(15).click();
-  equals(cal().find(".selected").size(), 1);
 });
 
 test("mouse click and drag highlights range and updates fields", function() {
@@ -205,6 +213,14 @@ test("range has default of on year per direction", function() {
   equals(cal().find(".date").size(), 7 * (26 * 2 + 1));
 });
 
+test("highlights current date", function() {
+  var today = new Date();
+  createBigCalendar();
+  var cells = cal().find(".today");
+  equals(cells.size(), 1);
+  equals(cells.text(), today.getDate());
+});
+
 test("range has current day selected as default when configured so", function() {
   createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({weeksBefore:20, lastDate:'today', selectToday:true});
   equals(cal().find('.selected').size(), 1);
@@ -280,27 +296,25 @@ test("forward drag after one day selection expands selection", function() {
   mouseMoveOnDay(17);
   mouseUpOnDay(17);
   assertHasValues('.selected', [17,18,19]);
-
 });
 
 QUnit.done = function() {
   $('#tests').show();
-  $('#calendars').hide();
 };
-
+var moduleName = "";
+QUnit.moduleStart = function(name) {
+  moduleName = name;
+};
+var testName = "";
+QUnit.testStart = function(name) {
+  testName = name;
+};
 var testIndex = 0;
 
 function createCalendarContainer() {
   testIndex++;
-  var container = $("<div>").css({
-    margin: "10px",
-    float: "left",
-    height: "160px"
-  });
-  var index = $('<div></div>').append(testIndex).css({
-    "font-weight": "bold",
-    "color": "green"
-  });
+  var container = $("<div>").addClass('testCalendarContainer');
+  var index = $('<div></div>').append(testName).addClass('testLabel');
   container.attr("id", calendarId());
   container.append(index);
   $("#calendars").append(container);
@@ -386,6 +400,10 @@ function createBigCalendarForSingleDate() {
   createCalendarFields({startDate: ""}).continuousCalendar({weeksBefore: 20,weeksAfter: 20});
 }
 
+function createCalendarFromJanuary() {
+  createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
+}
+
 function startFieldValue() {
   return cal().find("input.startDate").val();
 }
@@ -396,4 +414,11 @@ function startLabelValue() {
 
 function endFieldValue() {
   return cal().find("input.endDate").val();
+}
+function f() {
+  return function() {
+    for(var i in arguments) {
+      arguments[i]();
+    }
+  }
 }
