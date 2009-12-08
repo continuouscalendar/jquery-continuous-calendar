@@ -11,6 +11,8 @@ Continuous calendar is a JQuery plugin for single date and range selections with
 * Popup support
 * Support for different date formats
 
+!http://www.laughingpanda.org/~eeroan/calendar.png!
+
 h1. Download Latest Release
 
 http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar.zip
