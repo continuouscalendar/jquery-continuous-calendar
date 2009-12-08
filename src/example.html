@@ -6,8 +6,8 @@
 <head>
   <title>Examples of using continuous calendar</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" href="jquery.continuous-calendar/jquery.continuous-calendar.css" type="text/css" media="screen" />
-  <style type="text/css">
+  <link rel="stylesheet" href="jquery.continuous-calendar/jquery.continuous-calendar.css" type="text/css" media="all" />
+  <style type="text/css" media="all">
     body {font-family: "Arial", serif;font-size: 90%;background: #FAF6F4;}
     .calendarScrollContent {height: 250px;}
     input {border: none;background: none;}
@@ -81,7 +81,7 @@
 <script type="text/javascript" language="JavaScript">
   $("#singleDate2").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
   $("#singleDate3").continuousCalendar({weeksBefore: 60,weeksAfter: 1, isPopup: true, locale:DATE_LOCALE_FI});
-  $("#range1").continuousCalendar({firstDate:"2/15/2009",lastDate:"9/10/2009", isPopup:true});
+  $("#range1").continuousCalendar({firstDate:"2/15/2007",lastDate:"9/10/2009", isPopup:true, locale: DATE_LOCALE_FI});
   $("#range2").continuousCalendar({weeksBefore: 30,weeksAfter: 30, locale: DATE_LOCALE_FI});
 
   $("#timeCalendar").continuousCalendar({weeksBefore: 30,lastDate: "today", selectToday: true});

@@ -68,7 +68,7 @@
       calendar = getCalendarContainerOrCreateOne();
       calendar.append(headerTable).append(scrollContent);
       if (params.isPopup) {
-        calendar.css({position:'absolute', 'z-index':99});
+        calendar.addClass('popup');
         var icon = $('<a href="#" class="calendarIcon"><span>calendar</span></a>').click(toggleCalendar);
         container.append(icon);
       }
