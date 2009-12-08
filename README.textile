@@ -1,0 +1,64 @@
+Continuous calendar is a JQuery plugin for single date and range selections with following features:
+
+* Date dragging
+* No pagination
+* Range shifting by dragging
+* Range expand with Shift + Mouse click
+* Display current date
+* Allow disabling of dates
+* Month select
+* Week select
+* Popup support
+* Support for different date formats
+
+h1. Download Latest Release
+
+http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar.zip
+
+h1. Live demo
+
+http://www.laughingpanda.org/~eeroan/continuous-calendar/example.html
+
+h1. QUnit tests
+
+http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar-test/jquery.continuous-calendar-test.html
+
+h1. Getting started
+
+h2. Insert in <head>
+
+<pre>
+<!-- basic default calendar styles -->
+<link rel="stylesheet" href="http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar.css" type="text/css" media="screen" />
+
+<!-- custom user specified calendar styles -->
+<style type="text/css">
+    .calendarScrollContent {height: 250px;}
+    input {border: none;background: none;}
+    #dateRange1 {position: relative;clear: both;}
+</style>
+
+<!-- required JavaScript files -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar/date-functions.js"></script>
+<script type="text/javascript" src="http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar/jquery.continuous-calendar.js" charset="UTF-8"></script>
+</pre>
+
+h2. Insert in <body>
+
+<pre>
+<!-- range selection is attached to fields with class startDate and endDate -->
+<div id="dateRange1">
+  <input type="hidden" class="startDate" name="range_start">
+  <input type="hidden" class="endDate" name="range_end">
+</div>
+<script type="text/javascript" language="JavaScript">
+  $("#dateRange1").continuousCalendar({weeksBefore: 60,weeksAfter: 1});
+</script>
+</pre>
+
+h2. License
+
+Copyright © 2006 Eero Anttila, Miki Leskinen, Jakub Järvenpää.
+Continuous Calendar is Licensed under the Apache License, Version 2.0. Please refer to the
+URL http://www.apache.org/licenses/LICENSE-2.0 for details.
