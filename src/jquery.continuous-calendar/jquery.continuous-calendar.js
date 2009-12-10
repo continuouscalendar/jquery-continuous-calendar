@@ -47,9 +47,6 @@
 
     createCalendar();
     container.trigger('calendarChange');
-    this.data('mouseDown', mouseDown);
-    this.data('mouseMove', mouseMove);
-    this.data('mouseUp', mouseUp);
 
     function createCalendar() {
       if (startDate && endDate) {
@@ -119,7 +116,7 @@
       daysContainer.append(rangeLengthLabel);
       container.find('.continuousCalendar').append(daysContainer);
       bodyTable.addClass('range');
-      bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
+      bodyTable.bind('mousedown',mouseDown).bind('mouseover',mouseMove).bind('mouseup',mouseUp);
       disableTextSelection(bodyTable.get(0));
       setRangeLabels();
     }

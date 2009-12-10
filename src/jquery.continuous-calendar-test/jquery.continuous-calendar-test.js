@@ -130,8 +130,8 @@ test("highlights and selects clicked day", function() {
 test("week number click selects whole week", function () {
   createRangeCalendarWithFiveWeeks();
   var weekNumber = cal().find(".week").withText(18);
-  mouseEvent("mouseDown", weekNumber);
-  mouseEvent("mouseUp", weekNumber);
+  mouseEvent("mousedown", weekNumber);
+  mouseEvent("mouseup", weekNumber);
   assertHasValues(".selected", [3,4,5,6,7,8,9]);
   equals(startFieldValue(), "5/3/2009");
   equals(endFieldValue(), "5/9/2009");
@@ -164,8 +164,8 @@ test("mouse click and drag works with no initial selection", function() {
 test("mouse click on month on range calendar selects whole month", function() {
   createBigCalendar();
   var monthName = cal().find(".month").withText("May");
-  mouseEvent("mouseDown", monthName);
-  mouseEvent("mouseUp", monthName);
+  mouseEvent("mousedown", monthName);
+  mouseEvent("mouseup", monthName);
   equals(cal().find(".selected").size(), 31);
   equals(startFieldValue(), "5/1/2009");
   equals(endFieldValue(), "5/31/2009");
@@ -338,8 +338,8 @@ function createCalendarFields(params) {
 }
 
 function mouseClick(selector) {
-  mouseEvent('mouseDown',cal().find(selector));
-  mouseEvent('mouseUp',cal().find(selector));
+  mouseEvent('mousedown',cal().find(selector));
+  mouseEvent('mouseup',cal().find(selector));
 }
 function mouseEventOnDay(functionName, date, options) {
   mouseEvent(functionName, cal().find(".date").withText(date), options);
@@ -352,7 +352,7 @@ function mouseEvent(functionName, elements, options) {
   for (var i in options) {
     e[i] = options[i];
   }
-  cal().data(functionName)(e);
+  cal().find('.calendarBody').callEvent(functionName,e);
 }
 
 function clickWithShiftOnDay(date) {
@@ -368,15 +368,15 @@ function mouseDownAndUpOnDay(date) {
 
 function mouseDownOnDay(date) {
   var options = arguments[1];
-  mouseEventOnDay("mouseDown", date, options);
+  mouseEventOnDay("mousedown", date, options);
 }
 
 function mouseMoveOnDay(date) {
-  mouseEventOnDay("mouseMove", date);
+  mouseEventOnDay("mouseover", date);
 }
 
 function mouseUpOnDay(date, options) {
-  mouseEventOnDay("mouseUp", date, options);
+  mouseEventOnDay("mouseup", date, options);
 }
 
 function calendarId() {
@@ -415,10 +415,13 @@ function startLabelValue() {
 function endFieldValue() {
   return cal().find("input.endDate").val();
 }
-function f() {
-  return function() {
-    for(var i in arguments) {
-      arguments[i]();
-    }
-  }
-}
+
+$.fn.callEvent = function(eventType, eventObj) {
+ return this.each(function() {
+   var events = $(this).data('events');
+   var eventFunctions = events[eventType];
+   for (var i in eventFunctions) {
+     eventFunctions[i].call($(this), eventObj);
+   }
+ });
+};
