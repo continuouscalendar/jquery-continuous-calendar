@@ -1,8 +1,4 @@
 
-QUnit.moduleStart = function(name) {
-  console.log("module:",name);
-};
-
 module("empty calendar of full year");
 
 test("module init", function() {
@@ -301,10 +297,12 @@ test("forward drag after one day selection expands selection", function() {
 QUnit.done = function() {
   $('#tests').show();
 };
+
 var moduleName = "";
 QUnit.moduleStart = function(name) {
   moduleName = name;
 };
+
 var testName = "";
 QUnit.testStart = function(name) {
   testName = name;
@@ -338,21 +336,14 @@ function createCalendarFields(params) {
 }
 
 function mouseClick(selector) {
-  mouseEvent('mousedown',cal().find(selector));
-  mouseEvent('mouseup',cal().find(selector));
-}
-function mouseEventOnDay(functionName, date, options) {
-  mouseEvent(functionName, cal().find(".date").withText(date), options);
+  var targetElement = cal().find(selector);
+  mouseEvent('mousedown', targetElement);
+  mouseEvent('mouseup', targetElement);
 }
 
-function mouseEvent(functionName, elements, options) {
-  var e = {
-    target:elements.get(0)
-  };
-  for (var i in options) {
-    e[i] = options[i];
-  }
-  cal().find('.calendarBody').callEvent(functionName,e);
+function mouseEvent(eventType, elements, options) {
+  var event = $.extend({target:elements.get(0)}, options);
+  cal().find('.calendarBody').callEvent(eventType, event);
 }
 
 function clickWithShiftOnDay(date) {
@@ -364,23 +355,6 @@ function clickWithShiftOnDay(date) {
 function mouseDownAndUpOnDay(date) {
   mouseDownOnDay(date);
   mouseUpOnDay(date);
-}
-
-function mouseDownOnDay(date) {
-  var options = arguments[1];
-  mouseEventOnDay("mousedown", date, options);
-}
-
-function mouseMoveOnDay(date) {
-  mouseEventOnDay("mouseover", date);
-}
-
-function mouseUpOnDay(date, options) {
-  mouseEventOnDay("mouseup", date, options);
-}
-
-function calendarId() {
-  return "continuousCalendar" + testIndex;
 }
 
 function createCalendarWithOneWeek() {
@@ -404,24 +378,20 @@ function createCalendarFromJanuary() {
   createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
 }
 
-function startFieldValue() {
-  return cal().find("input.startDate").val();
-}
-
-function startLabelValue() {
-  return cal().find("span.startDateLabel").text();
-}
-
-function endFieldValue() {
-  return cal().find("input.endDate").val();
-}
+function mouseEventOnDay(eventType, date, options) {mouseEvent(eventType, cal().find(".date").withText(date), options);}
+function mouseDownOnDay(date) { mouseEventOnDay("mousedown", date, arguments[1]);}
+function mouseMoveOnDay(date) {mouseEventOnDay("mouseover", date);}
+function mouseUpOnDay(date, options) {mouseEventOnDay("mouseup", date, options);}
+function calendarId() {return "continuousCalendar" + testIndex;}
+function startFieldValue() {return cal().find("input.startDate").val();}
+function startLabelValue() {return cal().find("span.startDateLabel").text();}
+function endFieldValue() {return cal().find("input.endDate").val();}
 
 $.fn.callEvent = function(eventType, eventObj) {
- return this.each(function() {
-   var events = $(this).data('events');
-   var eventFunctions = events[eventType];
-   for (var i in eventFunctions) {
-     eventFunctions[i].call($(this), eventObj);
-   }
- });
+  return this.each(function() {
+    var eventFunctions = $(this).data('events')[eventType];
+    for (var i in eventFunctions) {
+      eventFunctions[i].call($(this), eventObj);
+    }
+  });
 };
