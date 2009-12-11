@@ -116,7 +116,7 @@
       daysContainer.append(rangeLengthLabel);
       container.find('.continuousCalendar').append(daysContainer);
       bodyTable.addClass('range');
-      bodyTable.bind('mousedown',mouseDown).bind('mouseover',mouseMove).bind('mouseup',mouseUp);
+      bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
       disableTextSelection(bodyTable.get(0));
       setRangeLabels();
     }

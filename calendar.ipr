@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="false" version="4">
+<project version="4">
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
   </component>
-  <component name="CodeStyleSettingsManager">
-    <option name="PER_PROJECT_SETTINGS" />
-    <option name="USE_PER_PROJECT_SETTINGS" value="false" />
-  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
-    <option name="DEPLOY_AFTER_MAKE" value="0" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -26,6 +21,7 @@
       <entry name="?*.tld" />
       <entry name="?*.ftl" />
     </wildcardResourcePatterns>
+    <annotationProcessing enabled="false" useClasspath="true" />
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
@@ -36,15 +32,31 @@
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
   <component name="IdProvider" IDEtalkID="8C557D484E4BB72E66CA8BB155EBA54B" />
   <component name="InspectionProjectProfileManager">
-    <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
-    <scopes />
     <profiles>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
         <option name="myLocal" value="false" />
-        <inspection_tool class="UNUSED_IMPORT" level="ERROR" enabled="true" />
-        <inspection_tool class="HtmlUnknownTag" level="WARNING" enabled="true">
+        <inspection_tool class="CheckTagEmptyBody" enabled="false" level="WARNING" enabled_by_default="false" />
+        <inspection_tool class="CssUnusedSymbolInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+        <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="myValues">
+            <value>
+              <list size="9">
+                <item index="0" class="java.lang.String" itemvalue="type" />
+                <item index="1" class="java.lang.String" itemvalue="wmode" />
+                <item index="2" class="java.lang.String" itemvalue="src" />
+                <item index="3" class="java.lang.String" itemvalue="width" />
+                <item index="4" class="java.lang.String" itemvalue="height" />
+                <item index="5" class="java.lang.String" itemvalue="wicket:id" />
+                <item index="6" class="java.lang.String" itemvalue="xmlns" />
+                <item index="7" class="java.lang.String" itemvalue="xmlns:wicket" />
+                <item index="8" class="java.lang.String" itemvalue="xml:lang" />
+              </list>
+            </value>
+          </option>
+          <option name="myCustomValuesEnabled" value="true" />
+        </inspection_tool>
+        <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="myValues">
             <value>
               <list size="13">
@@ -66,27 +78,10 @@
           </option>
           <option name="myCustomValuesEnabled" value="true" />
         </inspection_tool>
-        <inspection_tool class="HtmlUnknownAttribute" level="WARNING" enabled="true">
-          <option name="myValues">
-            <value>
-              <list size="9">
-                <item index="0" class="java.lang.String" itemvalue="type" />
-                <item index="1" class="java.lang.String" itemvalue="wmode" />
-                <item index="2" class="java.lang.String" itemvalue="src" />
-                <item index="3" class="java.lang.String" itemvalue="width" />
-                <item index="4" class="java.lang.String" itemvalue="height" />
-                <item index="5" class="java.lang.String" itemvalue="wicket:id" />
-                <item index="6" class="java.lang.String" itemvalue="xmlns" />
-                <item index="7" class="java.lang.String" itemvalue="xmlns:wicket" />
-                <item index="8" class="java.lang.String" itemvalue="xml:lang" />
-              </list>
-            </value>
-          </option>
-          <option name="myCustomValuesEnabled" value="true" />
-        </inspection_tool>
-        <inspection_tool class="CssUnusedSymbolInspection" level="WARNING" enabled="false" />
-        <inspection_tool class="CheckTagEmptyBody" level="WARNING" enabled="false" />
-        <inspection_tool class="UNUSED_SYMBOL" level="WARNING" enabled="true">
+        <inspection_tool class="JSUnresolvedFunction" enabled="false" level="INFO" enabled_by_default="false" />
+        <inspection_tool class="ReservedWordUsedAsNameJS" enabled="false" level="WARNING" enabled_by_default="false" />
+        <inspection_tool class="UNUSED_IMPORT" enabled="true" level="ERROR" enabled_by_default="true" />
+        <inspection_tool class="UNUSED_SYMBOL" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="LOCAL_VARIABLE" value="true" />
           <option name="FIELD" value="true" />
           <option name="METHOD" value="true" />
@@ -101,11 +96,11 @@
             </value>
           </option>
         </inspection_tool>
-        <inspection_tool class="ReservedWordUsedAsNameJS" level="WARNING" enabled="false" />
-        <inspection_tool class="JSUnresolvedFunction" level="INFO" enabled="false" />
       </profile>
     </profiles>
-    <list size="0" />
+    <option name="PROJECT_PROFILE" value="Project Default" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -248,7 +243,6 @@
   <component name="ProjectDetails">
     <option name="projectName" value="calendar" />
   </component>
-  <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
     <option name="state" value="https://svn.laughingpanda.org/svn/continuous-calendar/trunk/calendar.ipr" />
   </component>
