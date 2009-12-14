@@ -1,7 +1,7 @@
 Continuous calendar is a JQuery plugin for single date and range selections with following features:
 
 * Date dragging
-* No pagination
+* No pagination, continuous month flow
 * Range shifting by dragging
 * Range expand with Shift + Mouse click
 * Display current date
