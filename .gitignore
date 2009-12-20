@@ -1,7 +1,7 @@
 *~
 
-# Project files
+# IDEA Project files
 
-#*.iml
-#*.ipr
-#*.iws
+*.iml
+*.ipr
+*.iws
