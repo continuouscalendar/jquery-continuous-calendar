@@ -1,3 +1,5 @@
+!http://www.laughingpanda.org/~eeroan/calendar.png!
+
 Continuous calendar is a JQuery plugin for single date and range selections with following features:
 
 * Date dragging
@@ -11,19 +13,13 @@ Continuous calendar is a JQuery plugin for single date and range selections with
 * Popup support
 * Support for different date formats
 
-!http://www.laughingpanda.org/~eeroan/calendar.png!
-
-h1. Download Latest Release
-
-http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar.zip
-
 h1. Live demo
 
-http://www.laughingpanda.org/~eeroan/continuous-calendar/example.html
+"examples":http://eeroan.github.com/jquery-continuous-calendar/src/example.html
 
 h1. QUnit tests
 
-http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar-test/jquery.continuous-calendar-test.html
+"tests":http://eeroan.github.com/jquery-continuous-calendar/src/jquery.continuous-calendar-test/jquery.continuous-calendar-test.html
 
 h1. Getting started
 
@@ -31,7 +27,7 @@ h2. Insert in head
 
 <pre>
 <!-- basic default calendar styles -->
-<link rel="stylesheet" href="http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://eeroan.github.com/jquery-continuous-calendar/src/continuous-calendar/jquery.continuous-calendar.css" type="text/css" media="screen" />
 
 <!-- custom user specified calendar styles -->
 <style type="text/css">
@@ -44,9 +40,9 @@ h2. Insert in head
 <script type="text/javascript" 
 src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript" 
-src="http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar/date-functions.js"></script>
+src="http://eeroan.github.com/jquery-continuous-calendar/src/jquery.continuous-calendar/date-functions.js"></script>
 <script type="text/javascript" 
-src="http://www.laughingpanda.org/~eeroan/continuous-calendar/jquery.continuous-calendar/jquery.continuous-calendar.js" charset="UTF-8"></script>
+src="http://eeroan.github.com/jquery-continuous-calendar/src/jquery.continuous-calendar/jquery.continuous-calendar.js" charset="UTF-8"></script>
 </pre>
 
 h2. Insert in body
