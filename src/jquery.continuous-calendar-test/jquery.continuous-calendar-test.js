@@ -65,10 +65,9 @@ test("lists given number of weeks after given date", function() {
 
 test("if start date not selected show around current day instead", function() {
   createCalendarFields().continuousCalendar({weeksBefore: 0,weeksAfter: 0});
-  var today = new Date();
   equals(cal().find(".date").size(), 7);
   var weekDays = [];
-  var firstDay = today.getFirstDateOfWeek(Date.SUNDAY);
+  var firstDay = Date.NOW.getFirstDateOfWeek(Date.SUNDAY);
   for (var i = 0; i < 7; i++) {
     weekDays.push(firstDay.plusDays(i).getDate());
   }
@@ -211,11 +210,10 @@ test("range has default of on year per direction", function() {
 });
 
 test("highlights current date", function() {
-  var today = new Date();
   createBigCalendar();
   var cells = cal().find(".today");
   equals(cells.size(), 1);
-  equals(cells.text(), today.getDate());
+  equals(cells.text(), Date.NOW.getDate());
 });
 
 test("range has current day selected as default when configured so", function() {
@@ -367,7 +365,7 @@ function createRangeCalendarWithFiveWeeks() {
 }
 
 function createBigCalendar() {
-  var todayText = new Date().dateFormat(DATE_LOCALE_EN.shortDateFormat);
+  var todayText = Date.NOW.dateFormat(DATE_LOCALE_EN.shortDateFormat);
   createCalendarFields({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30});
 }
 
