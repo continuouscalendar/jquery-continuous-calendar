@@ -7,8 +7,9 @@ test("module init", function() {
   createCalendarFromJanuary();
 });
 
+
 test("shows year", function() {
-  assertHasValues(".continuousCalendar thead th.month", ["2009"]);
+  assertHasValues(".continuousCalendar thead th.month", [Date.NOW.getFullYear()]);
 });
 
 test("shows week days", function() {
