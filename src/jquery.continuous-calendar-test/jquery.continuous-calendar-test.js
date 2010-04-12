@@ -126,7 +126,7 @@ test("highlights and selects clicked day", function() {
 test("week number click selects whole week", function () {
   createRangeCalendarWithFiveWeeks();
   var weekNumber = cal().find(".week").withText(18);
-  mouseClick(weekNumber)
+  mouseClick(weekNumber);
   assertHasValues(".selected", [3,4,5,6,7,8,9]);
   equals(startFieldValue(), "5/3/2009");
   equals(endFieldValue(), "5/9/2009");
