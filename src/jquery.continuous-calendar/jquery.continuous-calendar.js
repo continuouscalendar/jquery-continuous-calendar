@@ -108,6 +108,7 @@
         dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>');
       }
       container.append(dateLabelContainer);
+      dateLabelContainer.click(toggleCalendar);
     }
 
     function initRangeCalendarEvents(container, bodyTable) {
@@ -314,10 +315,13 @@
     }
 
     function setRangeLabels() {
-      if (selection.start && selection.end) {
+       if (selection.start && selection.end) {
         var format = params.locale.weekDateFormat;
         container.find('span.startDateLabel').text(selection.start.dateFormat(format));
         container.find('span.endDateLabel').text(selection.end.dateFormat(format));
+        container.find('span.separator').show();
+      } else {
+        container.find('span.separator').hide();
       }
     }
 
