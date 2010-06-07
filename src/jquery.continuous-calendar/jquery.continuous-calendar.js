@@ -44,6 +44,8 @@
     var calendarRange;
     var status = Status.NONE;
     var calendar;
+    var scrollContent;
+    var beforeFirstOpening = false;
 
     createCalendar();
     container.trigger('calendarChange');
@@ -61,11 +63,12 @@
 
       var headerTable = $('<table>').addClass('calendarHeader').append(headerRow());
       var bodyTable = $('<table>').addClass('calendarBody').append(calendarBody());
-      var scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable);
+      scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable);
       calendar = getCalendarContainerOrCreateOne();
       calendar.append(headerTable).append(scrollContent);
-      if (params.isPopup) {
-        calendar.addClass('popup');
+      if(params.isPopup) {
+        isHidden = true;
+        calendar.addClass('popup').hide();
         var icon = $('<a href="#" class="calendarIcon"><span>calendar</span></a>').click(toggleCalendar);
         container.append(icon);
       }
@@ -85,7 +88,8 @@
       }
       averageCellHeight = parseInt(bodyTable.height() / bodyTable.find('tr').size());
       yearTitle = headerTable.find('th.month');
-      setScrollBehaviors(scrollContent);
+      scrollContent.scroll(setYearLabel);
+      scrollToSelection();
       if (params.isPopup) calendar.hide();
       params.callback.call(container, selection);
     }
@@ -122,18 +126,15 @@
       setRangeLabels();
     }
 
-    function setScrollBehaviors(scrollContent) {
-      scrollContent.scroll(function() {
-        setYearLabel(this);
-      });
-
-      var selected = scrollContent.find('.today, .selected').get(0);
-      if (selected) {
-        scrollContent.scrollTop(selected.offsetTop - (scrollContent.height() - selected.offsetHeight) / 2);
+    function scrollToSelection() {
+      var selectionStartOrToday = scrollContent.find('.selected, .today').get(0);
+      if (selectionStartOrToday) {
+        scrollContent.scrollTop(selectionStartOrToday.offsetTop - (scrollContent.height() - selectionStartOrToday.offsetHeight) / 2);
       }
     }
 
-    function setYearLabel(scrollContent) {
+    function setYearLabel() {
+      var scrollContent = this;
       var table = $(scrollContent).find('table').get(0);
       var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight);
       var date = table.rows[rowNumber].cells[2].date;
@@ -162,6 +163,10 @@
 
     function toggleCalendar() {
       calendar.toggle();
+      if(beforeFirstOpening) {
+        scrollToSelection();
+        beforeFirstOpening = false;
+      }
       return false;
     }
 
