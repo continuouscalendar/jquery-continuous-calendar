@@ -45,7 +45,8 @@
     var status = Status.NONE;
     var calendar;
     var scrollContent;
-    var beforeFirstOpening = false;
+    var beforeFirstOpening = true;
+    var bodyTable;
 
     createCalendar();
     container.trigger('calendarChange');
@@ -62,7 +63,7 @@
       calendarRange = new DateRange(rangeStart, rangeEnd);
 
       var headerTable = $('<table>').addClass('calendarHeader').append(headerRow());
-      var bodyTable = $('<table>').addClass('calendarBody').append(calendarBody());
+      bodyTable = $('<table>').addClass('calendarBody').append(calendarBody());
       scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable);
       calendar = getCalendarContainerOrCreateOne();
       calendar.append(headerTable).append(scrollContent);
@@ -86,7 +87,6 @@
       } else {
         initSingleDateCalendarEvents();
       }
-      averageCellHeight = parseInt(bodyTable.height() / bodyTable.find('tr').size());
       yearTitle = headerTable.find('th.month');
       scrollContent.scroll(setYearLabel);
       scrollToSelection();
@@ -164,6 +164,7 @@
     function toggleCalendar() {
       calendar.toggle();
       if(beforeFirstOpening) {
+        averageCellHeight = parseInt(bodyTable.height() / bodyTable.find('tr').size());
         scrollToSelection();
         beforeFirstOpening = false;
       }
