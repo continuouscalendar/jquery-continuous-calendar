@@ -26,7 +26,10 @@
 <body>
 <h1>Examples of using continuous calendar</h1>
 <form action="../" method="get">
-  <h2>Single date select</h2>
+  <h2>Single date select (two times)</h2>
+  <div id="singleDate1">
+    <input type="hidden" class="startDate" name="singleDate1" value="5/15/2009" disabled="disabled" />
+  </div>
   <div id="singleDate2">
     <input type="hidden" class="startDate" name="singleDate2" value="5/15/2009" disabled="disabled" />
   </div>
@@ -79,7 +82,7 @@
 <script type="text/javascript" src="jquery.continuous-calendar/date-locales.js" charset="UTF-8"></script>
 <script type="text/javascript" src="jquery.continuous-calendar/jquery.continuous-calendar.js" charset="UTF-8"></script>
 <script type="text/javascript" language="JavaScript">
-  $("#singleDate2").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
+  $("#singleDate1, #singleDate2").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
   $("#singleDate3").continuousCalendar({weeksBefore: 60,weeksAfter: 1, isPopup: true, locale:DATE_LOCALE_FI});
   $("#range1").continuousCalendar({firstDate:"2/15/2007",lastDate:"9/10/2009", isPopup:true, locale: DATE_LOCALE_FI});
   $("#range2").continuousCalendar({weeksBefore: 30,weeksAfter: 30, locale: DATE_LOCALE_FI});
