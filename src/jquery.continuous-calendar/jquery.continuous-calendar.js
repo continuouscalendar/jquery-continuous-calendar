@@ -90,7 +90,11 @@
       yearTitle = headerTable.find('th.month');
       scrollContent.scroll(setYearLabel);
       scrollToSelection();
-      if (params.isPopup) calendar.hide();
+      if (params.isPopup) {
+        calendar.hide()
+      } else {
+        calculateCellHeightAndSetScroll();
+      }
       params.callback.call(container, selection);
     }
 
@@ -161,11 +165,15 @@
       }
     }
 
+    function calculateCellHeightAndSetScroll() {
+      averageCellHeight = parseInt(bodyTable.height() / bodyTable.find('tr').size());
+      scrollToSelection();
+    }
+
     function toggleCalendar() {
       calendar.toggle();
       if(beforeFirstOpening) {
-        averageCellHeight = parseInt(bodyTable.height() / bodyTable.find('tr').size());
-        scrollToSelection();
+        calculateCellHeightAndSetScroll();
         beforeFirstOpening = false;
       }
       return false;
@@ -399,7 +407,7 @@ function DateRange(date1, date2) {
       return Math.round(this.start.distanceInDays(this.end) + 1);
     }
   };
-  
+
   this.shiftDays = function(days) {
     this.start = this.start.plusDays(days);
     this.end = this.end.plusDays(days);
