@@ -12,14 +12,7 @@
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
-  <component name="EclipseCompilerSettings">
-    <option name="GENERATE_NO_WARNINGS" value="true" />
-    <option name="DEPRECATION" value="false" />
-  </component>
   <component name="IdProvider" IDEtalkID="1EBE3BE15E5F1C47E414D8922C0ACD57" />
-  <component name="JavacSettings">
-    <option name="MAXIMUM_HEAP_SIZE" value="256" />
-  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
