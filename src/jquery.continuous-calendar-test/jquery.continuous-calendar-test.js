@@ -154,8 +154,9 @@ test("mouse click on month on range calendar selects whole month", function() {
   var monthName = cal().find(".month").withText("May");
   mouseClick(monthName);
   equals(cal().find(".selected").size(), 31);
-  equals(startFieldValue(), "5/1/2009");
-  equals(endFieldValue(), "5/31/2009");
+  var year = startFieldValue().split('/')[2];
+  equals(startFieldValue(), "5/1/"+year, "start field value");
+  equals(endFieldValue(), "5/31/"+year, "end field value");
   equals(cal().find("em span").text(), "31 Days");
 });
 
