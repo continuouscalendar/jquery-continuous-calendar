@@ -3,6 +3,7 @@
     this.each(function() {
       _continuousCalendar.call($(this), options);
     });
+    return this;
     
     function _continuousCalendar(options) {
       var defaults = {
