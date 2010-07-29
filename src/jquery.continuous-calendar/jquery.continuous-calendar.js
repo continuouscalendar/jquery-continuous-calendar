@@ -72,6 +72,8 @@
         calendar.addClass('popup').hide();
         var icon = $('<a href="#" class="calendarIcon"><span>calendar</span></a>').click(toggleCalendar);
         container.append(icon);
+      } else {
+        calculateCellHeightAndSetScroll();
       }
 
       if (container.find('.startDateLabel').isEmpty()) {
@@ -90,11 +92,6 @@
       yearTitle = headerTable.find('th.month');
       scrollContent.scroll(setYearLabel);
       scrollToSelection();
-      if (params.isPopup) {
-        calendar.hide()
-      } else {
-        calculateCellHeightAndSetScroll();
-      }
       params.callback.call(container, selection);
     }
 
