@@ -1,4 +1,3 @@
-TODO authoring concerns http://docs.jquery.com/Plugins/Authoring
 TODO BUG IE6, IE7: Move cursor and expand-cursor not showing
 TODO scroll while dragging
 TODO test auto scroll with different browsers
