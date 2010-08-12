@@ -44,15 +44,17 @@ a.calendarIcon {
   background-color: white;
   border-collapse: collapse;
   border-spacing: 0;
+  width:200px;
 }
 
 .continuousCalendar .calendarHeader {
   border: 1px solid #999999;
   border-bottom: none;
   text-align: center;
-  margin-left: 1px;
   position: relative;
+  width:202px;
 }
+.popup .calendarHeader {width:220px;}
 
 .continuousCalendar .calendarHeader a {
   background: url("close.gif") no-repeat 0 0;
@@ -68,7 +70,6 @@ a.calendarIcon {
 .continuousCalendar .calendarHeader .weekDay,
 .continuousCalendar .calendarBody td {
   text-align: right;
-  width: 14px;
   padding: 1px;
   padding-right: 3px;
 }

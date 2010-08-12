@@ -150,8 +150,8 @@
 
       function headerRow() {
         var tr = $('<tr>').append(yearCell());
-        var thead = $('<thead>').append(tr);
-        tr.append('<th class="week"></th>');
+
+        tr.append($('<th class="week">&nbsp;</th>'));
         $(Date.dayNames).each(function(index) {
           var weekDay = $('<th>').append(Date.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay');
           tr.append(weekDay);
@@ -161,7 +161,7 @@
           close.find('a').click(toggleCalendar);
           tr.append(close);
         }
-        return thead;
+        return $('<thead>').append(tr);
 
         function yearCell() {
           return $('<th>').addClass('month').append(firstWeekdayOfGivenDate.getFullYear());
@@ -225,10 +225,10 @@
         return $('<th>').addClass('week').addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear('ISO'));
       }
 
-      function dateStyles(date) {return 'date ' + backgroundBy(date) + disabledOrNot(date) + todayStyle(date);}
-      function backgroundBy(date) {return date.isOddMonth() ? ' odd' : '';}
-      function disabledOrNot(date) {return calendarRange.hasDate(date) ? '' : ' disabled';}
-      function todayStyle(date) {return date.isToday() ? ' today' : '';}
+      function dateStyles(date) {return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date)].sort().join(' '));}
+      function backgroundBy(date) {return date.isOddMonth() ? 'odd' : '';}
+      function disabledOrNot(date) {return calendarRange.hasDate(date) ? '' : 'disabled';}
+      function todayStyle(date) {return date.isToday() ? 'today' : '';}
 
       function initSingleDateCalendarEvents() {
         dateCells.click(function() {
