@@ -4,7 +4,6 @@
       _continuousCalendar.call($(this), options);
     });
     return this;
-    
     function _continuousCalendar(options) {
       var defaults = {
         weeksBefore: 26,
@@ -23,12 +22,10 @@
         MOVE:'move',
         NONE:'none'
       };
-
       params.locale.init();
       var rangeLengthLabel = $('<span>');
       var startDate = fieldDate(params.startField);
       var endDate = fieldDate(params.endField);
-
       if (params.selectToday) {
         var today = Date.NOW;
         var formattedToday = formatDate(today);
@@ -37,7 +34,6 @@
         setStartField(formattedToday);
         setEndField(formattedToday);
       }
-
       var firstWeekdayOfGivenDate = (startDate || Date.NOW).getFirstDateOfWeek(params.locale.firstWeekday);
       var container = this;
       var dateCells = null;
@@ -53,10 +49,8 @@
       var scrollContent;
       var beforeFirstOpening = true;
       var bodyTable;
-
       createCalendar();
       container.trigger('calendarChange');
-
       function createCalendar() {
         if (startDate && endDate) {
           selection = new DateRange(startDate, endDate);
@@ -67,13 +61,12 @@
         var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7));
         var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6);
         calendarRange = new DateRange(rangeStart, rangeEnd);
-
         var headerTable = $('<table>').addClass('calendarHeader').append(headerRow());
         bodyTable = $('<table>').addClass('calendarBody').append(calendarBody());
         scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable);
         calendar = getCalendarContainerOrCreateOne();
         calendar.append(headerTable).append(scrollContent);
-        if(params.isPopup) {
+        if (params.isPopup) {
           isHidden = true;
           calendar.addClass('popup').hide();
           var icon = $('<a href="#" class="calendarIcon"><span>calendar</span></a>').click(toggleCalendar);
@@ -81,11 +74,9 @@
         } else {
           calculateCellHeightAndSetScroll();
         }
-
         if (container.find('.startDateLabel').isEmpty()) {
           addDateLabels(container);
         }
-
         dateCells = container.find('.date');
         dateCellDates = dateCells.map(function() {
           return this.date;
@@ -150,7 +141,6 @@
 
       function headerRow() {
         var tr = $('<tr>').append(yearCell());
-
         tr.append($('<th class="week">&nbsp;</th>'));
         $(Date.dayNames).each(function(index) {
           var weekDay = $('<th>').append(Date.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay');
@@ -162,7 +152,6 @@
           tr.append(close);
         }
         return $('<thead>').append(tr);
-
         function yearCell() {
           return $('<th>').addClass('month').append(firstWeekdayOfGivenDate.getFullYear());
         }
@@ -175,7 +164,7 @@
 
       function toggleCalendar() {
         calendar.toggle();
-        if(beforeFirstOpening) {
+        if (beforeFirstOpening) {
           calculateCellHeightAndSetScroll();
           beforeFirstOpening = false;
         }
@@ -198,11 +187,11 @@
           var date = firstDayOfWeek.plusDays(i);
           var dateCell = $('<td>').addClass(dateStyles(date)).append(date.getDate());
           dateCell.get(0).date = date;
-          if (date.isToday()) dateCell.addClass('today');
+          if (date.isToday()) {
+            dateCell.addClass('today');
+          }
           if (isRange()) {
-            dateCell.toggleClass('selected', selection.hasDate(date))
-            .toggleClass('rangeStart', date.equalsOnlyDate(selection.start))
-            .toggleClass('rangeEnd', date.equalsOnlyDate(selection.end));
+            dateCell.toggleClass('selected', selection.hasDate(date)).toggleClass('rangeStart', date.equalsOnlyDate(selection.start)).toggleClass('rangeEnd', date.equalsOnlyDate(selection.end));
           } else {
             dateCell.toggleClass('selected', date.equalsOnlyDate(startDate));
           }
@@ -215,8 +204,10 @@
         var th = $('<th>').addClass('month').addClass(backgroundBy(firstDayOfWeek));
         if (firstDayOfWeek.getDate() <= 7) {
           th.append(Date.monthNames[firstDayOfWeek.getMonth()]).addClass('monthName');
-        } else if (firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 0) {
-          th.append(firstDayOfWeek.getFullYear());
+        } else {
+          if (firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 0) {
+            th.append(firstDayOfWeek.getFullYear());
+          }
         }
         return th;
       }
@@ -226,8 +217,11 @@
       }
 
       function dateStyles(date) {return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date)].sort().join(' '));}
+
       function backgroundBy(date) {return date.isOddMonth() ? 'odd' : '';}
+
       function disabledOrNot(date) {return calendarRange.hasDate(date) ? '' : 'disabled';}
+
       function todayStyle(date) {return date.isToday() ? 'today' : '';}
 
       function initSingleDateCalendarEvents() {
@@ -252,31 +246,42 @@
           mouseDownDate = elem.date;
           if (mouseDownDate.equalsOnlyDate(selection.end)) {
             mouseDownDate = selection.start;
-          } else if (mouseDownDate.equalsOnlyDate(selection.start)) {
-            mouseDownDate = selection.end;
-          } else if (selection.hasDate(mouseDownDate)) {
-            status = Status.MOVE;
-            moveStartDate = mouseDownDate;
-          } else if (event.shiftKey) {
-            status = Status.NONE;
-            selection.expandTo(mouseDownDate);
           } else {
-            selection = new DateRange(mouseDownDate, mouseDownDate);
+            if (mouseDownDate.equalsOnlyDate(selection.start)) {
+              mouseDownDate = selection.end;
+            } else {
+              if (selection.hasDate(mouseDownDate)) {
+                status = Status.MOVE;
+                moveStartDate = mouseDownDate;
+              } else {
+                if (event.shiftKey) {
+                  status = Status.NONE;
+                  selection.expandTo(mouseDownDate);
+                } else {
+                  selection = new DateRange(mouseDownDate, mouseDownDate);
+                }
+              }
+            }
           }
-        } else if (isWeekCell(elem)) {
-          status = Status.NONE;
-          var dayInWeek = date($(elem).siblings('.date'));
-          selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
-        } else if (isMonthCell(elem)) {
-          status = Status.NONE;
-          var dayInMonth = date($(elem).siblings('.date'));
-          selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
+        } else {
+          if (isWeekCell(elem)) {
+            status = Status.NONE;
+            var dayInWeek = date($(elem).siblings('.date'));
+            selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
+          } else {
+            if (isMonthCell(elem)) {
+              status = Status.NONE;
+              var dayInMonth = date($(elem).siblings('.date'));
+              selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
+            }
+          }
         }
       }
 
       function mouseMove(event) {
-        if(status == Status.NONE)
+        if (status == Status.NONE) {
           return;
+        }
         var date = event.target.date;
         if (isEnabled(event.target)) {
           switch (status) {
@@ -311,10 +316,14 @@
           var styleClass = [dateStyles(date)];
           if (date.equalsOnlyDate(end)) {
             styleClass.push('selected rangeEnd');
-          } else if (date.equalsOnlyDate(start)) {
-            styleClass.push('selected rangeStart');
-          } else if (date.isBetweenDates(start, end)) {
-            styleClass.push('selected');
+          } else {
+            if (date.equalsOnlyDate(start)) {
+              styleClass.push('selected rangeStart');
+            } else {
+              if (date.isBetweenDates(start, end)) {
+                styleClass.push('selected');
+              }
+            }
           }
           elem.className = styleClass.join(' ');
         });
@@ -332,7 +341,7 @@
       }
 
       function setRangeLabels() {
-         if (selection.start && selection.end) {
+        if (selection.start && selection.end) {
           var format = params.locale.weekDateFormat;
           container.find('span.startDateLabel').text(selection.start.dateFormat(format));
           container.find('span.endDateLabel').text(selection.end.dateFormat(format));
@@ -343,52 +352,60 @@
       }
 
       function fieldDate(field) {
-        if (field.length > 0 && field.val().length > 0)
+        if (field.length > 0 && field.val().length > 0) {
           return Date.parseDate(field.val(), params.locale.shortDateFormat);
-        else
+        } else {
           return null;
+        }
       }
 
       function disableTextSelection(elem) {
         if ($.browser.mozilla) {//Firefox
           $(elem).css('MozUserSelect', 'none');
-        } else if ($.browser.msie) {//IE
-          $(elem).bind('selectstart', function() {
-            return false;
-          });
-        } else {//Opera, etc.
-          $(elem).mousedown(function() {
-            return false;
-          });
+        } else {
+          if ($.browser.msie) {//IE
+            $(elem).bind('selectstart', function() {
+              return false;
+            });
+          } else {//Opera, etc.
+            $(elem).mousedown(function() {
+              return false;
+            });
+          }
         }
       }
 
       function isDateCell(elem) {return $(elem).hasClass('date');}
+
       function isWeekCell(elem) {return $(elem).hasClass('week');}
+
       function isMonthCell(elem) {return $(elem).hasClass('month');}
+
       function isEnabled(elem) {return !$(elem).hasClass('disabled');}
+
       function date(elem) {return elem.get(0).date;}
+
       function setStartField(value) {params.startField.val(value);}
+
       function setEndField(value) {params.endField.val(value);}
+
       function formatDate(date) {return date.dateFormat(params.locale.shortDateFormat);}
+
       function setDateLabel(val) {container.find('span.startDateLabel').text(val);}
+
       function isRange() {return params.endField && params.endField.length > 0;}
     }
   };
-
   $.fn.calendarRange = function() {
     return $(this).data('calendarRange');
   };
-
   $.fn.exists = function() {
     return this.length > 0;
   };
-
   $.fn.isEmpty = function() {
     return this.length == 0;
   };
 })(jQuery);
-
 function DateRange(date1, date2) {
   var hasTimes = false;
   if (!date1 || !date2) {
@@ -399,12 +416,10 @@ function DateRange(date1, date2) {
   var days;
   var hours;
   var minutes;
-
   this.hours = function() {return hours;};
   this.minutes = function() {return minutes;};
   this.hasDate = function(date) {return date.isBetweenDates(this.start, this.end);};
   this.isValid = function() {return this.end.getTime() - this.start.getTime() >= 0;};
-
   this.days = function() {
     if (hasTimes) {
       return days;
@@ -412,20 +427,19 @@ function DateRange(date1, date2) {
       return Math.round(this.start.distanceInDays(this.end) + 1);
     }
   };
-
   this.shiftDays = function(days) {
     this.start = this.start.plusDays(days);
     this.end = this.end.plusDays(days);
   };
-
   this.expandTo = function(date) {
     if (date.compareTo(this.start) < 0) {
       this.start = date;
-    } else if (date.compareTo(this.end) > 0) {
-      this.end = date;
+    } else {
+      if (date.compareTo(this.end) > 0) {
+        this.end = date;
+      }
     }
   };
-
   this.and = function(that) {
     var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start;
     var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end;
@@ -435,14 +449,12 @@ function DateRange(date1, date2) {
       return DateRange.emptyRange();
     }
   };
-
   this.setTimes = function(startTimeStr, endTimeStr) {
     this.start = dateWithTime(this.start, startTimeStr);
     this.end = dateWithTime(this.end, endTimeStr);
     hasTimes = true;
     setDaysHoursAndMinutes.call(this);
   };
-
   function setDaysHoursAndMinutes() {
     if (hasTimes) {
       var ms = parseInt((this.end.getTime() - this.start.getTime()));
@@ -472,13 +484,12 @@ function DateRange(date1, date2) {
   this.toString = function(locale) {
     if (hasTimes) {
       var minutes = this.minutes() > 0 ? ',' + (this.minutes() / 6) : '';
-      return  Date.daysLabel(this.days())  + ' ' + Date.hoursLabel(this.hours() + minutes);
+      return  Date.daysLabel(this.days()) + ' ' + Date.hoursLabel(this.hours() + minutes);
     } else {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat);
     }
   };
 }
-
 DateRange.emptyRange = function() {
   function NullDateRange() {
     this.start = null;

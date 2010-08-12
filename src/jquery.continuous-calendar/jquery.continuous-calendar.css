@@ -33,10 +33,12 @@ a.calendarIcon {
   height: 16px;
   float: left;
 }
+
 .popup {
-  position:absolute;
-  z-index:99;
+  position: absolute;
+  z-index: 99;
 }
+
 .continuousCalendar table {
   font-family: Arial, Verdana, sans-serif;
   font-size: 8pt;
@@ -44,7 +46,7 @@ a.calendarIcon {
   background-color: white;
   border-collapse: collapse;
   border-spacing: 0;
-  width:200px;
+  width: 200px;
 }
 
 .continuousCalendar .calendarHeader {
@@ -52,9 +54,12 @@ a.calendarIcon {
   border-bottom: none;
   text-align: center;
   position: relative;
-  width:202px;
+  width: 202px;
 }
-.popup .calendarHeader {width:220px;}
+
+.popup .calendarHeader {
+  width: 220px;
+}
 
 .continuousCalendar .calendarHeader a {
   background: url("close.gif") no-repeat 0 0;
@@ -83,7 +88,7 @@ a.calendarIcon {
 }
 
 .continuousCalendar .calendarBody td {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .continuousCalendar .month {
@@ -146,7 +151,6 @@ a.calendarIcon {
   cursor: w-resize;
   cursor: ew-resize;
 }
-
 
 .continuousCalendar .range td.rangeStart:hover {
   cursor: w-resize;
