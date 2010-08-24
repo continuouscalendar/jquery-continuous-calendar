@@ -14,7 +14,7 @@ test("shows year", function() {
 
 test("shows week days", function() {
   assertHasValues(".continuousCalendar thead th.weekDay", [
-    "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" 
+    "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"
   ]);
 });
 
@@ -102,7 +102,7 @@ module("calendar range selection", {
 test("higlights selected date range with move handles in first and last data", function() {
   createRangeCalendarWithFiveWeeks();
   equals(cal().find(".selected").size(), 7);
-  equals(cal().find("em span").text(), "7 Days");
+  equals(cal().find(".rangeLengthLabel").text(), "7 Days");
   ok(cal().find(".selected:first").hasClass("rangeStart"), "has class rangeStart");
 });
 
@@ -130,7 +130,7 @@ test("week number click selects whole week", function () {
   assertHasValues(".selected", [3,4,5,6,7,8,9]);
   equals(startFieldValue(), "5/3/2009");
   equals(endFieldValue(), "5/9/2009");
-  equals(cal().find("em span").text(), "7 Days");
+  equals(cal().find(".rangeLengthLabel").text(), "7 Days");
 });
 
 test("mouse click and drag highlights range and updates fields", function() {
@@ -139,14 +139,14 @@ test("mouse click and drag highlights range and updates fields", function() {
   equals(cal().find(".selected").size(), 3);
   equals(startFieldValue(), "4/27/2009");
   equals(endFieldValue(), "4/29/2009");
-  equals(cal().find("em span").text(), "3 Days");
+  equals(cal().find(".rangeLengthLabel").text(), "3 Days");
 });
 
 test("mouse click and drag works with no initial selection", function() {
   createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({weeksBefore:3,weeksAfter:3});
   dragDates(22, 23);
   equals(cal().find(".selected").size(), 2);
-  equals(cal().find("em span").text(), "2 Days");
+  equals(cal().find(".rangeLengthLabel").text(), "2 Days");
 });
 
 test("mouse click on month on range calendar selects whole month", function() {
@@ -157,7 +157,7 @@ test("mouse click on month on range calendar selects whole month", function() {
   var year = startFieldValue().split('/')[2];
   equals(startFieldValue(), "5/1/"+year, "start field value");
   equals(endFieldValue(), "5/31/"+year, "end field value");
-  equals(cal().find("em span").text(), "31 Days");
+  equals(cal().find(".rangeLengthLabel").text(), "31 Days");
 });
 
 test("mouse click on month in singe date calendar does nothing", function() {

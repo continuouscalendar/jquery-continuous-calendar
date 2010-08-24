@@ -23,7 +23,6 @@
         NONE:'none'
       };
       params.locale.init();
-      var rangeLengthLabel = $('<span>');
       var startDate = fieldDate(params.startField);
       var endDate = fieldDate(params.endField);
       if (params.selectToday) {
@@ -77,6 +76,9 @@
         if (container.find('.startDateLabel').isEmpty()) {
           addDateLabels(container);
         }
+        if (container.find('.rangeLengthLabel').isEmpty() && isRange()) {
+          addRangeLengthLabel(container);
+        }
         dateCells = container.find('.date');
         dateCellDates = dateCells.map(function() {
           return this.date;
@@ -113,11 +115,14 @@
         dateLabelContainer.click(toggleCalendar);
       }
 
+      function addRangeLengthLabel(container) {
+        var rangeLengthContainer = $('<div class="label">');
+        rangeLengthContainer.append('<span class="rangeLengthLabel"></span>');
+        container.find('.continuousCalendar').append(rangeLengthContainer);
+      }
+
       function initRangeCalendarEvents(container, bodyTable) {
-        var daysContainer = $('<em>');
-        rangeLengthLabel.text(Date.daysLabel(selection.days()));
-        daysContainer.append(rangeLengthLabel);
-        container.find('.continuousCalendar').append(daysContainer);
+        container.find('span.rangeLengthLabel').text(Date.daysLabel(selection.days()));
         bodyTable.addClass('range');
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
         disableTextSelection(bodyTable.get(0));
@@ -307,7 +312,7 @@
 
       function drawSelection() {
         drawSelectionBetweenDates(selection.start, selection.end);
-        rangeLengthLabel.text(Date.daysLabel(selection.days()));
+        container.find('span.rangeLengthLabel').text(Date.daysLabel(selection.days()));
       }
 
       function drawSelectionBetweenDates(start, end) {
