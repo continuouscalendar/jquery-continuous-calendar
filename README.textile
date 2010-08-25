@@ -60,6 +60,6 @@ h2. Insert in body
 
 h2. License
 
-Copyright © 2006 Eero Anttila, Miki Leskinen, Jakub Järvenpää.
+Copyright © 2006 Eero Anttila, Miki Leskinen, Jakub Järvenpää, Ville Valtonen.
 Continuous Calendar is Licensed under the Apache License, Version 2.0. Please refer to the
 URL http://www.apache.org/licenses/LICENSE-2.0 for details.
