@@ -489,7 +489,14 @@ function DateRange(date1, date2) {
   }
 
   function parseTime(timeStr) {
-    var time = $(timeStr.split(':')).map(function() {
+    var splittedTime;
+    if (timeStr.indexOf(':') != -1) {
+      splittedTime = timeStr.split(':');
+
+    } else if(true || timeStr.length == 4){
+      splittedTime = [timeStr.slice(0,2) ,timeStr.slice(2,4)];
+    }
+    var time = $(splittedTime).map(function() {
       return parseInt(this);
     });
     return (isNaN(time[0]) || isNaN(time[1])) ? null : time;

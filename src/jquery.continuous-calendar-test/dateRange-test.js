@@ -83,6 +83,11 @@ test("invalid time will make range invalid while keeping date information", func
   ok(range.isValid());
 });
 
+test("different time formats are accepted", function() {
+  ok(range.setTimes('15:00','16:30'));
+  ok(range.setTimes('1500','1630'));
+});
+
 function resetRange() {
   start = new Date('09/10/2009');
   end = new Date('09/12/2009');
