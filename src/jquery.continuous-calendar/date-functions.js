@@ -83,16 +83,26 @@ Date.prototype.stripped = function() {
 };
 
 Date.prototype.compareTo = function(date) {
-  if (!date) return 1;
+  if (!date) {
+    return 1;
+  }
   var lhs = this.getTime();
   var rhs = date.getTime();
-  if (lhs < rhs) return -1;
-  else if (lhs > rhs) return 1;
-  else return 0;
+  if (lhs < rhs) {
+    return -1;
+  } else {
+    if (lhs > rhs) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 };
 
 Date.prototype.compareDateOnlyTo = function(date) {
-  if (!date) return 1;
+  if (!date) {
+    return 1;
+  }
   return this.stripped().compareTo(date.stripped());
 };
 
@@ -141,11 +151,12 @@ Date.prototype.getWeekInYear = function(weekNumberingSystem) {
 Date.prototype.getFirstDateOfWeek = function(firstDayOfWeek) {
   if (firstDayOfWeek < this.getDay()) {
     return this.plusDays(firstDayOfWeek - this.getDay());
-  }
-  else if (firstDayOfWeek > this.getDay()) {
-    return this.plusDays(firstDayOfWeek - this.getDay() - 7);
   } else {
-    return this.clone();
+    if (firstDayOfWeek > this.getDay()) {
+      return this.plusDays(firstDayOfWeek - this.getDay() - 7);
+    } else {
+      return this.clone();
+    }
   }
 
 };
@@ -224,13 +235,13 @@ Date.createNewFormat = function(format) {
     ch = format.charAt(i);
     if (!special && ch == "\\") {
       special = true;
-    }
-    else if (special) {
-      special = false;
-      code += "'" + String.escape(ch) + "' + ";
-    }
-    else {
-      code += Date.getFormatCode(ch);
+    } else {
+      if (special) {
+        special = false;
+        code += "'" + String.escape(ch) + "' + ";
+      } else {
+        code += Date.getFormatCode(ch);
+      }
     }
   }
   eval(code.substring(0, code.length - 3) + ";}");
@@ -314,14 +325,7 @@ Date.createParser = function(format) {
   var currentGroup = 1;
   Date.parseFunctions[format] = funcName;
 
-  var code = "Date." + funcName + " = function(input){\n"
-    + "var y = -1, m = -1, d = -1, h = -1, i = -1, s = -1;\n"
-    + "var d = Date.NOW;\n"
-    + "y = d.getFullYear();\n"
-    + "m = d.getMonth();\n"
-    + "d = d.getDate();\n"
-    + "var results = input.match(Date.parseRegexes[" + regexNum + "]);\n"
-    + "if (results && results.length > 0) {";
+  var code = "Date." + funcName + " = function(input){\n" + "var y = -1, m = -1, d = -1, h = -1, i = -1, s = -1;\n" + "var d = Date.NOW;\n" + "y = d.getFullYear();\n" + "m = d.getMonth();\n" + "d = d.getDate();\n" + "var results = input.match(Date.parseRegexes[" + regexNum + "]);\n" + "if (results && results.length > 0) {";
   var regex = "";
 
   var special = false;
@@ -330,34 +334,22 @@ Date.createParser = function(format) {
     ch = format.charAt(i);
     if (!special && ch == "\\") {
       special = true;
-    }
-    else if (special) {
-      special = false;
-      regex += String.escape(ch);
-    }
-    else {
-      obj = Date.formatCodeToRegex(ch, currentGroup);
-      currentGroup += obj.g;
-      regex += obj.s;
-      if (obj.g && obj.c) {
-        code += obj.c;
+    } else {
+      if (special) {
+        special = false;
+        regex += String.escape(ch);
+      } else {
+        obj = Date.formatCodeToRegex(ch, currentGroup);
+        currentGroup += obj.g;
+        regex += obj.s;
+        if (obj.g && obj.c) {
+          code += obj.c;
+        }
       }
     }
   }
 
-  code += "if (y > 0 && m >= 0 && d > 0 && h >= 0 && i >= 0 && s >= 0)\n"
-    + "{return new Date(y, m, d, h, i, s);}\n"
-    + "else if (y > 0 && m >= 0 && d > 0 && h >= 0 && i >= 0)\n"
-    + "{return new Date(y, m, d, h, i);}\n"
-    + "else if (y > 0 && m >= 0 && d > 0 && h >= 0)\n"
-    + "{return new Date(y, m, d, h);}\n"
-    + "else if (y > 0 && m >= 0 && d > 0)\n"
-    + "{return new Date(y, m, d);}\n"
-    + "else if (y > 0 && m >= 0)\n"
-    + "{return new Date(y, m);}\n"
-    + "else if (y > 0)\n"
-    + "{return new Date(y);}\n"
-    + "}return null;}";
+  code += "if (y > 0 && m >= 0 && d > 0 && h >= 0 && i >= 0 && s >= 0)\n" + "{return new Date(y, m, d, h, i, s);}\n" + "else if (y > 0 && m >= 0 && d > 0 && h >= 0 && i >= 0)\n" + "{return new Date(y, m, d, h, i);}\n" + "else if (y > 0 && m >= 0 && d > 0 && h >= 0)\n" + "{return new Date(y, m, d, h);}\n" + "else if (y > 0 && m >= 0 && d > 0)\n" + "{return new Date(y, m, d);}\n" + "else if (y > 0 && m >= 0)\n" + "{return new Date(y, m);}\n" + "else if (y > 0)\n" + "{return new Date(y);}\n" + "}return null;}";
 
   Date.parseRegexes[regexNum] = new RegExp("^" + regex + "$");
   eval(code);
@@ -421,20 +413,15 @@ Date.formatCodeToRegex = function(character, currentGroup) {
         s:"(\\d{4})"};
     case "y":
       return {g:1,
-        c:"var ty = parseInt(results[" + currentGroup + "], 10);\n"
-          + "y = ty > Date.y2kYear ? 1900 + ty : 2000 + ty;\n",
+        c:"var ty = parseInt(results[" + currentGroup + "], 10);\n" + "y = ty > Date.y2kYear ? 1900 + ty : 2000 + ty;\n",
         s:"(\\d{1,2})"};
     case "a":
       return {g:1,
-        c:"if (results[" + currentGroup + "] == 'am') {\n"
-          + "if (h == 12) { h = 0; }\n"
-          + "} else { if (h < 12) { h += 12; }}",
+        c:"if (results[" + currentGroup + "] == 'am') {\n" + "if (h == 12) { h = 0; }\n" + "} else { if (h < 12) { h += 12; }}",
         s:"(am|pm)"};
     case "A":
       return {g:1,
-        c:"if (results[" + currentGroup + "] == 'AM') {\n"
-          + "if (h == 12) { h = 0; }\n"
-          + "} else { if (h < 12) { h += 12; }}",
+        c:"if (results[" + currentGroup + "] == 'AM') {\n" + "if (h == 12) { h = 0; }\n" + "} else { if (h < 12) { h += 12; }}",
         s:"(AM|PM)"};
     case "g":
     case "G":
@@ -471,15 +458,11 @@ Date.formatCodeToRegex = function(character, currentGroup) {
 };
 
 Date.prototype.getTimezone = function() {
-  return this.toString().replace(
-    /^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(
-    /^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3");
+  return this.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3");
 };
 
 Date.prototype.getGMTOffset = function() {
-  return (this.getTimezoneOffset() > 0 ? "-" : "+")
-    + String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0")
-    + String.leftPad(this.getTimezoneOffset() % 60, 2, "0");
+  return (this.getTimezoneOffset() > 0 ? "-" : "+") + String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0") + String.leftPad(this.getTimezoneOffset() % 60, 2, "0");
 };
 
 Date.prototype.getDayOfYear = function() {
@@ -554,8 +537,7 @@ String.leftPad = function (val, size, ch) {
 };
 
 Date.daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
-Date.monthNames =
-["January",
+Date.monthNames = ["January",
   "February",
   "March",
   "April",
@@ -567,8 +549,7 @@ Date.monthNames =
   "October",
   "November",
   "December"];
-Date.dayNames =
-["Sunday",
+Date.dayNames = ["Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
@@ -604,4 +585,21 @@ Date.patterns = {
   SortableDateTimePattern: "Y-m-d\\TH:i:s",
   UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
   YearMonthPattern: "F, Y"
+};
+Date.parseTime = function parseTime(timeStr) {
+  var splittedTime;
+  timeStr = timeStr.replace(/:|,/i,'.');
+  if (timeStr.indexOf('.') != -1) {
+    splittedTime = timeStr.split('.');
+  } else if(timeStr.length == 4) {
+    splittedTime = [timeStr.slice(0,2) ,timeStr.slice(2,4)];
+  } else if(timeStr.length == 3) {
+    splittedTime = [timeStr.slice(0,1) ,timeStr.slice(1,3)];
+  } else if(timeStr.length == 2) {
+    splittedTime = [timeStr, 0];
+  } else {
+    return null;
+  }
+  var time = [parseInt(splittedTime[0]), parseInt(splittedTime[1])];
+  return (isNaN(time[0]) || isNaN(time[1])) ? null : time;
 };

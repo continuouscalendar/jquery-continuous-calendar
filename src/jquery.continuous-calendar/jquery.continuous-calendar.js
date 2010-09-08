@@ -456,8 +456,8 @@ function DateRange(date1, date2) {
     }
   };
   this.setTimes = function(startTimeStr, endTimeStr) {
-    var parsedStartTime = parseTime(startTimeStr);
-    var parsedEndTime = parseTime(endTimeStr);
+    var parsedStartTime = Date.parseTime(startTimeStr);
+    var parsedEndTime = Date.parseTime(endTimeStr);
     if (parsedStartTime && parsedEndTime) {
       valid = true;
       hasTimes = true;
@@ -482,29 +482,10 @@ function DateRange(date1, date2) {
 
   function dateWithTime(dateWithoutTime, parsedTime) {
     var date = dateWithoutTime.clone();
-    date.setHours(parsedTime.get(0));
-    date.setMinutes(parsedTime.get(1));
+    date.setHours(parsedTime[0]);
+    date.setMinutes(parsedTime[1]);
     date.setMilliseconds(0);
     return date;
-  }
-
-  function parseTime(timeStr) {
-    var splittedTime;
-    timeStr = timeStr.replace(/:|,/i,'.');
-    if (timeStr.indexOf('.') != -1) {
-      splittedTime = timeStr.split('.');
-
-    } else if(timeStr.length == 4){
-      splittedTime = [timeStr.slice(0,2) ,timeStr.slice(2,4)];
-    } else if(timeStr.length == 3) {
-      splittedTime = [timeStr.slice(0,1) ,timeStr.slice(1,3)];
-    } else if(timeStr.length == 2) {
-      splittedTime = [timeStr, 0];
-    }
-    var time = $(splittedTime).map(function() {
-      return parseInt(this);
-    });
-    return (isNaN(time[0]) || isNaN(time[1])) ? null : time;
   }
 
   this.toString = function(locale) {
