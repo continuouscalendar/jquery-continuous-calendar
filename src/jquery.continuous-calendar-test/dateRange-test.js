@@ -15,6 +15,7 @@ test("creates dange of three days", function() {
   ok(range.hasDate(new Date('09/11/2009')));
   ok(range.hasDate(new Date('09/12/2009')));
   ok(!range.hasDate(new Date('09/13/2009')));
+  equals(range.toString(DATE_LOCALE_FI), "10.9.2009 - 12.9.2009");
 });
 
 test("range is movable", function() {
@@ -69,6 +70,15 @@ test("one day range with start time after end time is not valid", function() {
   ok(!range.isValid());
   range.setTimes('15:00', '15:00');
   ok(range.isValid());
+  range.setTimes('15:00', '15:30');
+  ok(range.isValid());
+});
+
+test("invalid time will make range invalid while keeping date information", function() {
+  range.setTimes('15:00', '15:30');
+  ok(range.isValid());
+  range.setTimes('', '15:30');
+  ok(!range.isValid());
   range.setTimes('15:00', '15:30');
   ok(range.isValid());
 });
