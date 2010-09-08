@@ -490,10 +490,11 @@ function DateRange(date1, date2) {
 
   function parseTime(timeStr) {
     var splittedTime;
-    if (timeStr.indexOf(':') != -1) {
-      splittedTime = timeStr.split(':');
+    timeStr = timeStr.replace(/:|,/i,'.');
+    if (timeStr.indexOf('.') != -1) {
+      splittedTime = timeStr.split('.');
 
-    } else if(true || timeStr.length == 4){
+    } else if(timeStr.length == 4){
       splittedTime = [timeStr.slice(0,2) ,timeStr.slice(2,4)];
     }
     var time = $(splittedTime).map(function() {
@@ -519,7 +520,6 @@ DateRange.emptyRange = function() {
     this.shiftDays = function() {};
     this.hasDate = function() {return false;};
   }
-
   return new NullDateRange();
 };
 DateRange.parse = function(dateStr1, dateStr2, dateFormat) {
