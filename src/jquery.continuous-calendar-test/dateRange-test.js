@@ -84,24 +84,25 @@ test("invalid time will make range invalid while keeping date information", func
 });
 
 test("different time formats are accepted", function() {
-  ok(range.setTimes('15:00', '16:10'));
-  equals(range.hours(), 1);
-  equals(range.minutes(), 10);
+  range.setTimes('15:00', '16:10');
+  assertHasCorrectHoursAndMinutes(1, 10);
 
-  ok(range.setTimes('14.00', '16.20'));
-  equals(range.hours(), 2);
-  equals(range.minutes(), 20);
+  range.setTimes('14.00', '16.20');
+  assertHasCorrectHoursAndMinutes(2, 20);
 
-  ok(range.setTimes('13,00', '16,30'));
-  equals(range.hours(), 3);
-  equals(range.minutes(), 30);
+  range.setTimes('13,00', '16,30');
+  assertHasCorrectHoursAndMinutes(3, 30);
 
-  ok(range.setTimes('1200', '1640'));
-  equals(range.hours(), 4);
-  equals(range.minutes(), 40);
+  range.setTimes('1200', '1640');
+  assertHasCorrectHoursAndMinutes(4, 40);
 
 });
 
+function assertHasCorrectHoursAndMinutes(hours, minutes) {
+  ok(range.isValid(),"valid range");
+  equals(range.hours(), hours, "correct hours");
+  equals(range.minutes(), minutes, "correct minutes");
+}
 function resetRange() {
   start = new Date('09/10/2009');
   end = new Date('09/12/2009');
