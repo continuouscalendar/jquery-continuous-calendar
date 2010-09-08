@@ -496,6 +496,10 @@ function DateRange(date1, date2) {
 
     } else if(timeStr.length == 4){
       splittedTime = [timeStr.slice(0,2) ,timeStr.slice(2,4)];
+    } else if(timeStr.length == 3) {
+      splittedTime = [timeStr.slice(0,1) ,timeStr.slice(1,3)];
+    } else if(timeStr.length == 2) {
+      splittedTime = [timeStr, 0];
     }
     var time = $(splittedTime).map(function() {
       return parseInt(this);

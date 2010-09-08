@@ -77,10 +77,16 @@ test("one day range with start time after end time is not valid", function() {
 test("invalid time will make range invalid while keeping date information", function() {
   range.setTimes('15:00', '15:30');
   ok(range.isValid());
+
   range.setTimes('', '15:30');
   ok(!range.isValid());
+
   range.setTimes('15:00', '15:30');
   ok(range.isValid());
+
+  range.setTimes('asdf', 'fddd');
+  ok(!range.isValid());
+  
 });
 
 test("different time formats are accepted", function() {
@@ -95,6 +101,14 @@ test("different time formats are accepted", function() {
 
   range.setTimes('1200', '1640');
   assertHasCorrectHoursAndMinutes(4, 40);
+
+  range.setTimes('830', '1240');
+  assertHasCorrectHoursAndMinutes(4, 10);
+
+  range.setTimes('10', '13');
+  assertHasCorrectHoursAndMinutes(3, 0);
+
+
 
 });
 
