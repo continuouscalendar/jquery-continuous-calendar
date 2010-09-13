@@ -491,7 +491,7 @@ function DateRange(date1, date2) {
   this.toString = function(locale) {
     if (hasTimes) {
       var minutes = this.minutes() > 0 ? ',' + (this.minutes() / 6) : '';
-      return  Date.daysLabel(this.days()) + ' ' + Date.hoursLabel(this.hours() + minutes);
+      return  Date.daysLabel(this.days()) + ' ' + Date.hoursLabel(this.hours(), this.minutes());
     } else {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat);
     }

@@ -42,20 +42,24 @@ module("date range with time behavior", {
 
 test("date range can have times", function() {
   DATE_LOCALE_EN.init();
-  range.setTimes('10:00', '14:30');
+  range.setTimes('10:00', '14:45');
   equals(range.days(), 2);
   equals(range.hours(), 4);
-  equals(range.minutes(), 30);
-  equals(range.toString(), "2 Days 4,5 Hours");
+  equals(range.minutes(), 45);
+  equals(range.toString(), "2 Days 4.75 Hours");
+
   DATE_LOCALE_FI.init();
-  equals(range.toString(), "2 päivää 4,5 tuntia");
+  equals(range.toString(), "2 päivää 4,75 tuntia");
+
   range.setTimes('17:00', '16:00');
   equals(range.days(), 1);
   equals(range.hours(), 23);
   equals(range.minutes(), 0);
   range.start = range.start.plusDays(1);
+
   range.setTimes('10:00', '11:00');
   equals(range.toString(), "1 päivä 1 tunti");
+
   DATE_LOCALE_EN.init();
   equals(range.toString(), "1 Day 1 Hour");
 });
@@ -107,9 +111,6 @@ test("different time formats are accepted", function() {
 
   range.setTimes('10', '13');
   assertHasCorrectHoursAndMinutes(3, 0);
-
-
-
 });
 
 function assertHasCorrectHoursAndMinutes(hours, minutes) {
