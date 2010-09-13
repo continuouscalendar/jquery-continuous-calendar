@@ -79,7 +79,7 @@ Date.prototype.plusYears = function(years) {
 };
 
 Date.prototype.stripped = function() {
-  return new Date(parseInt(this.getTime() / Date.DAY));
+  return new Date(parseInt(this.getTime() / Date.DAY, 10));
 };
 
 Date.prototype.compareTo = function(date) {
@@ -195,8 +195,8 @@ Date.prototype.lastDateOfMonth = function() {
 };
 
 Date.prototype.distanceInDays = function(date) {
-  var first = parseInt(this.getTime() / Date.DAY);
-  var last = parseInt(date.getTime() / Date.DAY);
+  var first = parseInt(this.getTime() / Date.DAY, 10);
+  var last = parseInt(date.getTime() / Date.DAY, 10);
   return (last - first);
 };
 
@@ -600,7 +600,7 @@ Date.parseTime = function parseTime(timeStr) {
   } else {
     return null;
   }
-  var time = [parseInt(splittedTime[0]), parseInt(splittedTime[1])];
+  var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)];
   return (isHour(time[0]) && isMinute(time[1])) ? time : null;
 
   function isMinute(minutes) {

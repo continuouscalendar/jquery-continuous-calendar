@@ -112,8 +112,8 @@ test("different time formats are accepted", function() {
   range.setTimes('830', '1240');
   assertHasCorrectHoursAndMinutes(4, 10);
 
-  range.setTimes('10', '13');
-  assertHasCorrectHoursAndMinutes(3, 0);
+  range.setTimes('08', '13');
+  assertHasCorrectHoursAndMinutes(5, 0);
 });
 
 test("minutes are rounded to 2 digits", function() {
