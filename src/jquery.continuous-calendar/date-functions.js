@@ -603,3 +603,7 @@ Date.parseTime = function parseTime(timeStr) {
   var time = [parseInt(splittedTime[0]), parseInt(splittedTime[1])];
   return (isNaN(time[0]) || isNaN(time[1])) ? null : time;
 };
+
+Date.hoursAndMinutes = function(hours, minutes) {
+  return (Math.round((hours + minutes/60)*100)/100).toString();
+};

@@ -16,7 +16,7 @@ window.DATE_LOCALE_FI = {
     Date.dayNames = ['Su','Ma','Ti','Ke','To','Pe','La'];
     Date.daysLabel = function(days) {return days + ' ' + (days == '1' ? 'päivä' : 'päivää');};
     Date.hoursLabel = function(hours, minutes) {
-      var hoursAndMinutes = parseFloat(hours + minutes/60).toString().replace('.',',');
+      var hoursAndMinutes = Date.hoursAndMinutes(hours, minutes).replace('.',',');
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia');};
   },
   shortDateFormat: 'j.n.Y',
@@ -47,7 +47,7 @@ window.DATE_LOCALE_EN = {
       'Saturday'];
     Date.daysLabel = function(days) {return days + ' ' + (days == '1' ? 'Day' : 'Days');};
     Date.hoursLabel = function(hours, minutes) {
-      var hoursAndMinutes = parseFloat(hours + minutes/60).toString();
+      var hoursAndMinutes = Date.hoursAndMinutes(hours, minutes);
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours');};
   },
   shortDateFormat: 'n/j/Y',

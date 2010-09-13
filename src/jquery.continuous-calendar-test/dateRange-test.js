@@ -113,6 +113,13 @@ test("different time formats are accepted", function() {
   assertHasCorrectHoursAndMinutes(3, 0);
 });
 
+test("minutes are rounded to 2 digits", function() {
+  range.setTimes('15:00', '16:10');
+  assertHasCorrectHoursAndMinutes(1, 10);
+  DATE_LOCALE_FI.init();
+  equals(range.toString(), "2 päivää 1,17 tuntia");
+});
+
 function assertHasCorrectHoursAndMinutes(hours, minutes) {
   ok(range.isValid(),"valid range");
   equals(range.hours(), hours, "correct hours");
