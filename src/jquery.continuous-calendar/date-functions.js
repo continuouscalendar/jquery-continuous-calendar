@@ -601,9 +601,17 @@ Date.parseTime = function parseTime(timeStr) {
     return null;
   }
   var time = [parseInt(splittedTime[0]), parseInt(splittedTime[1])];
-  return (isNaN(time[0]) || isNaN(time[1])) ? null : time;
+  return (isHour(time[0]) && isMinute(time[1])) ? time : null;
+
+  function isMinute(minutes) {
+    return !isNaN(minutes) && minutes >= 0 && minutes <= 59;
+  }
+
+  function isHour(hours) {
+    return !isNaN(hours) && hours >= 0 && hours <= 23;
+  }
 };
 
 Date.hoursAndMinutes = function(hours, minutes) {
-  return (Math.round((hours + minutes/60)*100)/100).toString();
+  return (Math.round((hours + minutes / 60) * 100) / 100).toString();
 };

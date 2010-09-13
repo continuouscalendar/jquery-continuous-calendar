@@ -90,6 +90,9 @@ test("invalid time will make range invalid while keeping date information", func
 
   range.setTimes('asdf', 'fddd');
   ok(!range.isValid());
+
+  range.setTimes('00', '25');
+  ok(!range.isValid());
   
 });
 
