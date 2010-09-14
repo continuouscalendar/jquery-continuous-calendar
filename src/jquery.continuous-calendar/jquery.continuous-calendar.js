@@ -163,16 +163,21 @@
       }
 
       function calculateCellHeightAndSetScroll() {
-        averageCellHeight = parseInt(bodyTable.height() / bodyTable.find('tr').size());
+        calculateCellHeight();
         scrollToSelection();
+      }
+
+      function calculateCellHeight() {
+        averageCellHeight = parseInt(bodyTable.height() / bodyTable.find('tr').size());
       }
 
       function toggleCalendar() {
         calendar.toggle();
         if (beforeFirstOpening) {
-          calculateCellHeightAndSetScroll();
+          calculateCellHeight();
           beforeFirstOpening = false;
         }
+        scrollToSelection();
         return false;
       }
 
