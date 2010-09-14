@@ -587,22 +587,21 @@ Date.patterns = {
   YearMonthPattern: "F, Y"
 };
 Date.parseTime = function parseTime(timeStr) {
-  var splittedTime;
-  timeStr = timeStr.replace(/:|,/i,'.');
-  if (timeStr.indexOf('.') != -1) {
-    splittedTime = timeStr.split('.');
-  } else if(timeStr.length == 4) {
-    splittedTime = [timeStr.slice(0,2) ,timeStr.slice(2,4)];
-  } else if(timeStr.length == 3) {
-    splittedTime = [timeStr.slice(0,1) ,timeStr.slice(1,3)];
-  } else if(timeStr.length == 2) {
-    splittedTime = [timeStr, 0];
-  } else {
-    return null;
-  }
+  var splittedTime = splitTime(timeStr.replace(/:|,/i,'.'));
   var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)];
   return (isHour(time[0]) && isMinute(time[1])) ? time : null;
 
+  function splitTime(timeStr) {
+    if (timeStr.indexOf('.') != -1) {
+      return  timeStr.split('.');
+    }
+    switch (timeStr.length) {
+      case 4: return [timeStr.slice(0, 2) ,timeStr.slice(2, 4)];
+      case 3: return [timeStr.slice(0, 1) ,timeStr.slice(1, 3)];
+      case 2: return [timeStr, 0];
+      default: return [-1,-1];
+    }
+  }
   function isMinute(minutes) {
     return !isNaN(minutes) && minutes >= 0 && minutes <= 59;
   }
