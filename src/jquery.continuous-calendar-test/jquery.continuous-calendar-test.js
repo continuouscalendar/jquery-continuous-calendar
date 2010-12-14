@@ -77,14 +77,14 @@ test("if start date not selected show around current day instead", function() {
 
 test("disabled date is not selectable", function() {
   createCalendarFields().continuousCalendar({firstDate:"4/15/2009",lastDate:"5/9/2009", disableWeekends: true});
-  cal().find(".date:contains(15)").click();
-  equals(cal().find(".selected").text(), "15");
-  cal().find(".date:contains(13)").click();
-  equals(cal().find(".selected").text(), "15");
-  cal().find(".date:contains(18)").click();
-  equals(cal().find(".selected").text(), "15");
-  cal().find(".date:contains(19)").click();
-  equals(cal().find(".selected").text(), "15");
+  clickOnDate(15);
+  assertSelectedDate(15);
+  clickOnDate(13);
+  assertSelectedDate(15);
+  clickOnDate(18);
+  assertSelectedDate(15);
+  clickOnDate(19);
+  assertSelectedDate(15);
 });
 
 module("date picker calendar with day selected", {
@@ -369,6 +369,14 @@ function createBigCalendarForSingleDate() {
 
 function createCalendarFromJanuary() {
   createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
+}
+
+function clickOnDate(date) {
+  cal().find(".date:contains(" + date + ")").click();
+}
+
+function assertSelectedDate(expectedDate) {
+  equals(cal().find(".selected").text(), expectedDate);
 }
 
 function mouseEventOnDay(eventType, date, options) {mouseEvent(eventType, cal().find(".date").withText(date), options);}
