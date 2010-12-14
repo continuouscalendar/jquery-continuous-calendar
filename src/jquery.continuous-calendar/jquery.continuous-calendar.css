@@ -140,11 +140,12 @@ a.calendarIcon {
   color: white;
 }
 
-.continuousCalendar .range td.rangeStart {
-  /*background-image:url("start.gif");
-  background-repeat:no-repeat;
-  background-position:left top;
-  */
+.continuousCalendar .range .week {
+  text-decoration: underline;
+}
+
+.continuousCalendar .range.calendarBody .month {
+  text-decoration: underline;
 }
 
 .continuousCalendar .range td {
@@ -155,13 +156,6 @@ a.calendarIcon {
 .continuousCalendar .range td.rangeStart:hover {
   cursor: w-resize;
   cursor: ew-resize;
-}
-
-.continuousCalendar .range  td.rangeEnd {
-  /*background-image:url("end.gif");
-  background-repeat:no-repeat;
-  background-position:0 1px;
-  */
 }
 
 .continuousCalendar .range  td.rangeEnd:hover {
