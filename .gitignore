@@ -6,3 +6,4 @@
 *.ipr
 *.iws
 .idea/workspace.xml
+out/
