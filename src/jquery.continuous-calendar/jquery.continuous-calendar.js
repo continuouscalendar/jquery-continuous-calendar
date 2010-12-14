@@ -13,6 +13,7 @@
         isPopup: false,
         selectToday: false,
         locale: DATE_LOCALE_EN,
+        disableWeekends: false,
         callback: function() {
         }
       };
@@ -230,7 +231,11 @@
 
       function backgroundBy(date) {return date.isOddMonth() ? 'odd' : '';}
 
-      function disabledOrNot(date) {return calendarRange.hasDate(date) ? '' : 'disabled';}
+      function disabledOrNot(date) {
+        var disabledWeekendDay = params.disableWeekends && date.isWeekend();
+        var outOfBounds = !calendarRange.hasDate(date);
+        return outOfBounds || disabledWeekendDay ? 'disabled': '';
+      }
 
       function todayStyle(date) {return date.isToday() ? 'today' : '';}
 

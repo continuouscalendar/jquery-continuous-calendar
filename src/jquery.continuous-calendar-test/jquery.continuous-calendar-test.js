@@ -76,10 +76,14 @@ test("if start date not selected show around current day instead", function() {
 });
 
 test("disabled date is not selectable", function() {
-  createCalendarFields().continuousCalendar({firstDate:"4/15/2009",lastDate:"5/9/2009"});
+  createCalendarFields().continuousCalendar({firstDate:"4/15/2009",lastDate:"5/9/2009", disableWeekends: true});
   cal().find(".date:contains(15)").click();
   equals(cal().find(".selected").text(), "15");
   cal().find(".date:contains(13)").click();
+  equals(cal().find(".selected").text(), "15");
+  cal().find(".date:contains(18)").click();
+  equals(cal().find(".selected").text(), "15");
+  cal().find(".date:contains(19)").click();
   equals(cal().find(".selected").text(), "15");
 });
 

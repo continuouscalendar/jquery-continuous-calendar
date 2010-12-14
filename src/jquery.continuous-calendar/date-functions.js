@@ -521,6 +521,10 @@ Date.prototype.getSuffix = function() {
   }
 };
 
+Date.prototype.isWeekend = function() {
+  return this.getDay() == 6 || this.getDay() == 0;
+};
+
 String.escape = function(string) {
   return string.replace(/('|\\)/g, "\\$1");
 };
@@ -614,3 +618,4 @@ Date.parseTime = function parseTime(timeStr) {
 Date.hoursAndMinutes = function(hours, minutes) {
   return (Math.round((hours + minutes / 60) * 100) / 100).toString();
 };
+
