@@ -3,9 +3,6 @@
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
   </component>
-  <component name="CompilerWorkspaceConfiguration">
-    <option name="COMPILE_DEPENDENT_FILES" value="true" />
-  </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
   </component>
