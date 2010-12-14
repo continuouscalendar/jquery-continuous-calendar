@@ -75,6 +75,14 @@ test("if start date not selected show around current day instead", function() {
   equals(cal().find(".selected").size(), 0);
 });
 
+test("disabled date is not selectable", function() {
+  createCalendarFields().continuousCalendar({firstDate:"4/15/2009",lastDate:"5/9/2009"});
+  cal().find(".date:contains(15)").click();
+  equals(cal().find(".selected").text(), "15");
+  cal().find(".date:contains(13)").click();
+  equals(cal().find(".selected").text(), "15");
+});
+
 module("date picker calendar with day selected", {
   setup: createCalendarContainer
 });
@@ -251,20 +259,20 @@ test("month and day names are localizable", function() {
     "lokakuu",
     "marraskuu",
     "joulukuu"]);
-  clickDate(1);
+  mouseDownMouseUpOnDate(1);
   equals(startFieldValue(), "1.1.2009");
   equals(startLabelValue(), "To 1.1.2009");
 });
 
 test("forward drag after one day selection expands selection", function() {
   createRangeCalendarWithFiveWeeks();
-  clickDate(16);
+  mouseDownMouseUpOnDate(16);
   assertHasValues('.selected',[16]);
 
   dragDates(16, 18);
   assertHasValues('.selected',[16,17,18]);
 
-  clickDate(19);
+  mouseDownMouseUpOnDate(19);
   assertHasValues('.selected', [19]);
   dragDates(19,17);
   assertHasValues('.selected', [17,18,19]);
@@ -328,7 +336,7 @@ function clickDateWithShift(date) {
   mouseUpOnDay(date, options);
 }
 
-function clickDate(date) {
+function mouseDownMouseUpOnDate(date) {
   mouseDownOnDay(date);
   mouseUpOnDay(date);
 }

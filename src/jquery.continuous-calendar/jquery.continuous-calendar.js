@@ -235,9 +235,10 @@
       function todayStyle(date) {return date.isToday() ? 'today' : '';}
 
       function initSingleDateCalendarEvents() {
-        dateCells.click(function() {
-          dateCells.removeClass('selected');
+        dateCells.live('click', function() {
           var dateCell = $(this);
+          if(dateCell.hasClass('disabled')) return;
+          dateCells.removeClass('selected');
           dateCell.addClass('selected');
           var formattedDate = date(dateCell).dateFormat(params.locale.shortDateFormat);
           params.startField.val(formattedDate);

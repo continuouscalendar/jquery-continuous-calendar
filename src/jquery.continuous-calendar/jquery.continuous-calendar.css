@@ -91,6 +91,10 @@ a.calendarIcon {
   cursor: pointer;
 }
 
+.continuousCalendar .calendarBody td.disabled {
+  cursor:default;
+}
+
 .continuousCalendar .month {
   width: 53px;
 }
