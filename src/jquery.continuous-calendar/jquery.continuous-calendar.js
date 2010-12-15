@@ -189,6 +189,10 @@
           tbody.append(calendarRow(firstWeekDay.clone()));
           firstWeekDay = firstWeekDay.plusDays(7);
         }
+        var todayKey = Date.NOW.dateFormat('Ymd');
+        if(dateCellMap[todayKey]) {
+          dateCells[dateCellMap[todayKey]].addClass('today')
+        }
         return tbody;
       }
 
@@ -207,9 +211,6 @@
         dateCellMap[date.dateFormat('Ymd')] = dateCells.length
         dateCells.push(dateCell)
         dateCellDates.push(date)
-        if (date.isToday()) {
-          dateCell.addClass('today');
-        }
         if (isRange()) {
           dateCell.toggleClass('selected', selection.hasDate(date)).toggleClass('rangeStart', date.equalsOnlyDate(selection.start)).toggleClass('rangeEnd', date.equalsOnlyDate(selection.end));
         } else {
