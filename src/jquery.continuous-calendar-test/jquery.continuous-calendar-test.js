@@ -145,13 +145,26 @@ test("week number click selects whole week", function () {
   equals(cal().find(".rangeLengthLabel").text(), "7 Days");
 });
 
+function startTimer() {
+  timerStart = new Date().getTime();
+}
+
+function stopTimer() {
+  if (typeof timerStart == undefined) {
+    return -1;
+  }
+  return new Date().getTime() - timerStart;
+}
+
 test("mouse click and drag highlights range and updates fields", function() {
   createRangeCalendarWithFiveWeeks();
-  dragDates(27, 29);
-  equals(cal().find(".selected").size(), 3);
-  equals(startFieldValue(), "4/27/2009");
+  startTimer()
+  dragDatesSlowly(15, 29);
+  var duration = stopTimer()
+  equals(cal().find(".selected").size(), 15, "("+duration+" ms)");
+  equals(startFieldValue(), "4/15/2009");
   equals(endFieldValue(), "4/29/2009");
-  equals(cal().find(".rangeLengthLabel").text(), "3 Days");
+  equals(cal().find(".rangeLengthLabel").text(), "15 Days");
 });
 
 test("mouse click and drag works with no initial selection", function() {
@@ -349,6 +362,15 @@ function dragDates(enter, exit) {
   mouseDownOnDay(enter);
   mouseUpOnDay(exit);
 }
+
+function dragDatesSlowly(enter, exit) {
+  mouseDownOnDay(enter);
+  for(var day = enter; day < exit; day++) {
+    mouseMoveOnDay(day);
+  }
+  mouseUpOnDay(exit);
+}
+
 
 function createCalendarWithOneWeek() {
   createCalendarFields({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0});

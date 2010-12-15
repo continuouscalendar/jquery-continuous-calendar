@@ -255,42 +255,47 @@
         setDateLabel(params.startField.val());
       }
 
+      function startNewRange() {
+        selection = new DateRange(mouseDownDate, mouseDownDate);
+      }
+
       function mouseDown(event) {
         var elem = event.target;
+        if (isWeekCell(elem)) {
+          status = Status.NONE;
+          var dayInWeek = date($(elem).siblings('.date'));
+          selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
+          return
+        }
+        if (isMonthCell(elem)) {
+          status = Status.NONE;
+          var dayInMonth = date($(elem).siblings('.date'));
+          selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
+          return
+        }
         if (isDateCell(elem) && isEnabled(elem)) {
           status = Status.CREATE;
           mouseDownDate = elem.date;
+
           if (mouseDownDate.equalsOnlyDate(selection.end)) {
             mouseDownDate = selection.start;
-          } else {
-            if (mouseDownDate.equalsOnlyDate(selection.start)) {
-              mouseDownDate = selection.end;
-            } else {
-              if (selection.hasDate(mouseDownDate)) {
-                status = Status.MOVE;
-                moveStartDate = mouseDownDate;
-              } else {
-                if (event.shiftKey) {
-                  status = Status.NONE;
-                  selection.expandTo(mouseDownDate);
-                } else {
-                  selection = new DateRange(mouseDownDate, mouseDownDate);
-                }
-              }
-            }
+            return
           }
-        } else {
-          if (isWeekCell(elem)) {
+          if (mouseDownDate.equalsOnlyDate(selection.start)) {
+            mouseDownDate = selection.end;
+            return
+          }
+          if (selection.hasDate(mouseDownDate)) {
+            status = Status.MOVE;
+            moveStartDate = mouseDownDate;
+            return
+          }
+          if (event.shiftKey) {
             status = Status.NONE;
-            var dayInWeek = date($(elem).siblings('.date'));
-            selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
-          } else {
-            if (isMonthCell(elem)) {
-              status = Status.NONE;
-              var dayInMonth = date($(elem).siblings('.date'));
-              selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
-            }
+            selection.expandTo(mouseDownDate);
+            return
           }
+          startNewRange();
         }
       }
 
