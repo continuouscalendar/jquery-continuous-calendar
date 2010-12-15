@@ -84,16 +84,30 @@
         if (container.find('.rangeLengthLabel').isEmpty() && isRange()) {
           addRangeLengthLabel(container);
         }
+        highlightToday();
         if (isRange()) {
           initRangeCalendarEvents(container, bodyTable);
+          drawSelection()
         } else {
           initSingleDateCalendarEvents();
+          var selectedDateKey = startDate && startDate.dateFormat('Ymd')
+          if (dateCellMap[selectedDateKey]) {
+            dateCells[dateCellMap[selectedDateKey]].addClass('selected')
+          }
         }
         yearTitle = headerTable.find('th.month');
         scrollContent.scroll(setYearLabel);
         scrollToSelection();
         params.callback.call(container, selection);
       }
+
+      function highlightToday() {
+        var todayKey = Date.NOW.dateFormat('Ymd');
+        if (dateCellMap[todayKey]) {
+          dateCells[dateCellMap[todayKey]].addClass('today')
+        }
+      }
+
 
       function getCalendarContainerOrCreateOne() {
         var existingContainer = container.find('.continuousCalendar');
@@ -189,10 +203,6 @@
           tbody.append(calendarRow(firstWeekDay.clone()));
           firstWeekDay = firstWeekDay.plusDays(7);
         }
-        var todayKey = Date.NOW.dateFormat('Ymd');
-        if(dateCellMap[todayKey]) {
-          dateCells[dateCellMap[todayKey]].addClass('today')
-        }
         return tbody;
       }
 
@@ -211,11 +221,6 @@
         dateCellMap[date.dateFormat('Ymd')] = dateCells.length
         dateCells.push(dateCell)
         dateCellDates.push(date)
-        if (isRange()) {
-          dateCell.toggleClass('selected', selection.hasDate(date)).toggleClass('rangeStart', date.equalsOnlyDate(selection.start)).toggleClass('rangeEnd', date.equalsOnlyDate(selection.end));
-        } else {
-          dateCell.toggleClass('selected', date.equalsOnlyDate(startDate));
-        }
         return dateCell;
       }
 
