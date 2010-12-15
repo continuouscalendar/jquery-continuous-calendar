@@ -44,7 +44,7 @@
       var averageCellHeight;
       var yearTitle;
       var selection;
-      var oldSelection = {start:0,end:0};
+      var oldSelection;
       var calendarRange;
       var status = Status.NONE;
       var calendar;
@@ -61,6 +61,7 @@
         } else {
           selection = DateRange.emptyRange();
         }
+        oldSelection = selection;
         container.data('calendarRange', selection);
         var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7));
         var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6);
@@ -107,7 +108,6 @@
           dateCells[dateCellMap[todayKey]].addClass('today')
         }
       }
-
 
       function getCalendarContainerOrCreateOne() {
         var existingContainer = container.find('.continuousCalendar');
@@ -345,15 +345,28 @@
       }
 
       function drawSelectionBetweenDates(start, end) {
-        container.find('.date').each(function(i, elem) {
-          var date = dateCellDates[i];
-          setDateCellStyle(date, end, start, elem);
-        });
+        container.find('td.selected').removeClass('selected');
+        container.find('td.rangeStart').removeClass('rangeStart')
+        container.find('td.rangeEnd').removeClass('rangeEnd')
+        //iterateAndToggleCells(oldSelection.start, oldSelection.end);
+        iterateAndToggleCells(start, end);
+        //container.find('.date').each(function(i, elem) {setDateCellStyle(i, start, end);});
         oldSelection.start = start
         oldSelection.end = end
       }
 
-      function setDateCellStyle(date, end, start, elem) {
+      function iterateAndToggleCells(start, end) {
+        if(!start) return
+        var startIndex = dateCellMap[start.dateFormat('Ymd')]
+        var endIndex = dateCellMap[end.dateFormat('Ymd')]
+        for (var i = startIndex; i <= endIndex; i++) {
+          setDateCellStyle(i, start, end);
+        }
+      }
+
+      function setDateCellStyle(i, start, end) {
+        var date = dateCellDates[i];
+        var elem = dateCells[i].get(0)
         var styleClass = [dateStyles(date)];
         if (date.equalsOnlyDate(end)) {
           styleClass.push('selected rangeEnd');
