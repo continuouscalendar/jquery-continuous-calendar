@@ -36,8 +36,9 @@
       }
       var firstWeekdayOfGivenDate = (startDate || Date.NOW).getFirstDateOfWeek(params.locale.firstWeekday);
       var container = this;
-      var dateCells = null;
-      var dateCellDates = null;
+      var dateCells = [];
+      var dateCellDates = [];
+      var dateCellMap = {}
       var moveStartDate = null;
       var mouseDownDate = null;
       var averageCellHeight;
@@ -52,6 +53,7 @@
       var bodyTable;
 
       createCalendar();
+
       container.trigger('calendarChange');
       function createCalendar() {
         if (startDate && endDate) {
@@ -82,10 +84,6 @@
         if (container.find('.rangeLengthLabel').isEmpty() && isRange()) {
           addRangeLengthLabel(container);
         }
-        dateCells = container.find('.date');
-        dateCellDates = dateCells.map(function() {
-          return this.date;
-        });
         if (isRange()) {
           initRangeCalendarEvents(container, bodyTable);
         } else {
@@ -206,6 +204,9 @@
       function dateCell(date) {
         var dateCell = $('<td>').addClass(dateStyles(date)).append(date.getDate());
         dateCell.get(0).date = date;
+        dateCellMap[date.dateFormat('Ymd')] = dateCells.length
+        dateCells.push(dateCell)
+        dateCellDates.push(date)
         if (date.isToday()) {
           dateCell.addClass('today');
         }
@@ -246,10 +247,10 @@
       function todayStyle(date) {return date.isToday() ? 'today' : '';}
 
       function initSingleDateCalendarEvents() {
-        dateCells.live('click', function() {
+        $('.date', container).live('click', function() {
           var dateCell = $(this);
           if(dateCell.hasClass('disabled')) return;
-          dateCells.removeClass('selected');
+          $('td.selected', container).removeClass('selected');
           dateCell.addClass('selected');
           var formattedDate = date(dateCell).dateFormat(params.locale.shortDateFormat);
           params.startField.val(formattedDate);
@@ -338,27 +339,30 @@
       }
 
       function drawSelectionBetweenDates(start, end) {
-
-
-        dateCells.each(function(i, elem) {
+        container.find('.date').each(function(i, elem) {
           var date = dateCellDates[i];
-          var styleClass = [dateStyles(date)];
-          if (date.equalsOnlyDate(end)) {
-            styleClass.push('selected rangeEnd');
-          } else {
-            if (date.equalsOnlyDate(start)) {
-              styleClass.push('selected rangeStart');
-            } else {
-              if (date.isBetweenDates(start, end)) {
-                styleClass.push('selected');
-              }
-            }
-          }
-          elem.className = styleClass.join(' ');
+          setDateCellStyle(date, end, start, elem);
         });
         oldSelection.start = start
         oldSelection.end = end
       }
+
+      function setDateCellStyle(date, end, start, elem) {
+        var styleClass = [dateStyles(date)];
+        if (date.equalsOnlyDate(end)) {
+          styleClass.push('selected rangeEnd');
+        } else {
+          if (date.equalsOnlyDate(start)) {
+            styleClass.push('selected rangeStart');
+          } else {
+            if (date.isBetweenDates(start, end)) {
+              styleClass.push('selected');
+            }
+          }
+        }
+        elem.className = styleClass.join(' ');
+      }
+
 
       function afterSelection() {
         var formattedStart = formatDate(selection.start);
