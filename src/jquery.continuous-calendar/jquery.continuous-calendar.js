@@ -43,12 +43,14 @@
       var averageCellHeight;
       var yearTitle;
       var selection;
+      var oldSelection = {start:0,end:0};
       var calendarRange;
       var status = Status.NONE;
       var calendar;
       var scrollContent;
       var beforeFirstOpening = true;
       var bodyTable;
+
       createCalendar();
       container.trigger('calendarChange');
       function createCalendar() {
@@ -196,19 +198,23 @@
         var tr = $('<tr>').append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek));
         for (var i = 0; i < 7; i++) {
           var date = firstDayOfWeek.plusDays(i);
-          var dateCell = $('<td>').addClass(dateStyles(date)).append(date.getDate());
-          dateCell.get(0).date = date;
-          if (date.isToday()) {
-            dateCell.addClass('today');
-          }
-          if (isRange()) {
-            dateCell.toggleClass('selected', selection.hasDate(date)).toggleClass('rangeStart', date.equalsOnlyDate(selection.start)).toggleClass('rangeEnd', date.equalsOnlyDate(selection.end));
-          } else {
-            dateCell.toggleClass('selected', date.equalsOnlyDate(startDate));
-          }
-          tr.append(dateCell);
+          tr.append(dateCell(date));
         }
         return tr;
+      }
+
+      function dateCell(date) {
+        var dateCell = $('<td>').addClass(dateStyles(date)).append(date.getDate());
+        dateCell.get(0).date = date;
+        if (date.isToday()) {
+          dateCell.addClass('today');
+        }
+        if (isRange()) {
+          dateCell.toggleClass('selected', selection.hasDate(date)).toggleClass('rangeStart', date.equalsOnlyDate(selection.start)).toggleClass('rangeEnd', date.equalsOnlyDate(selection.end));
+        } else {
+          dateCell.toggleClass('selected', date.equalsOnlyDate(startDate));
+        }
+        return dateCell;
       }
 
       function monthCell(firstDayOfWeek) {
@@ -332,6 +338,8 @@
       }
 
       function drawSelectionBetweenDates(start, end) {
+
+
         dateCells.each(function(i, elem) {
           var date = dateCellDates[i];
           var styleClass = [dateStyles(date)];
@@ -348,6 +356,8 @@
           }
           elem.className = styleClass.join(' ');
         });
+        oldSelection.start = start
+        oldSelection.end = end
       }
 
       function afterSelection() {
