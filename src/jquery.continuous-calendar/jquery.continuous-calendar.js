@@ -273,7 +273,6 @@
 
         if(isWeekOrMonth(elem)) {
           selection = weekOrMonthSelection(elem)
-          drawSelection();
           return
         }
         if (isDateCell(elem) && isEnabled(elem)) {
@@ -295,7 +294,6 @@
             if (selection.days() > 0) {
               status = Status.NONE;
               selection.expandTo(mouseDownDate);
-              drawSelection()
             }
             return
           }
@@ -338,7 +336,7 @@
 
       function mouseUp() {
         status = Status.NONE;
-        //drawSelection()
+        drawSelection()
         afterSelection();
       }
 
