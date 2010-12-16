@@ -250,7 +250,7 @@
       function initSingleDateCalendarEvents() {
         $('.date', container).live('click', function() {
           var dateCell = $(this);
-          if(dateCell.hasClass('disabled')) return;
+          if (dateCell.hasClass('disabled')) return;
           $('td.selected', container).removeClass('selected');
           dateCell.addClass('selected');
           var formattedDate = date(dateCell).dateFormat(params.locale.shortDateFormat);
@@ -271,11 +271,12 @@
       function mouseDown(event) {
         var elem = event.target;
 
-        if(isWeekOrMonth(elem)) {
-          selection = weekOrMonthSelection(elem)
+        if(isInstantSelection(event)) {
+          selection = instantSelection(event)
           return
         }
-        if (isDateCell(elem) && isEnabled(elem)) {
+
+        if (enabledCell(elem)) {
           status = Status.CREATE;
           mouseDownDate = elem.date;
           if (mouseDownDate.equalsOnlyDate(selection.end)) {
@@ -290,26 +291,28 @@
             status = Status.MOVE;
             return
           }
-          if (event.shiftKey) {
-            if (selection.days() > 0) {
-              status = Status.NONE;
-              selection.expandTo(mouseDownDate);
-            }
-            return
-          }
           startNewRange();
         }
-        function isWeekOrMonth(elem) { return isWeekCell(elem) || isMonthCell(elem) }
-        function weekOrMonthSelection(elem) {
+        function enabledCell(elem) { return isDateCell(elem) && isEnabled(elem); }
+        function isInstantSelection(event) { return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey }
+        function instantSelection(event) {
+          var elem = event.target
           if (isWeekCell(elem)) {
             status = Status.NONE;
             var dayInWeek = date($(elem).siblings('.date'));
             return new DateRange(dayInWeek, dayInWeek.plusDays(6));
-          } else {
+          } else if (isMonthCell(elem)) {
             status = Status.NONE;
             var dayInMonth = date($(elem).siblings('.date'));
             return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
+          } else if (event.shiftKey) {
+            if (selection.days() > 0 && enabledCell(elem)) {
+              status = Status.NONE;
+              selection.expandTo(elem.date);
+              return selection
+            }
           }
+          return selection
         }
       }
 
