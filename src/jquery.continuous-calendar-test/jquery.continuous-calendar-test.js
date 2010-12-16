@@ -390,7 +390,7 @@ function createBigCalendarForSingleDate() {
 }
 
 function createCalendarFromJanuary() {
-  createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
+  createCalendarFields({startDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
 }
 
 function clickOnDate(date) {
