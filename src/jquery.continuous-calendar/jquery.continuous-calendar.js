@@ -39,7 +39,6 @@
       var dateCells = [];
       var dateCellDates = [];
       var dateCellMap = {}
-      var moveStartDate = null;
       var mouseDownDate = null;
       var averageCellHeight;
       var yearTitle;
@@ -271,22 +270,15 @@
 
       function mouseDown(event) {
         var elem = event.target;
-        if (isWeekCell(elem)) {
-          status = Status.NONE;
-          var dayInWeek = date($(elem).siblings('.date'));
-          selection = new DateRange(dayInWeek, dayInWeek.plusDays(6));
-          return
-        }
-        if (isMonthCell(elem)) {
-          status = Status.NONE;
-          var dayInMonth = date($(elem).siblings('.date'));
-          selection = new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
+
+        if(isWeekOrMonth(elem)) {
+          selection = weekOrMonthSelection(elem)
+          drawSelection();
           return
         }
         if (isDateCell(elem) && isEnabled(elem)) {
           status = Status.CREATE;
           mouseDownDate = elem.date;
-
           if (mouseDownDate.equalsOnlyDate(selection.end)) {
             mouseDownDate = selection.start;
             return
@@ -297,15 +289,29 @@
           }
           if (selection.hasDate(mouseDownDate)) {
             status = Status.MOVE;
-            moveStartDate = mouseDownDate;
             return
           }
           if (event.shiftKey) {
-            status = Status.NONE;
-            selection.expandTo(mouseDownDate);
+            if (selection.days() > 0) {
+              status = Status.NONE;
+              selection.expandTo(mouseDownDate);
+              drawSelection()
+            }
             return
           }
           startNewRange();
+        }
+        function isWeekOrMonth(elem) { return isWeekCell(elem) || isMonthCell(elem) }
+        function weekOrMonthSelection(elem) {
+          if (isWeekCell(elem)) {
+            status = Status.NONE;
+            var dayInWeek = date($(elem).siblings('.date'));
+            return new DateRange(dayInWeek, dayInWeek.plusDays(6));
+          } else {
+            status = Status.NONE;
+            var dayInMonth = date($(elem).siblings('.date'));
+            return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth());
+          }
         }
       }
 
@@ -317,8 +323,8 @@
         if (isEnabled(event.target)) {
           switch (status) {
             case Status.MOVE:
-              var deltaDays = moveStartDate.distanceInDays(date);
-              moveStartDate = date;
+              var deltaDays = mouseDownDate.distanceInDays(date);
+              mouseDownDate = date;
               selection.shiftDays(deltaDays);
               selection = selection.and(calendarRange);
               break;
@@ -332,7 +338,7 @@
 
       function mouseUp() {
         status = Status.NONE;
-        drawSelection();
+        //drawSelection()
         afterSelection();
       }
 
