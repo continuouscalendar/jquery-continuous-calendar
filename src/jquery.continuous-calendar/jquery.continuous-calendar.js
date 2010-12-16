@@ -43,7 +43,7 @@
       var mouseDownDate = null;
       var averageCellHeight;
       var yearTitle;
-      var selection;
+      var selection = DateRange.emptyRange();
       var oldSelection;
       var calendarRange;
       var status = Status.NONE;
@@ -58,10 +58,8 @@
       function createCalendar() {
         if (startDate && endDate) {
           selection = new DateRange(startDate, endDate);
-        } else {
-          selection = DateRange.emptyRange();
         }
-        oldSelection = selection;
+        oldSelection = selection.clone()
         container.data('calendarRange', selection);
         var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7));
         var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6);
@@ -340,27 +338,23 @@
       }
 
       function drawSelection() {
-        drawSelectionBetweenDates(selection.start, selection.end);
+        drawSelectionBetweenDates(selection);
         container.find('span.rangeLengthLabel').text(Date.daysLabel(selection.days()));
       }
 
-      function drawSelectionBetweenDates(start, end) {
-        container.find('td.selected').removeClass('selected');
-        container.find('td.rangeStart').removeClass('rangeStart')
-        container.find('td.rangeEnd').removeClass('rangeEnd')
+      function drawSelectionBetweenDates(range) {
+        container.find('td.selected').removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd')
         //iterateAndToggleCells(oldSelection.start, oldSelection.end);
-        iterateAndToggleCells(start, end);
-        //container.find('.date').each(function(i, elem) {setDateCellStyle(i, start, end);});
-        oldSelection.start = start
-        oldSelection.end = end
+        iterateAndToggleCells(range);
+        oldSelection = range.clone();
       }
 
-      function iterateAndToggleCells(start, end) {
-        if(!start) return
-        var startIndex = dateCellMap[start.dateFormat('Ymd')]
-        var endIndex = dateCellMap[end.dateFormat('Ymd')]
+      function iterateAndToggleCells(range) {
+        if(range.days() == 0) return
+        var startIndex = dateCellMap[range.start.dateFormat('Ymd')]
+        var endIndex = dateCellMap[range.end.dateFormat('Ymd')]
         for (var i = startIndex; i <= endIndex; i++) {
-          setDateCellStyle(i, start, end);
+          setDateCellStyle(i, range.start, range.end);
         }
       }
 
@@ -381,7 +375,6 @@
         }
         elem.className = styleClass.join(' ');
       }
-
 
       function afterSelection() {
         var formattedStart = formatDate(selection.start);

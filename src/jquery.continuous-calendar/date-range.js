@@ -74,6 +74,9 @@ function DateRange(date1, date2) {
     date.setMilliseconds(0);
     return date;
   }
+  this.clone = function() {
+    return new DateRange(this.start, this.end);
+  }
 
   this.toString = function(locale) {
     if (hasTimes) {
@@ -91,6 +94,7 @@ DateRange.emptyRange = function() {
     this.days = function() {return 0;};
     this.shiftDays = function() {};
     this.hasDate = function() {return false;};
+    this.clone = function() {return DateRange.emptyRange()}
   }
 
   return new NullDateRange();
