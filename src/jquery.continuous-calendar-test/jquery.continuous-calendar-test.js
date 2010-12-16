@@ -238,7 +238,23 @@ test("range can be specified with weeks and dates mixed", function() {
 });
 
 //TODO fails with IE7
-test("calendar executes callback-function and triggers event when range is created or changed", function() {
+test("calendar executes callback-function and triggers event when date is picked", function() {
+  function testFunction(date) {
+    calendarCallBack++
+  }
+  bindCalled = 0
+  window.calendarCallBack = 0
+  createCalendarFields({startDate: ""}).continuousCalendar({firstDate:"4/26/2009", lastDate:"5/2/2009", callback:testFunction});
+  cal().bind('calendarChange', function() {
+    bindCalled++
+  });
+  clickOnDate(28)
+  equals(bindCalled, 1, 'bind');
+  equals(calendarCallBack, 2, 'callback');
+  //equals(window.calendarChanged, 2);
+});
+
+test("range calendar executes callback-function and triggers event when range is created or changed", function() {
   function testFunction(range) {
     window.calendarContainer = this;
     window.calendarCallBack = range.days();

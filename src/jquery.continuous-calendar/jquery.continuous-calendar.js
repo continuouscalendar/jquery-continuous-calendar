@@ -53,8 +53,6 @@
       var bodyTable;
 
       createCalendar();
-
-      container.trigger('calendarChange');
       function createCalendar() {
         if (startDate && endDate) {
           selection = new DateRange(startDate, endDate);
@@ -97,7 +95,7 @@
         yearTitle = headerTable.find('th.month');
         scrollContent.scroll(setYearLabel);
         scrollToSelection();
-        params.callback.call(container, selection);
+        executeCallback()
       }
 
       function highlightToday() {
@@ -262,6 +260,7 @@
           if (params.isPopup) {
             toggleCalendar.call(this);
           }
+          executeCallback();
         });
         setDateLabel(params.startField.val());
       }
@@ -383,8 +382,7 @@
         setStartField(formattedStart);
         setEndField(formattedEnd);
         setRangeLabels();
-        params.callback.call(container, selection);
-        container.trigger('calendarChange');
+        executeCallback();
       }
 
       function setRangeLabels() {
@@ -420,6 +418,11 @@
             });
           }
         }
+      }
+
+      function executeCallback() {
+        params.callback.call(container, selection);
+        container.trigger('calendarChange', selection);
       }
 
       function isDateCell(elem) {return $(elem).hasClass('date');}
