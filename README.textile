@@ -1,5 +1,3 @@
-!http://www.laughingpanda.org/~eeroan/calendar.png!
-
 Continuous calendar is a JQuery plugin for single date and range selections with following features:
 
 * Date dragging
