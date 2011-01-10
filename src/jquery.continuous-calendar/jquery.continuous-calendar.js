@@ -249,7 +249,7 @@
       function todayStyle(date) {return date.isToday() ? 'today' : '';}
 
       function initSingleDateCalendarEvents() {
-        $('.date', container).live('click', function() {
+        $('.date', container).bind('click', function() {
           var dateCell = $(this);
           if(dateCell.hasClass('disabled')) return;
           $('td.selected', container).removeClass('selected');
