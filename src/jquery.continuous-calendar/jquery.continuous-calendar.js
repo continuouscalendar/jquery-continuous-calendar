@@ -254,7 +254,7 @@
           if(dateCell.hasClass('disabled')) return;
           $('td.selected', container).removeClass('selected');
           dateCell.addClass('selected');
-          var formattedDate = date(dateCell).dateFormat(params.locale.shortDateFormat);
+          var formattedDate = date(dateCell).dateFormat(params.locale.weekDateFormat);
           params.startField.val(formattedDate);
           setDateLabel(formattedDate);
           if (params.isPopup) {

@@ -131,8 +131,8 @@ test("highlights and selects clicked day", function() {
   createCalendarWithOneWeek();
   cal().find(".date:eq(1)").click();
   equals(cal().find(".selected").text(), "28");
-  equals(startFieldValue(), "4/28/2008");
-  equals(startLabelValue(), "4/28/2008");
+  equals(startFieldValue(), "Mon 4/28/2008");
+  equals(startLabelValue(), "Mon 4/28/2008");
 });
 
 test("week number click selects whole week", function () {
@@ -326,10 +326,11 @@ test("when selecting date", function() {
   var previous = cal(1)
   createPopupCalendar()
   cal().find(".calendarIcon").click()
-  ok(cal().find('.continuousCalendar:visible').exists(), "calendar is shown")
+  ok(cal().find('.continuousCalendar:visible').exists(), "calendar is shown when icon is clicked")
   cal().find(".date:first").click();
-  ok(!cal().find('.continuousCalendar:visible').exists(), "calendar is closed")
+  ok(!cal().find('.continuousCalendar:visible').exists(), "calendar is closed when date is selected")
   ok(previous.find('.continuousCalendar:visible').exists(), "only selected calendar is closed")
+  equals(startLabelValue(), "Sun 10/26/2008", "selected date is shown correctly");
 })
 
 QUnit.done = function() {
