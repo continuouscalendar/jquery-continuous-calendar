@@ -330,7 +330,8 @@ test("when selecting date", function() {
   cal().find(".date:first").click();
   ok(!cal().find('.continuousCalendar:visible').exists(), "calendar is closed when date is selected")
   ok(previous.find('.continuousCalendar:visible').exists(), "only selected calendar is closed")
-  equals(startLabelValue(), "Sun 10/26/2008", "selected date is shown correctly");
+  equals(startLabelValue(), "Sun 10/26/2008", "selected date is shown correctly with day of week");
+  equals(startFieldValue(), "10/26/2008", "selected date is set correctly to hidden field without day of week");
 })
 
 QUnit.done = function() {

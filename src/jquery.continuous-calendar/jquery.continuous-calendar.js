@@ -254,9 +254,8 @@
           if(dateCell.hasClass('disabled')) return;
           $('td.selected', container).removeClass('selected');
           dateCell.addClass('selected');
-          var formattedDate = date(dateCell).dateFormat(params.locale.weekDateFormat);
-          params.startField.val(formattedDate);
-          setDateLabel(formattedDate);
+          params.startField.val(date(dateCell).dateFormat(params.locale.shortDateFormat));
+          setDateLabel(date(dateCell).dateFormat(params.locale.weekDateFormat));
           if (params.isPopup) {
             toggleCalendar.call(this);
           }
@@ -264,11 +263,7 @@
         });
 
         if (params.startField.val()) {
-          var parsed = Date.parseDate(params.startField.val(), params.locale.shortDateFormat);
-          var formatted = params.startField.val() ? parsed.dateFormat(params.locale.weekDateFormat) : "";
-          setDateLabel(formatted);
-        } else {
-          setDateLabel(params.startField.val());
+          setDateLabel(Date.parseDate(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat));
         }
       }
 
