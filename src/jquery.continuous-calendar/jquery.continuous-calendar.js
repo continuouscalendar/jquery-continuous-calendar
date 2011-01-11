@@ -262,7 +262,14 @@
           }
           executeCallback();
         });
-        setDateLabel(params.startField.val());
+
+        if (params.startField.val()) {
+          var parsed = Date.parseDate(params.startField.val(), params.locale.shortDateFormat);
+          var formatted = params.startField.val() ? parsed.dateFormat(params.locale.weekDateFormat) : "";
+          setDateLabel(formatted);
+        } else {
+          setDateLabel(params.startField.val());
+        }
       }
 
       function startNewRange() {

@@ -315,18 +315,18 @@ module("pop-up calendar", {
   setup: createCalendarContainer
 })
 
-test("calendar pops up on click", function() {
+test("", function() {
   createPopupCalendar()
-  ok(!cal().find('.continuousCalendar:visible').exists())
+  ok(!cal().find('.continuousCalendar:visible').exists(), "pop-up calendar is not initially shown")
+  equals(startLabelValue(), "Wed 4/29/2009", "Initially selected date is shown correctly");
   cal().find(".calendarIcon").click()
-  ok(cal().find('.continuousCalendar:visible').exists())
+  ok(cal().find('.continuousCalendar:visible').exists(), "calendar pops up on click")
 })
 
 test("when selecting date", function() {
   var previous = cal(1)
   createPopupCalendar()
   cal().find(".calendarIcon").click()
-  ok(cal().find('.continuousCalendar:visible').exists(), "calendar is shown when icon is clicked")
   cal().find(".date:first").click();
   ok(!cal().find('.continuousCalendar:visible').exists(), "calendar is closed when date is selected")
   ok(previous.find('.continuousCalendar:visible').exists(), "only selected calendar is closed")
