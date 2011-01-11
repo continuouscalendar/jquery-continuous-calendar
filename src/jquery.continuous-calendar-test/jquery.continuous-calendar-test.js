@@ -131,7 +131,7 @@ test("highlights and selects clicked day", function() {
   createCalendarWithOneWeek();
   cal().find(".date:eq(1)").click();
   equals(cal().find(".selected").text(), "28");
-  equals(startFieldValue(), "Mon 4/28/2008");
+  equals(startFieldValue(), "4/28/2008");
   equals(startLabelValue(), "Mon 4/28/2008");
 });
 
