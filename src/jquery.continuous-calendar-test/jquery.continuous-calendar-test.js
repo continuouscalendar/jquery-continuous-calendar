@@ -111,7 +111,7 @@ module("calendar range selection", {
   setup: createCalendarContainer
 });
 
-test("higlights selected date range with move handles in first and last data", function() {
+test("highlights selected date range with move handles in first and last data", function() {
   createRangeCalendarWithFiveWeeks();
   equals(cal().find(".selected").size(), 7);
   equals(cal().find(".rangeLengthLabel").text(), "7 Days");
@@ -132,7 +132,7 @@ test("highlights and selects clicked day", function() {
   cal().find(".date:eq(1)").click();
   equals(cal().find(".selected").text(), "28");
   equals(startFieldValue(), "4/28/2008");
-  equals(startLabelValue(), "4/28/2008");
+  equals(startLabelValue(), "Mon 4/28/2008");
 });
 
 test("week number click selects whole week", function () {
@@ -311,6 +311,29 @@ test("forward drag after one day selection expands selection", function() {
   assertHasValues('.selected', [17,18,19]);
 });
 
+module("pop-up calendar", {
+  setup: createCalendarContainer
+})
+
+test("", function() {
+  createPopupCalendar()
+  ok(!cal().find('.continuousCalendar:visible').exists(), "pop-up calendar is not initially shown")
+  equals(startLabelValue(), "Wed 4/29/2009", "Initially selected date is shown correctly");
+  cal().find(".calendarIcon").click()
+  ok(cal().find('.continuousCalendar:visible').exists(), "calendar pops up on click")
+})
+
+test("when selecting date", function() {
+  var previous = cal(1)
+  createPopupCalendar()
+  cal().find(".calendarIcon").click()
+  cal().find(".date:first").click();
+  ok(!cal().find('.continuousCalendar:visible').exists(), "calendar is closed when date is selected")
+  ok(previous.find('.continuousCalendar:visible').exists(), "only selected calendar is closed")
+  equals(startLabelValue(), "Sun 10/26/2008", "selected date is shown correctly with day of week");
+  equals(startFieldValue(), "10/26/2008", "selected date is set correctly to hidden field without day of week");
+})
+
 QUnit.done = function() {
   $('#tests').show();
 };
@@ -335,8 +358,8 @@ function createCalendarContainer() {
   $("#calendars").append(container);
 }
 
-function cal() {
-  return $("#" + calendarId());
+function cal(delta) {
+  return $("#" + calendarId(delta));
 }
 
 function createCalendarFields(params) {
@@ -409,6 +432,10 @@ function createCalendarFromJanuary() {
   createCalendarFields({startDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"});
 }
 
+function createPopupCalendar() {
+  createCalendarFields({startDate: "4/29/2009"}).continuousCalendar({isPopup: true});
+}
+
 function clickOnDate(date) {
   cal().find(".date:contains(" + date + ")").click();
 }
@@ -424,7 +451,7 @@ function mouseUpOnDay(date, options) {
   mouseEventOnDay("mouseover", date, options);
   mouseEventOnDay("mouseup", date, options);
 }
-function calendarId() {return "continuousCalendar" + testIndex;}
+function calendarId(delta) {return "continuousCalendar" + (testIndex - (delta || 0));}
 function startFieldValue() {return cal().find("input.startDate").val();}
 function startLabelValue() {return cal().find("span.startDateLabel").text();}
 function endFieldValue() {return cal().find("input.endDate").val();}

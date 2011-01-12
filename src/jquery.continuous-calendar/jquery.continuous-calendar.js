@@ -253,15 +253,17 @@
           if (dateCell.hasClass('disabled')) return;
           $('td.selected', container).removeClass('selected');
           dateCell.addClass('selected');
-          var formattedDate = date(dateCell).dateFormat(params.locale.shortDateFormat);
-          params.startField.val(formattedDate);
-          setDateLabel(formattedDate);
+          params.startField.val(date(dateCell).dateFormat(params.locale.shortDateFormat));
+          setDateLabel(date(dateCell).dateFormat(params.locale.weekDateFormat));
           if (params.isPopup) {
             toggleCalendar.call(this);
           }
           executeCallback();
         });
-        setDateLabel(params.startField.val());
+
+        if (params.startField.val()) {
+          setDateLabel(Date.parseDate(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat));
+        }
       }
 
       function startNewRange() {
