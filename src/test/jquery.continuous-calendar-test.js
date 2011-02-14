@@ -168,7 +168,7 @@ test("mouse click and drag highlights range and updates fields", function() {
 });
 
 test("mouse click and drag works with no initial selection", function() {
-  createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({weeksBefore:3,weeksAfter:3});
+  createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009",lastDate:"2/1/2009"});
   dragDates(22, 23);
   equals(cal().find(".selected").size(), 2);
   equals(cal().find(".rangeLengthLabel").text(), "2 Days");
