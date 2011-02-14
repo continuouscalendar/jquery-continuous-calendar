@@ -13,11 +13,11 @@ Continuous calendar is a JQuery plugin for single date and range selections with
 
 h1. Live demo
 
-"examples":http://eeroan.github.com/jquery-continuous-calendar/src/example.html
+"examples":http://reaktor.github.com/jquery-continuous-calendar/src/example.html
 
 h1. QUnit tests
 
-"tests":http://eeroan.github.com/jquery-continuous-calendar/src/jquery.continuous-calendar-test/jquery.continuous-calendar-test.html
+"tests":http://reaktor.github.com/jquery-continuous-calendar/src/test/jquery.continuous-calendar-test.html
 
 h1. Getting started
 
@@ -25,7 +25,7 @@ h2. Insert in head
 
 <pre>
 <!-- basic default calendar styles -->
-<link rel="stylesheet" href="http://eeroan.github.com/jquery-continuous-calendar/src/continuous-calendar/jquery.continuous-calendar.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://reaktor.github.com/jquery-continuous-calendar/src/main/jquery.continuous-calendar.css" type="text/css" media="screen" />
 
 <!-- custom user specified calendar styles -->
 <style type="text/css">
@@ -38,9 +38,9 @@ h2. Insert in head
 <script type="text/javascript" 
 src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript" 
-src="http://eeroan.github.com/jquery-continuous-calendar/src/jquery.continuous-calendar/date-functions.js"></script>
+src="http://reaktor.github.com/jquery-continuous-calendar/src/main/date-functions.js"></script>
 <script type="text/javascript" 
-src="http://eeroan.github.com/jquery-continuous-calendar/src/jquery.continuous-calendar/jquery.continuous-calendar.js" charset="UTF-8"></script>
+src="http://reaktor.github.com/jquery-continuous-calendar/src/main/jquery.continuous-calendar.js" charset="UTF-8"></script>
 </pre>
 
 h2. Insert in body
