@@ -19,6 +19,10 @@ h1. QUnit tests
 
 "tests":http://reaktor.github.com/jquery-continuous-calendar/src/test/jquery.continuous-calendar-test.html
 
+h1. Download zip
+
+"Latest revision":http://github.com/reaktor/jquery-continuous-calendar/zipball/master
+
 h1. Getting started
 
 h2. Insert in head
