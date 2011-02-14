@@ -8,6 +8,8 @@
       var defaults = {
         weeksBefore: 26,
         weeksAfter: 26,
+        firstDate: null,
+        lastDate: null,
         startField: this.find('input.startDate'),
         endField: this.find('input.endDate'),
         isPopup: false,
@@ -58,8 +60,8 @@
         }
         oldSelection = selection.clone()
         container.data('calendarRange', selection);
-        var rangeStart = 'firstDate' in params ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7));
-        var rangeEnd = 'lastDate' in params ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6);
+        var rangeStart = params.firstDate ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7));
+        var rangeEnd = params.lastDate ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6);
         calendarRange = new DateRange(rangeStart, rangeEnd);
         var headerTable = $('<table>').addClass('calendarHeader').append(headerRow());
         bodyTable = $('<table>').addClass('calendarBody').append(calendarBody());
