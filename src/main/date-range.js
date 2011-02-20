@@ -46,6 +46,11 @@ function DateRange(date1, date2) {
       }
     }
   }
+
+  this.expandDaysTo = function(days) {
+    this.end = this.start.plusDays(days-1)
+  }
+
   this.and = function(that) {
     var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start
     var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end
