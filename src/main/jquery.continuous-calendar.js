@@ -31,6 +31,7 @@
         selectToday: false,
         locale: DATE_LOCALE_EN,
         disableWeekends: false,
+        minimumRange:-1,
         callback: function() {
         }
       }
@@ -379,6 +380,9 @@
       }
 
       function drawSelection() {
+        if(options.minimumRange && selection.days() <= options.minimumRange) {
+          selection.expandDaysTo(options.minimumRange)
+        }
         drawSelectionBetweenDates(selection)
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
       }
