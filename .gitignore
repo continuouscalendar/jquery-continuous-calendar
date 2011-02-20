@@ -2,7 +2,6 @@
 
 # IDEA Project files
 
-*.iml
 *.ipr
 *.iws
 .idea/workspace.xml
