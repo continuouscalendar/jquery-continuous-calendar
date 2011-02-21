@@ -4,7 +4,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Examples of using continuous calendar</title>
+  <title>Custom calendar</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <link rel="stylesheet" href="main/jquery.continuous-calendar.css" type="text/css" media="all"/>
   <style type="text/css" media="all">
@@ -28,13 +28,13 @@
 
     #timeCalendar .dateLabels div {
       clear: both;
-      margin: 1em;
     }
 
     #timeCalendar .dateLabels div strong {
       float: left;
       display: block;
-      width: 5em;
+      width: 200px;
+      font-weight:normal;
     }
 
     #timeCalendar .dateLabels div span {
@@ -55,41 +55,41 @@
     #range1 .continuousCalendar, #singleDate3 .continuousCalendar {
       top: 15pt;
     }
-
-    .dateLabels {
-      float: left;
+    .dateLabels {margin-bottom:10px;overflow:hidden;}
+    .dateLabels div{
+      margin-bottom:5px;
+      overflow:hidden;
     }
     .continuousCalendar td.rangeStart {background:#0a0}
     .continuousCalendar td.rangeEnd {background:#a00}
+    .startDateLabel{color:#0a0;}
+    .endDateLabel{color:#a00}
   </style>
 </head>
 <body>
-<h1>Examples of using continuous calendar</h1>
 
 <form action="../" method="get">
-  <h2>Single date select (two times)</h2>
-
   <div id="timeCalendar">
     <input type="hidden" class="startDate" name="tripStartDate"/>
     <input type="hidden" class="endDate" name="tripEndDate"/>
 
-    <h3>Select Days</h3>
-
-    <div class="continuousCalendar"></div>
     <div class="dateLabels">
+      <h3>Rental Period</h3>
       <div>
-        <strong>Starts</strong>
+        <strong>I want the gear to arrive</strong>
         <span class="startDateLabel"></span>
       </div>
       <div>
-        <strong>Ends</strong>
-        <span class="endDateLabel"></span>
-      </div>
-      <div>
-        <strong>Duration</strong>
+        <strong>I want to use it for</strong>
         <span class="rangeLengthLabel"></span>
       </div>
+      <div>
+        <strong>I will ship it back on</strong>
+        <span class="endDateLabel"></span>
+      </div>
     </div>
+    <div class="continuousCalendar"></div>
+    
   </div>
 </form>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" charset="UTF-8"></script>
@@ -98,7 +98,7 @@
 <script type="text/javascript" src="main/date-range.js" charset="UTF-8"></script>
 <script type="text/javascript" src="main/jquery.continuous-calendar.js" charset="UTF-8"></script>
 <script type="text/javascript" language="JavaScript">
-  $("#timeCalendar").continuousCalendar({firstDate: "today",weeksAfter: 30, selectToday: true, minimumRange: 4});
+  $("#timeCalendar").continuousCalendar({firstDate: "today",weeksAfter: 30, selectToday: true, minimumRange: 4,disableWeekends:true});
 </script>
 </body>
 </html>
