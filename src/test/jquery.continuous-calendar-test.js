@@ -472,7 +472,7 @@ $.fn.callEvent = function(eventType, eventObj) {
   return this.each(function() {
     var eventFunctions = $(this).data('events')[eventType];
     for (var i in eventFunctions) {
-      eventFunctions[i].call($(this), eventObj);
+      eventFunctions[i].handler.call($(this), eventObj);
     }
   });
 };
