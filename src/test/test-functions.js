@@ -15,36 +15,36 @@ function click(selector) {
   $(selector).click();
 }
 function setText(selector, value) {
-  $(selector).val(value).keyup();
+  $(selector).val(value).keyup()
 }
 function value(selector) {
-  var elem = $(selector);
+  var elem = $(selector)
   if (elem.is("input")) {
-    return elem.val();
+    return elem.val()
   } else {
-    return elem.text();
+    return elem.text()
   }
 }
 function assertEmpty(selector) {
-  ok($(selector).length == 0, selector + " should be empty");
+  ok($(selector).length == 0, selector + " should be empty")
 }
 function assertNotEmpty(selector) {
-  ok($(selector).length > 0, selector + " should not be empty");
+  ok($(selector).length > 0, selector + " should not be empty")
 }
 function resetTextInputs() {
-  setText("input:text", "");
+  setText("input:text", "")
 }
 
 $.fn.withText = function(text) {
   return this.filter(function() {
-    return $(this).text() == text.toString();
-  });
-};
+    return $(this).text() == text.toString()
+  })
+}
 
 function assertHasValues(selector, expectedArray) {
   same($.map(cal().find(selector), function (elem) {
-    return $(elem).text();
+    return $(elem).text()
   }), $.map(expectedArray, function(i) {
-    return i.toString();
-  }));
+    return i.toString()
+  }))
 }
