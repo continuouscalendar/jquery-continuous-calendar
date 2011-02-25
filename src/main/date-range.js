@@ -62,6 +62,11 @@ function DateRange(date1, date2) {
       return DateRange.emptyRange()
     }
   }
+
+  this.hasEndsOnWorkingDays = function() {
+    return !(this.start.isWeekend() || this.end.isWeekend())
+  }
+
   this.setTimes = function(startTimeStr, endTimeStr) {
     var parsedStartTime = Date.parseTime(startTimeStr)
     var parsedEndTime = Date.parseTime(endTimeStr)
