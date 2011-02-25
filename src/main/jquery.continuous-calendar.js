@@ -89,10 +89,10 @@
         } else {
           calculateCellHeightAndSetScroll();
         }
-        if (container.find('.startDateLabel').isEmpty()) {
+        if ($('.startDateLabel', container).isEmpty()) {
           addDateLabels(container);
         }
-        if (container.find('.rangeLengthLabel').isEmpty() && isRange()) {
+        if ($('.rangeLengthLabel',container).isEmpty() && isRange()) {
           addRangeLengthLabel(container);
         }
         highlightToday();
@@ -106,7 +106,7 @@
             dateCells[dateCellMap[selectedDateKey]].addClass('selected')
           }
         }
-        yearTitle = headerTable.find('th.month');
+        yearTitle = $('th.month', headerTable);
         scrollContent.scroll(setYearLabel);
         scrollToSelection();
         executeCallback()
@@ -120,7 +120,7 @@
       }
 
       function getCalendarContainerOrCreateOne() {
-        var existingContainer = container.find('.continuousCalendar');
+        var existingContainer = $('.continuousCalendar', container);
         if (existingContainer.exists()) {
           return existingContainer;
         } else {
@@ -143,11 +143,11 @@
       function addRangeLengthLabel(container) {
         var rangeLengthContainer = $('<div class="label">');
         rangeLengthContainer.append('<span class="rangeLengthLabel"></span>');
-        container.find('.continuousCalendar').append(rangeLengthContainer);
+        $('.continuousCalendar', container).append(rangeLengthContainer);
       }
 
       function initRangeCalendarEvents(container, bodyTable) {
-        container.find('span.rangeLengthLabel').text(Date.daysLabel(selection.days()));
+        $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()));
         bodyTable.addClass('range');
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp);
         disableTextSelection(bodyTable.get(0));
@@ -155,7 +155,7 @@
       }
 
       function scrollToSelection() {
-        var selectionStartOrToday = scrollContent.find('.selected, .today').get(0);
+        var selectionStartOrToday = $('.selected, .today', scrollContent).get(0);
         if (selectionStartOrToday) {
           scrollContent.scrollTop(selectionStartOrToday.offsetTop - (scrollContent.height() - selectionStartOrToday.offsetHeight) / 2);
         }
@@ -163,7 +163,7 @@
 
       function setYearLabel() {
         var scrollContent = this;
-        var table = $(scrollContent).find('table').get(0);
+        var table = $('table', scrollContent).get(0);
         var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight);
         var date = table.rows[rowNumber].cells[2].date;
         yearTitle.text(date.getFullYear());
@@ -178,7 +178,7 @@
         });
         if (params.isPopup) {
           var close = $('<th><a href="#"><span>close</span></a>');
-          close.find('a').click(toggleCalendar);
+          $('a', close).click(toggleCalendar);
           tr.append(close);
         }
         return $('<thead>').append(tr);
@@ -193,7 +193,7 @@
       }
 
       function calculateCellHeight() {
-        averageCellHeight = parseInt(bodyTable.height() / bodyTable.find('tr').size());
+        averageCellHeight = parseInt(bodyTable.height() / $('tr', bodyTable).size());
       }
 
       function toggleCalendar() {
@@ -362,11 +362,11 @@
 
       function drawSelection() {
         drawSelectionBetweenDates(selection);
-        container.find('span.rangeLengthLabel').text(Date.daysLabel(selection.days()));
+        $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()));
       }
 
       function drawSelectionBetweenDates(range) {
-        container.find('td.selected').removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd')
+        $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd')
         //iterateAndToggleCells(oldSelection.start, oldSelection.end);
         iterateAndToggleCells(range);
         oldSelection = range.clone();
@@ -412,11 +412,11 @@
       function setRangeLabels() {
         if (selection.start && selection.end) {
           var format = params.locale.weekDateFormat;
-          container.find('span.startDateLabel').text(selection.start.dateFormat(format));
-          container.find('span.endDateLabel').text(selection.end.dateFormat(format));
-          container.find('span.separator').show();
+          $('span.startDateLabel', container).text(selection.start.dateFormat(format));
+          $('span.endDateLabel', container).text(selection.end.dateFormat(format));
+          $('span.separator', container).show();
         } else {
-          container.find('span.separator').hide();
+          $('span.separator', container).hide();
         }
       }
 
@@ -465,7 +465,7 @@
 
       function formatDate(date) {return date.dateFormat(params.locale.shortDateFormat);}
 
-      function setDateLabel(val) {container.find('span.startDateLabel').text(val);}
+      function setDateLabel(val) {$('span.startDateLabel', container).text(val);}
 
       function isRange() {return params.endField && params.endField.length > 0;}
     }
