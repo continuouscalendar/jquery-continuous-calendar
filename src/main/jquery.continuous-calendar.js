@@ -380,8 +380,8 @@
       }
 
       function drawSelection() {
-        if(options.minimumRange && selection.days() <= options.minimumRange) {
-          selection.expandDaysTo(options.minimumRange)
+        if(params.minimumRange && selection.days() <= params.minimumRange) {
+          selection.expandDaysTo(parms.minimumRange)
         }
         drawSelectionBetweenDates(selection)
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))

@@ -227,7 +227,7 @@ test("range is expandable by clicking with shift key", function() {
   //4/15/2009",lastDate:"5/12/2009
 })
 
-test("range has default of on year per direction", function() {
+test("range has default of one year per direction", function() {
   createCalendarFields({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar()
   equals(cal().find(".date").size(), 7 * (26 * 2 + 1))
 })
