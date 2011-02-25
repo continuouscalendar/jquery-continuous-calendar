@@ -18,6 +18,8 @@
     })
     return this
     function _continuousCalendar(options) {
+      $(this).addClass('continuousCalendarContainer')
+
       var defaults = {
         weeksBefore: 26,
         weeksAfter: 26,
