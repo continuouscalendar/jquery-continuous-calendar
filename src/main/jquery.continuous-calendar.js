@@ -92,7 +92,7 @@
         if ($('.startDateLabel', container).isEmpty()) {
           addDateLabels(container);
         }
-        if ($('.rangeLengthLabel',container).isEmpty() && isRange()) {
+        if ($('.rangeLengthLabel', container).isEmpty() && isRange()) {
           addRangeLengthLabel(container);
         }
         highlightToday();
@@ -250,17 +250,23 @@
         return $('<th>').addClass('week').addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear('ISO'));
       }
 
-      function dateStyles(date) {return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date)].sort().join(' '));}
+      function dateStyles(date) {
+        return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date)].sort().join(' '));
+      }
 
-      function backgroundBy(date) {return date.isOddMonth() ? 'odd' : '';}
+      function backgroundBy(date) {
+        return date.isOddMonth() ? 'odd' : '';
+      }
 
       function disabledOrNot(date) {
         var disabledWeekendDay = params.disableWeekends && date.isWeekend();
         var outOfBounds = !calendarRange.hasDate(date);
-        return outOfBounds || disabledWeekendDay ? 'disabled': '';
+        return outOfBounds || disabledWeekendDay ? 'disabled' : '';
       }
 
-      function todayStyle(date) {return date.isToday() ? 'today' : '';}
+      function todayStyle(date) {
+        return date.isToday() ? 'today' : '';
+      }
 
       function initSingleDateCalendarEvents() {
         $('.date', container).bind('click', function() {
@@ -288,7 +294,7 @@
       function mouseDown(event) {
         var elem = event.target;
 
-        if(isInstantSelection(event)) {
+        if (isInstantSelection(event)) {
           selection = instantSelection(event)
           return
         }
@@ -310,8 +316,14 @@
           }
           startNewRange();
         }
-        function enabledCell(elem) { return isDateCell(elem) && isEnabled(elem); }
-        function isInstantSelection(event) { return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey }
+        function enabledCell(elem) {
+          return isDateCell(elem) && isEnabled(elem);
+        }
+
+        function isInstantSelection(event) {
+          return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey
+        }
+
         function instantSelection(event) {
           var elem = event.target
           if (isWeekCell(elem)) {
@@ -373,7 +385,7 @@
       }
 
       function iterateAndToggleCells(range) {
-        if(range.days() == 0) return
+        if (range.days() == 0) return
         var startIndex = dateCellMap[range.start.dateFormat('Ymd')]
         var endIndex = dateCellMap[range.end.dateFormat('Ymd')]
         for (var i = startIndex; i <= endIndex; i++) {
@@ -449,25 +461,45 @@
         container.trigger('calendarChange', selection);
       }
 
-      function isDateCell(elem) {return $(elem).hasClass('date');}
+      function isDateCell(elem) {
+        return $(elem).hasClass('date');
+      }
 
-      function isWeekCell(elem) {return $(elem).hasClass('week');}
+      function isWeekCell(elem) {
+        return $(elem).hasClass('week');
+      }
 
-      function isMonthCell(elem) {return $(elem).hasClass('month');}
+      function isMonthCell(elem) {
+        return $(elem).hasClass('month');
+      }
 
-      function isEnabled(elem) {return !$(elem).hasClass('disabled');}
+      function isEnabled(elem) {
+        return !$(elem).hasClass('disabled');
+      }
 
-      function date(elem) {return elem.get(0).date;}
+      function date(elem) {
+        return elem.get(0).date;
+      }
 
-      function setStartField(value) {params.startField.val(value);}
+      function setStartField(value) {
+        params.startField.val(value);
+      }
 
-      function setEndField(value) {params.endField.val(value);}
+      function setEndField(value) {
+        params.endField.val(value);
+      }
 
-      function formatDate(date) {return date.dateFormat(params.locale.shortDateFormat);}
+      function formatDate(date) {
+        return date.dateFormat(params.locale.shortDateFormat);
+      }
 
-      function setDateLabel(val) {$('span.startDateLabel', container).text(val);}
+      function setDateLabel(val) {
+        $('span.startDateLabel', container).text(val);
+      }
 
-      function isRange() {return params.endField && params.endField.length > 0;}
+      function isRange() {
+        return params.endField && params.endField.length > 0;
+      }
     }
   };
   $.fn.calendarRange = function() {
