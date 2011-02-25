@@ -34,17 +34,19 @@ function DateRange(date1, date2) {
     }
   }
   this.shiftDays = function(days) {
-    this.start = this.start.plusDays(days)
-    this.end = this.end.plusDays(days)
+    return new DateRange(this.start.plusDays(days), this.end.plusDays(days))
   }
   this.expandTo = function(date) {
+    var newStart = this.start.clone()
+    var newEnd = this.end.clone()
     if (date.compareTo(this.start) < 0) {
-      this.start = date
+      newStart = date
     } else {
       if (date.compareTo(this.end) > 0) {
-        this.end = date
+        newEnd = date
       }
     }
+    return new DateRange(newStart, newEnd)
   }
 
   this.expandDaysTo = function(days) {

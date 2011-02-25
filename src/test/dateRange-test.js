@@ -32,13 +32,13 @@ test("creates dange of three days", function() {
 })
 
 test("range is movable", function() {
-  range.shiftDays(2)
+  range = range.shiftDays(2)
   equals(range.start.getDate(), 12)
   equals(range.end.getDate(), 12 + 2)
 })
 
 test("range is expandable", function() {
-  range.expandTo(new Date('09/15/2009'))
+  range = range.expandTo(new Date('09/15/2009'))
   equals(range.days(), 6)
 })
 
