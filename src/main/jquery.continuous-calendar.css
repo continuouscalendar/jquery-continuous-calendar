@@ -19,7 +19,10 @@
 
 .continuousCalendar {
   clear: both;
-  background: white;
+}
+
+.continuousCalendarContainer {
+  position:relative;
 }
 
 .continuousCalendarContainer a.calendarIcon {
