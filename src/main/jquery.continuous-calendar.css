@@ -22,7 +22,7 @@
   background: white;
 }
 
-a.calendarIcon {
+.continuousCalendarContainer a.calendarIcon {
   font-size: 7pt;
   color: #000;
   text-decoration: none;
@@ -34,7 +34,7 @@ a.calendarIcon {
   padding: 0 3px;
 }
 
-.popup {
+.continuousCalendarContainer .popup {
   position: absolute;
   z-index: 99;
 }
@@ -57,7 +57,7 @@ a.calendarIcon {
   width: 202px;
 }
 
-.popup .calendarHeader {
+.continuousCalendarContainer .popup .calendarHeader {
   width: 220px;
 }
 
@@ -167,8 +167,8 @@ a.calendarIcon {
   cursor: ew-resize;
 }
 
-input.endDate,
-input.startDate {
+.continuousCalendarContainer input.endDate,
+.continuousCalendarContainer input.startDate {
   display: none;
 }
 
@@ -176,7 +176,7 @@ input.startDate {
   color: gray;
 }
 
-div.label {
+.continuousCalendarContainer div.label {
   height: 1em;
   margin-left: 5pt;
   margin-bottom: 2pt;
@@ -184,6 +184,6 @@ div.label {
 
 }
 
-div.label span {
+.continuousCalendarContainer div.label span {
   font-size: 10pt;
 }
