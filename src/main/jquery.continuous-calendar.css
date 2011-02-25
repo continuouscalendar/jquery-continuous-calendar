@@ -22,16 +22,16 @@
   background: white;
 }
 
-a.calendarIcon span {
-  display: none;
-}
-
 a.calendarIcon {
+  font-size: 7pt;
+  color: #000;
+  text-decoration: none;
   display: block;
-  background: url("calendar.gif") no-repeat 0 0;
-  width: 16px;
-  height: 16px;
+  background: #eee;
+  border: 1px solid #666;
+  border-top: 4px solid #a00;
   float: left;
+  padding: 0 3px;
 }
 
 .popup {

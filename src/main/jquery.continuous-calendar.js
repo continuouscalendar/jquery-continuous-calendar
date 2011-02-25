@@ -84,7 +84,7 @@
         if (params.isPopup) {
           isHidden = true
           calendar.addClass('popup').hide()
-          var icon = $('<a href="#" class="calendarIcon"><span>calendar</span></a>').click(toggleCalendar)
+          var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
           container.append(icon)
         } else {
           calculateCellHeightAndSetScroll()
