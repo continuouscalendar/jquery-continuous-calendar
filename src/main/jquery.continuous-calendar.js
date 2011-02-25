@@ -209,15 +209,17 @@
       function calendarBody() {
         var tbody = $('<tbody>')
         var firstWeekDay = calendarRange.start.getFirstDateOfWeek(params.locale.firstWeekday)
+        var isFirst = true;
         while (firstWeekDay.compareTo(calendarRange.end) <= 0) {
-          tbody.append(calendarRow(firstWeekDay.clone()))
+          tbody.append(calendarRow(firstWeekDay.clone(), isFirst))
+          isFirst = false
           firstWeekDay = firstWeekDay.plusDays(7)
         }
         return tbody
       }
 
-      function calendarRow(firstDayOfWeek) {
-        var tr = $('<tr>').append(monthCell(firstDayOfWeek)).append(weekCell(firstDayOfWeek))
+      function calendarRow(firstDayOfWeek, isFirst) {
+        var tr = $('<tr>').append(monthCell(firstDayOfWeek, isFirst)).append(weekCell(firstDayOfWeek))
         for (var i = 0; i < 7; i++) {
           var date = firstDayOfWeek.plusDays(i)
           tr.append(dateCell(date))
@@ -234,9 +236,9 @@
         return dateCell
       }
 
-      function monthCell(firstDayOfWeek) {
+      function monthCell(firstDayOfWeek, isFirst) {
         var th = $('<th>').addClass('month').addClass(backgroundBy(firstDayOfWeek))
-        if (firstDayOfWeek.getDate() <= 7) {
+        if (isFirst || firstDayOfWeek.getDate() <= 7) {
           th.append(Date.monthNames[firstDayOfWeek.getMonth()]).addClass('monthName')
         } else {
           if (firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 0) {

@@ -31,7 +31,7 @@ test("shows week days", function() {
 })
 
 test("shows months", function() {
-  assertHasValues(".monthName", Date.monthNames)
+  assertHasValues(".monthName", [Date.monthNames[11]].concat(Date.monthNames))
 })
 
 test("shows month name on first row of full week", function() {
@@ -292,6 +292,7 @@ test("month and day names are localizable", function() {
   createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1.1.2009", lastDate:"31.12.2009", locale: DATE_LOCALE_FI})
   assertHasValues(".continuousCalendar thead th.weekDay", ['Ma','Ti','Ke','To','Pe','La','Su'])
   assertHasValues(".monthName", [
+    "joulukuu",
     "tammikuu",
     "helmikuu",
     "maaliskuu",
