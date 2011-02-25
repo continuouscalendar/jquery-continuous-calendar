@@ -344,7 +344,7 @@
           } else if (event.shiftKey) {
             if (selection.days() > 0 && enabledCell(elem)) {
               status = Status.NONE
-              selection.expandTo(elem.date)
+              selection = selection.expandTo(elem.date)
               return selection
             }
           }
@@ -362,7 +362,7 @@
             case Status.MOVE:
               var deltaDays = mouseDownDate.distanceInDays(date)
               mouseDownDate = date
-              selection.shiftDays(deltaDays)
+              selection = selection.shiftDays(deltaDays)
               selection = selection.and(calendarRange)
               break
             case Status.CREATE:
@@ -379,9 +379,14 @@
         afterSelection()
       }
 
+
+      function tooSmallSelection() {
+        return params.minimumRange && selection.days() <= params.minimumRange;
+      }
+
       function drawSelection() {
-        if(params.minimumRange && selection.days() <= params.minimumRange) {
-          selection.expandDaysTo(parms.minimumRange)
+        if(tooSmallSelection()) {
+          selection.expandDaysTo(params.minimumRange)
         }
         drawSelectionBetweenDates(selection)
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
