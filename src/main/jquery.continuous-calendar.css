@@ -23,6 +23,7 @@
 
 .continuousCalendarContainer {
   position:relative;
+  z-index:10000;
 }
 
 .continuousCalendarContainer a.calendarIcon {
@@ -42,7 +43,7 @@
 
 .continuousCalendarContainer .popup {
   position: absolute;
-  z-index: 9999;
+  z-index: 9999 !important;
 }
 
 .continuousCalendar table {
@@ -191,4 +192,9 @@
 
 .continuousCalendarContainer div.label span {
   cursor: pointer;
+}
+.continuousCalendarContainer .popUpContainer {
+  width: 1px;
+  height: 1px;
+  position: relative;
 }
