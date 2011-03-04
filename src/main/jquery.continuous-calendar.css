@@ -34,12 +34,15 @@
   border: 1px solid #666;
   border-top: 4px solid #a00;
   float: left;
-  padding: 0 3px;
+  padding: 1px 3px;
+  line-height: 1;
+  text-align: center;
+  width: 10px;
 }
 
 .continuousCalendarContainer .popup {
   position: absolute;
-  z-index: 99;
+  z-index: 9999;
 }
 
 .continuousCalendar table {
@@ -49,7 +52,7 @@
   background-color: white;
   border-collapse: collapse;
   border-spacing: 0;
-  width: 200px;
+  width: 201px;
 }
 
 .continuousCalendar .calendarHeader {
@@ -88,6 +91,7 @@
   height: 100px;
   border: 1px solid #999999;
   position: relative;
+  background:white;
 }
 
 .continuousCalendar .calendarBody td {
