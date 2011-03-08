@@ -53,6 +53,14 @@ function DateRange(date1, date2) {
     this.end = this.start.plusDays(days-1)
   }
 
+  this.hasValidSize = function(minimumDays) {
+    return minimumDays < 0 || this.days() >= minimumDays
+  }
+
+  this.hasValidSizeAndEndsOnWorkWeek = function(minimumDays) {
+    return this.hasValidSize(minimumDays) && !this.hasEndsOnWorkingDays()
+  }
+
   this.and = function(that) {
     var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start
     var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end

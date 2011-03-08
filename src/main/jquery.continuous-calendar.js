@@ -361,12 +361,15 @@
               var deltaDays = mouseDownDate.distanceInDays(date)
               mouseDownDate = date
               var newSelection = selection.shiftDays(deltaDays).and(calendarRange)
-              if(params.minimumRange < 0 || newSelection.hasEndsOnWorkingDays()) {
+              if(newSelection.hasValidSize(params.minimumRange) && (!params.disableWeekends || !newSelection.hasEndsOnWorkingDays())) {
                 selection = newSelection
               }
               break
             case Status.CREATE:
-              selection = new DateRange(mouseDownDate, date)
+              var newSelection = new DateRange(mouseDownDate, date)
+              if(newSelection.hasValidSize(params.minimumRange) && (!params.disableWeekends || !newSelection.hasEndsOnWorkingDays())) {
+                selection = newSelection
+              }
               break
           }
           drawSelection()
