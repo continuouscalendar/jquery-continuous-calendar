@@ -360,9 +360,9 @@
             case Status.MOVE:
               var deltaDays = mouseDownDate.distanceInDays(date)
               mouseDownDate = date
-              var newSelection = selection.shiftDays(deltaDays).and(calendarRange)
-              if(isPermittedRange(newSelection)) {
-                selection = newSelection
+              var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
+              if(isPermittedRange(movedSelection)) {
+                selection = movedSelection
               }
               break
             case Status.CREATE:
