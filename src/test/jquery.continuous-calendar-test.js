@@ -14,7 +14,6 @@
 module("empty calendar of full year")
 
 test("module init", function() {
-  $('#tests').hide()
   createCalendarContainer()
   createCalendarFromJanuary()
 })
@@ -346,6 +345,10 @@ test("when selecting date", function() {
   equals(startLabelValue(), "Sun 10/26/2008", "selected date is shown correctly with day of week")
   equals(startFieldValue(), "10/26/2008", "selected date is set correctly to hidden field without day of week")
 })
+
+QUnit.begin = function() {
+  $('#tests').hide()
+}
 
 QUnit.done = function() {
   $('#tests').show()
