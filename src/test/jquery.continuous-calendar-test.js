@@ -346,6 +346,15 @@ test("when selecting date", function() {
   equals(startFieldValue(), "10/26/2008", "selected date is set correctly to hidden field without day of week")
 })
 
+module("minimum range with disabled weekends", {
+  setup: createCalendarContainer
+})
+
+test("initial range has minimum required size", function() {
+  createCalendarFields({startDate: "4/27/2009", endDate: "4/27/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009", minimumRange: 4})
+  assertHasValues('.selected', [27,28,29,30])
+})
+
 QUnit.begin = function() {
   $('#tests').hide()
 }
