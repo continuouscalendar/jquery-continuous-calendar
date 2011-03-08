@@ -350,7 +350,7 @@ module("minimum range with disabled weekends")
 
 test("module init", function() {
   createCalendarContainer()
-  createCalendarFields({startDate: "4/27/2009", endDate: "4/27/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009", minimumRange: 4})
+  createCalendarFields({startDate: "4/27/2009", endDate: "4/27/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009", minimumRange: 4, disableWeekends: true})
 })
 
 test("initial range has minimum required size", function() {
@@ -358,9 +358,22 @@ test("initial range has minimum required size", function() {
 })
 
 test("resizing to smaller that permitted is ignored", function() {
-  mouseDownOnDay(27)
-  dragDates(27, 28)
+  dragDatesSlowly(27, 28)
   assertHasValues('.selected', [27,28,29,30])
+  dragDatesSlowly(30, 29)
+  assertHasValues('.selected', [27,28,29,30])
+})
+
+test("resizing to smaller that permitted is ignored", function() {
+  dragDatesSlowly(27, 28)
+  assertHasValues('.selected', [27,28,29,30])
+})
+
+test("resizing skips weekends", function() {
+  dragDatesSlowly(27,26)
+  assertHasValues('.selected', [27,28,29,30])
+  dragDatesSlowly(30, 1)
+  assertHasValues('.selected', [27,28,29,30, 1])
 })
 
 QUnit.begin = function() {
