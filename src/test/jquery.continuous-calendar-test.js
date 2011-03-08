@@ -358,22 +358,34 @@ test("initial range has minimum required size", function() {
 })
 
 test("resizing to smaller that permitted is ignored", function() {
-  dragDatesSlowly(27, 28)
+  dragDates(27, 28)
   assertHasValues('.selected', [27,28,29,30])
-  dragDatesSlowly(30, 29)
+  dragDates(30, 29)
   assertHasValues('.selected', [27,28,29,30])
 })
 
 test("resizing to smaller that permitted is ignored", function() {
-  dragDatesSlowly(27, 28)
+  dragDates(27, 28)
   assertHasValues('.selected', [27,28,29,30])
 })
 
 test("resizing skips weekends", function() {
-  dragDatesSlowly(27,26)
+  dragDates(27,26)
   assertHasValues('.selected', [27,28,29,30])
-  dragDatesSlowly(30, 1)
+  dragDates(30, 1)
   assertHasValues('.selected', [27,28,29,30, 1])
+})
+
+test("moving skips weekends", function() {
+  dragDates(28, 29)
+  assertHasValues('.selected', [27, 28,29,30, 1])
+  dragDatesSlowly(28, 1)
+  assertHasValues('.selected', [30, 1, 2, 3, 4])
+  dragDatesSlowly(3, 4)
+  assertHasValues('.selected', [1, 2, 3, 4, 5])
+  dragDatesSlowly(4, 3)
+  assertHasValues('.selected', [30, 1, 2, 3, 4])
+
 })
 
 QUnit.begin = function() {
