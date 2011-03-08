@@ -378,7 +378,7 @@
       }
 
       function isPermittedRange(newSelection) {
-        return newSelection.hasValidSize(params.minimumRange) && (!params.disableWeekends || newSelection.hasEndsOnWorkingDays());
+        return newSelection.hasValidSize(params.minimumRange) && (!(params.disableWeekends && newSelection.hasEndsOnWeekend()));
       }
 
       function mouseUp() {
@@ -393,7 +393,14 @@
 
       function drawSelection() {
         if(isTooSmallSelection()) {
-          selection.expandDaysTo(params.minimumRange)
+          var newSelection = selection.expandDaysTo(params.minimumRange)
+          if(params.disableWeekends && newSelection.hasEndsOnWeekend()) {
+            newSelection = newSelection.shiftDays(delta(newSelection.end.getDay()))
+          }
+          selection = newSelection
+        }
+        function delta(x) {
+          return -((x + 1) % 7 + 1)
         }
         drawSelectionBetweenDates(selection)
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))

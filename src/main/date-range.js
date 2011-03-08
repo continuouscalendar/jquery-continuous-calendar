@@ -50,7 +50,7 @@ function DateRange(date1, date2) {
   }
 
   this.expandDaysTo = function(days) {
-    this.end = this.start.plusDays(days-1)
+    return new DateRange(this.start, this.start.plusDays(days-1))
   }
 
   this.hasValidSize = function(minimumDays) {
@@ -58,7 +58,7 @@ function DateRange(date1, date2) {
   }
 
   this.hasValidSizeAndEndsOnWorkWeek = function(minimumDays) {
-    return this.hasValidSize(minimumDays) && !this.hasEndsOnWorkingDays()
+    return this.hasValidSize(minimumDays) && this.hasEndsOnWeekend()
   }
 
   this.and = function(that) {
@@ -71,8 +71,8 @@ function DateRange(date1, date2) {
     }
   }
 
-  this.hasEndsOnWorkingDays = function() {
-    return !(this.start.isWeekend() || this.end.isWeekend())
+  this.hasEndsOnWeekend = function() {
+    return this.start.isWeekend() || this.end.isWeekend()
   }
 
   this.setTimes = function(startTimeStr, endTimeStr) {

@@ -390,7 +390,8 @@ test("moving skips weekends", function() {
 test("prevent selecting range that starts or ends on weekend", function() {
   mouseDownMouseUpOnDate(19)
   assertHasValues('.selected', [30, 1, 2, 3, 4])
-
+  mouseDownMouseUpOnDate(6)
+  assertHasValues('.selected', [5, 6, 7, 8])
 })
 
 test = QUnit.test
