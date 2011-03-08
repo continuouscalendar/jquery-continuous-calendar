@@ -37,7 +37,7 @@
       }
       var params = $.extend(defaults, options)
       var Status = {
-        CREATE:'create',
+        CREATE_OR_RESIZE:'create',
         MOVE:'move',
         NONE:'none'
       }
@@ -305,7 +305,7 @@
         }
 
         if (enabledCell(elem)) {
-          status = Status.CREATE
+          status = Status.CREATE_OR_RESIZE
           mouseDownDate = elem.date
           if (mouseDownDate.equalsOnlyDate(selection.end)) {
             mouseDownDate = selection.start
@@ -365,7 +365,7 @@
                 selection = movedSelection
               }
               break
-            case Status.CREATE:
+            case Status.CREATE_OR_RESIZE:
               var newSelection = new DateRange(mouseDownDate, date)
               if(isPermittedRange(newSelection)) {
                 selection = newSelection
