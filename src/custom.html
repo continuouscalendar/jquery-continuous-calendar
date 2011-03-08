@@ -46,6 +46,11 @@
     .continuousCalendar td.rangeEnd {background:#a00}
     .startDateLabel{color:#0a0;}
     .endDateLabel{color:#a00}
+    .continuousCalendar .range .week {color: transparent;cursor:default;}
+    .continuousCalendar .range.calendarBody .month {text-decoration:none; cursor:default;}
+    .notes {border:3px solid orange; border-radius:14px;-moz-border-radius:14px; background:#eee;width:300px;padding:10px 5px;margin:15px 0;}
+    h4 {margin:0;}
+    p {margin-top:0}
   </style>
 </head>
 <body>
@@ -75,7 +80,8 @@
   </div>
 </form>
 
-<div>
+<div class="notes">
+  <h4>Important:</h4>
   <p>The Arrival Date does NOT count in the number of rental days but the Ship Back date does count.</p>
   <p>The Arrival and Ship Back dates can't be set on weekends or public holidays</p>
   <p>The minimum rental period is 4 days</p>
@@ -87,7 +93,7 @@
 <script type="text/javascript" src="main/date-range.js" charset="UTF-8"></script>
 <script type="text/javascript" src="main/jquery.continuous-calendar.js" charset="UTF-8"></script>
 <script type="text/javascript" language="JavaScript">
-  $("#timeCalendar").continuousCalendar({firstDate: "today",weeksAfter: 30, selectToday: true, minimumRange: 4,disableWeekends:true});
+  $("#timeCalendar").continuousCalendar({firstDate: "today",weeksAfter: 30, selectToday: true, minimumRange: 4,disableWeekends:true,locale: DATE_LOCALE_AU});
 </script>
 </body>
 </html>

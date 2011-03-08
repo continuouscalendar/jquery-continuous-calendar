@@ -68,3 +68,34 @@ window.DATE_LOCALE_EN = {
   dateTimeFormat: 'D n/j/Y G:i',
   firstWeekday: Date.SUNDAY
 };
+window.DATE_LOCALE_AU = {
+  init: function() {
+    Date.monthNames = ['January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December']
+    Date.dayNames = ['Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday']
+    Date.daysLabel = function(days) {return days + ' ' + (days == '1' ? 'Day' : 'Days');}
+    Date.hoursLabel = function(hours, minutes) {
+      var hoursAndMinutes = Date.hoursAndMinutes(hours, minutes)
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours');}
+  },
+  shortDateFormat: 'j/n/Y',
+  weekDateFormat: 'D j/n/Y',
+  dateTimeFormat: 'D j/n/Y G:i',
+  firstWeekday: Date.SUNDAY
+};
