@@ -127,9 +127,7 @@
           return existingContainer
         } else {
           var newContainer = $('<div>').addClass('continuousCalendar')
-          var popUpContainer = $('<div>').addClass('popUpContainer')
-          popUpContainer.append(newContainer)
-          container.append(popUpContainer)
+          container.append(params.isPopup ? $('<div>').addClass('popUpContainer').append(newContainer) : newContainer)
           return newContainer
         }
       }
