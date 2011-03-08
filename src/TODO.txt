@@ -1,9 +1,5 @@
-TODO BUG IE6, IE7: Move cursor and expand-cursor not showing
 TODO scroll while dragging
-TODO test auto scroll with different browsers
-TODO default values for everything
-TODO create input fields if does not exist
-TODO wrap pop-up around div
 TODO good examples of use
 TODO refactor tests
 TODO theme roller
+TODO move utility functions from tests to separate file
