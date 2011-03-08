@@ -14,9 +14,6 @@
 function click(selector) {
   $(selector).click();
 }
-function setText(selector, value) {
-  $(selector).val(value).keyup()
-}
 function value(selector) {
   var elem = $(selector)
   if (elem.is("input")) {
@@ -24,15 +21,6 @@ function value(selector) {
   } else {
     return elem.text()
   }
-}
-function assertEmpty(selector) {
-  ok($(selector).length == 0, selector + " should be empty")
-}
-function assertNotEmpty(selector) {
-  ok($(selector).length > 0, selector + " should not be empty")
-}
-function resetTextInputs() {
-  setText("input:text", "")
 }
 
 $.fn.withText = function(text) {
@@ -48,3 +36,4 @@ function assertHasValues(selector, expectedArray) {
     return i.toString()
   }))
 }
+ok = QUnit.ok

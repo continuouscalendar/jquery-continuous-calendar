@@ -250,7 +250,7 @@ test("range can be specified with weeks and dates mixed", function() {
 
 //TODO fails with IE7
 test("calendar executes callback-function and triggers event when date is picked", function() {
-  function testFunction(date) {
+  function testFunction() {
     calendarCallBack++
   }
   bindCalled = 0
@@ -393,6 +393,10 @@ test("prevent selecting range that starts or ends on weekend", function() {
 
 })
 
+test = QUnit.test
+module = QUnit.module
+equals = QUnit.equal
+ok = QUnit.ok
 QUnit.begin = function() {
   $('#tests').hide()
 }

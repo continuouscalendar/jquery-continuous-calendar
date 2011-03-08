@@ -304,15 +304,14 @@
           return
         }
 
-
         status = Status.CREATE_OR_RESIZE
         mouseDownDate = elem.date
 
-        if(enabledCell(elem) && mouseDownDate.equalsOnlyDate(selection.end)) {
+        if(mouseDownDate.equalsOnlyDate(selection.end)) {
           mouseDownDate = selection.start
           return
         }
-        if(enabledCell(elem) && mouseDownDate.equalsOnlyDate(selection.start)) {
+        if(mouseDownDate.equalsOnlyDate(selection.start)) {
           mouseDownDate = selection.end
           return
         }
@@ -388,13 +387,12 @@
         afterSelection()
       }
 
-
-      function tooSmallSelection() {
+      function isTooSmallSelection() {
         return params.minimumRange && selection.days() <= params.minimumRange;
       }
 
       function drawSelection() {
-        if(tooSmallSelection()) {
+        if(isTooSmallSelection()) {
           selection.expandDaysTo(params.minimumRange)
         }
         drawSelectionBetweenDates(selection)

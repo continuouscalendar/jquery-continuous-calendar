@@ -8,7 +8,6 @@
  * or GPL (GPL-LICENSE.txt) licenses.
  */
 
-(function(window) {
 
 var defined = {
 	setTimeout: typeof window.setTimeout !== "undefined",
@@ -1413,5 +1412,3 @@ QUnit.diff = (function() {
 		return str;
 	};
 })();
-
-})(this);
