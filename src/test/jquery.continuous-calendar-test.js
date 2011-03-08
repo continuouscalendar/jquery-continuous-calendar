@@ -385,6 +385,11 @@ test("moving skips weekends", function() {
   assertHasValues('.selected', [1, 2, 3, 4, 5])
   dragDatesSlowly(4, 3)
   assertHasValues('.selected', [30, 1, 2, 3, 4])
+})
+
+test("prevent selecting range that starts or ends on weekend", function() {
+  mouseDownMouseUpOnDate(19)
+  assertHasValues('.selected', [30, 1, 2, 3, 4])
 
 })
 

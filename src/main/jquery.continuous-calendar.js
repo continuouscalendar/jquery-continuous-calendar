@@ -304,6 +304,7 @@
           return
         }
 
+
         status = Status.CREATE_OR_RESIZE
         mouseDownDate = elem.date
 
@@ -320,7 +321,9 @@
           return
         }
 
-        startNewRange()
+        if(enabledCell(elem)) {
+          startNewRange()
+        }
 
         function enabledCell(elem) {
           return isDateCell(elem) && isEnabled(elem)
