@@ -354,7 +354,6 @@ test("module init", function() {
 })
 
 test("initial range has minimum required size", function() {
-  createCalendarFields({startDate: "4/27/2009", endDate: "4/27/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009", minimumRange: 4})
   assertHasValues('.selected', [27,28,29,30])
 })
 
@@ -386,7 +385,7 @@ var testIndex = 0
 function createCalendarContainer() {
   testIndex++
   var container = $("<div>").addClass('testCalendarContainer')
-  var index = $('<div></div>').append(testName).addClass('testLabel')
+  var index = $('<div></div>').append(testName.name).addClass('testLabel')
   container.attr("id", calendarId())
   container.append(index)
   $("#calendars").append(container)
