@@ -11,7 +11,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-(function($) {
+;(function($) {
   $.fn.continuousCalendar = function(options) {
     this.each(function() {
       _continuousCalendar.call($(this), options)
