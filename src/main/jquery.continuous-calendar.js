@@ -128,16 +128,15 @@
           },
           addRangeLengthLabel: function() {
           },
-          addEndDateLabel: function(dateLabelContainer) {
+          addEndDateLabel: function() {
           }
         }
         return isRange ? rangeVersion : singleDateVersion
       }
 
       function popUpBehaviour(isPopup) {
-        var popupVersion = {
+        var popUpVersion = {
           initState: function() {
-            isHidden = true
             calendarContainer.addClass('popup').hide()
             var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
             container.append(icon)
@@ -159,12 +158,12 @@
           getContainer: function(newContainer) {
             return newContainer
           },
-          addCloseButton: function(tr) {
+          addCloseButton: function() {
           },
-          close: function(_this) {
+          close: function() {
           }
         }
-        return isPopup ? popupVersion : inlineVersion
+        return isPopup ? popUpVersion : inlineVersion
       }
 
       function highlightToday() {
