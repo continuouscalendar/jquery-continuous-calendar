@@ -64,13 +64,17 @@
       var oldSelection
       var calendarRange
       var status = Status.NONE
-      var calendar
+      var calendarContainer
       var scrollContent
       var beforeFirstOpening = true
       var bodyTable
+      var calendar
 
       createCalendar()
+
       function createCalendar() {
+        calendar = calendarFactory(params.isPopup)
+
         if (startDate && endDate) {
           selection = new DateRange(startDate, endDate)
         }
@@ -82,16 +86,9 @@
         var headerTable = $('<table>').addClass('calendarHeader').append(headerRow())
         bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
         scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
-        calendar = getCalendarContainerOrCreateOne()
-        calendar.append(headerTable).append(scrollContent)
-        if (params.isPopup) {
-          isHidden = true
-          calendar.addClass('popup').hide()
-          var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
-          container.append(icon)
-        } else {
-          calculateCellHeightAndSetScroll()
-        }
+        calendarContainer = getCalendarContainerOrCreateOne()
+        calendarContainer.append(headerTable).append(scrollContent)
+        calendar.initState()
         if ($('.startDateLabel', container).isEmpty()) {
           addDateLabels(container)
         }
@@ -115,6 +112,39 @@
         executeCallback()
       }
 
+      function calendarFactory(isPopup) {
+        var popupVersion = {
+          initState: function() {
+            isHidden = true
+            calendarContainer.addClass('popup').hide()
+            var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
+            container.append(icon)
+          },
+          getContainer: function(newContainer) {
+            return $('<div>').addClass('popUpContainer').append(newContainer);
+          },
+          addCloseButton: function(tr) {
+            var close = $('<th><a href="#"><span>close</span></a>')
+            $('a', close).click(toggleCalendar)
+            tr.append(close)
+          },
+          close: function(cell) {
+            toggleCalendar.call(cell)
+          }
+        }
+        var inlineVersion = {
+          initState: calculateCellHeightAndSetScroll,
+          getContainer: function(newContainer) {
+            return newContainer
+          },
+          addCloseButton: function(tr) {
+          },
+          close: function(_this) {
+          }
+        }
+        return isPopup ? popupVersion : inlineVersion
+      }
+
       function highlightToday() {
         var todayKey = Date.NOW.dateFormat('Ymd')
         if (dateCellMap[todayKey]) {
@@ -128,7 +158,7 @@
           return existingContainer
         } else {
           var newContainer = $('<div>').addClass('continuousCalendar')
-          container.append(params.isPopup ? $('<div>').addClass('popUpContainer').append(newContainer) : newContainer)
+          container.append(calendar.getContainer(newContainer))
           return newContainer
         }
       }
@@ -179,11 +209,7 @@
           var weekDay = $('<th>').append(Date.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
           tr.append(weekDay)
         })
-        if (params.isPopup) {
-          var close = $('<th><a href="#"><span>close</span></a>')
-          $('a', close).click(toggleCalendar)
-          tr.append(close)
-        }
+        calendar.addCloseButton(tr);
         return $('<thead>').append(tr)
         function yearCell() {
           return $('<th>').addClass('month').append(firstWeekdayOfGivenDate.getFullYear())
@@ -200,7 +226,7 @@
       }
 
       function toggleCalendar() {
-        calendar.toggle()
+        calendarContainer.toggle()
         if (beforeFirstOpening) {
           calculateCellHeight()
           beforeFirstOpening = false
@@ -281,9 +307,7 @@
           dateCell.addClass('selected')
           params.startField.val(date(dateCell).dateFormat(params.locale.shortDateFormat))
           setDateLabel(date(dateCell).dateFormat(params.locale.weekDateFormat))
-          if (params.isPopup) {
-            toggleCalendar.call(this)
-          }
+          calendar.close(this)
           executeCallback()
         })
 
