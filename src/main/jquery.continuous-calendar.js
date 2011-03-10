@@ -116,7 +116,7 @@
           },
           addEndDateLabel: function(dateLabelContainer) {
             dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>')
-        }
+          }
         }
         var singleDateVersion = {
           initEvents: function() {
@@ -126,8 +126,10 @@
               dateCells[dateCellMap[selectedDateKey]].addClass('selected')
             }
           },
-          addRangeLengthLabel: function() {},
-          addEndDateLabel: function(dateLabelContainer) {}
+          addRangeLengthLabel: function() {
+          },
+          addEndDateLabel: function(dateLabelContainer) {
+          }
         }
         return isRange ? rangeVersion : singleDateVersion
       }
@@ -394,7 +396,8 @@
           return
         }
         var date = event.target.date
-          ;({
+          ;
+        ({
           move : function() {
             var deltaDays = mouseDownDate.distanceInDays(date)
             var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
