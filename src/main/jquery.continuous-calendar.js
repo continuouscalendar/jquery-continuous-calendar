@@ -54,22 +54,21 @@
         setEndField(formattedToday)
       }
       var firstWeekdayOfGivenDate = (startDate || Date.NOW).getFirstDateOfWeek(params.locale.firstWeekday)
-      var container = this
-      var dateCells = []
-      var dateCellDates = []
-      var dateCellMap = {}
-      var mouseDownDate = null
-      var averageCellHeight
-      var yearTitle
-      var selection = DateRange.emptyRange()
-      var oldSelection
-      var calendarRange
-      var status = Status.NONE
-      var calendarContainer
-      var scrollContent
-      var beforeFirstOpening = true
-      var bodyTable
-      var calendar
+      var container = this,
+        dateCells = [],
+        dateCellDates = [],
+        dateCellMap = {},
+        mouseDownDate = null, averageCellHeight,
+        yearTitle,
+        selection = DateRange.emptyRange(),
+        oldSelection,
+        calendarRange,
+        status = Status.NONE,
+        calendarContainer,
+        scrollContent,
+        beforeFirstOpening = true,
+        bodyTable,
+        calendar
 
       createCalendar()
 
