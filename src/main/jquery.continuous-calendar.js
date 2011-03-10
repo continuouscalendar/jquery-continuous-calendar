@@ -74,7 +74,7 @@
       createCalendar()
 
       function createCalendar() {
-        calendar = calendarFactory(params.isPopup)
+        calendar = $.extend(popUpBehaviour(params.isPopup), dateBehaviour(isRange()))
 
         if(startDate && endDate) {
           selection = new DateRange(startDate, endDate)
@@ -91,29 +91,49 @@
         calendarContainer.append(headerTable).append(scrollContent)
         calendar.initState()
         if($('.startDateLabel', container).isEmpty()) {
-          addDateLabels(container)
+          addDateLabels(container, calendar)
         }
-        if($('.rangeLengthLabel', container).isEmpty() && isRange()) {
-          addRangeLengthLabel(container)
-        }
+        calendar.addRangeLengthLabel()
         highlightToday()
-        if(isRange()) {
-          initRangeCalendarEvents(container, bodyTable)
-          drawSelection()
-        } else {
-          initSingleDateCalendarEvents()
-          var selectedDateKey = startDate && startDate.dateFormat('Ymd')
-          if(dateCellMap[selectedDateKey]) {
-            dateCells[dateCellMap[selectedDateKey]].addClass('selected')
-          }
-        }
+        calendar.initEvents()
         yearTitle = $('th.month', headerTable)
         scrollContent.scroll(setYearLabel)
         scrollToSelection()
         executeCallback()
       }
 
-      function calendarFactory(isPopup) {
+      function dateBehaviour(isRange) {
+        var rangeVersion = {
+          initEvents: function() {
+            initRangeCalendarEvents(container, bodyTable)
+            drawSelection()
+          },
+          addRangeLengthLabel: function() {
+            if($('.rangeLengthLabel', container).isEmpty()) {
+              var rangeLengthContainer = $('<div class="label">')
+              rangeLengthContainer.append('<span class="rangeLengthLabel"></span>')
+              $('.continuousCalendar', container).append(rangeLengthContainer)
+            }
+          },
+          addEndDateLabel: function(dateLabelContainer) {
+            dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>')
+        }
+        }
+        var singleDateVersion = {
+          initEvents: function() {
+            initSingleDateCalendarEvents()
+            var selectedDateKey = startDate && startDate.dateFormat('Ymd')
+            if(dateCellMap[selectedDateKey]) {
+              dateCells[dateCellMap[selectedDateKey]].addClass('selected')
+            }
+          },
+          addRangeLengthLabel: function() {},
+          addEndDateLabel: function(dateLabelContainer) {}
+        }
+        return isRange ? rangeVersion : singleDateVersion
+      }
+
+      function popUpBehaviour(isPopup) {
         var popupVersion = {
           initState: function() {
             isHidden = true
@@ -164,20 +184,12 @@
         }
       }
 
-      function addDateLabels(container) {
+      function addDateLabels(container, calendar) {
         var dateLabelContainer = $('<div class="label">')
         dateLabelContainer.append('<span class="startDateLabel"></span>')
-        if(isRange()) {
-          dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>')
-        }
+        calendar.addEndDateLabel(dateLabelContainer)
         container.append(dateLabelContainer)
         dateLabelContainer.click(toggleCalendar)
-      }
-
-      function addRangeLengthLabel(container) {
-        var rangeLengthContainer = $('<div class="label">')
-        rangeLengthContainer.append('<span class="rangeLengthLabel"></span>')
-        $('.continuousCalendar', container).append(rangeLengthContainer)
       }
 
       function initRangeCalendarEvents(container, bodyTable) {
