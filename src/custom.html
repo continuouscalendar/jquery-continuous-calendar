@@ -14,6 +14,9 @@
       font-size: 90%;
     }
 
+    #cart, #cal {float:left; width:40%;}
+    #cart label {display:block;}
+    #cart label {display:block;}
     #timeCalendar .continuousCalendar {
     }
 
@@ -54,43 +57,58 @@
   </style>
 </head>
 <body>
+<div id="cart">
+  <h4>Cart</h4>
+  <label>price per day <input type="text" value="10" name="pricePerDay"/></label>
+  <label>Total <strong id="total"></strong></label>
+</div>
+<div id="cal">
+  <form action="../" method="get">
+    <div id="timeCalendar">
+      <input type="hidden" class="startDate" name="tripStartDate"/>
+      <input type="hidden" class="endDate" name="tripEndDate"/>
 
-<form action="../" method="get">
-  <div id="timeCalendar">
-    <input type="hidden" class="startDate" name="tripStartDate"/>
-    <input type="hidden" class="endDate" name="tripEndDate"/>
+      <div class="dateLabels">
+        <h3>Rental Period</h3>
 
-    <div class="dateLabels">
-      <h3>Rental Period</h3>
-      <div>
-        <strong>I want the gear to arrive</strong>
-        <span class="startDateLabel"></span>
+        <div>
+          <strong>I want the gear to arrive</strong>
+          <span class="startDateLabel"></span>
+        </div>
+        <div>
+          <strong>I want to use it for</strong>
+          <span class="rangeLengthLabel"></span>
+        </div>
+        <div>
+          <strong>I will ship it back on</strong>
+          <span class="endDateLabel"></span>
+        </div>
       </div>
-      <div>
-        <strong>I want to use it for</strong>
-        <span class="rangeLengthLabel"></span>
-      </div>
-      <div>
-        <strong>I will ship it back on</strong>
-        <span class="endDateLabel"></span>
-      </div>
+      <div class="continuousCalendar"></div>
+
     </div>
-    <div class="continuousCalendar"></div>
+  </form>
+
+  <div class="notes">
+    <h4>Important:</h4>
+
+    <p>The Arrival Date does NOT count in the number of rental days but the Ship Back date does count.</p>
+
+    <p>The Arrival and Ship Back dates can't be set on weekends or public holidays</p>
+
+    <p>The minimum rental period is 4 days</p>
 
   </div>
-</form>
-
-<div class="notes">
-  <h4>Important:</h4>
-  <p>The Arrival Date does NOT count in the number of rental days but the Ship Back date does count.</p>
-  <p>The Arrival and Ship Back dates can't be set on weekends or public holidays</p>
-  <p>The minimum rental period is 4 days</p>
-
-</div>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" charset="UTF-8"></script>
+</div><script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../build/jquery.continuous-calendar-latest.js" charset="UTF-8"></script>
 <script type="text/javascript" language="JavaScript">
-  $("#timeCalendar").continuousCalendar({firstDate: "today",weeksAfter: 30, selectToday: true, minimumRange: 5,disableWeekends:true,locale: DATE_LOCALE_AU});
+  $("#timeCalendar").continuousCalendar({firstDate: "today",weeksAfter: 30, selectToday: true, minimumRange: 5,disableWeekends:true,locale: DATE_LOCALE_AU}).bind('calendarChange', updateCart).trigger('calendarChange');
+  $('input[name=pricePerDay]').keyup(updateCart)
+  function updateCart() {
+    var days = $("#timeCalendar").calendarRange().days() - 1
+    var pricePerDay = $('input[name=pricePerDay]').val()
+    $('#total').text(pricePerDay * days)
+  }
 </script>
 </body>
 </html>

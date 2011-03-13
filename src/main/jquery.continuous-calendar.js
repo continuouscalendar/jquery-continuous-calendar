@@ -76,7 +76,6 @@
         calendar = $.extend(popUpBehaviour(params.isPopup), dateBehaviour(isRange()))
         selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange();
         oldSelection = selection.clone()
-        container.data('calendarRange', selection)
         var rangeStart = params.firstDate ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
         var rangeEnd = params.lastDate ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
         calendarRange = new DateRange(rangeStart, rangeEnd)
@@ -95,6 +94,7 @@
         yearTitle = $('th.month', headerTable)
         scrollContent.scroll(setYearLabel)
         scrollToSelection()
+        container.data('calendarRange', selection)
         executeCallback()
       }
 
