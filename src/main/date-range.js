@@ -134,3 +134,21 @@ DateRange.emptyRange = function() {
 DateRange.parse = function(dateStr1, dateStr2, dateFormat) {
   return new DateRange(Date.parseDate(dateStr1, dateFormat), Date.parseDate(dateStr2, dateFormat))
 }
+DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends) {
+  if(isTooSmallSelection()) {
+    var newSelection = oldRange.expandDaysTo(minimumSize)
+    if(disableWeekends && newSelection.hasEndsOnWeekend()) {
+      newSelection = newSelection.shiftDays(delta(newSelection.end.getDay()))
+    }
+    return newSelection
+  }
+  return oldRange
+
+  function isTooSmallSelection() {
+    return minimumSize && oldRange.days() <= minimumSize;
+  }
+
+  function delta(x) {
+    return -((x + 1) % 7 + 1)
+  }
+}

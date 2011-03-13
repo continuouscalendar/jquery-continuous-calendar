@@ -426,22 +426,9 @@
         afterSelection()
       }
 
-      function isTooSmallSelection() {
-        return params.minimumRange && selection.days() <= params.minimumRange;
-      }
-
       function drawSelection() {
-        if(isTooSmallSelection()) {
-          var newSelection = selection.expandDaysTo(params.minimumRange)
-          if(params.disableWeekends && newSelection.hasEndsOnWeekend()) {
-            newSelection = newSelection.shiftDays(delta(newSelection.end.getDay()))
-          }
-          selection = newSelection
-        }
-        function delta(x) {
-          return -((x + 1) % 7 + 1)
-        }
-
+        selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends)
+        
         drawSelectionBetweenDates(selection)
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
       }
