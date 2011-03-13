@@ -1,7 +1,7 @@
 #!/bin/bash
 current_dir=$(pwd)
 cd $(dirname $0)
-version=$(git tag | head)
+version=$(git tag | tail -n1)
 echo Build nightly...
 find src/main -name *.js |xargs cat >build/jquery.continuous-calendar-latest.js
 cp src/main/jquery.continuous-calendar.css build/jquery.continuous-calendar-latest.css
