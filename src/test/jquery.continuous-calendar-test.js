@@ -348,50 +348,30 @@ test("when selecting date", function() {
 
 module("minimum range with disabled weekends")
 
-test("module init", function() {
+test("moving and creation has constraints", function() {
   createCalendarContainer()
   createCalendarFields({startDate: "4/27/2009", endDate: "4/27/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009", minimumRange: 4, disableWeekends: true})
-})
-
-test("initial range has minimum required size", function() {
-  assertHasValues('.selected', [27,28,29,30])
-})
-
-test("resizing to smaller that permitted is ignored", function() {
+  assertHasValues('.selected', [27,28,29,30],"initial range has minimum required size")
   dragDates(27, 28)
-  assertHasValues('.selected', [27,28,29,30])
+  assertHasValues('.selected', [27,28,29,30], "resizing to smaller that permitted from start is ignored")
   dragDates(30, 29)
-  assertHasValues('.selected', [27,28,29,30])
-})
-
-test("resizing to smaller that permitted is ignored", function() {
-  dragDates(27, 28)
-  assertHasValues('.selected', [27,28,29,30])
-})
-
-test("resizing skips weekends", function() {
+  assertHasValues('.selected', [27,28,29,30], "resizing to smaller that permitted from end is ignored")
   dragDates(27,26)
-  assertHasValues('.selected', [27,28,29,30])
+  assertHasValues('.selected', [27,28,29,30], "resizing to earlier skips weekends")
   dragDates(30, 1)
-  assertHasValues('.selected', [27,28,29,30, 1])
-})
-
-test("moving skips weekends", function() {
+  assertHasValues('.selected', [27,28,29,30, 1], "resizing to later is allowed if not on weekend")
   dragDates(28, 29)
-  assertHasValues('.selected', [27, 28,29,30, 1])
+  assertHasValues('.selected', [27, 28,29,30, 1], "no reaction when moving over weekend (snap to weekdays)")
   dragDatesSlowly(28, 1)
-  assertHasValues('.selected', [30, 1, 2, 3, 4])
+  assertHasValues('.selected', [30, 1, 2, 3, 4], "moving skips weekends")
   dragDatesSlowly(3, 4)
-  assertHasValues('.selected', [1, 2, 3, 4, 5])
+  assertHasValues('.selected', [1, 2, 3, 4, 5], "moving right allowed")
   dragDatesSlowly(4, 3)
-  assertHasValues('.selected', [30, 1, 2, 3, 4])
-})
-
-test("prevent selecting range that starts or ends on weekend", function() {
+  assertHasValues('.selected', [30, 1, 2, 3, 4], "moving left allowed")
   mouseDownMouseUpOnDate(19)
-  assertHasValues('.selected', [30, 1, 2, 3, 4])
+  assertHasValues('.selected', [30, 1, 2, 3, 4], "prevent selecting range that starts or ends on weekend")
   mouseDownMouseUpOnDate(6)
-  assertHasValues('.selected', [5, 6, 7, 8])
+  assertHasValues('.selected', [5, 6, 7, 8], "selecting range that don't start or end on weekend id is permitted")
 })
 
 test = QUnit.test

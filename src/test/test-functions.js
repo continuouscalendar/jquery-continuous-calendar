@@ -29,11 +29,11 @@ $.fn.withText = function(text) {
   })
 }
 
-function assertHasValues(selector, expectedArray) {
+function assertHasValues(selector, expectedArray, comment) {
   same($.map(cal().find(selector), function (elem) {
     return $(elem).text()
   }), $.map(expectedArray, function(i) {
     return i.toString()
-  }))
+  }), comment)
 }
 ok = QUnit.ok
