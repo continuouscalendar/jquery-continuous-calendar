@@ -28,7 +28,7 @@ Date.MONDAY = 1
 Date.SUNDAY = 0
 Date.NOW = new Date()
 Date.getDaysInMonth = function(year, month) {
-  if (((0 == (year % 4)) && ( (0 != (year % 100)) || (0 == (year % 400)))) && month == 1) {
+  if(((0 == (year % 4)) && ( (0 != (year % 100)) || (0 == (year % 400)))) && month == 1) {
     return 29
   } else {
     return Date.DAYS_IN_MONTH[month]
@@ -37,7 +37,7 @@ Date.getDaysInMonth = function(year, month) {
 
 Date.getDayInYear = function(year, month, day) {
   var days = 0
-  for (var i = 0; i < month; i++) {
+  for(var i = 0; i < month; i++) {
     days += Date.getDaysInMonth(year, i)
   }
   days += day
@@ -59,12 +59,12 @@ Date.prototype.plusDays = function(days) {
 
   // Fix the date offset caused by daylight saving time
   var delta = hours - newDate.getHours()
-  if (delta != 0) {
+  if(delta != 0) {
     // Correct the delta to be between [-12, 12]
-    if (delta > 12) {
+    if(delta > 12) {
       delta -= 24
     }
-    if (delta < -12) {
+    if(delta < -12) {
       delta += 24
     }
     newDate.setTime(newDate.getTime() + (delta * Date.HOUR))
@@ -83,15 +83,15 @@ Date.prototype.stripped = function() {
 }
 
 Date.prototype.compareTo = function(date) {
-  if (!date) {
+  if(!date) {
     return 1
   }
   var lhs = this.getTime()
   var rhs = date.getTime()
-  if (lhs < rhs) {
+  if(lhs < rhs) {
     return -1
   } else {
-    if (lhs > rhs) {
+    if(lhs > rhs) {
       return 1
     } else {
       return 0
@@ -100,7 +100,7 @@ Date.prototype.compareTo = function(date) {
 }
 
 Date.prototype.compareDateOnlyTo = function(date) {
-  if (!date) {
+  if(!date) {
     return 1
   }
   return this.stripped().compareTo(date.stripped())
@@ -111,37 +111,37 @@ Date.prototype.isToday = function() {
 }
 
 Date.prototype.getWeekInYear = function(weekNumberingSystem) {
-  if (weekNumberingSystem != "US" && weekNumberingSystem != "ISO") {
+  if(weekNumberingSystem != "US" && weekNumberingSystem != "ISO") {
     throw("Week numbering system must be either US or ISO, was " + weekNumberingSystem)
   }
 
   var firstDay = new Date(this.getFullYear(), 0, 1).getDay()
-  if (weekNumberingSystem == "US") {
+  if(weekNumberingSystem == "US") {
     return Math.ceil((this.getDayInYear() + firstDay) / 7)
   }
 
   var THU = 4
   var weekday = this.getDay()
-  if (weekday == 0) {
+  if(weekday == 0) {
     weekday = 7
   }
-  if (firstDay == 0) {
+  if(firstDay == 0) {
     firstDay = 7
   }
 
   // If Dec 29 falls on Mon, Dec 30 on Mon or Tue, Dec 31 on Mon - Wed, it's on the first week of next year
-  if (this.getMonth() == 11 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
+  if(this.getMonth() == 11 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
     return 1
   }
   // If Jan 1-3 falls on Fri, Sat or Sun, it's on the last week of the previous year
-  if (this.getMonth() == 0 && this.getDate() < 4 && weekday > THU) {
+  if(this.getMonth() == 0 && this.getDate() < 4 && weekday > THU) {
     return new Date(this.getFullYear() - 1, 11, 31).getWeekInYear('ISO')
   }
 
   var week = Math.ceil((this.getDayInYear() + firstDay - 1) / 7)
 
   // If first days of this year are on last year's last week, the above gives one week too much
-  if (firstDay > THU) {
+  if(firstDay > THU) {
     week--
   }
 
@@ -149,10 +149,10 @@ Date.prototype.getWeekInYear = function(weekNumberingSystem) {
 }
 
 Date.prototype.getFirstDateOfWeek = function(firstDayOfWeek) {
-  if (firstDayOfWeek < this.getDay()) {
+  if(firstDayOfWeek < this.getDay()) {
     return this.plusDays(firstDayOfWeek - this.getDay())
   } else {
-    if (firstDayOfWeek > this.getDay()) {
+    if(firstDayOfWeek > this.getDay()) {
       return this.plusDays(firstDayOfWeek - this.getDay() - 7)
     } else {
       return this.clone()
@@ -176,7 +176,7 @@ Date.prototype.isOddMonth = function() {
 }
 
 Date.prototype.equalsOnlyDate = function(date) {
-  if (!date) {
+  if(!date) {
     return false
   }
   return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getYear() == date.getYear()
@@ -218,7 +218,7 @@ Date.parseRegexes = []
 Date.formatFunctions = {count:0}
 
 Date.prototype.dateFormat = function(format) {
-  if (Date.formatFunctions[format] == null) {
+  if(Date.formatFunctions[format] == null) {
     Date.createNewFormat(format)
   }
   var func = Date.formatFunctions[format]
@@ -231,12 +231,12 @@ Date.createNewFormat = function(format) {
   var code = "Date.prototype." + funcName + " = function(){return "
   var special = false
   var ch = ''
-  for (var i = 0; i < format.length; ++i) {
+  for(var i = 0; i < format.length; ++i) {
     ch = format.charAt(i)
-    if (!special && ch == "\\") {
+    if(!special && ch == "\\") {
       special = true
     } else {
-      if (special) {
+      if(special) {
         special = false
         code += "'" + String.escape(ch) + "' + "
       } else {
@@ -248,7 +248,7 @@ Date.createNewFormat = function(format) {
 }
 
 Date.getFormatCode = function(character) {
-  switch (character) {
+  switch(character) {
     case "d":
       return "String.leftPad(this.getDate(), 2, '0') + "
     case "D":
@@ -309,10 +309,10 @@ Date.getFormatCode = function(character) {
 }
 
 Date.parseDate = function(input, format) {
-  if (input == 'today') {
+  if(input == 'today') {
     return Date.NOW
   }
-  if (Date.parseFunctions[format] == null) {
+  if(Date.parseFunctions[format] == null) {
     Date.createParser(format)
   }
   var func = Date.parseFunctions[format]
@@ -330,19 +330,19 @@ Date.createParser = function(format) {
 
   var special = false
   var ch = ''
-  for (var i = 0; i < format.length; ++i) {
+  for(var i = 0; i < format.length; ++i) {
     ch = format.charAt(i)
-    if (!special && ch == "\\") {
+    if(!special && ch == "\\") {
       special = true
     } else {
-      if (special) {
+      if(special) {
         special = false
         regex += String.escape(ch)
       } else {
         obj = Date.formatCodeToRegex(ch, currentGroup)
         currentGroup += obj.g
         regex += obj.s
-        if (obj.g && obj.c) {
+        if(obj.g && obj.c) {
           code += obj.c
         }
       }
@@ -356,7 +356,7 @@ Date.createParser = function(format) {
 }
 
 Date.formatCodeToRegex = function(character, currentGroup) {
-  switch (character) {
+  switch(character) {
     case "D":
       return {g:0,
         c:null,
@@ -468,7 +468,7 @@ Date.prototype.getGMTOffset = function() {
 Date.prototype.getDayOfYear = function() {
   var num = 0
   Date.daysInMonth[1] = this.isLeapYear() ? 29 : 28
-  for (var i = 0; i < this.getMonth(); ++i) {
+  for(var i = 0; i < this.getMonth(); ++i) {
     num += Date.daysInMonth[i]
   }
   return num + this.getDate() - 1
@@ -505,7 +505,7 @@ Date.prototype.getDaysInMonth = function() {
 }
 
 Date.prototype.getSuffix = function() {
-  switch (this.getDate()) {
+  switch(this.getDate()) {
     case 1:
     case 21:
     case 31:
@@ -531,10 +531,10 @@ String.escape = function(string) {
 
 String.leftPad = function (val, size, ch) {
   var result = new String(val)
-  if (ch == null) {
+  if(ch == null) {
     ch = " "
   }
-  while (result.length < size) {
+  while(result.length < size) {
     result = ch + result
   }
   return result
@@ -591,21 +591,22 @@ Date.patterns = {
   YearMonthPattern: "F, Y"
 }
 Date.parseTime = function parseTime(timeStr) {
-  var splittedTime = splitTime(timeStr.replace(/:|,/i,'.'))
+  var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
   var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)]
   return (isHour(time[0]) && isMinute(time[1])) ? time : null
 
   function splitTime(timeStr) {
-    if (timeStr.indexOf('.') != -1) {
+    if(timeStr.indexOf('.') != -1) {
       return  timeStr.split('.')
     }
-    switch (timeStr.length) {
+    switch(timeStr.length) {
       case 4: return [timeStr.slice(0, 2) ,timeStr.slice(2, 4)]
       case 3: return [timeStr.slice(0, 1) ,timeStr.slice(1, 3)]
       case 2: return [timeStr, 0]
       default: return [-1,-1]
     }
   }
+
   function isMinute(minutes) {
     return !isNaN(minutes) && minutes >= 0 && minutes <= 59
   }

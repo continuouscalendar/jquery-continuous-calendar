@@ -80,7 +80,7 @@ function DateRange(date1, date2) {
   }
 
   this.isInside = function(outer) {
-    return this.start.compareTo(outer.start) >=0 && this.end.compareTo(outer.end) <= 0
+    return this.start.compareTo(outer.start) >= 0 && this.end.compareTo(outer.end) <= 0
   }
 
   this.hasEndsOnWeekend = function() {
