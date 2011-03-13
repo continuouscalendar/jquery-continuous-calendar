@@ -2,4 +2,3 @@ TODO scroll while dragging
 TODO good examples of use
 TODO refactor tests
 TODO theme roller
-TODO move utility functions from tests to separate file
