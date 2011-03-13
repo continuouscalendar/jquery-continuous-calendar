@@ -60,7 +60,7 @@
         dateCellMap = {},
         mouseDownDate = null, averageCellHeight,
         yearTitle,
-        selection = DateRange.emptyRange(),
+        selection,
         oldSelection,
         calendarRange,
         status = Status.NONE,
@@ -74,10 +74,7 @@
 
       function createCalendar() {
         calendar = $.extend(popUpBehaviour(params.isPopup), dateBehaviour(isRange()))
-
-        if(startDate && endDate) {
-          selection = new DateRange(startDate, endDate)
-        }
+        selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange();
         oldSelection = selection.clone()
         container.data('calendarRange', selection)
         var rangeStart = params.firstDate ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
@@ -428,7 +425,6 @@
 
       function drawSelection() {
         selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends)
-
         drawSelectionBetweenDates(selection)
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
       }
