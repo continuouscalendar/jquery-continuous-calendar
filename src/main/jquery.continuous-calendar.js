@@ -414,7 +414,7 @@
       }
 
       function isPermittedRange(newSelection) {
-        return newSelection.isPermittedRange(params.minimumRange, params.disableWeekends)
+        return newSelection.isPermittedRange(params.minimumRange, params.disableWeekends, calendarRange)
       }
 
       function mouseUp() {
@@ -424,7 +424,7 @@
       }
 
       function drawSelection() {
-        selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends)
+        selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends, calendarRange)
         drawSelectionBetweenDates(selection)
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
       }

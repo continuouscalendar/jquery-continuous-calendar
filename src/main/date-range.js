@@ -79,6 +79,10 @@ function DateRange(date1, date2) {
     }
   }
 
+  this.isInside = function(outer) {
+    return this.start.compareTo(outer.start) >=0 && this.end.compareTo(outer.end) <= 0
+  }
+
   this.hasEndsOnWeekend = function() {
     return this.start.isWeekend() || this.end.isWeekend()
   }
@@ -127,8 +131,8 @@ function DateRange(date1, date2) {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat)
     }
   }
-  this.isPermittedRange = function(minimumSize, disableWeekends) {
-    return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend()))
+  this.isPermittedRange = function(minimumSize, disableWeekends, outerRange) {
+    return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend())) && this.isInside(outerRange)
   }
 }
 DateRange.emptyRange = function() {
@@ -153,11 +157,15 @@ DateRange.emptyRange = function() {
 DateRange.parse = function(dateStr1, dateStr2, dateFormat) {
   return new DateRange(Date.parseDate(dateStr1, dateFormat), Date.parseDate(dateStr2, dateFormat))
 }
-DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends) {
+DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends, outerRange) {
   if(isTooSmallSelection()) {
     var newSelection = oldRange.expandDaysTo(minimumSize)
     if(disableWeekends && newSelection.hasEndsOnWeekend()) {
-      newSelection = newSelection.shiftDays(delta(newSelection.end.getDay()))
+      var shiftedDays = newSelection.shiftDays(delta(newSelection.end.getDay()));
+      while(!shiftedDays.isPermittedRange(minimumSize, disableWeekends, outerRange) || shiftedDays.end.compareTo(outerRange.end) > 0) {
+        shiftedDays = shiftedDays.shiftDays(1)
+      }
+      newSelection = shiftedDays
     }
     return newSelection
   }

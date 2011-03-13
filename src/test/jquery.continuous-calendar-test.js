@@ -346,11 +346,18 @@ test("when selecting date", function() {
   equals(startFieldValue(), "10/26/2008", "selected date is set correctly to hidden field without day of week")
 })
 
-module("minimum range with disabled weekends")
+module("minimum range with disabled weekends", {setup: function() {
+  createCalendarContainer()
+  createCalendarFields({startDate: "4/15/2009", endDate: "4/15/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009", minimumRange: 4, disableWeekends: true})
+}})
 
 test("moving and creation has constraints", function() {
-  createCalendarContainer()
-  createCalendarFields({startDate: "4/27/2009", endDate: "4/27/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009", minimumRange: 4, disableWeekends: true})
+  assertHasValues('.selected', [17, 18, 19 , 20], "initial range is in bounds")
+
+})
+
+test("moving and creation has constraints", function() {
+  dragDates(27, 27)
   assertHasValues('.selected', [27,28,29,30],"initial range has minimum required size")
   dragDates(27, 28)
   assertHasValues('.selected', [27,28,29,30], "resizing to smaller that permitted from start is ignored")
@@ -372,6 +379,7 @@ test("moving and creation has constraints", function() {
   assertHasValues('.selected', [30, 1, 2, 3, 4], "prevent selecting range that starts or ends on weekend")
   mouseDownMouseUpOnDate(6)
   assertHasValues('.selected', [5, 6, 7, 8], "selecting range that don't start or end on weekend id is permitted")
+  
 })
 
 test = QUnit.test

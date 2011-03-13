@@ -49,6 +49,14 @@ test("two ranges can do interception", function() {
   equals(range.and(range2).days(), 0)
 })
 
+test("ranges can be asked if it is a subset of another range", function() {
+  ok(range.isInside(range))
+  ok(!range.isInside(range.shiftDays(1)))
+  ok(range.isInside(range.expandDaysTo(7)))
+  ok(!range.expandDaysTo(7).isInside(range))
+})
+
+
 module("date range with time behavior", {
   setup: resetRange
 })
