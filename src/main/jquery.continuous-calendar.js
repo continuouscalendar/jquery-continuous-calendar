@@ -417,7 +417,7 @@
       }
 
       function isPermittedRange(newSelection) {
-        return newSelection.hasValidSize(params.minimumRange) && (!(params.disableWeekends && newSelection.hasEndsOnWeekend()));
+        return newSelection.isPermittedRange(params.minimumRange, params.disableWeekends)
       }
 
       function mouseUp() {

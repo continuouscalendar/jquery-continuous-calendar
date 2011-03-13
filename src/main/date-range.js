@@ -118,6 +118,9 @@ function DateRange(date1, date2) {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat)
     }
   }
+  this.isPermittedRange = function(minimumSize, disableWeekends) {
+    return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend()))
+  }
 }
 DateRange.emptyRange = function() {
   function NullDateRange() {
