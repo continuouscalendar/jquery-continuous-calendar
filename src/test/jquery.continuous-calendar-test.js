@@ -79,7 +79,7 @@ test("if start date not selected show around current day instead", function() {
   equals(cal().find(".date").size(), 7)
   var weekDays = []
   var firstDay = Date.NOW.getFirstDateOfWeek(Date.SUNDAY)
-  for (var i = 0; i < 7; i++) {
+  for(var i = 0; i < 7; i++) {
     weekDays.push(firstDay.plusDays(i).getDate())
   }
   assertHasValues(".date", weekDays)
@@ -161,7 +161,7 @@ function startTimer() {
 }
 
 function stopTimer() {
-  if (typeof timerStart == undefined) {
+  if(typeof timerStart == undefined) {
     return -1
   }
   return new Date().getTime() - timerStart
@@ -172,7 +172,7 @@ test("mouse click and drag highlights range and updates fields", function() {
   startTimer()
   dragDatesSlowly(15, 29)
   var duration = stopTimer()
-  equals(cal().find(".selected").size(), 15, "("+duration+" ms)")
+  equals(cal().find(".selected").size(), 15, "(" + duration + " ms)")
   equals(startFieldValue(), "4/15/2009")
   equals(endFieldValue(), "4/29/2009")
   equals(cal().find(".rangeLengthLabel").text(), "15 Days")
@@ -191,8 +191,8 @@ test("mouse click on month on range calendar selects whole month", function() {
   mouseClick(monthName)
   equals(cal().find(".selected").size(), 31)
   var year = startFieldValue().split('/')[2]
-  equals(startFieldValue(), "5/1/"+year, "start field value")
-  equals(endFieldValue(), "5/31/"+year, "end field value")
+  equals(startFieldValue(), "5/1/" + year, "start field value")
+  equals(endFieldValue(), "5/31/" + year, "end field value")
   equals(cal().find(".rangeLengthLabel").text(), "31 Days")
 })
 
@@ -253,6 +253,7 @@ test("calendar executes callback-function and triggers event when date is picked
   function testFunction() {
     calendarCallBack++
   }
+
   bindCalled = 0
   window.calendarCallBack = 0
   createCalendarFields({startDate: ""}).continuousCalendar({firstDate:"4/26/2009", lastDate:"5/2/2009", callback:testFunction})
@@ -312,14 +313,14 @@ test("month and day names are localizable", function() {
 test("forward drag after one day selection expands selection", function() {
   createRangeCalendarWithFiveWeeks()
   mouseDownMouseUpOnDate(16)
-  assertHasValues('.selected',[16])
+  assertHasValues('.selected', [16])
 
   dragDates(16, 18)
-  assertHasValues('.selected',[16,17,18])
+  assertHasValues('.selected', [16,17,18])
 
   mouseDownMouseUpOnDate(19)
   assertHasValues('.selected', [19])
-  dragDates(19,17)
+  dragDates(19, 17)
   assertHasValues('.selected', [17,18,19])
 })
 
@@ -358,12 +359,12 @@ test("moving and creation has constraints", function() {
 
 test("moving and creation has constraints", function() {
   dragDates(27, 27)
-  assertHasValues('.selected', [27,28,29,30],"initial range has minimum required size")
+  assertHasValues('.selected', [27,28,29,30], "initial range has minimum required size")
   dragDates(27, 28)
   assertHasValues('.selected', [27,28,29,30], "resizing to smaller that permitted from start is ignored")
   dragDates(30, 29)
   assertHasValues('.selected', [27,28,29,30], "resizing to smaller that permitted from end is ignored")
-  dragDates(27,26)
+  dragDates(27, 26)
   assertHasValues('.selected', [27,28,29,30], "resizing to earlier skips weekends")
   dragDates(30, 1)
   assertHasValues('.selected', [27,28,29,30, 1], "resizing to later is allowed if not on weekend")
@@ -379,144 +380,11 @@ test("moving and creation has constraints", function() {
   assertHasValues('.selected', [30, 1, 2, 3, 4], "prevent selecting range that starts or ends on weekend")
   mouseDownMouseUpOnDate(6)
   assertHasValues('.selected', [5, 6, 7, 8], "selecting range that don't start or end on weekend id is permitted")
-  
+
 })
 
+//Help IDE to identify functions
 test = QUnit.test
 module = QUnit.module
 equals = QUnit.equal
 ok = QUnit.ok
-QUnit.begin = function() {
-  $('#tests').hide()
-}
-
-QUnit.done = function() {
-  $('#tests').show()
-}
-
-var moduleName = ""
-QUnit.moduleStart = function(name) {
-  moduleName = name
-}
-
-var testName = ""
-QUnit.testStart = function(name) {
-  testName = name
-}
-var testIndex = 0
-
-function createCalendarContainer() {
-  testIndex++
-  var container = $("<div>").addClass('testCalendarContainer')
-  var index = $('<div></div>').append(testName.name).addClass('testLabel')
-  container.attr("id", calendarId())
-  container.append(index)
-  $("#calendars").append(container)
-}
-
-function cal(delta) {
-  return $("#" + calendarId(delta))
-}
-
-function createCalendarFields(params) {
-  var container = $("#" + calendarId())
-  addFieldIfRequired("startDate")
-  addFieldIfRequired("endDate")
-  function addFieldIfRequired(fieldName) {
-    if (params && params[fieldName] != undefined) {
-      var field = $("<input>").attr("type", "text").addClass(fieldName).val(params[fieldName])
-      container.append(field)
-    }
-  }
-  return container
-}
-
-function mouseClick(selector) {
-  var targetElement = (typeof selector == 'object')? selector : cal().find(selector)
-  mouseEvent('mousedown', targetElement)
-  mouseEvent('mouseup', targetElement)
-}
-
-function mouseEvent(eventType, elements, options) {
-  var event = $.extend({target:elements.get(0)}, options)
-  cal().find('.calendarBody').callEvent(eventType, event)
-}
-
-function clickDateWithShift(date) {
-  var options = {shiftKey:true}
-  mouseDownOnDay(date, options)
-  mouseUpOnDay(date, options)
-}
-
-function mouseDownMouseUpOnDate(date) {
-  mouseDownOnDay(date)
-  mouseUpOnDay(date)
-}
-
-function dragDates(enter, exit) {
-  mouseDownOnDay(enter)
-  mouseUpOnDay(exit)
-}
-
-function dragDatesSlowly(enter, exit) {
-  mouseDownOnDay(enter)
-  for(var day = enter; day < exit; day++) {
-    mouseMoveOnDay(day)
-  }
-  mouseUpOnDay(exit)
-}
-
-
-function createCalendarWithOneWeek() {
-  createCalendarFields({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0})
-}
-
-function createRangeCalendarWithFiveWeeks() {
-  createCalendarFields({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009"})
-}
-
-function createBigCalendar() {
-  var todayText = Date.NOW.dateFormat(DATE_LOCALE_EN.shortDateFormat)
-  createCalendarFields({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30})
-}
-
-function createBigCalendarForSingleDate() {
-  createCalendarFields({startDate: ""}).continuousCalendar({weeksBefore: 20,weeksAfter: 20})
-}
-
-function createCalendarFromJanuary() {
-  createCalendarFields({startDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"})
-}
-
-function createPopupCalendar() {
-  createCalendarFields({startDate: "4/29/2009"}).continuousCalendar({isPopup: true})
-}
-
-function clickOnDate(date) {
-  cal().find(".date:contains(" + date + ")").click()
-}
-
-function assertSelectedDate(expectedDate) {
-  equals(cal().find(".selected").text(), expectedDate)
-}
-
-function mouseEventOnDay(eventType, date, options) {mouseEvent(eventType, cal().find(".date").withText(date), options);}
-function mouseDownOnDay(date) { mouseEventOnDay("mousedown", date, arguments[1]);}
-function mouseMoveOnDay(date) {mouseEventOnDay("mouseover", date);}
-function mouseUpOnDay(date, options) {
-  mouseEventOnDay("mouseover", date, options)
-  mouseEventOnDay("mouseup", date, options)
-}
-function calendarId(delta) {return "continuousCalendar" + (testIndex - (delta || 0));}
-function startFieldValue() {return cal().find("input.startDate").val();}
-function startLabelValue() {return cal().find("span.startDateLabel").text();}
-function endFieldValue() {return cal().find("input.endDate").val();}
-
-$.fn.callEvent = function(eventType, eventObj) {
-  return this.each(function() {
-    var eventFunctions = $(this).data('events')[eventType]
-    for (var i in eventFunctions) {
-      eventFunctions[i].handler.call($(this), eventObj)
-    }
-  })
-};

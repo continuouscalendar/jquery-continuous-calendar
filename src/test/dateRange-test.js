@@ -11,9 +11,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-var start
-var end
-var range
 
 module("date range default behavior", {
   setup: resetRange
@@ -114,7 +111,7 @@ test("invalid time will make range invalid while keeping date information", func
 
   range.setTimes('00', '25')
   ok(!range.isValid())
-  
+
 })
 
 test("different time formats are accepted", function() {
@@ -145,7 +142,7 @@ test("minutes are rounded to 2 digits", function() {
 })
 
 function assertHasCorrectHoursAndMinutes(hours, minutes) {
-  ok(range.isValid(),"valid range")
+  ok(range.isValid(), "valid range")
   equals(range.hours(), hours, "correct hours")
   equals(range.minutes(), minutes, "correct minutes")
 }
