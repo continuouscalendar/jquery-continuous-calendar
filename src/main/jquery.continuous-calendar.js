@@ -428,7 +428,7 @@
 
       function drawSelection() {
         selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends)
-        
+
         drawSelectionBetweenDates(selection)
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
       }

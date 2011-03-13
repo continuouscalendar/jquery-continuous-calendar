@@ -13,7 +13,7 @@
  */
 function DateRange(date1, date2) {
   var hasTimes = false
-  if (!date1 || !date2) {
+  if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
   this.start = date1.compareTo(date2) > 0 ? date2 : date1
@@ -22,12 +22,20 @@ function DateRange(date1, date2) {
   var hours
   var minutes
   var valid = true
-  this.hours = function() {return hours;}
-  this.minutes = function() {return minutes;}
-  this.hasDate = function(date) {return date.isBetweenDates(this.start, this.end);}
-  this.isValid = function() {return valid && this.end.getTime() - this.start.getTime() >= 0;}
+  this.hours = function() {
+    return hours;
+  }
+  this.minutes = function() {
+    return minutes;
+  }
+  this.hasDate = function(date) {
+    return date.isBetweenDates(this.start, this.end);
+  }
+  this.isValid = function() {
+    return valid && this.end.getTime() - this.start.getTime() >= 0;
+  }
   this.days = function() {
-    if (hasTimes) {
+    if(hasTimes) {
       return days
     } else {
       return Math.round(this.start.distanceInDays(this.end) + 1)
@@ -39,10 +47,10 @@ function DateRange(date1, date2) {
   this.expandTo = function(date) {
     var newStart = this.start.clone()
     var newEnd = this.end.clone()
-    if (date.compareTo(this.start) < 0) {
+    if(date.compareTo(this.start) < 0) {
       newStart = date
     } else {
-      if (date.compareTo(this.end) > 0) {
+      if(date.compareTo(this.end) > 0) {
         newEnd = date
       }
     }
@@ -50,7 +58,7 @@ function DateRange(date1, date2) {
   }
 
   this.expandDaysTo = function(days) {
-    return new DateRange(this.start, this.start.plusDays(days-1))
+    return new DateRange(this.start, this.start.plusDays(days - 1))
   }
 
   this.hasValidSize = function(minimumDays) {
@@ -64,7 +72,7 @@ function DateRange(date1, date2) {
   this.and = function(that) {
     var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start
     var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end
-    if (latestStart.compareTo(earliestEnd) < 0) {
+    if(latestStart.compareTo(earliestEnd) < 0) {
       return new DateRange(latestStart, earliestEnd)
     } else {
       return DateRange.emptyRange()
@@ -78,7 +86,7 @@ function DateRange(date1, date2) {
   this.setTimes = function(startTimeStr, endTimeStr) {
     var parsedStartTime = Date.parseTime(startTimeStr)
     var parsedEndTime = Date.parseTime(endTimeStr)
-    if (parsedStartTime && parsedEndTime) {
+    if(parsedStartTime && parsedEndTime) {
       valid = true
       hasTimes = true
       this.start = dateWithTime(this.start, parsedStartTime)
@@ -90,7 +98,7 @@ function DateRange(date1, date2) {
     return valid
   }
   function setDaysHoursAndMinutes() {
-    if (hasTimes) {
+    if(hasTimes) {
       var ms = parseInt((this.end.getTime() - this.start.getTime()))
       days = parseInt(ms / Date.DAY)
       ms = ms - (days * Date.DAY)
@@ -107,12 +115,13 @@ function DateRange(date1, date2) {
     date.setMilliseconds(0)
     return date
   }
+
   this.clone = function() {
     return new DateRange(this.start, this.end)
   }
 
   this.toString = function(locale) {
-    if (hasTimes) {
+    if(hasTimes) {
       return  Date.daysLabel(this.days()) + ' ' + Date.hoursLabel(this.hours(), this.minutes())
     } else {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat)
@@ -126,10 +135,17 @@ DateRange.emptyRange = function() {
   function NullDateRange() {
     this.start = null
     this.end = null
-    this.days = function() {return 0;}
-    this.shiftDays = function() {}
-    this.hasDate = function() {return false;}
-    this.clone = function() {return DateRange.emptyRange()}
+    this.days = function() {
+      return 0;
+    }
+    this.shiftDays = function() {
+    }
+    this.hasDate = function() {
+      return false;
+    }
+    this.clone = function() {
+      return DateRange.emptyRange()
+    }
   }
 
   return new NullDateRange()
