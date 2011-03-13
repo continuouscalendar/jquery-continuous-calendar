@@ -96,7 +96,7 @@ window.DATE_LOCALE_AU = {
       'Friday',
       'Saturday']
     Date.daysLabel = function(days) {
-      return days + ' ' + (days == '1' ? 'Day' : 'Days');
+      return (days - 1) + ' Days'
     }
     Date.hoursLabel = function(hours, minutes) {
       var hoursAndMinutes = Date.hoursAndMinutes(hours, minutes)

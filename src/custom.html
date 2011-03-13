@@ -42,9 +42,9 @@
       margin-bottom:5px;
       overflow:hidden;
     }
-    .continuousCalendar td.rangeStart {background:#0a0}
+    .continuousCalendar td.rangeStart {background:#0f0;color:inherit;}
     .continuousCalendar td.rangeEnd {background:#a00}
-    .startDateLabel{color:#0a0;}
+    .startDateLabel{color:#0c0;}
     .endDateLabel{color:#a00}
     .continuousCalendar .range .week {color: transparent;cursor:default;}
     .continuousCalendar .range.calendarBody .month {text-decoration:none; cursor:default;}
@@ -76,7 +76,7 @@
       </div>
     </div>
     <div class="continuousCalendar"></div>
-    
+
   </div>
 </form>
 
@@ -90,7 +90,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../build/jquery.continuous-calendar-latest.js" charset="UTF-8"></script>
 <script type="text/javascript" language="JavaScript">
-  $("#timeCalendar").continuousCalendar({firstDate: "today",weeksAfter: 30, selectToday: true, minimumRange: 4,disableWeekends:true,locale: DATE_LOCALE_AU});
+  $("#timeCalendar").continuousCalendar({firstDate: "today",weeksAfter: 30, selectToday: true, minimumRange: 5,disableWeekends:true,locale: DATE_LOCALE_AU});
 </script>
 </body>
 </html>
