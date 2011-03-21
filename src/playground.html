@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 ==============================================================================
   Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,92 +15,36 @@
  -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Examples of using continuous calendar</title>
+  <title>Continuous Calendar playground</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <link rel="stylesheet" href="main/jquery.continuous-calendar.css" type="text/css" media="all"/>
-
   <style type="text/css" media="all">
-    body {
-      font-family: "Arial", serif;
-      font-size: 90%;
-    }
-
-    h1 {
-      font-size: 120%;
-    }
-
-    h2 {
-      font-size: 100%;
-    }
-
-    ul {
-      margin: 0
-    }
-
-    fieldset {
-      border: none
-    }
-
-    fieldset .col {
-      float: left;
-      margin-right: 50px;
-
-    }
-
-    fieldset .row {
-      clear: both;
-      overflow: hidden;
-      margin-bottom: 5px;
-      display: block;
-    }
-
-    .row .date {
-      width: 80px;
-    }
-
-    .row .number {
-      width: 30px;
-    }
-
-    .row .label {
-      display: block;
-      width: 160px;
-      float: left;
-    }
-
-    .row input[type=text] {
-      display: block;
-      float: left;
-      margin-right: 5px;
-    }
-
-    .row input[type=checkbox],
-    .row input[type=radio] {
-      float: left;
-    }
-
-    #create {
-      margin-top: 10px;
-    }
-
-    .calendarScrollContent {
-      height: 200px;
-    }
-
-    .continuousCalendarContainer {
-      float: left;
-      margin: 5px;
-    }
+    body { font-family: "Arial", serif; font-size: 90%; }
+    h1 { font-size: 120%; }
+    h2 { font-size: 100%; }
+    ul { margin: 0 }
+    fieldset { border: none }
+    fieldset .col { float: left; margin-right: 50px; }
+    fieldset .row { clear: both; overflow: hidden; margin-bottom: 5px; display: block; }
+    .row .date { width: 80px; }
+    .row .number { width: 30px; }
+    .row .label { display: block; width: 160px; float: left; }
+    .row input[type=text] { display: block; float: left; margin-right: 5px; }
+    .row input[type=checkbox], .row input[type=radio] { float: left; }
+    #create { margin-top: 10px; }
+    .calendarScrollContent { height: 200px; }
+    .continuousCalendarContainer { float: left; margin: 5px; }
+    .hint {font-size:80%;color:#666;}
   </style>
   <style type="text/css" media="print">
-    fieldset {
-      display: none;
-    }
+    fieldset { display: none; }
   </style>
 </head>
 <body>
 <h1>Try out your self!</h1>
-
+<ul class="hint">
+  <li>Date format should match locale</li>
+</ul>
 <fieldset>
   <div class="col">
     <div class="row">
@@ -127,12 +68,12 @@
   </div>
   <div class="col">
     <label>Locale:</label>
-    <label class="row"><input type="radio" name="locale" value="EN" id="EN" checked="checked"/><span class="label">DATE_LOCALE_EN,</span></label>
-    <label class="row"><input type="radio" name="locale" value="FI" id="FI"/><span class="label">DATE_LOCALE_FI,</span></label>
-    <label class="row"><input type="radio" name="locale" value="AU" id="AU"/><span class="label">DATE_LOCALE_AU,</span></label>
+    <label class="row"><input type="radio" name="locale" value="DATE_LOCALE_EN" id="EN" checked="checked"/><span class="label">DATE_LOCALE_EN</span></label>
+    <label class="row"><input type="radio" name="locale" value="DATE_LOCALE_FI" id="FI"/><span class="label">DATE_LOCALE_FI</span></label>
+    <label class="row"><input type="radio" name="locale" value="DATE_LOCALE_AU" id="AU"/><span class="label">DATE_LOCALE_AU</span></label>
   </div>
   <ul class="col">
-    <div>Other options</div>
+    <div>Examples of other options</div>
     <li><strong>startField</strong>: $('input.startDate', this)</li>
     <li><strong>endField</strong>: $('input.endDate', this)</li>
     <li><strong>callback</strong>: function() {}</li>
@@ -144,7 +85,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../build/jquery.continuous-calendar-latest.js" charset="UTF-8"></script>
 <script type="text/javascript">
-  var counter = 0
+  counter = 0
   $('#create').click(function() {
     var containerClass = 'container' + counter;
     var container = $('<div>').addClass(containerClass)
@@ -152,14 +93,15 @@
       container.append('<input type="hidden" class="startDate" /><input type="hidden" class="endDate"/>')
     }
     $('body').append(container)
-    container.continuousCalendar({})
+    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate' ]
+    var options = {}
+    for(var i = 0; i < optionsList.length; i++)
+      options[optionsList[i]] = valueOf(optionsList[i])
+    options.locale = window[$('[name=locale]').filter(':checked').val()]
+    container.continuousCalendar(options)
     function valueOf(id) {
       var elem = $('#' + id)
-      if(elem.attr('type') == 'checkbox') {
-        return elem.filter(':checked').length > 0
-      } else {
-        return elem.val()
-      }
+      return elem.attr('type') == 'checkbox' ? elem.filter(':checked').length > 0 : elem.val();
     }
     return false
   })
