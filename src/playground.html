@@ -93,7 +93,7 @@
       container.append('<input type="hidden" class="startDate" /><input type="hidden" class="endDate"/>')
     }
     $('body').append(container)
-    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate' ]
+    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange' ]
     var options = {}
     for(var i = 0; i < optionsList.length; i++)
       options[optionsList[i]] = valueOf(optionsList[i])
