@@ -21,15 +21,25 @@
   <title>Examples of using continuous calendar</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <link rel="stylesheet" href="main/jquery.continuous-calendar.css" type="text/css" media="all"/>
+
   <style type="text/css" media="all">
     body {
       font-family: "Arial", serif;
       font-size: 90%;
     }
 
-    h1 {font-size:120%;}
-    h2 {font-size:100%;}
-    ul {margin:0}
+    h1 {
+      font-size: 120%;
+    }
+
+    h2 {
+      font-size: 100%;
+    }
+
+    ul {
+      margin: 0
+    }
+
     fieldset {
       border: none
     }
@@ -71,7 +81,24 @@
     .row input[type=radio] {
       float: left;
     }
-    #create {margin-top:10px;}
+
+    #create {
+      margin-top: 10px;
+    }
+
+    .calendarScrollContent {
+      height: 200px;
+    }
+
+    .continuousCalendarContainer {
+      float: left;
+      margin: 5px;
+    }
+  </style>
+  <style type="text/css" media="print">
+    fieldset {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -96,6 +123,7 @@
     <label class="row"><input type="checkbox" value="" id="isPopup"/><span class="label">isPopup</span></label>
     <label class="row"><input type="checkbox" value="" id="selectToday"/><span class="label">selectToday</span></label>
     <label class="row"><input type="checkbox" value="" id="disableWeekends"/><span class="label">disableWeekends</span></label>
+    <label class="row"><input type="checkbox" value="" id="isRange"/><span class="label">is a range</span></label>
   </div>
   <div class="col">
     <label>Locale:</label>
@@ -113,18 +141,28 @@
   <button id="create">Create</button>
 </fieldset>
 
-<div id="singleDate1">
-  <input type="hidden" class="startDate" name="singleDate1" value="5/15/2009" disabled="disabled"/>
-</div>
-
-<div id="range1">
-  <input type="hidden" class="startDate" name="range1_start" disabled="disabled"/>
-  <input type="hidden" class="endDate" name="range1_end" disabled="disabled"/>
-</div>
-<h2>Range select with initial day</h2>
-
-
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../build/jquery.continuous-calendar-latest.js" charset="UTF-8"></script>
+<script type="text/javascript">
+  var counter = 0
+  $('#create').click(function() {
+    var containerClass = 'container' + counter;
+    var container = $('<div>').addClass(containerClass)
+    if(valueOf('isRange')) {
+      container.append('<input type="hidden" class="startDate" /><input type="hidden" class="endDate"/>')
+    }
+    $('body').append(container)
+    container.continuousCalendar({})
+    function valueOf(id) {
+      var elem = $('#' + id)
+      if(elem.attr('type') == 'checkbox') {
+        return elem.filter(':checked').length > 0
+      } else {
+        return elem.val()
+      }
+    }
+    return false
+  })
+</script>
 </body>
 </html>
