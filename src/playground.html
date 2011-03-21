@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+==============================================================================
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  use this file except in compliance with the License. You may obtain a copy of
+  the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  License for the specific language governing permissions and limitations under
+  the License.
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Examples of using continuous calendar</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link rel="stylesheet" href="main/jquery.continuous-calendar.css" type="text/css" media="all"/>
+  <style type="text/css" media="all">
+    body {
+      font-family: "Arial", serif;
+      font-size: 90%;
+    }
+
+    h1 {font-size:120%;}
+    h2 {font-size:100%;}
+    ul {margin:0}
+    fieldset {
+      border: none
+    }
+
+    fieldset .col {
+      float: left;
+      margin-right: 50px;
+
+    }
+
+    fieldset .row {
+      clear: both;
+      overflow: hidden;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .row .date {
+      width: 80px;
+    }
+
+    .row .number {
+      width: 30px;
+    }
+
+    .row .label {
+      display: block;
+      width: 160px;
+      float: left;
+    }
+
+    .row input[type=text] {
+      display: block;
+      float: left;
+      margin-right: 5px;
+    }
+
+    .row input[type=checkbox],
+    .row input[type=radio] {
+      float: left;
+    }
+    #create {margin-top:10px;}
+  </style>
+</head>
+<body>
+<h1>Try out your self!</h1>
+
+<fieldset>
+  <div class="col">
+    <div class="row">
+      <div class="label"><label for="weeksBefore">weeksBefore</label> /
+        <label for="firstDate">firstDate</label></div>
+      <input type="text" id="weeksBefore" class="number"/>
+      <input type="text" id="firstDate" class="date"/>
+    </div>
+    <div class="row">
+      <div class="label">
+        <label for="weeksAfter">weeksAfter</label> /
+        <label for="lastDate">lastDate</label></div>
+      <input type="text" id="weeksAfter" class="number"/>
+      <input type="text" id="lastDate" class="date"/>
+    </div>
+    <label class="row"><span class="label">minimumRange</span><input type="text" id="minimumRange" value="-1" class="number"/></label>
+    <label class="row"><input type="checkbox" value="" id="isPopup"/><span class="label">isPopup</span></label>
+    <label class="row"><input type="checkbox" value="" id="selectToday"/><span class="label">selectToday</span></label>
+    <label class="row"><input type="checkbox" value="" id="disableWeekends"/><span class="label">disableWeekends</span></label>
+  </div>
+  <div class="col">
+    <label>Locale:</label>
+    <label class="row"><input type="radio" name="locale" value="EN" id="EN" checked="checked"/><span class="label">DATE_LOCALE_EN,</span></label>
+    <label class="row"><input type="radio" name="locale" value="FI" id="FI"/><span class="label">DATE_LOCALE_FI,</span></label>
+    <label class="row"><input type="radio" name="locale" value="AU" id="AU"/><span class="label">DATE_LOCALE_AU,</span></label>
+  </div>
+  <ul class="col">
+    <div>Other options</div>
+    <li><strong>startField</strong>: $('input.startDate', this)</li>
+    <li><strong>endField</strong>: $('input.endDate', this)</li>
+    <li><strong>callback</strong>: function() {}</li>
+  </ul>
+  <div style="clear:both;"></div>
+  <button id="create">Create</button>
+</fieldset>
+
+<div id="singleDate1">
+  <input type="hidden" class="startDate" name="singleDate1" value="5/15/2009" disabled="disabled"/>
+</div>
+
+<div id="range1">
+  <input type="hidden" class="startDate" name="range1_start" disabled="disabled"/>
+  <input type="hidden" class="endDate" name="range1_end" disabled="disabled"/>
+</div>
+<h2>Range select with initial day</h2>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../build/jquery.continuous-calendar-latest.js" charset="UTF-8"></script>
+</body>
+</html>
