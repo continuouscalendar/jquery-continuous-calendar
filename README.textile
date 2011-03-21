@@ -13,7 +13,8 @@ Continuous calendar is a JQuery plugin for single date and range selections with
 
 h1. Live demo
 
-"examples":http://reaktor.github.com/jquery-continuous-calendar/src/example.html
+"Examples":http://reaktor.github.com/jquery-continuous-calendar/src/example.html
+"Playground":http://reaktor.github.com/jquery-continuous-calendar/src/playground.html
 
 h1. QUnit tests
 
