@@ -1005,7 +1005,6 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         yearTitle = $('th.month', headerTable)
         scrollContent.scroll(setYearLabel)
         scrollToSelection()
-		setYearLabel()
         container.data('calendarRange', selection)
         executeCallback()
       }
@@ -1114,10 +1113,11 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         if(selectionStartOrToday) {
           scrollContent.scrollTop(selectionStartOrToday.offsetTop - (scrollContent.height() - selectionStartOrToday.offsetHeight) / 2)
         }
+		setYearLabel()
       }
 
       function setYearLabel() {
-        var scrollContent = $('.calendarScrollContent', container).get(0)
+        var scrollContent = this
         var table = $('table', scrollContent).get(0)
         var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight)
         var date = table.rows[rowNumber].cells[2].date

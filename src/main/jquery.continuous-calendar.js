@@ -94,6 +94,7 @@
         yearTitle = $('th.month', headerTable)
         scrollContent.scroll(setYearLabel)
         scrollToSelection()
+		setYearLabel()
         container.data('calendarRange', selection)
         executeCallback()
       }
@@ -205,7 +206,7 @@
       }
 
       function setYearLabel() {
-        var scrollContent = this
+        var scrollContent = $('.calendarScrollContent', container).get(0)
         var table = $('table', scrollContent).get(0)
         var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight)
         var date = table.rows[rowNumber].cells[2].date
