@@ -16,7 +16,7 @@ module("date range default behavior", {
   setup: resetRange
 })
 
-test("creates dange of three days", function() {
+test("creates range of three days", function() {
   equals(range.start, start)
   equals(range.end, end)
   equals(range.days(), 3)
@@ -46,13 +46,76 @@ test("two ranges can do interception", function() {
   equals(range.and(range2).days(), 0)
 })
 
-test("ranges can be asked if it is a subset of another range", function() {
+test("range can be asked if it is a subset of another range", function() {
   ok(range.isInside(range))
   ok(!range.isInside(range.shiftDays(1)))
   ok(range.isInside(range.expandDaysTo(7)))
   ok(!range.expandDaysTo(7).isInside(range))
 })
 
+module("moving date range within outer range", {
+  setup: resetOuterRange
+})
+
+test("range already inside outer range is not moved", function() {
+  var range1 = new DateRange(new Date('04/04/2011'), new Date('04/10/2011'))
+  var range2 = range1.shiftInside(outerRange)
+  ok(range1.isInside(outerRange) && range2.isInside(outerRange))
+  equals(range1.start.getDate(), range2.start.getDate())
+  equals(range1.end.getDate(), range2.end.getDate())
+})
+
+test("range can be moved forward inside outer range", function() {
+  var range1 = new DateRange(new Date('03/15/2011'), new Date('03/21/2011'))
+  var range2 = range1.shiftInside(outerRange)
+  ok(!range1.isInside(outerRange) && range2.isInside(outerRange))
+  equals(range2.start.getDate(), 28)
+  equals(range2.end.getDate(), 3)
+})
+
+test("range can be moved backward inside outer range", function() {
+  var range1 = new DateRange(new Date('04/28/2011'), new Date('05/04/2011'))
+  var range2 = range1.shiftInside(outerRange)
+  ok(!range1.isInside(outerRange) && range2.isInside(outerRange))
+  equals(range2.start.getDate(), 25)
+  equals(range2.end.getDate(), 1)
+})
+
+test("range longer than outer range cannot be moved", function() {
+  var range1 = new DateRange(outerRange.start.plusDays(-1), outerRange.end.plusDays(1))
+  var range2 = range1.shiftInside(outerRange)
+  equals(range2.days(), 0)
+})
+
+module("date range with minimum size within outer range", {
+  setup: resetOuterRange
+})
+
+test("range can be requested near the beginning of outer range", function() {
+  var oldRange = new DateRange(new Date('03/28/2011'), new Date('04/03/2011'))
+  var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
+  equals(newRange.days(), 7)
+  equals(newRange.start.getDate(), 29)
+  equals(newRange.end.getDate(), 4)
+})
+
+test("range can be requested near the end of outer range", function() {
+  var oldRange = new DateRange(new Date('04/25/2011'), new Date('04/25/2011'))
+  var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, false, outerRange)
+  equals(newRange.days(), 7)
+})
+
+test("range cannot be requested to be outside outer range", function() {
+  var oldRange = new DateRange(new Date('04/26/2011'), new Date('04/26/2011'))
+  var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, false, outerRange)
+  equals(newRange.days(), 0)
+})
+
+test("range may not be found near the end of outer range due to weekends", function() {
+  var oldRange = new DateRange(new Date('04/24/2011'), new Date('04/24/2011'))
+  var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
+  equals(newRange.days(), 0)
+})
 
 module("date range with time behavior", {
   setup: resetRange
@@ -150,4 +213,9 @@ function resetRange() {
   start = new Date('09/10/2009')
   end = new Date('09/12/2009')
   range = new DateRange(end, start)
+}
+function resetOuterRange() {
+  start = new Date('03/28/2011')
+  end = new Date('05/01/2011')
+  outerRange = new DateRange(start, end)
 }

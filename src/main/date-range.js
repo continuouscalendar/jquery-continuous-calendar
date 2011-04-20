@@ -131,8 +131,24 @@ function DateRange(date1, date2) {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat)
     }
   }
+
   this.isPermittedRange = function(minimumSize, disableWeekends, outerRange) {
     return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend())) && this.isInside(outerRange)
+  }
+
+  this.shiftInside = function(outerRange) {
+    if(this.days() > outerRange.days()) {
+      return DateRange.emptyRange()
+    }
+    var distanceToOuterRangeStart = this.start.distanceInDays(outerRange.start)
+    var distanceToOuterRangeEnd = this.end.distanceInDays(outerRange.end)
+    if(distanceToOuterRangeStart > 0) {
+      return this.shiftDays(distanceToOuterRangeStart)
+    }
+    if(distanceToOuterRangeEnd < 0) {
+      return this.shiftDays(distanceToOuterRangeEnd)
+    }
+    return this
   }
 }
 DateRange.emptyRange = function() {
@@ -159,15 +175,21 @@ DateRange.parse = function(dateStr1, dateStr2, dateFormat) {
 }
 DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends, outerRange) {
   if(isTooSmallSelection()) {
-    var newSelection = oldRange.expandDaysTo(minimumSize)
-    if(disableWeekends && newSelection.hasEndsOnWeekend()) {
-      var shiftedDays = newSelection.shiftDays(delta(newSelection.end.getDay()));
+    var newRange = oldRange.expandDaysTo(minimumSize)
+    if(disableWeekends && newRange.hasEndsOnWeekend()) {
+      var shiftedDays = newRange.shiftDays(delta(newRange.end.getDay())).shiftInside(outerRange)
       while(!shiftedDays.isPermittedRange(minimumSize, disableWeekends, outerRange) || shiftedDays.end.compareTo(outerRange.end) > 0) {
+        if (!shiftedDays.isPermittedRange(minimumSize, false, outerRange)) {
+          return DateRange.emptyRange()
+        }
         shiftedDays = shiftedDays.shiftDays(1)
       }
-      newSelection = shiftedDays
+      newRange = shiftedDays
     }
-    return newSelection
+    if(!newRange.isPermittedRange(minimumSize, false, outerRange)) {
+      return DateRange.emptyRange()
+    }
+    return newRange
   }
   return oldRange
 
