@@ -156,6 +156,16 @@ test("week number click selects whole week", function () {
   equals(cal().find(".rangeLengthLabel").text(), "7 Days")
 })
 
+test("week number click selects whole week without weekend", function () {
+  createRangeCalendarWithFiveWeeksAndDisabledWeekends()
+  var weekNumber = cal().find(".week").withText(18)
+  mouseClick(weekNumber)
+  assertHasValues(".selected", [4,5,6,7,8])
+  equals(startFieldValue(), "5/4/2009")
+  equals(endFieldValue(), "5/8/2009")
+  equals(cal().find(".rangeLengthLabel").text(), "5 Days")
+})
+
 function startTimer() {
   timerStart = new Date().getTime()
 }

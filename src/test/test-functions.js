@@ -102,6 +102,10 @@ function createRangeCalendarWithFiveWeeks() {
   createCalendarFields({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009"})
 }
 
+function createRangeCalendarWithFiveWeeksAndDisabledWeekends() {
+  createCalendarFields({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({firstDate: "4/15/2009",lastDate:"5/12/2009",disableWeekends:true})
+}
+
 function createBigCalendar() {
   var todayText = Date.NOW.dateFormat(DATE_LOCALE_EN.shortDateFormat)
   createCalendarFields({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30})

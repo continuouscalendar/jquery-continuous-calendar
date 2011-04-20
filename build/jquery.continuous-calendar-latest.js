@@ -25,6 +25,7 @@ Date.HOUR = 60 * Date.MINUTE
 Date.DAY = 24 * Date.HOUR
 Date.WEEK = 7 * Date.DAY
 Date.MONDAY = 1
+Date.FRIDAY = 5
 Date.SUNDAY = 0
 Date.NOW = new Date()
 Date.getDaysInMonth = function(year, month) {
@@ -198,6 +199,10 @@ Date.prototype.distanceInDays = function(date) {
   var first = parseInt(this.getTime() / Date.DAY, 10)
   var last = parseInt(date.getTime() / Date.DAY, 10)
   return (last - first)
+}
+
+Date.prototype.withWeekday = function(weekday) {
+  return this.plusDays(weekday - this.getDay())
 }
 
 /*
@@ -1284,8 +1289,8 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
           var elem = event.target
           if(isWeekCell(elem)) {
             status = Status.NONE
-            var dayInWeek = date($(elem).siblings('.date'))
-            return new DateRange(dayInWeek, dayInWeek.plusDays(6))
+            var firstDayOfWeek = date($(elem).siblings('.date'))
+            return instantSelectWeek(firstDayOfWeek)
           } else if(isMonthCell(elem)) {
             status = Status.NONE
             var dayInMonth = date($(elem).siblings('.date'))
@@ -1298,6 +1303,16 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
             }
           }
           return selection
+        }
+
+        function instantSelectWeek(firstDayOfWeek) {
+          if(params.disableWeekends) {
+            var monday = firstDayOfWeek.withWeekday(Date.MONDAY)
+            var friday = firstDayOfWeek.withWeekday(Date.FRIDAY)
+            return new DateRange(monday, friday)
+          } else {
+            return new DateRange(firstDayOfWeek, firstDayOfWeek.plusDays(6))
+          }
         }
       }
 

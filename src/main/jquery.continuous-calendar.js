@@ -373,8 +373,8 @@
           var elem = event.target
           if(isWeekCell(elem)) {
             status = Status.NONE
-            var dayInWeek = date($(elem).siblings('.date'))
-            return new DateRange(dayInWeek, dayInWeek.plusDays(6))
+            var firstDayOfWeek = date($(elem).siblings('.date'))
+            return instantSelectWeek(firstDayOfWeek)
           } else if(isMonthCell(elem)) {
             status = Status.NONE
             var dayInMonth = date($(elem).siblings('.date'))
@@ -387,6 +387,16 @@
             }
           }
           return selection
+        }
+
+        function instantSelectWeek(firstDayOfWeek) {
+          if(params.disableWeekends) {
+            var monday = firstDayOfWeek.withWeekday(Date.MONDAY)
+            var friday = firstDayOfWeek.withWeekday(Date.FRIDAY)
+            return new DateRange(monday, friday)
+          } else {
+            return new DateRange(firstDayOfWeek, firstDayOfWeek.plusDays(6))
+          }
         }
       }
 
