@@ -216,7 +216,7 @@ test("mouse click on month on range calendar selects whole month", function() {
   equals(cal().find(".rangeLengthLabel").text(), "31 Days")
 })
 
-test("mouse click on month in singe date calendar does nothing", function() {
+test("mouse click on month in single date calendar does nothing", function() {
   createBigCalendarForSingleDate()
   cal().find(".month").withText("May").click()
   equals(cal().find(".selected").size(), 0)
