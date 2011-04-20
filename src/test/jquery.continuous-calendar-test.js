@@ -20,7 +20,7 @@ test("module init", function() {
 
 
 test("shows year", function() {
-  assertHasValues(".continuousCalendar thead th.month", [Date.NOW.getFullYear()])
+  assertHasValues(".continuousCalendar thead th.month", ["2008"])
 })
 
 test("shows week days", function() {
