@@ -1005,7 +1005,8 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         yearTitle = $('th.month', headerTable)
         scrollContent.scroll(setYearLabel)
         scrollToSelection()
-		setYearLabel()
+        if(!params.isPopup)
+          setYearLabel()
         container.data('calendarRange', selection)
         executeCallback()
       }
@@ -1151,6 +1152,7 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         calendarContainer.toggle()
         if(beforeFirstOpening) {
           calculateCellHeight()
+          setYearLabel()
           beforeFirstOpening = false
         }
         scrollToSelection()

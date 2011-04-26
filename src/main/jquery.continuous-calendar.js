@@ -94,7 +94,8 @@
         yearTitle = $('th.month', headerTable)
         scrollContent.scroll(setYearLabel)
         scrollToSelection()
-		setYearLabel()
+        if(!params.isPopup)
+          setYearLabel()
         container.data('calendarRange', selection)
         executeCallback()
       }
@@ -240,6 +241,7 @@
         calendarContainer.toggle()
         if(beforeFirstOpening) {
           calculateCellHeight()
+          setYearLabel()
           beforeFirstOpening = false
         }
         scrollToSelection()

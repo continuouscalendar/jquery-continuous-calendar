@@ -334,6 +334,7 @@ test("", function() {
   equals(startLabelValue(), "Wed 4/29/2009", "Initially selected date is shown correctly")
   cal().find(".calendarIcon").click()
   ok(cal().find('.continuousCalendar:visible').exists(), "calendar pops up on click")
+  assertHasValues(".continuousCalendar thead th.month", ["2008"], "month is shown correctly")
 })
 
 test("when selecting date", function() {
