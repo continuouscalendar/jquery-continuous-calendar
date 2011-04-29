@@ -971,7 +971,8 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         selectToday: false,
         locale: DATE_LOCALE_EN,
         disableWeekends: false,
-        minimumRange:-1,
+        minimumRange: -1,
+        selectWeek: false,
         callback: function() {
         }
       }
@@ -1132,7 +1133,7 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
 
       function initRangeCalendarEvents(container, bodyTable) {
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
-        bodyTable.addClass('freeRange')
+        bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
         disableTextSelection(bodyTable.get(0))
         setRangeLabels()
@@ -1305,14 +1306,18 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         }
 
         function isInstantSelection(event) {
-          return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey
+          if(params.selectWeek) {
+            return enabledCell(event.target) || isWeekCell(event.target)
+          } else {
+            return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey
+          }
         }
 
         function instantSelection(event) {
           var elem = event.target
-          if(isWeekCell(elem)) {
+          if((params.selectWeek && enabledCell(elem)) || isWeekCell(elem)) {
             status = Status.NONE
-            var firstDayOfWeek = date($(elem).siblings('.date'))
+            var firstDayOfWeek = date($(elem).parent().children('.date'))
             return instantSelectWeek(firstDayOfWeek)
           } else if(isMonthCell(elem)) {
             status = Status.NONE

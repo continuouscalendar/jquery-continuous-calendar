@@ -401,7 +401,28 @@ test("moving and creation has constraints", function() {
   assertHasValues('.selected', [30, 1, 2, 3, 4], "prevent selecting range that starts or ends on weekend")
   mouseDownMouseUpOnDate(6)
   assertHasValues('.selected', [5, 6, 7, 8], "selecting range that don't start or end on weekend id is permitted")
+})
 
+module("calendar week selection", {
+  setup: createCalendarContainer
+})
+
+test("date click selects whole week", function() {
+  createRangeCalendarWithFiveWeeksAndSelectWeek()
+  mouseClick(cal().find(".date").withText(21).first())
+  assertHasValues(".selected", [19, 20, 21, 22, 23, 24, 25])
+  equals(startFieldValue(), "4/19/2009")
+  equals(endFieldValue(), "4/25/2009")
+  equals(cal().find(".rangeLengthLabel").text(), "7 Days")
+})
+
+test("date click selects whole week within calendar range", function() {
+  createRangeCalendarWithFiveWeeksAndSelectWeek()
+  mouseClick(cal().find(".date").withText(15).first())
+  assertHasValues(".selected", [15, 16, 17, 18])
+  equals(startFieldValue(), "4/15/2009")
+  equals(endFieldValue(), "4/18/2009")
+  equals(cal().find(".rangeLengthLabel").text(), "4 Days")
 })
 
 //Help IDE to identify functions

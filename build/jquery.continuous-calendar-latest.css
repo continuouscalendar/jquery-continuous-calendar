@@ -113,7 +113,8 @@
 }
 
 .continuousCalendar .freeRange .week,
-.continuousCalendar .freeRange .month {
+.continuousCalendar .freeRange .month,
+.continuousCalendar .weekRange .week {
   cursor: pointer;
 }
 
@@ -151,7 +152,8 @@
   color: white;
 }
 
-.continuousCalendar .freeRange .week {
+.continuousCalendar .freeRange .week,
+.continuousCalendar .weekRange .week {
   text-decoration: underline;
 }
 
