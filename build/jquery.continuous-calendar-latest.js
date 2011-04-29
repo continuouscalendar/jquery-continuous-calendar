@@ -1329,13 +1329,13 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         }
 
         function instantSelectWeek(firstDayOfWeek) {
+          var firstDay = firstDayOfWeek
+          var lastDay = firstDayOfWeek.plusDays(6)
           if(params.disableWeekends) {
-            var monday = firstDayOfWeek.withWeekday(Date.MONDAY)
-            var friday = firstDayOfWeek.withWeekday(Date.FRIDAY)
-            return new DateRange(monday, friday)
-          } else {
-            return new DateRange(firstDayOfWeek, firstDayOfWeek.plusDays(6))
+            firstDay = firstDayOfWeek.withWeekday(Date.MONDAY)
+            lastDay = firstDayOfWeek.withWeekday(Date.FRIDAY)
           }
+          return new DateRange(firstDay, lastDay).and(calendarRange)
         }
       }
 
