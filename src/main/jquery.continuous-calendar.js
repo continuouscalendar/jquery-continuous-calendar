@@ -193,7 +193,7 @@
 
       function initRangeCalendarEvents(container, bodyTable) {
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
-        bodyTable.addClass('range')
+        bodyTable.addClass('freeRange')
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
         disableTextSelection(bodyTable.get(0))
         setRangeLabels()

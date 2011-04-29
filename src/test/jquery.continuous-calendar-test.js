@@ -129,9 +129,9 @@ test("highlights selected date range with move handles in first and last data", 
   ok(cal().find(".selected:first").hasClass("rangeStart"), "has class rangeStart")
 })
 
-test("calendar with range has range class", function() {
+test("calendar with range has freeRange class", function() {
   createRangeCalendarWithFiveWeeks()
-  ok(cal().find(".calendarBody").hasClass("range"))
+  ok(cal().find(".calendarBody").hasClass("freeRange"))
 })
 
 module("calendar events", {
