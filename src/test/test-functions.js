@@ -106,7 +106,7 @@ function createRangeCalendarWithFiveWeeksAndDisabledWeekends() {
   createCalendarFields({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({firstDate: "4/15/2009",lastDate:"5/12/2009",disableWeekends:true})
 }
 
-function createRangeCalendarWithFiveWeeksAndSelectWeek() {
+function createWeekCalendar() {
   createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009",selectWeek:true})
 }
 
@@ -125,6 +125,10 @@ function createCalendarFromJanuary() {
 
 function createPopupCalendar() {
   createCalendarFields({startDate: "4/29/2009"}).continuousCalendar({isPopup: true})
+}
+
+function createPopupWeekCalendar() {
+  createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"5/1/2011", lastDate:"5/31/2011", isPopup: true, selectWeek: true})
 }
 
 function clickOnDate(date) {

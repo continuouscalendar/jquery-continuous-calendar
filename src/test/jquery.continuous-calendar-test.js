@@ -408,7 +408,7 @@ module("calendar week selection", {
 })
 
 test("date click selects whole week", function() {
-  createRangeCalendarWithFiveWeeksAndSelectWeek()
+  createWeekCalendar()
   mouseClick(cal().find(".date").withText(21).first())
   assertHasValues(".selected", [19, 20, 21, 22, 23, 24, 25])
   equals(startFieldValue(), "4/19/2009")
@@ -417,12 +417,30 @@ test("date click selects whole week", function() {
 })
 
 test("date click selects whole week within calendar range", function() {
-  createRangeCalendarWithFiveWeeksAndSelectWeek()
+  createWeekCalendar()
   mouseClick(cal().find(".date").withText(15).first())
   assertHasValues(".selected", [15, 16, 17, 18])
   equals(startFieldValue(), "4/15/2009")
   equals(endFieldValue(), "4/18/2009")
   equals(cal().find(".rangeLengthLabel").text(), "4 Days")
+})
+
+test("date click closes the calendar", function() {
+  createPopupWeekCalendar()
+  cal().find(".calendarIcon").click()
+  mouseClick(cal().find(".date").withText(11))
+  ok(!cal().find(".continuousCalendar:visible").exists())
+  equals(startFieldValue(), "5/8/2011")
+  equals(endFieldValue(), "5/14/2011")
+})
+
+test("week click closes the calendar", function() {
+  createPopupWeekCalendar()
+  cal().find(".calendarIcon").click()
+  mouseClick(cal().find(".week").withText(21))
+  ok(!cal().find(".continuousCalendar:visible").exists())
+  equals(startFieldValue(), "5/29/2011")
+  equals(endFieldValue(), "5/31/2011")
 })
 
 //Help IDE to identify functions

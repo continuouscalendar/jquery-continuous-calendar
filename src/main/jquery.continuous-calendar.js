@@ -488,6 +488,9 @@
         setStartField(formattedStart)
         setEndField(formattedEnd)
         setRangeLabels()
+        if(params.selectWeek) {
+          calendar.close($('td.selected', container).first())
+        }
         executeCallback()
       }
 
