@@ -653,7 +653,7 @@ window.DATE_LOCALE_FI = {
       'lokakuu',
       'marraskuu',
       'joulukuu']
-    Date.dayNames = ['Su','Ma','Ti','Ke','To','Pe','La']
+    Date.dayNames = ['su','ma','ti','ke','to','pe','la']
     Date.daysLabel = function(days) {
       return days + ' ' + (days == '1' ? 'päivä' : 'päivää');
     }
@@ -734,7 +734,8 @@ window.DATE_LOCALE_AU = {
   weekDateFormat: 'D j/n/Y',
   dateTimeFormat: 'D j/n/Y G:i',
   firstWeekday: Date.SUNDAY
-};/* ==============================================================================
+};
+/* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at

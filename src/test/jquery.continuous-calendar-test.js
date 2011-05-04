@@ -310,7 +310,7 @@ test("calendar provides selection as public field", function() {
 
 test("month and day names are localizable", function() {
   createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1.1.2009", lastDate:"31.12.2009", locale: DATE_LOCALE_FI})
-  assertHasValues(".continuousCalendar thead th.weekDay", ['Ma','Ti','Ke','To','Pe','La','Su'])
+  assertHasValues(".continuousCalendar thead th.weekDay", ['ma','ti','ke','to','pe','la','su'])
   assertHasValues(".monthName", [
     "joulukuu",
     "tammikuu",
@@ -327,7 +327,7 @@ test("month and day names are localizable", function() {
     "joulukuu"])
   mouseDownMouseUpOnDate(1)
   equals(startFieldValue(), "1.1.2009")
-  equals(startLabelValue(), "To 1.1.2009")
+  equals(startLabelValue(), "to 1.1.2009")
 })
 
 test("forward drag after one day selection expands selection", function() {

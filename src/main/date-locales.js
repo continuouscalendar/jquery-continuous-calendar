@@ -26,7 +26,7 @@ window.DATE_LOCALE_FI = {
       'lokakuu',
       'marraskuu',
       'joulukuu']
-    Date.dayNames = ['Su','Ma','Ti','Ke','To','Pe','La']
+    Date.dayNames = ['su','ma','ti','ke','to','pe','la']
     Date.daysLabel = function(days) {
       return days + ' ' + (days == '1' ? 'päivä' : 'päivää');
     }
