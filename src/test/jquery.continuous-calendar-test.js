@@ -20,7 +20,7 @@ test("module init", function() {
 
 
 test("shows year", function() {
-  assertHasValues(".continuousCalendar thead th.month", [Date.NOW.getFullYear()])
+  assertHasValues(".continuousCalendar thead th.month", ["2008"])
 })
 
 test("shows week days", function() {
@@ -129,9 +129,9 @@ test("highlights selected date range with move handles in first and last data", 
   ok(cal().find(".selected:first").hasClass("rangeStart"), "has class rangeStart")
 })
 
-test("calendar with range has range class", function() {
+test("calendar with range has freeRange class", function() {
   createRangeCalendarWithFiveWeeks()
-  ok(cal().find(".calendarBody").hasClass("range"))
+  ok(cal().find(".calendarBody").hasClass("freeRange"))
 })
 
 module("calendar events", {
@@ -154,6 +154,26 @@ test("week number click selects whole week", function () {
   equals(startFieldValue(), "5/3/2009")
   equals(endFieldValue(), "5/9/2009")
   equals(cal().find(".rangeLengthLabel").text(), "7 Days")
+})
+
+test("week number click selects whole week without weekend", function () {
+  createRangeCalendarWithFiveWeeksAndDisabledWeekends()
+  var weekNumber = cal().find(".week").withText(18)
+  mouseClick(weekNumber)
+  assertHasValues(".selected", [4,5,6,7,8])
+  equals(startFieldValue(), "5/4/2009")
+  equals(endFieldValue(), "5/8/2009")
+  equals(cal().find(".rangeLengthLabel").text(), "5 Days")
+})
+
+test("week number click selects whole week within the calendar range", function () {
+  createRangeCalendarWithFiveWeeks()
+  var weekNumber = cal().find(".week").withText(19)
+  mouseClick(weekNumber)
+  assertHasValues(".selected", [10, 11, 12])
+  equals(startFieldValue(), "5/10/2009")
+  equals(endFieldValue(), "5/12/2009")
+  equals(cal().find(".rangeLengthLabel").text(), "3 Days")
 })
 
 function startTimer() {
@@ -196,7 +216,7 @@ test("mouse click on month on range calendar selects whole month", function() {
   equals(cal().find(".rangeLengthLabel").text(), "31 Days")
 })
 
-test("mouse click on month in singe date calendar does nothing", function() {
+test("mouse click on month in single date calendar does nothing", function() {
   createBigCalendarForSingleDate()
   cal().find(".month").withText("May").click()
   equals(cal().find(".selected").size(), 0)
@@ -290,7 +310,7 @@ test("calendar provides selection as public field", function() {
 
 test("month and day names are localizable", function() {
   createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1.1.2009", lastDate:"31.12.2009", locale: DATE_LOCALE_FI})
-  assertHasValues(".continuousCalendar thead th.weekDay", ['Ma','Ti','Ke','To','Pe','La','Su'])
+  assertHasValues(".continuousCalendar thead th.weekDay", ['ma','ti','ke','to','pe','la','su'])
   assertHasValues(".monthName", [
     "joulukuu",
     "tammikuu",
@@ -307,7 +327,7 @@ test("month and day names are localizable", function() {
     "joulukuu"])
   mouseDownMouseUpOnDate(1)
   equals(startFieldValue(), "1.1.2009")
-  equals(startLabelValue(), "To 1.1.2009")
+  equals(startLabelValue(), "to 1.1.2009")
 })
 
 test("forward drag after one day selection expands selection", function() {
@@ -334,6 +354,7 @@ test("", function() {
   equals(startLabelValue(), "Wed 4/29/2009", "Initially selected date is shown correctly")
   cal().find(".calendarIcon").click()
   ok(cal().find('.continuousCalendar:visible').exists(), "calendar pops up on click")
+  assertHasValues(".continuousCalendar thead th.month", ["2008"], "month is shown correctly")
 })
 
 test("when selecting date", function() {
@@ -380,7 +401,46 @@ test("moving and creation has constraints", function() {
   assertHasValues('.selected', [30, 1, 2, 3, 4], "prevent selecting range that starts or ends on weekend")
   mouseDownMouseUpOnDate(6)
   assertHasValues('.selected', [5, 6, 7, 8], "selecting range that don't start or end on weekend id is permitted")
+})
 
+module("calendar week selection", {
+  setup: createCalendarContainer
+})
+
+test("date click selects whole week", function() {
+  createWeekCalendar()
+  mouseClick(cal().find(".date").withText(21).first())
+  assertHasValues(".selected", [19, 20, 21, 22, 23, 24, 25])
+  equals(startFieldValue(), "4/19/2009")
+  equals(endFieldValue(), "4/25/2009")
+  equals(cal().find(".rangeLengthLabel").text(), "7 Days")
+})
+
+test("date click selects whole week within calendar range", function() {
+  createWeekCalendar()
+  mouseClick(cal().find(".date").withText(15).first())
+  assertHasValues(".selected", [15, 16, 17, 18])
+  equals(startFieldValue(), "4/15/2009")
+  equals(endFieldValue(), "4/18/2009")
+  equals(cal().find(".rangeLengthLabel").text(), "4 Days")
+})
+
+test("date click closes the calendar", function() {
+  createPopupWeekCalendar()
+  cal().find(".calendarIcon").click()
+  mouseClick(cal().find(".date").withText(11))
+  ok(!cal().find(".continuousCalendar:visible").exists())
+  equals(startFieldValue(), "5/8/2011")
+  equals(endFieldValue(), "5/14/2011")
+})
+
+test("week click closes the calendar", function() {
+  createPopupWeekCalendar()
+  cal().find(".calendarIcon").click()
+  mouseClick(cal().find(".week").withText(21))
+  ok(!cal().find(".continuousCalendar:visible").exists())
+  equals(startFieldValue(), "5/29/2011")
+  equals(endFieldValue(), "5/31/2011")
 })
 
 //Help IDE to identify functions

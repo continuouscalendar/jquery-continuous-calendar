@@ -112,12 +112,13 @@
   font-size: 7pt;
 }
 
-.continuousCalendar .range .week,
-.continuousCalendar .range .month {
+.continuousCalendar .freeRange .week,
+.continuousCalendar .freeRange .month,
+.continuousCalendar .weekRange .week {
   cursor: pointer;
 }
 
-.continuousCalendar .range .selected:hover {
+.continuousCalendar .freeRange .selected:hover {
   cursor: move;
 }
 
@@ -151,25 +152,26 @@
   color: white;
 }
 
-.continuousCalendar .range .week {
+.continuousCalendar .freeRange .week,
+.continuousCalendar .weekRange .week {
   text-decoration: underline;
 }
 
-.continuousCalendar .range.calendarBody .month {
+.continuousCalendar .freeRange.calendarBody .month {
   text-decoration: underline;
 }
 
-.continuousCalendar .range td {
+.continuousCalendar .freeRange td {
   cursor: w-resize;
   cursor: ew-resize;
 }
 
-.continuousCalendar .range td.rangeStart:hover {
+.continuousCalendar .freeRange td.rangeStart:hover {
   cursor: w-resize;
   cursor: ew-resize;
 }
 
-.continuousCalendar .range  td.rangeEnd:hover {
+.continuousCalendar .freeRange  td.rangeEnd:hover {
   cursor: e-resize;
   cursor: ew-resize;
 }

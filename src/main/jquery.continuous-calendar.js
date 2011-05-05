@@ -32,7 +32,8 @@
         selectToday: false,
         locale: DATE_LOCALE_EN,
         disableWeekends: false,
-        minimumRange:-1,
+        minimumRange: -1,
+        selectWeek: false,
         callback: function() {
         }
       }
@@ -94,7 +95,8 @@
         yearTitle = $('th.month', headerTable)
         scrollContent.scroll(setYearLabel)
         scrollToSelection()
-		setYearLabel()
+        if(!params.isPopup)
+          setYearLabel()
         container.data('calendarRange', selection)
         executeCallback()
       }
@@ -192,7 +194,7 @@
 
       function initRangeCalendarEvents(container, bodyTable) {
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
-        bodyTable.addClass('range')
+        bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
         disableTextSelection(bodyTable.get(0))
         setRangeLabels()
@@ -240,6 +242,7 @@
         calendarContainer.toggle()
         if(beforeFirstOpening) {
           calculateCellHeight()
+          setYearLabel()
           beforeFirstOpening = false
         }
         scrollToSelection()
@@ -364,15 +367,19 @@
         }
 
         function isInstantSelection(event) {
-          return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey
+          if(params.selectWeek) {
+            return enabledCell(event.target) || isWeekCell(event.target)
+          } else {
+            return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey
+          }
         }
 
         function instantSelection(event) {
           var elem = event.target
-          if(isWeekCell(elem)) {
+          if((params.selectWeek && enabledCell(elem)) || isWeekCell(elem)) {
             status = Status.NONE
-            var dayInWeek = date($(elem).siblings('.date'))
-            return new DateRange(dayInWeek, dayInWeek.plusDays(6))
+            var firstDayOfWeek = date($(elem).parent().children('.date'))
+            return instantSelectWeek(firstDayOfWeek)
           } else if(isMonthCell(elem)) {
             status = Status.NONE
             var dayInMonth = date($(elem).siblings('.date'))
@@ -385,6 +392,16 @@
             }
           }
           return selection
+        }
+
+        function instantSelectWeek(firstDayOfWeek) {
+          var firstDay = firstDayOfWeek
+          var lastDay = firstDayOfWeek.plusDays(6)
+          if(params.disableWeekends) {
+            firstDay = firstDayOfWeek.withWeekday(Date.MONDAY)
+            lastDay = firstDayOfWeek.withWeekday(Date.FRIDAY)
+          }
+          return new DateRange(firstDay, lastDay).and(calendarRange)
         }
       }
 
@@ -471,6 +488,9 @@
         setStartField(formattedStart)
         setEndField(formattedEnd)
         setRangeLabels()
+        if(params.selectWeek) {
+          calendar.close($('td.selected', container).first())
+        }
         executeCallback()
       }
 

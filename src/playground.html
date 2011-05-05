@@ -41,7 +41,7 @@
   </style>
 </head>
 <body>
-<h1>Try out your self!</h1>
+<h1>Try it out yourself!</h1>
 <ul class="hint">
   <li>Date format should match locale</li>
 </ul>
@@ -64,7 +64,8 @@
     <label class="row"><input type="checkbox" value="" id="isPopup"/><span class="label">isPopup</span></label>
     <label class="row"><input type="checkbox" value="" id="selectToday"/><span class="label">selectToday</span></label>
     <label class="row"><input type="checkbox" value="" id="disableWeekends"/><span class="label">disableWeekends</span></label>
-    <label class="row"><input type="checkbox" value="" id="isRange"/><span class="label">is a range</span></label>
+    <label class="row"><input type="checkbox" value="" id="isRange"/><span class="label">isRange</span></label>
+    <label class="row"><input type="checkbox" value="" id="selectWeek"/><span class="label">selectWeek</span></label>
   </div>
   <div class="col">
     <label>Locale:</label>
@@ -93,7 +94,7 @@
       container.append('<input type="hidden" class="startDate" /><input type="hidden" class="endDate"/>')
     }
     $('body').append(container)
-    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange' ]
+    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek' ]
     var options = {}
     for(var i = 0; i < optionsList.length; i++)
       options[optionsList[i]] = valueOf(optionsList[i])

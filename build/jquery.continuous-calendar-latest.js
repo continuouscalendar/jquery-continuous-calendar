@@ -25,6 +25,7 @@ Date.HOUR = 60 * Date.MINUTE
 Date.DAY = 24 * Date.HOUR
 Date.WEEK = 7 * Date.DAY
 Date.MONDAY = 1
+Date.FRIDAY = 5
 Date.SUNDAY = 0
 Date.NOW = new Date()
 Date.getDaysInMonth = function(year, month) {
@@ -198,6 +199,10 @@ Date.prototype.distanceInDays = function(date) {
   var first = parseInt(this.getTime() / Date.DAY, 10)
   var last = parseInt(date.getTime() / Date.DAY, 10)
   return (last - first)
+}
+
+Date.prototype.withWeekday = function(weekday) {
+  return this.plusDays(weekday - this.getDay())
 }
 
 /*
@@ -648,7 +653,7 @@ window.DATE_LOCALE_FI = {
       'lokakuu',
       'marraskuu',
       'joulukuu']
-    Date.dayNames = ['Su','Ma','Ti','Ke','To','Pe','La']
+    Date.dayNames = ['su','ma','ti','ke','to','pe','la']
     Date.daysLabel = function(days) {
       return days + ' ' + (days == '1' ? 'päivä' : 'päivää');
     }
@@ -729,7 +734,8 @@ window.DATE_LOCALE_AU = {
   weekDateFormat: 'D j/n/Y',
   dateTimeFormat: 'D j/n/Y G:i',
   firstWeekday: Date.SUNDAY
-};/* ==============================================================================
+};
+/* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -862,8 +868,24 @@ function DateRange(date1, date2) {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat)
     }
   }
+
   this.isPermittedRange = function(minimumSize, disableWeekends, outerRange) {
     return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend())) && this.isInside(outerRange)
+  }
+
+  this.shiftInside = function(outerRange) {
+    if(this.days() > outerRange.days()) {
+      return DateRange.emptyRange()
+    }
+    var distanceToOuterRangeStart = this.start.distanceInDays(outerRange.start)
+    var distanceToOuterRangeEnd = this.end.distanceInDays(outerRange.end)
+    if(distanceToOuterRangeStart > 0) {
+      return this.shiftDays(distanceToOuterRangeStart)
+    }
+    if(distanceToOuterRangeEnd < 0) {
+      return this.shiftDays(distanceToOuterRangeEnd)
+    }
+    return this
   }
 }
 DateRange.emptyRange = function() {
@@ -890,15 +912,21 @@ DateRange.parse = function(dateStr1, dateStr2, dateFormat) {
 }
 DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends, outerRange) {
   if(isTooSmallSelection()) {
-    var newSelection = oldRange.expandDaysTo(minimumSize)
-    if(disableWeekends && newSelection.hasEndsOnWeekend()) {
-      var shiftedDays = newSelection.shiftDays(delta(newSelection.end.getDay()));
+    var newRange = oldRange.expandDaysTo(minimumSize)
+    if(disableWeekends && newRange.hasEndsOnWeekend()) {
+      var shiftedDays = newRange.shiftDays(delta(newRange.end.getDay())).shiftInside(outerRange)
       while(!shiftedDays.isPermittedRange(minimumSize, disableWeekends, outerRange) || shiftedDays.end.compareTo(outerRange.end) > 0) {
+        if (!shiftedDays.isPermittedRange(minimumSize, false, outerRange)) {
+          return DateRange.emptyRange()
+        }
         shiftedDays = shiftedDays.shiftDays(1)
       }
-      newSelection = shiftedDays
+      newRange = shiftedDays
     }
-    return newSelection
+    if(!newRange.isPermittedRange(minimumSize, false, outerRange)) {
+      return DateRange.emptyRange()
+    }
+    return newRange
   }
   return oldRange
 
@@ -909,7 +937,8 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
   function delta(x) {
     return -((x + 1) % 7 + 1)
   }
-}/* ==============================================================================
+}
+/* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -943,7 +972,8 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         selectToday: false,
         locale: DATE_LOCALE_EN,
         disableWeekends: false,
-        minimumRange:-1,
+        minimumRange: -1,
+        selectWeek: false,
         callback: function() {
         }
       }
@@ -1005,7 +1035,8 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         yearTitle = $('th.month', headerTable)
         scrollContent.scroll(setYearLabel)
         scrollToSelection()
-		setYearLabel()
+        if(!params.isPopup)
+          setYearLabel()
         container.data('calendarRange', selection)
         executeCallback()
       }
@@ -1103,7 +1134,7 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
 
       function initRangeCalendarEvents(container, bodyTable) {
         $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
-        bodyTable.addClass('range')
+        bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
         disableTextSelection(bodyTable.get(0))
         setRangeLabels()
@@ -1151,6 +1182,7 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         calendarContainer.toggle()
         if(beforeFirstOpening) {
           calculateCellHeight()
+          setYearLabel()
           beforeFirstOpening = false
         }
         scrollToSelection()
@@ -1275,15 +1307,19 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         }
 
         function isInstantSelection(event) {
-          return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey
+          if(params.selectWeek) {
+            return enabledCell(event.target) || isWeekCell(event.target)
+          } else {
+            return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey
+          }
         }
 
         function instantSelection(event) {
           var elem = event.target
-          if(isWeekCell(elem)) {
+          if((params.selectWeek && enabledCell(elem)) || isWeekCell(elem)) {
             status = Status.NONE
-            var dayInWeek = date($(elem).siblings('.date'))
-            return new DateRange(dayInWeek, dayInWeek.plusDays(6))
+            var firstDayOfWeek = date($(elem).parent().children('.date'))
+            return instantSelectWeek(firstDayOfWeek)
           } else if(isMonthCell(elem)) {
             status = Status.NONE
             var dayInMonth = date($(elem).siblings('.date'))
@@ -1296,6 +1332,16 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
             }
           }
           return selection
+        }
+
+        function instantSelectWeek(firstDayOfWeek) {
+          var firstDay = firstDayOfWeek
+          var lastDay = firstDayOfWeek.plusDays(6)
+          if(params.disableWeekends) {
+            firstDay = firstDayOfWeek.withWeekday(Date.MONDAY)
+            lastDay = firstDayOfWeek.withWeekday(Date.FRIDAY)
+          }
+          return new DateRange(firstDay, lastDay).and(calendarRange)
         }
       }
 
@@ -1382,6 +1428,9 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         setStartField(formattedStart)
         setEndField(formattedEnd)
         setRangeLabels()
+        if(params.selectWeek) {
+          calendar.close($('td.selected', container).first())
+        }
         executeCallback()
       }
 
