@@ -87,7 +87,7 @@ test("if start date not selected show around current day instead", function() {
 })
 
 test("disabled date is not selectable", function() {
-  createCalendarFields().continuousCalendar({firstDate:"4/15/2009",lastDate:"5/9/2009", disableWeekends: true, disabledDates:"4/22/2009"})
+  createCalendarFields().continuousCalendar({firstDate:"4/15/2009",lastDate:"5/9/2009", disableWeekends: true, disabledDates:"4/22/2009 4/29/2009"})
   clickOnDate(15)
   assertSelectedDate(15)
   clickOnDate(13)
@@ -97,6 +97,8 @@ test("disabled date is not selectable", function() {
   clickOnDate(19)
   assertSelectedDate(15)
   clickOnDate(22)
+  assertSelectedDate(15)
+  clickOnDate(29)
   assertSelectedDate(15)
 })
 
