@@ -205,6 +205,11 @@ Date.prototype.withWeekday = function(weekday) {
   return this.plusDays(weekday - this.getDay())
 }
 
+Date.prototype.getOnlyDate = function() {
+  return new Date(this.getFullYear(), this.getMonth(), this.getDate())
+}
+
+
 /*
  * Copyright (C) 2004 Baron Schwartz <baron at sequent dot org>
  *
@@ -972,6 +977,7 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         selectToday: false,
         locale: DATE_LOCALE_EN,
         disableWeekends: false,
+        disabledDates: null,
         minimumRange: -1,
         selectWeek: false,
         callback: function() {
@@ -1019,6 +1025,7 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         oldSelection = selection.clone()
         var rangeStart = params.firstDate ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
         var rangeEnd = params.lastDate ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
+        params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
         calendarRange = new DateRange(rangeStart, rangeEnd)
         var headerTable = $('<table>').addClass('calendarHeader').append(headerRow())
         bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
@@ -1039,6 +1046,14 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
           setYearLabel()
         container.data('calendarRange', selection)
         executeCallback()
+      }
+
+      function parseDisabledDates(dates) {
+        var dateMap = {}
+        $.each(dates.split(' '), function(index, date) {
+          dateMap[Date.parseDate(date, params.locale.shortDateFormat)] = true
+        })
+        return dateMap
       }
 
       function dateBehaviour(isRange) {
@@ -1245,8 +1260,9 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
 
       function disabledOrNot(date) {
         var disabledWeekendDay = params.disableWeekends && date.isWeekend()
+        var disabledDay = params.disabledDates[date.getOnlyDate()] == true
         var outOfBounds = !calendarRange.hasDate(date)
-        return outOfBounds || disabledWeekendDay ? 'disabled' : ''
+        return outOfBounds || disabledWeekendDay || disabledDay ? 'disabled' : ''
       }
 
       function todayStyle(date) {

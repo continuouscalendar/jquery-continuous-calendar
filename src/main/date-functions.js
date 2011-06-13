@@ -205,6 +205,11 @@ Date.prototype.withWeekday = function(weekday) {
   return this.plusDays(weekday - this.getDay())
 }
 
+Date.prototype.getOnlyDate = function() {
+  return new Date(this.getFullYear(), this.getMonth(), this.getDate())
+}
+
+
 /*
  * Copyright (C) 2004 Baron Schwartz <baron at sequent dot org>
  *
