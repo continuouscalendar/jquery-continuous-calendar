@@ -62,6 +62,7 @@
     </div>
     <label class="row"><span class="label">minimumRange</span><input type="text" id="minimumRange" value="-1" class="number"/></label>
     <label class="row"><span class="label">disabledDates</span><input type="text" id="disabledDates" class="date"/></label>
+    <label class="row"><span class="label">fadeOutDuration</span><input type="text" id="fadeOutDuration" value="0" class="number"/></label>
     <label class="row"><input type="checkbox" value="" id="isPopup"/><span class="label">isPopup</span></label>
     <label class="row"><input type="checkbox" value="" id="selectToday"/><span class="label">selectToday</span></label>
     <label class="row"><input type="checkbox" value="" id="disableWeekends"/><span class="label">disableWeekends</span></label>
@@ -95,7 +96,7 @@
       container.append('<input type="hidden" class="startDate" /><input type="hidden" class="endDate"/>')
     }
     $('body').append(container)
-    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates' ]
+    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates', 'fadeOutDuration' ]
     var options = {}
     for(var i = 0; i < optionsList.length; i++)
       options[optionsList[i]] = valueOf(optionsList[i])
