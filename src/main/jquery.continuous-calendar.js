@@ -252,10 +252,10 @@
 
       function toggleCalendar() {
         if(calendarContainer.is(':visible')) {
-            calendarContainer.fadeOut(params.fadeOutDuration)
-        } else {
-            calendarContainer.show()
+          calendarContainer.fadeOut(params.fadeOutDuration)
+          return false
         }
+        calendarContainer.show()
         if(beforeFirstOpening) {
           calculateCellHeight()
           setYearLabel()
