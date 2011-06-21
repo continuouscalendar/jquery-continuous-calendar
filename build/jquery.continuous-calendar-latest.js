@@ -1027,7 +1027,7 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
         var rangeStart = params.firstDate ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
         var rangeEnd = params.lastDate ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
         params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
-        params.fadeOutDuration = parseInt(params.fadeOutDuration)
+        params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
         calendarRange = new DateRange(rangeStart, rangeEnd)
         var headerTable = $('<table>').addClass('calendarHeader').append(headerRow())
         bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
@@ -1197,7 +1197,6 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
 
       function toggleCalendar() {
         if(calendarContainer.is(':visible')) {
-            console.log(params.fadeOutDuration)
             calendarContainer.fadeOut(params.fadeOutDuration)
         } else {
             calendarContainer.show()
