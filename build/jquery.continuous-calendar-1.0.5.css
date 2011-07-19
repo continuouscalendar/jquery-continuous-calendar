@@ -1,0 +1,201 @@
+/* ==============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+/*
+ * @author Karri-Pekka Laakso (kplaakso)
+ * @author Eero Anttila (eeroan)
+ */
+
+.continuousCalendar {
+  clear: both;
+}
+
+.continuousCalendarContainer {
+  position:relative;
+}
+
+.continuousCalendarContainer a.calendarIcon {
+  font-size: 7pt;
+  color: #000;
+  text-decoration: none;
+  display: block;
+  background: #eee;
+  border: 1px solid #666;
+  border-top: 4px solid #a00;
+  float: left;
+  padding: 1px 3px;
+  line-height: 1;
+  text-align: center;
+  width: 10px;
+}
+
+.continuousCalendarContainer .popup {
+  position: absolute;
+  z-index:10000 !important;
+}
+
+.continuousCalendar table {
+  font-family: Arial, Verdana, sans-serif;
+  font-size: 8pt;
+  color: black;
+  background-color: white;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 201px;
+}
+
+.continuousCalendar .calendarHeader {
+  border: 1px solid #999999;
+  border-bottom: none;
+  text-align: center;
+  position: relative;
+  width: 202px;
+}
+
+.continuousCalendarContainer .popup .calendarHeader {
+  width: 220px;
+}
+
+.continuousCalendar .calendarHeader a {
+  background: url("close.gif") no-repeat 0 0;
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.continuousCalendar .calendarHeader a span {
+  display: none;
+}
+
+.continuousCalendar .calendarHeader .weekDay,
+.continuousCalendar .calendarBody td {
+  text-align: right;
+  padding: 1px;
+  padding-right: 3px;
+}
+
+.calendarScrollContent {
+  overflow-y: auto;
+  width: 218px;
+  height: 100px;
+  border: 1px solid #999999;
+  position: relative;
+  background:white;
+}
+
+.continuousCalendar .calendarBody td {
+  cursor: pointer;
+}
+
+.continuousCalendar .calendarBody td.disabled {
+  cursor:default;
+}
+
+.continuousCalendar .month {
+  width: 53px;
+}
+
+.continuousCalendar .week {
+  border-right: 1px solid #888888;
+  width: 15px;
+  font-size: 7pt;
+}
+
+.continuousCalendar .freeRange .week,
+.continuousCalendar .freeRange .month,
+.continuousCalendar .weekRange .week {
+  cursor: pointer;
+}
+
+.continuousCalendar .freeRange .selected:hover {
+  cursor: move;
+}
+
+.continuousCalendar .calendarHeader .month {
+  text-align: center;
+}
+
+.continuousCalendar .calendarBody th {
+  font-weight: normal;
+}
+
+.continuousCalendar .calendarBody .month {
+  text-align: left;
+}
+
+.continuousCalendar td:hover {
+  font-weight: bold;
+  color: blue;
+}
+
+.continuousCalendar table .odd {
+  background-color: #e8e8e8;
+}
+
+.continuousCalendar td.today {
+  border: 1px solid red;
+}
+
+.continuousCalendar td.selected {
+  background: #0041c4;
+  color: white;
+}
+
+.continuousCalendar .freeRange .week,
+.continuousCalendar .weekRange .week {
+  text-decoration: underline;
+}
+
+.continuousCalendar .freeRange.calendarBody .month {
+  text-decoration: underline;
+}
+
+.continuousCalendar .freeRange td {
+  cursor: w-resize;
+  cursor: ew-resize;
+}
+
+.continuousCalendar .freeRange td.rangeStart:hover {
+  cursor: w-resize;
+  cursor: ew-resize;
+}
+
+.continuousCalendar .freeRange  td.rangeEnd:hover {
+  cursor: e-resize;
+  cursor: ew-resize;
+}
+
+.continuousCalendarContainer input.endDate,
+.continuousCalendarContainer input.startDate {
+  display: none;
+}
+
+.continuousCalendar td.disabled {
+  color: gray;
+}
+
+.continuousCalendarContainer div.label {
+  margin-left: 5pt;
+  margin-bottom: 2pt;
+  float: left;
+}
+
+.continuousCalendarContainer div.label span {
+  cursor: pointer;
+}
+.continuousCalendarContainer .popUpContainer {
+  width: 1px;
+  height: 1px;
+  position: relative;
+}

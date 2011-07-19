@@ -204,6 +204,21 @@ test("minutes are rounded to 2 digits", function() {
   equals(range.toString(), "2 päivää 1,17 tuntia")
 })
 
+test("range is displayed with the most defining unit", function() {
+  range = new DateRange(new Date('01/01/2004'), new Date('05/01/2006'))
+  equals(range.printDefiningDuration(), '2 vuotta', "multiple years, months not shown")
+  range = new DateRange(new Date('01/01/2004'), new Date('05/01/2005'))
+  equals(range.printDefiningDuration(), '1 vuosi', "single year, months not shown")
+  range = new DateRange(new Date('01/01/2004'), new Date('05/01/2004'))
+  equals(range.printDefiningDuration(), '4 kuukautta', "multiple months, days not shown")
+  range = new DateRange(new Date('01/01/2004'), new Date('02/16/2004'))
+  equals(range.printDefiningDuration(), '1 kuukausi', "single month, days not shown")
+  range = new DateRange(new Date('01/01/2004'), new Date('01/31/2004'))
+  equals(range.printDefiningDuration(), '1 kuukausi', "single month, days not shown")
+  range = new DateRange(new Date('01/01/2004'), new Date('01/07/2004'))
+  equals(range.printDefiningDuration(), '7 päivää', "multiple days")
+})
+
 function assertHasCorrectHoursAndMinutes(hours, minutes) {
   ok(range.isValid(), "valid range")
   equals(range.hours(), hours, "correct hours")

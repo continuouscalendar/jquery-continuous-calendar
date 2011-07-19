@@ -132,6 +132,16 @@ function DateRange(date1, date2) {
     }
   }
 
+  this.printDefiningDuration = function() {
+    var years = parseInt(this.days()/360, 10)
+    if (years > 0) return Date.yearsLabel(years)
+
+    var months = parseInt(this.days()/30, 10)
+    if (months > 0) return Date.monthsLabel(months)
+
+    return Date.daysLabel(this.days())
+  }
+
   this.isPermittedRange = function(minimumSize, disableWeekends, outerRange) {
     return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend())) && this.isInside(outerRange)
   }
