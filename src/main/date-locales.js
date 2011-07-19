@@ -27,6 +27,12 @@ window.DATE_LOCALE_FI = {
       'marraskuu',
       'joulukuu']
     Date.dayNames = ['su','ma','ti','ke','to','pe','la']
+    Date.yearsLabel = function(years) {
+      return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta');
+    }
+    Date.monthsLabel = function(months) {
+      return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta');
+    }
     Date.daysLabel = function(days) {
       return days + ' ' + (days == '1' ? 'päivä' : 'päivää');
     }
@@ -34,6 +40,7 @@ window.DATE_LOCALE_FI = {
       var hoursAndMinutes = Date.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia');
     }
+
   },
   shortDateFormat: 'j.n.Y',
   weekDateFormat: 'D j.n.Y',
@@ -61,6 +68,12 @@ window.DATE_LOCALE_EN = {
       'Thursday',
       'Friday',
       'Saturday']
+    Date.yearsLabel = function(years) {
+      return years + ' ' + (years == '1' ? 'Year' : 'Years');
+    }
+    Date.monthsLabel = function(months) {
+      return months + ' ' + (months == '1' ? 'Months' : 'Months');
+    }
     Date.daysLabel = function(days) {
       return days + ' ' + (days == '1' ? 'Day' : 'Days');
     }
@@ -95,8 +108,14 @@ window.DATE_LOCALE_AU = {
       'Thursday',
       'Friday',
       'Saturday']
+    Date.yearsLabel = function(years) {
+      return years + ' ' + (years == '1' ? 'Year' : 'Years');
+    }
+    Date.monthsLabel = function(months) {
+      return months + ' ' + (months == '1' ? 'Months' : 'Months');
+    }
     Date.daysLabel = function(days) {
-      return (days - 1) + ' Days'
+      return days + ' ' + (days == '1' ? 'Day' : 'Days');
     }
     Date.hoursLabel = function(hours, minutes) {
       var hoursAndMinutes = Date.hoursAndMinutes(hours, minutes)
