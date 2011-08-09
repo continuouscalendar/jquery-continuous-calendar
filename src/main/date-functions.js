@@ -460,6 +460,10 @@ Date.formatCodeToRegex = function(character, currentGroup) {
       return {g:0,
         c:null,
         s:"[+-]\\d{1,5}"}
+    case ".":
+      return {g:0,
+        c:null,
+        s:"\\."}
     default:
       return {g:0,
         c:null,
