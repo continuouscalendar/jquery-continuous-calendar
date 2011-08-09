@@ -163,6 +163,10 @@
           },
           close: function(cell) {
             toggleCalendar.call(cell)
+          },
+          addDateLabelBehaviour: function(label) {
+            label.addClass('clickable')
+            label.click(toggleCalendar)
           }
         }
         var inlineVersion = {
@@ -170,10 +174,9 @@
           getContainer: function(newContainer) {
             return newContainer
           },
-          addCloseButton: function() {
-          },
-          close: function() {
-          }
+          addCloseButton: $.noop,
+          close: $.noop,
+          addDateLabelBehaviour: $.noop
         }
         return isPopup ? popUpVersion : inlineVersion
       }
@@ -201,7 +204,7 @@
         dateLabelContainer.append('<span class="startDateLabel"></span>')
         calendar.addEndDateLabel(dateLabelContainer)
         container.append(dateLabelContainer)
-        dateLabelContainer.click(toggleCalendar)
+        calendar.addDateLabelBehaviour(dateLabelContainer.children())
       }
 
       function initRangeCalendarEvents(container, bodyTable) {

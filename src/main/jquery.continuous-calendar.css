@@ -191,7 +191,7 @@
   float: left;
 }
 
-.continuousCalendarContainer div.label span {
+.continuousCalendarContainer div.label span.clickable {
   cursor: pointer;
 }
 .continuousCalendarContainer .popUpContainer {

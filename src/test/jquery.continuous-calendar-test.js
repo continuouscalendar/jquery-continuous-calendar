@@ -348,6 +348,12 @@ test("forward drag after one day selection expands selection", function() {
   assertHasValues('.selected', [17,18,19])
 })
 
+test("date label click does nothing when not pop-up", function() {
+  createRangeCalendarWithFiveWeeks()
+  cal().find(".startDateLabel").click()
+  ok(cal().find(".continuousCalendar:visible").exists())
+})
+
 module("pop-up calendar", {
   setup: createCalendarContainer
 })
@@ -446,6 +452,8 @@ test("week click closes the calendar", function() {
   equals(startFieldValue(), "5/29/2011")
   equals(endFieldValue(), "5/31/2011")
 })
+
+
 
 //Help IDE to identify functions
 test = QUnit.test
