@@ -61,6 +61,16 @@ h2. Insert in body
 </script>
 </pre>
 
+h1. Instructions for contributors
+
+- make a fork
+- code
+- run tests
+- make new tag
+- run build.sh
+- commit / amend
+- push --tags
+- make pull request
 
 h1. License
 
