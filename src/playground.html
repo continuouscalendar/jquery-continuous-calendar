@@ -27,8 +27,9 @@
     fieldset .col { float: left; margin-right: 50px; }
     fieldset .row { clear: both; overflow: hidden; margin-bottom: 5px; display: block; }
     .row .date { width: 80px; }
+    .row .dates { width: 200px; }
     .row .number { width: 30px; }
-    .row .label { display: block; width: 160px; float: left; }
+    .row .label { display: block; width: 190px; float: left; }
     .row input[type=text] { display: block; float: left; margin-right: 5px; }
     .row input[type=checkbox], .row input[type=radio] { float: left; }
     #create { margin-top: 10px; }
@@ -51,22 +52,29 @@
       <div class="label"><label for="weeksBefore">weeksBefore</label> /
         <label for="firstDate">firstDate</label></div>
       <input type="text" id="weeksBefore" class="number"/>
-      <input type="text" id="firstDate" class="date"/>
+      <input type="text" id="firstDate" class="date" value="today"/>
     </div>
     <div class="row">
       <div class="label">
         <label for="weeksAfter">weeksAfter</label> /
         <label for="lastDate">lastDate</label></div>
-      <input type="text" id="weeksAfter" class="number"/>
+      <input type="text" id="weeksAfter" class="number" value="52"/>
       <input type="text" id="lastDate" class="date"/>
     </div>
+    <div class="row">
+      <div class="label">
+        <label for="selectionStart">selectionStart</label> /
+        <label for="selectionEnd">selectionEnd</label></div>
+      <input type="text" id="selectionStart" class="date" value=""/>
+      <input type="text" id="selectionEnd" class="date" value=""/>
+    </div>
     <label class="row"><span class="label">minimumRange</span><input type="text" id="minimumRange" value="-1" class="number"/></label>
-    <label class="row"><span class="label">disabledDates</span><input type="text" id="disabledDates" class="date"/></label>
+    <label class="row"><span class="label">disabledDates</span><input type="text" id="disabledDates" class="dates"/></label>
     <label class="row"><span class="label">fadeOutDuration</span><input type="text" id="fadeOutDuration" value="0" class="number"/></label>
     <label class="row"><input type="checkbox" value="" id="isPopup"/><span class="label">isPopup</span></label>
     <label class="row"><input type="checkbox" value="" id="selectToday"/><span class="label">selectToday</span></label>
     <label class="row"><input type="checkbox" value="" id="disableWeekends"/><span class="label">disableWeekends</span></label>
-    <label class="row"><input type="checkbox" value="" id="isRange"/><span class="label">isRange</span></label>
+    <label class="row"><input type="checkbox" value="" checked="checked" id="isRange"/><span class="label">isRange</span></label>
     <label class="row"><input type="checkbox" value="" id="selectWeek"/><span class="label">selectWeek</span></label>
   </div>
   <div class="col">
@@ -89,11 +97,13 @@
 <script type="text/javascript" src="../build/jquery.continuous-calendar-latest.js" charset="UTF-8"></script>
 <script type="text/javascript">
   counter = 0
-  $('#create').click(function() {
+  $('#create').click(create)
+
+  function create() {
     var containerClass = 'container' + counter;
     var container = $('<div>').addClass(containerClass)
     if(valueOf('isRange')) {
-      container.append('<input type="hidden" class="startDate" /><input type="hidden" class="endDate"/>')
+      container.append('<input type="hidden" class="startDate" value="' + $('#selectionStart').val() + '" /><input type="hidden" class="endDate" value="' + $('#selectionEnd').val() + '"/>')
     }
     $('body').append(container)
     var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates', 'fadeOutDuration' ]
@@ -106,8 +116,26 @@
       var elem = $('#' + id)
       return elem.attr('type') == 'checkbox' ? elem.filter(':checked').length > 0 : elem.val();
     }
+
     return false
-  })
+  }
+
+  var disabledDates = $([Date.NOW,Date.NOW,Date.NOW])
+          .map(
+              function(i, el) {
+                return el.plusDays(i + 3).dateFormat('n/j/Y')
+              }).toArray().join(' ')
+  $('#disabledDates').val(disabledDates)
+  var selection = $([Date.NOW.plusDays(10),Date.NOW.plusDays(18)])
+          .map(
+              function(i, el) {
+                return el.dateFormat('n/j/Y')
+              }).toArray()
+  $('#selectionStart').val(selection[0])
+  $('#selectionEnd').val(selection[1])
+
+  create()
+
 </script>
 </body>
 </html>
