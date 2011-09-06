@@ -74,43 +74,14 @@
     .dateLabels {
       float: left;
     }
+    .c {clear:both;}
   </style>
 </head>
 <body>
+<a href="https://github.com/reaktor/jquery-continuous-calendar">Project Home in Github</a>
 <h1>Examples of using continuous calendar</h1>
 
 <form action="../" method="get">
-  <h2>Single date select (two times)</h2>
-
-  <div id="singleDate1">
-    <input type="hidden" class="startDate" name="singleDate1" value="5/15/2009" disabled="disabled"/>
-  </div>
-  <div id="singleDate2">
-    <input type="hidden" class="startDate" name="singleDate2" value="5/15/2009" disabled="disabled"/>
-  </div>
-  <h2>Single date select popup</h2>
-
-  <div id="singleDate3">
-    <input type="hidden" class="startDate" name="singleDate3"/>
-  </div>
-  <h2>Range select popup</h2>
-
-  <div id="range1">
-    <input type="hidden" class="startDate" name="range1_start" disabled="disabled"/>
-    <input type="hidden" class="endDate" name="range1_end" disabled="disabled"/>
-  </div>
-  <h2>Range select with initial day</h2>
-
-  <div id="range2">
-    <div class="label">
-      <span class="startDateLabel"></span>
-      <span class="separator"> - </span>
-      <span class="endDateLabel"></span>
-    </div>
-    <div class="continuousCalendar"></div>
-    <input type="hidden" class="startDate" name="range1_start" value="13.5.2009" disabled="disabled"/>
-    <input type="hidden" class="endDate" name="range1_end" value="23.5.2009" disabled="disabled"/>
-  </div>
   <h2>Range select with integrated time values</h2>
 
   <div id="timeCalendar">
@@ -137,14 +108,39 @@
       </div>
     </div>
   </div>
+
+  <h2>Single date select popup</h2>
+  <div id="singleDate2" class="c">
+    <input type="hidden" class="startDate" name="singleDate2"/>
+  </div>
+  <div id="singleDate3" class="c">
+    <input type="hidden" class="startDate" name="singleDate3"/>
+  </div>
+  <h2>Range select popup</h2>
+
+  <div id="range1">
+    <input type="hidden" class="startDate" name="range1_start" disabled="disabled"/>
+    <input type="hidden" class="endDate" name="range1_end" disabled="disabled"/>
+  </div>
+  <h2>Range select with initial day</h2>
+
+  <div id="range2">
+    <div class="label">
+      <span class="startDateLabel"></span>
+      <span class="separator"> - </span>
+      <span class="endDateLabel"></span>
+    </div>
+    <div class="continuousCalendar"></div>
+    <input type="hidden" class="startDate" name="range1_start" value="5/13/2009" disabled="disabled"/>
+    <input type="hidden" class="endDate" name="range1_end" value="5/23/2009" disabled="disabled"/>
+  </div>
 </form>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../build/jquery.continuous-calendar-latest.js" charset="UTF-8"></script>
 <script type="text/javascript" language="JavaScript">
-  $("#singleDate1, #singleDate2").continuousCalendar({weeksBefore: 20,weeksAfter: 20});
-  $("#singleDate3").continuousCalendar({weeksBefore: 60,weeksAfter: 1, isPopup: true, locale:DATE_LOCALE_FI});
-  $("#range1").continuousCalendar({firstDate:"2/15/2007",lastDate:"9/10/2009", isPopup:true, locale: DATE_LOCALE_FI});
-  $("#range2").continuousCalendar({weeksBefore: 30,weeksAfter: 30, locale: DATE_LOCALE_FI});
+  $("#singleDate2,#singleDate3").continuousCalendar({weeksBefore: 60,weeksAfter: 1, isPopup: true, locale:DATE_LOCALE_EN});
+  $("#range1").continuousCalendar({firstDate:"2/15/2007",lastDate:"9/10/2009", isPopup:true, locale: DATE_LOCALE_EN});
+  $("#range2").continuousCalendar({weeksBefore: 30,weeksAfter: 30, locale: DATE_LOCALE_EN});
   $("#timeCalendar").continuousCalendar({weeksBefore: 30,lastDate: "today", selectToday: true});
   $("#timeCalendar").bind('calendarChange', function() {
     var container = $(this);
