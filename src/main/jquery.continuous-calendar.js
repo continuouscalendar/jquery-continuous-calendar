@@ -89,6 +89,7 @@
         scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
         calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.append(headerTable).append(scrollContent)
+        dateCells = $('td.date', container).get()
         calendar.initState()
         if($('.startDateLabel', container).isEmpty()) {
           addDateLabels(container, calendar)
@@ -98,9 +99,10 @@
         calendar.initEvents()
         yearTitle = $('th.month', headerTable)
         scrollContent.scroll(setYearLabel)
-        scrollToSelection()
-        if(!params.isPopup)
+        if(!params.isPopup) {
           setYearLabel()
+          scrollToSelection()
+        }
         container.data('calendarRange', selection)
         executeCallback()
       }
@@ -135,7 +137,7 @@
             initSingleDateCalendarEvents()
             var selectedDateKey = startDate && startDate.dateFormat('Ymd')
             if(dateCellMap[selectedDateKey]) {
-              dateCells[dateCellMap[selectedDateKey]].addClass('selected')
+              getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
           },
           addRangeLengthLabel: function() {
@@ -184,7 +186,7 @@
       function highlightToday() {
         var todayKey = Date.NOW.dateFormat('Ymd')
         if(dateCellMap[todayKey]) {
-          dateCells[dateCellMap[todayKey]].addClass('today')
+          getDateCell(dateCellMap[todayKey]).addClass('today')
         }
       }
 
@@ -226,7 +228,7 @@
         var scrollContent = $('.calendarScrollContent', container).get(0)
         var table = $('table', scrollContent).get(0)
         var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight)
-        var date = table.rows[rowNumber].cells[2].date
+        var date = getElemDate(table.rows[rowNumber].cells[2])
         yearTitle.text(date.getFullYear())
       }
 
@@ -269,49 +271,51 @@
       }
 
       function calendarBody() {
-        var tbody = $('<tbody>')
         var firstWeekDay = calendarRange.start.getFirstDateOfWeek(params.locale.firstWeekday)
         var isFirst = true;
+        var rows = []
         while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
-          tbody.append(calendarRow(firstWeekDay.clone(), isFirst))
+          calendarRow(rows, firstWeekDay.clone(), isFirst)
           isFirst = false
           firstWeekDay = firstWeekDay.plusDays(7)
         }
-        return tbody
+        return '<tbody>' + rows.join('') + '</tbody>'
       }
 
-      function calendarRow(firstDayOfWeek, isFirst) {
-        var tr = $('<tr>').append(monthCell(firstDayOfWeek, isFirst)).append(weekCell(firstDayOfWeek))
+      function calendarRow(rows, firstDayOfWeek, isFirst) {
+        rows.push('<tr>')
+        rows.push(monthCell(firstDayOfWeek, isFirst))
+        rows.push(weekCell(firstDayOfWeek))
         for(var i = 0; i < 7; i++) {
           var date = firstDayOfWeek.plusDays(i)
-          tr.append(dateCell(date))
+          rows.push(dateCell(date))
         }
-        return tr
+        rows.push('</tr>')
       }
 
       function dateCell(date) {
-        var dateCell = $('<td>').addClass(dateStyles(date)).append(date.getDate())
-        dateCell.get(0).date = date
-        dateCellMap[date.dateFormat('Ymd')] = dateCells.length
-        dateCells.push(dateCell)
+        var dateCell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '">' + date.getDate() + '</td>'
+        dateCellMap[date.dateFormat('Ymd')] = dateCellDates.length
         dateCellDates.push(date)
         return dateCell
       }
 
       function monthCell(firstDayOfWeek, isFirst) {
-        var th = $('<th>').addClass('month').addClass(backgroundBy(firstDayOfWeek))
+        var th = '<th class="month ' + backgroundBy(firstDayOfWeek)
         if(isFirst || firstDayOfWeek.getDate() <= 7) {
-          th.append(Date.monthNames[firstDayOfWeek.getMonth()]).addClass('monthName')
+          th += ' monthName">'
+          th += Date.monthNames[firstDayOfWeek.getMonth()]
         } else {
+          th += '">'
           if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 0) {
-            th.append(firstDayOfWeek.getFullYear())
+            th += firstDayOfWeek.getFullYear()
           }
         }
-        return th
+        return th + '</th>'
       }
 
       function weekCell(firstDayOfWeek) {
-        return $('<th>').addClass('week').addClass(backgroundBy(firstDayOfWeek)).append(firstDayOfWeek.getWeekInYear('ISO'))
+        return '<th class="week ' + backgroundBy(firstDayOfWeek) + '">' + firstDayOfWeek.getWeekInYear('ISO') + '</th>'
       }
 
       function dateStyles(date) {
@@ -339,8 +343,8 @@
           if(dateCell.hasClass('disabled')) return
           $('td.selected', container).removeClass('selected')
           dateCell.addClass('selected')
-          params.startField.val(date(dateCell).dateFormat(params.locale.shortDateFormat))
-          setDateLabel(date(dateCell).dateFormat(params.locale.weekDateFormat))
+          params.startField.val(getElemDate(dateCell.get(0)).dateFormat(params.locale.shortDateFormat))
+          setDateLabel(getElemDate(dateCell.get(0)).dateFormat(params.locale.weekDateFormat))
           calendar.close(this)
           executeCallback()
         })
@@ -363,7 +367,7 @@
         }
 
         status = Status.CREATE_OR_RESIZE
-        mouseDownDate = elem.date
+        mouseDownDate = getElemDate(elem)
 
         if(mouseDownDate.equalsOnlyDate(selection.end)) {
           mouseDownDate = selection.start
@@ -398,16 +402,16 @@
           var elem = event.target
           if((params.selectWeek && enabledCell(elem)) || isWeekCell(elem)) {
             status = Status.NONE
-            var firstDayOfWeek = date($(elem).parent().children('.date'))
+            var firstDayOfWeek = getElemDate($(elem).parent().children('.date').get(0))
             return instantSelectWeek(firstDayOfWeek)
           } else if(isMonthCell(elem)) {
             status = Status.NONE
-            var dayInMonth = date($(elem).siblings('.date'))
+            var dayInMonth = getElemDate($(elem).siblings('.date').get(0))
             return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth())
           } else if(event.shiftKey) {
             if(selection.days() > 0 && enabledCell(elem)) {
               status = Status.NONE
-              selection = selection.expandTo(elem.date)
+              selection = selection.expandTo(getElemDate(elem))
               return selection
             }
           }
@@ -429,7 +433,7 @@
         if(status == Status.NONE) {
           return
         }
-        var date = event.target.date
+        var date = getElemDate(event.target)
           ;
         ({
           move : function() {
@@ -485,7 +489,7 @@
 
       function setDateCellStyle(i, start, end) {
         var date = dateCellDates[i]
-        var elem = dateCells[i].get(0)
+        var elem = getDateCell(i).get(0)
         var styleClass = [dateStyles(date)]
         if(date.equalsOnlyDate(end)) {
           styleClass.push('selected rangeEnd')
@@ -569,9 +573,14 @@
       function isEnabled(elem) {
         return !$(elem).hasClass('disabled')
       }
-
-      function date(elem) {
-        return elem.get(0).date
+      
+      function getElemDate(elem) {
+      	var dateIndex = $(elem).attr('date-cell-index')
+      	return dateCellDates[dateIndex]
+      }
+      
+      function getDateCell(index) {
+      	return $(dateCells[index])
       }
 
       function setStartField(value) {
