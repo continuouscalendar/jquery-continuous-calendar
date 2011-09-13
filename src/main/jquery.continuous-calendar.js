@@ -85,7 +85,11 @@
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
         calendarRange = new DateRange(rangeStart, rangeEnd)
         calendarContainer = getCalendarContainerOrCreateOne()
+        if($('.startDateLabel', container).isEmpty()) {
+          addDateLabels(container, calendar)
+        }
         calendar.initUI() 
+        calendar.showInitialSelection()
         container.data('calendarRange', selection)
         executeCallback()
       }
@@ -97,9 +101,6 @@
         scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
         calendarContainer.append(headerTable).append(scrollContent)
         calendar.initState()
-        if($('.startDateLabel', container).isEmpty()) {
-          addDateLabels(container, calendar)
-        }
         calendar.addRangeLengthLabel()
         highlightToday()
         calendar.initEvents()
@@ -120,6 +121,9 @@
 
       function dateBehaviour(isRange) {
         var rangeVersion = {
+          showInitialSelection: function() {
+            setRangeLabels()
+          },
           initEvents: function() {
             initRangeCalendarEvents(container, bodyTable)
             drawSelection()
@@ -136,6 +140,11 @@
           }
         }
         var singleDateVersion = {
+          showInitialSelection: function() {
+            if(params.startField.val()) {
+              setDateLabel(Date.parseDate(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat))
+            }
+          },
           initEvents: function() {
             initSingleDateCalendarEvents()
             var selectedDateKey = startDate && startDate.dateFormat('Ymd')
@@ -154,12 +163,11 @@
       function popUpBehaviour(isPopup) {
         var popUpVersion = {
           initUI: function() {
-            initCalendarTable()
-          },
-          initState: function() {
             calendarContainer.addClass('popup').hide()
             var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
             container.append(icon)
+          },
+          initState: function() {
           },
           getContainer: function(newContainer) {
             return $('<div>').addClass('popUpContainer').append(newContainer);
@@ -223,7 +231,6 @@
         bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
         disableTextSelection(bodyTable.get(0))
-        setRangeLabels()
       }
 
       function scrollToSelection() {
@@ -356,10 +363,6 @@
           calendar.close(this)
           executeCallback()
         })
-
-        if(params.startField.val()) {
-          setDateLabel(Date.parseDate(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat))
-        }
       }
 
       function startNewRange() {

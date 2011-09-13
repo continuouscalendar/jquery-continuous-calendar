@@ -359,12 +359,14 @@ module("pop-up calendar", {
 })
 
 test("", function() {
+  console.log("start test")
   createPopupCalendar()
   ok(!cal().find('.continuousCalendar:visible').exists(), "pop-up calendar is not initially shown")
   equals(startLabelValue(), "Wed 4/29/2009", "Initially selected date is shown correctly")
   cal().find(".calendarIcon").click()
   ok(cal().find('.continuousCalendar:visible').exists(), "calendar pops up on click")
   assertHasValues(".continuousCalendar thead th.month", ["2008"], "month is shown correctly")
+  console.log("done")
 })
 
 test("when selecting date", function() {
