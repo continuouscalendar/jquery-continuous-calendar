@@ -84,10 +84,16 @@
         params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
         calendarRange = new DateRange(rangeStart, rangeEnd)
+        calendarContainer = getCalendarContainerOrCreateOne()
+        calendar.initUI() 
+        container.data('calendarRange', selection)
+        executeCallback()
+      }
+
+      function initCalendarTable() {
         var headerTable = $('<table>').addClass('calendarHeader').append(headerRow())
         bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
         scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
-        calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.append(headerTable).append(scrollContent)
         calendar.initState()
         if($('.startDateLabel', container).isEmpty()) {
@@ -101,8 +107,6 @@
         scrollToSelection()
         if(!params.isPopup)
           setYearLabel()
-        container.data('calendarRange', selection)
-        executeCallback()
       }
 
       function parseDisabledDates(dates) {
@@ -148,11 +152,13 @@
 
       function popUpBehaviour(isPopup) {
         var popUpVersion = {
-          initState: function() {
+          initUI: function() {
+            initCalendarTable()
             calendarContainer.addClass('popup').hide()
             var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
             container.append(icon)
           },
+          initState: $.noop,
           getContainer: function(newContainer) {
             return $('<div>').addClass('popUpContainer').append(newContainer);
           },
@@ -170,6 +176,9 @@
           }
         }
         var inlineVersion = {
+          initUI: function() {
+            initCalendarTable()
+          },
           initState: calculateCellHeightAndSetScroll,
           getContainer: function(newContainer) {
             return newContainer
