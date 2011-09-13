@@ -91,6 +91,7 @@
       }
 
       function initCalendarTable() {
+        if (scrollContent) return
         var headerTable = $('<table>').addClass('calendarHeader').append(headerRow())
         bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
         scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
@@ -154,11 +155,12 @@
         var popUpVersion = {
           initUI: function() {
             initCalendarTable()
+          },
+          initState: function() {
             calendarContainer.addClass('popup').hide()
             var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
             container.append(icon)
           },
-          initState: $.noop,
           getContainer: function(newContainer) {
             return $('<div>').addClass('popUpContainer').append(newContainer);
           },
@@ -263,6 +265,7 @@
       }
 
       function toggleCalendar() {
+        initCalendarTable()
         if(calendarContainer.is(':visible')) {
           calendarContainer.fadeOut(params.fadeOutDuration)
           return false
