@@ -121,9 +121,7 @@
 
       function dateBehaviour(isRange) {
         var rangeVersion = {
-          showInitialSelection: function() {
-            setRangeLabels()
-          },
+          showInitialSelection: setRangeLabels,
           initEvents: function() {
             initRangeCalendarEvents(container, bodyTable)
             drawSelection()
@@ -167,8 +165,7 @@
             var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
             container.append(icon)
           },
-          initState: function() {
-          },
+          initState: $.noop,
           getContainer: function(newContainer) {
             return $('<div>').addClass('popUpContainer').append(newContainer);
           },
@@ -186,9 +183,7 @@
           }
         }
         var inlineVersion = {
-          initUI: function() {
-            initCalendarTable()
-          },
+          initUI: initCalendarTable,
           initState: calculateCellHeightAndSetScroll,
           getContainer: function(newContainer) {
             return newContainer
