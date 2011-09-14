@@ -84,27 +84,33 @@
         params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
         calendarRange = new DateRange(rangeStart, rangeEnd)
-        var headerTable = $('<table>').addClass('calendarHeader').append(headerRow())
-        bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
-        scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
         calendarContainer = getCalendarContainerOrCreateOne()
-        calendarContainer.append(headerTable).append(scrollContent)
-        dateCells = $('td.date', container).get()
-        calendar.initState()
         if($('.startDateLabel', container).isEmpty()) {
           addDateLabels(container, calendar)
         }
+        calendar.initUI() 
+        calendar.showInitialSelection()
+        container.data('calendarRange', selection)
+        executeCallback()
+      }
+
+      function initCalendarTable() {
+        if (scrollContent) return
+        var headerTable = $('<table>').addClass('calendarHeader').append(headerRow())
+        bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
+        scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
+        calendarContainer.append(headerTable).append(scrollContent)
+        dateCells = $('td.date', container).get()
+        calendar.initState()
         calendar.addRangeLengthLabel()
         highlightToday()
-        calendar.initEvents()
         yearTitle = $('th.month', headerTable)
         scrollContent.scroll(setYearLabel)
         if(!params.isPopup) {
           setYearLabel()
           scrollToSelection()
         }
-        container.data('calendarRange', selection)
-        executeCallback()
+        calendar.initEvents()
       }
 
       function parseDisabledDates(dates) {
@@ -117,6 +123,7 @@
 
       function dateBehaviour(isRange) {
         var rangeVersion = {
+          showInitialSelection: setRangeLabels,
           initEvents: function() {
             initRangeCalendarEvents(container, bodyTable)
             drawSelection()
@@ -133,6 +140,11 @@
           }
         }
         var singleDateVersion = {
+          showInitialSelection: function() {
+            if(params.startField.val()) {
+              setDateLabel(Date.parseDate(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat))
+            }
+          },
           initEvents: function() {
             initSingleDateCalendarEvents()
             var selectedDateKey = startDate && startDate.dateFormat('Ymd')
@@ -150,11 +162,12 @@
 
       function popUpBehaviour(isPopup) {
         var popUpVersion = {
-          initState: function() {
+          initUI: function() {
             calendarContainer.addClass('popup').hide()
             var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
             container.append(icon)
           },
+          initState: $.noop,
           getContainer: function(newContainer) {
             return $('<div>').addClass('popUpContainer').append(newContainer);
           },
@@ -172,6 +185,7 @@
           }
         }
         var inlineVersion = {
+          initUI: initCalendarTable,
           initState: calculateCellHeightAndSetScroll,
           getContainer: function(newContainer) {
             return newContainer
@@ -214,7 +228,6 @@
         bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
         disableTextSelection(bodyTable.get(0))
-        setRangeLabels()
       }
 
       function scrollToSelection() {
@@ -256,6 +269,7 @@
       }
 
       function toggleCalendar() {
+        initCalendarTable()
         if(calendarContainer.is(':visible')) {
           calendarContainer.fadeOut(params.fadeOutDuration)
           return false
@@ -348,10 +362,6 @@
           calendar.close(this)
           executeCallback()
         })
-
-        if(params.startField.val()) {
-          setDateLabel(Date.parseDate(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat))
-        }
       }
 
       function startNewRange() {
