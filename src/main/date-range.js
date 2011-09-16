@@ -18,9 +18,9 @@ function DateRange(date1, date2) {
   }
   this.start = date1.compareTo(date2) > 0 ? date2 : date1
   this.end = date1.compareTo(date2) > 0 ? date1 : date2
-  this._days
-  this._hours
-  this._minutes
+  this._days = 0
+  this._hours = 0
+  this._minutes = 0
   this._valid = true
 }
 DateRange.prototype._setDaysHoursAndMinutes = function() {
