@@ -12,31 +12,31 @@
  * the License.
  */
 function DateRange(date1, date2) {
-  var hasTimes = false
+  var _hasTimes = false
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
   this.start = date1.compareTo(date2) > 0 ? date2 : date1
   this.end = date1.compareTo(date2) > 0 ? date1 : date2
-  var days
-  var hours
-  var minutes
-  var valid = true
+  this._days
+  this._hours
+  this._minutes
+  this._valid = true
   this.hours = function() {
-    return hours;
+    return this._hours;
   }
   this.minutes = function() {
-    return minutes;
+    return this._minutes;
   }
   this.hasDate = function(date) {
     return date.isBetweenDates(this.start, this.end);
   }
   this.isValid = function() {
-    return valid && this.end.getTime() - this.start.getTime() >= 0;
+    return this._valid && this.end.getTime() - this.start.getTime() >= 0;
   }
   this.days = function() {
-    if(hasTimes) {
-      return days
+    if(this._hasTimes) {
+      return this._days
     } else {
       return Math.round(this.start.distanceInDays(this.end) + 1)
     }
@@ -91,24 +91,24 @@ function DateRange(date1, date2) {
     var parsedStartTime = Date.parseTime(startTimeStr)
     var parsedEndTime = Date.parseTime(endTimeStr)
     if(parsedStartTime && parsedEndTime) {
-      valid = true
-      hasTimes = true
+     this._valid = true
+     this._hasTimes = true
       this.start = dateWithTime(this.start, parsedStartTime)
       this.end = dateWithTime(this.end, parsedEndTime)
       setDaysHoursAndMinutes.call(this)
     } else {
-      valid = false
+     this._valid = false
     }
-    return valid
+    return this._valid
   }
   function setDaysHoursAndMinutes() {
-    if(hasTimes) {
+    if(this._hasTimes) {
       var ms = parseInt((this.end.getTime() - this.start.getTime()))
-      days = parseInt(ms / Date.DAY)
-      ms = ms - (days * Date.DAY)
-      hours = parseInt(ms / Date.HOUR)
-      ms = ms - (hours * Date.HOUR)
-      minutes = parseInt(ms / Date.MINUTE)
+     this._days = parseInt(ms / Date.DAY)
+      ms = ms - (this._days * Date.DAY)
+     this._hours = parseInt(ms / Date.HOUR)
+      ms = ms - (this._hours * Date.HOUR)
+     this._minutes = parseInt(ms / Date.MINUTE)
     }
   }
 
@@ -125,7 +125,7 @@ function DateRange(date1, date2) {
   }
 
   this.toString = function(locale) {
-    if(hasTimes) {
+    if(this._hasTimes) {
       return  Date.daysLabel(this.days()) + ' ' + Date.hoursLabel(this.hours(), this.minutes())
     } else {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat)
