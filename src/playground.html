@@ -111,8 +111,12 @@
     $('body').append(container)
     var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates', 'fadeOutDuration' ]
     var options = {}
-    for(var i = 0; i < optionsList.length; i++)
-      options[optionsList[i]] = valueOf(optionsList[i])
+    for(var i = 0; i < optionsList.length; i++) {
+      var value = valueOf(optionsList[i]);
+      if(value) {
+        options[optionsList[i]] = value
+      }
+    }
     options.locale = window[$('[name=locale]').filter(':checked').val()]
     var params = JSON.stringify(options);
     container.prepend('<textarea  class="example_params">$(selector).continuousCalendar('+params+')</textarea>')
