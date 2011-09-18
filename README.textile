@@ -10,6 +10,17 @@ Continuous calendar is a JQuery plugin for single date and range selections with
 * Week select
 * Popup support
 * Support for different date formats
+* Support for specifying holidays or disabled days
+* Support for setting minimum range
+
+h1. Supported browsers
+
+* IE6 ->
+* FireFox
+* Chrome
+* Opera
+* Safari
+
 
 h1. Live demo
 
@@ -30,22 +41,16 @@ h2. Insert in head
 
 <pre>
 <!-- basic default calendar styles -->
-<link rel="stylesheet" href="http://reaktor.github.com/jquery-continuous-calendar/src/main/jquery.continuous-calendar.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.css" type="text/css" media="screen" />
 
 <!-- custom user specified calendar styles -->
 <style type="text/css">
     .calendarScrollContent {height: 250px;}
-    input {border: none;background: none;}
-    #dateRange1 {position: relative;clear: both;}
 </style>
 
 <!-- required JavaScript files -->
-<script type="text/javascript" 
-src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-<script type="text/javascript" 
-src="http://reaktor.github.com/jquery-continuous-calendar/src/main/date-functions.js"></script>
-<script type="text/javascript" 
-src="http://reaktor.github.com/jquery-continuous-calendar/src/main/jquery.continuous-calendar.js" charset="UTF-8"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.js" charset="UTF-8"></script>
 </pre>
 
 h2. Insert in body
@@ -57,7 +62,7 @@ h2. Insert in body
   <input type="hidden" class="endDate" name="range_end">
 </div>
 <script type="text/javascript" language="JavaScript">
-  $("#dateRange1").continuousCalendar({weeksBefore: 60,weeksAfter: 1});
+  $("#dateRange1").continuousCalendar();
 </script>
 </pre>
 
