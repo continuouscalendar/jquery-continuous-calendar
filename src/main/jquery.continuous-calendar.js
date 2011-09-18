@@ -342,7 +342,7 @@
 
       function disabledOrNot(date) {
         var disabledWeekendDay = params.disableWeekends && date.isWeekend()
-        var disabledDay = params.disabledDates[date.getOnlyDate()] == true
+        var disabledDay = params.disabledDates[date.getOnlyDate()]
         var outOfBounds = !calendarRange.hasDate(date)
         return outOfBounds || disabledWeekendDay || disabledDay ? 'disabled' : ''
       }
