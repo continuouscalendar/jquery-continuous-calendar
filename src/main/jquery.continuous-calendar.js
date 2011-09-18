@@ -333,7 +333,7 @@
       }
 
       function dateStyles(date) {
-        return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date)].sort().join(' '))
+        return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)].sort().join(' '))
       }
 
       function backgroundBy(date) {
@@ -349,6 +349,10 @@
 
       function todayStyle(date) {
         return date.isToday() ? 'today' : ''
+      }
+
+      function holidayStyle(date) {
+        return date.getDay() == 0 ? 'holiday' : ''
       }
 
       function initSingleDateCalendarEvents() {
