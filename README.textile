@@ -66,9 +66,7 @@ h1. Instructions for contributors
 - make a fork
 - code
 - run tests
-- make new tag
-- run build.sh
-- commit / amend
+- run build.sh <version>
 - push --tags
 - make pull request
 
