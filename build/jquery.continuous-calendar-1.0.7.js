@@ -777,39 +777,67 @@ window.DATE_LOCALE_AU = {
  * the License.
  */
 function DateRange(date1, date2) {
-  var hasTimes = false
+  var _hasTimes = false
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
   this.start = date1.compareTo(date2) > 0 ? date2 : date1
   this.end = date1.compareTo(date2) > 0 ? date1 : date2
-  var days
-  var hours
-  var minutes
-  var valid = true
-  this.hours = function() {
-    return hours;
-  }
-  this.minutes = function() {
-    return minutes;
-  }
-  this.hasDate = function(date) {
+  this._days = 0
+  this._hours = 0
+  this._minutes = 0
+  this._valid = true
+}
+
+DateRange.prototype = {
+  _setDaysHoursAndMinutes: function() {
+    if(this._hasTimes) {
+      var ms = parseInt((this.end.getTime() - this.start.getTime()))
+      this._days = parseInt(ms / Date.DAY)
+      ms = ms - (this._days * Date.DAY)
+      this._hours = parseInt(ms / Date.HOUR)
+      ms = ms - (this._hours * Date.HOUR)
+      this._minutes = parseInt(ms / Date.MINUTE)
+    }
+  },
+
+  _dateWithTime: function(dateWithoutTime, parsedTime) {
+    var date = dateWithoutTime.clone()
+    date.setHours(parsedTime[0])
+    date.setMinutes(parsedTime[1])
+    date.setMilliseconds(0)
+    return date
+  },
+
+  hours: function() {
+    return this._hours;
+  },
+
+  minutes: function() {
+    return this._minutes;
+  },
+
+  hasDate: function(date) {
     return date.isBetweenDates(this.start, this.end);
-  }
-  this.isValid = function() {
-    return valid && this.end.getTime() - this.start.getTime() >= 0;
-  }
-  this.days = function() {
-    if(hasTimes) {
-      return days
+  },
+
+  isValid: function() {
+    return this._valid && this.end.getTime() - this.start.getTime() >= 0;
+  },
+
+  days: function() {
+    if(this._hasTimes) {
+      return this._days
     } else {
       return Math.round(this.start.distanceInDays(this.end) + 1)
     }
-  }
-  this.shiftDays = function(days) {
+  },
+
+  shiftDays: function(days) {
     return new DateRange(this.start.plusDays(days), this.end.plusDays(days))
-  }
-  this.expandTo = function(date) {
+  },
+
+  expandTo: function(date) {
     var newStart = this.start.clone()
     var newEnd = this.end.clone()
     if(date.compareTo(this.start) < 0) {
@@ -820,21 +848,21 @@ function DateRange(date1, date2) {
       }
     }
     return new DateRange(newStart, newEnd)
-  }
+  },
 
-  this.expandDaysTo = function(days) {
+  expandDaysTo: function(days) {
     return new DateRange(this.start, this.start.plusDays(days - 1))
-  }
+  },
 
-  this.hasValidSize = function(minimumDays) {
+  hasValidSize: function(minimumDays) {
     return minimumDays < 0 || this.days() >= minimumDays
-  }
+  },
 
-  this.hasValidSizeAndEndsOnWorkWeek = function(minimumDays) {
+  hasValidSizeAndEndsOnWorkWeek: function(minimumDays) {
     return this.hasValidSize(minimumDays) && this.hasEndsOnWeekend()
-  }
+  },
 
-  this.and = function(that) {
+  and: function(that) {
     var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start
     var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end
     if(latestStart.compareTo(earliestEnd) < 0) {
@@ -842,76 +870,58 @@ function DateRange(date1, date2) {
     } else {
       return DateRange.emptyRange()
     }
-  }
+  },
 
-  this.isInside = function(outer) {
+  isInside: function(outer) {
     return this.start.compareTo(outer.start) >= 0 && this.end.compareTo(outer.end) <= 0
-  }
+  },
 
-  this.hasEndsOnWeekend = function() {
+  hasEndsOnWeekend: function() {
     return this.start.isWeekend() || this.end.isWeekend()
-  }
+  },
 
-  this.setTimes = function(startTimeStr, endTimeStr) {
+  setTimes: function(startTimeStr, endTimeStr) {
     var parsedStartTime = Date.parseTime(startTimeStr)
     var parsedEndTime = Date.parseTime(endTimeStr)
     if(parsedStartTime && parsedEndTime) {
-      valid = true
-      hasTimes = true
-      this.start = dateWithTime(this.start, parsedStartTime)
-      this.end = dateWithTime(this.end, parsedEndTime)
-      setDaysHoursAndMinutes.call(this)
+      this._valid = true
+      this._hasTimes = true
+      this.start = this._dateWithTime(this.start, parsedStartTime)
+      this.end = this._dateWithTime(this.end, parsedEndTime)
+      this._setDaysHoursAndMinutes()
     } else {
-      valid = false
+      this._valid = false
     }
-    return valid
-  }
-  function setDaysHoursAndMinutes() {
-    if(hasTimes) {
-      var ms = parseInt((this.end.getTime() - this.start.getTime()))
-      days = parseInt(ms / Date.DAY)
-      ms = ms - (days * Date.DAY)
-      hours = parseInt(ms / Date.HOUR)
-      ms = ms - (hours * Date.HOUR)
-      minutes = parseInt(ms / Date.MINUTE)
-    }
-  }
+    return this._valid
+  },
 
-  function dateWithTime(dateWithoutTime, parsedTime) {
-    var date = dateWithoutTime.clone()
-    date.setHours(parsedTime[0])
-    date.setMinutes(parsedTime[1])
-    date.setMilliseconds(0)
-    return date
-  }
-
-  this.clone = function() {
+  clone: function() {
     return new DateRange(this.start, this.end)
-  }
+  },
 
-  this.toString = function(locale) {
-    if(hasTimes) {
+  toString: function(locale) {
+    if(this._hasTimes) {
       return  Date.daysLabel(this.days()) + ' ' + Date.hoursLabel(this.hours(), this.minutes())
     } else {
       return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat)
     }
-  }
+  },
 
-  this.printDefiningDuration = function() {
-    var years = parseInt(this.days()/360, 10)
-    if (years > 0) return Date.yearsLabel(years)
+  printDefiningDuration: function() {
+    var years = parseInt(this.days() / 360, 10)
+    if(years > 0) return Date.yearsLabel(years)
 
-    var months = parseInt(this.days()/30, 10)
-    if (months > 0) return Date.monthsLabel(months)
+    var months = parseInt(this.days() / 30, 10)
+    if(months > 0) return Date.monthsLabel(months)
 
     return Date.daysLabel(this.days())
-  }
+  },
 
-  this.isPermittedRange = function(minimumSize, disableWeekends, outerRange) {
+  isPermittedRange: function(minimumSize, disableWeekends, outerRange) {
     return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend())) && this.isInside(outerRange)
-  }
+  },
 
-  this.shiftInside = function(outerRange) {
+  shiftInside: function(outerRange) {
     if(this.days() > outerRange.days()) {
       return DateRange.emptyRange()
     }
@@ -926,56 +936,61 @@ function DateRange(date1, date2) {
     return this
   }
 }
-DateRange.emptyRange = function() {
-  function NullDateRange() {
-    this.start = null
-    this.end = null
-    this.days = function() {
-      return 0;
-    }
-    this.shiftDays = function() {
-    }
-    this.hasDate = function() {
-      return false;
-    }
-    this.clone = function() {
-      return DateRange.emptyRange()
-    }
-  }
 
-  return new NullDateRange()
-}
-DateRange.parse = function(dateStr1, dateStr2, dateFormat) {
-  return new DateRange(Date.parseDate(dateStr1, dateFormat), Date.parseDate(dateStr2, dateFormat))
-}
-DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends, outerRange) {
-  if(isTooSmallSelection()) {
-    var newRange = oldRange.expandDaysTo(minimumSize)
-    if(disableWeekends && newRange.hasEndsOnWeekend()) {
-      var shiftedDays = newRange.shiftDays(delta(newRange.end.getDay())).shiftInside(outerRange)
-      while(!shiftedDays.isPermittedRange(minimumSize, disableWeekends, outerRange) || shiftedDays.end.compareTo(outerRange.end) > 0) {
-        if (!shiftedDays.isPermittedRange(minimumSize, false, outerRange)) {
-          return DateRange.emptyRange()
-        }
-        shiftedDays = shiftedDays.shiftDays(1)
+DateRange = $.extend(DateRange, {
+  emptyRange: function() {
+    function NullDateRange() {
+      this.start = null
+      this.end = null
+      this.days = function() {
+        return 0;
       }
-      newRange = shiftedDays
+      this.shiftDays = function() {
+      }
+      this.hasDate = function() {
+        return false;
+      }
+      this.clone = function() {
+        return DateRange.emptyRange()
+      }
     }
-    if(!newRange.isPermittedRange(minimumSize, false, outerRange)) {
-      return DateRange.emptyRange()
+
+    return new NullDateRange()
+  },
+
+  parse: function(dateStr1, dateStr2, dateFormat) {
+    return new DateRange(Date.parseDate(dateStr1, dateFormat), Date.parseDate(dateStr2, dateFormat))
+  },
+
+  rangeWithMinimumSize: function(oldRange, minimumSize, disableWeekends, outerRange) {
+    if(isTooSmallSelection()) {
+      var newRange = oldRange.expandDaysTo(minimumSize)
+      if(disableWeekends && newRange.hasEndsOnWeekend()) {
+        var shiftedDays = newRange.shiftDays(delta(newRange.end.getDay())).shiftInside(outerRange)
+        while(!shiftedDays.isPermittedRange(minimumSize, disableWeekends, outerRange) || shiftedDays.end.compareTo(outerRange.end) > 0) {
+          if(!shiftedDays.isPermittedRange(minimumSize, false, outerRange)) {
+            return DateRange.emptyRange()
+          }
+          shiftedDays = shiftedDays.shiftDays(1)
+        }
+        newRange = shiftedDays
+      }
+      if(!newRange.isPermittedRange(minimumSize, false, outerRange)) {
+        return DateRange.emptyRange()
+      }
+      return newRange
     }
-    return newRange
-  }
-  return oldRange
+    return oldRange
 
-  function isTooSmallSelection() {
-    return minimumSize && oldRange.days() <= minimumSize;
-  }
+    function isTooSmallSelection() {
+      return minimumSize && oldRange.days() <= minimumSize;
+    }
 
-  function delta(x) {
-    return -((x + 1) % 7 + 1)
+    function delta(x) {
+      return -((x + 1) % 7 + 1)
+    }
   }
-}
+})
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -1311,7 +1326,7 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
       }
 
       function dateStyles(date) {
-        return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date)].sort().join(' '))
+        return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)].sort().join(' '))
       }
 
       function backgroundBy(date) {
@@ -1320,13 +1335,17 @@ DateRange.rangeWithMinimumSize = function(oldRange, minimumSize, disableWeekends
 
       function disabledOrNot(date) {
         var disabledWeekendDay = params.disableWeekends && date.isWeekend()
-        var disabledDay = params.disabledDates[date.getOnlyDate()] == true
+        var disabledDay = params.disabledDates[date.getOnlyDate()]
         var outOfBounds = !calendarRange.hasDate(date)
         return outOfBounds || disabledWeekendDay || disabledDay ? 'disabled' : ''
       }
 
       function todayStyle(date) {
         return date.isToday() ? 'today' : ''
+      }
+
+      function holidayStyle(date) {
+        return date.getDay() == 0 ? 'holiday' : ''
       }
 
       function initSingleDateCalendarEvents() {

@@ -199,3 +199,10 @@
   height: 1px;
   position: relative;
 }
+
+.continuousCalendarContainer td.holiday {
+  color: #f00;
+}
+.continuousCalendarContainer .holiday.disabled {
+  color: #a66;
+}
