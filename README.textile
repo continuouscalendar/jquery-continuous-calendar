@@ -1,4 +1,16 @@
-Continuous calendar is a JQuery plugin for single date and range selections with following features:
+
+"Homepage":http://reaktor.github.com/jquery-continuous-calendar/
+
+"Examples":http://reaktor.github.com/jquery-continuous-calendar/src/example.html
+
+"Playground":http://reaktor.github.com/jquery-continuous-calendar/src/playground.html
+
+"unit tests":http://reaktor.github.com/jquery-continuous-calendar/src/test/jquery.continuous-calendar-test.html
+
+"Latest revision as ZIP file":http://github.com/reaktor/jquery-continuous-calendar/zipball/master
+
+
+h1. Features
 
 * Date dragging
 * No pagination, continuous month flow
@@ -20,20 +32,6 @@ h1. Supported browsers
 * Chrome
 * Opera
 * Safari
-
-
-h1. Live demo
-
-"Examples":http://reaktor.github.com/jquery-continuous-calendar/src/example.html
-"Playground":http://reaktor.github.com/jquery-continuous-calendar/src/playground.html
-
-h1. QUnit tests
-
-"tests":http://reaktor.github.com/jquery-continuous-calendar/src/test/jquery.continuous-calendar-test.html
-
-h1. Download zip
-
-"Latest revision":http://github.com/reaktor/jquery-continuous-calendar/zipball/master
 
 h1. Getting started
 
