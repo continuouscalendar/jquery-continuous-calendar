@@ -41,7 +41,7 @@ h2. Insert in head
 
 <pre>
 <!-- basic default calendar styles -->
-<link rel="stylesheet" href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.css" type="text/css" />
 
 <!-- custom user specified calendar styles -->
 <style type="text/css">
@@ -49,8 +49,8 @@ h2. Insert in head
 </style>
 
 <!-- required JavaScript files -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" charset="UTF-8"></script>
-<script type="text/javascript" src="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.js" charset="UTF-8"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+<script type="text/javascript" src="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.js"></script>
 </pre>
 
 h2. Insert in body
