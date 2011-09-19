@@ -203,6 +203,11 @@
 .continuousCalendarContainer td.holiday {
   color: #f00;
 }
+
 .continuousCalendarContainer .holiday.disabled {
   color: #a66;
+}
+
+.continuousCalendarContainer .holiday.selected {
+  color: #fbb;
 }
