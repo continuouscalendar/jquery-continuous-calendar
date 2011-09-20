@@ -194,10 +194,12 @@
 .continuousCalendarContainer div.label span.clickable {
   cursor: pointer;
 }
+
 .continuousCalendarContainer .popUpContainer {
   width: 1px;
   height: 1px;
   position: relative;
+  clear: both;
 }
 
 .continuousCalendarContainer td.holiday {
