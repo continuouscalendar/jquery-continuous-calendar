@@ -34,9 +34,10 @@
     .row input[type=checkbox], .row input[type=radio] { float: left; }
     #create { margin-top: 10px; }
     .calendarScrollContent { height: 200px; }
-    .continuousCalendarContainer { float: left; margin: 5px; }
+    .continuousCalendarContainer {  }
     .hint {font-size:80%;color:#666;}
     .example_params {width:100%;height:50px; font-size:10px;display:block;margin:4px 0;}
+    .containerWrapper {float:left; margin: 5px;}
   </style>
   <style type="text/css" media="print">
     fieldset { display: none; }
@@ -105,10 +106,11 @@
   function create() {
     var containerClass = 'container' + counter;
     var container = $('<div>').addClass(containerClass)
+    var containerWrapper = $('<div class="containerWrapper">').append(container)
     if(valueOf('isRange')) {
       container.append('<input type="hidden" class="startDate" value="' + $('#selectionStart').val() + '" /><input type="hidden" class="endDate" value="' + $('#selectionEnd').val() + '"/>')
     }
-    $('body').append(container)
+    $('body').append(containerWrapper)
     var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates', 'fadeOutDuration' ]
     var options = {}
     for(var i = 0; i < optionsList.length; i++) {
@@ -119,7 +121,7 @@
     }
     options.locale = window[$('[name=locale]').filter(':checked').val()]
     var params = JSON.stringify(options);
-    container.prepend('<textarea  class="example_params">$(selector).continuousCalendar('+params+')</textarea>')
+    containerWrapper.prepend('<textarea  class="example_params">$(selector).continuousCalendar('+params+')</textarea>')
     container.continuousCalendar(options)
     function valueOf(id) {
       var elem = $('#' + id)
