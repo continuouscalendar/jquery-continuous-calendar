@@ -165,7 +165,7 @@
           initUI: function() {
             calendarContainer.addClass('popup').hide()
             var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
-            container.append(icon)
+            container.prepend(icon)
           },
           initState: $.noop,
           getContainer: function(newContainer) {
@@ -219,7 +219,7 @@
         var dateLabelContainer = $('<div class="label">')
         dateLabelContainer.append('<span class="startDateLabel"></span>')
         calendar.addEndDateLabel(dateLabelContainer)
-        container.append(dateLabelContainer)
+        container.prepend(dateLabelContainer)
         calendar.addDateLabelBehaviour(dateLabelContainer.children())
       }
 
