@@ -34,10 +34,12 @@ var testIndex = 0
 function createCalendarContainer() {
   testIndex++
   var container = $("<div>").addClass('testCalendarContainer')
+  var containerWrapper = $("<div>").addClass('containerWrapper')
   var index = $('<div></div>').append(testName.name).addClass('testLabel')
   container.attr("id", calendarId())
-  container.append(index)
-  $("#calendars").append(container)
+  containerWrapper.append(index)
+  containerWrapper.append(container)
+  $("#calendars").append(containerWrapper)
 }
 
 function cal(delta) {
