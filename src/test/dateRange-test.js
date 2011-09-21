@@ -19,11 +19,11 @@ describe("date range default behavior", function() {
     expect(range.start).toEqual(start)
     expect(range.end).toEqual(end)
     expect(range.days()).toEqual(3)
-    expect(!range.hasDate(new Date('09/9/2009'))).toBeTruthy()
+    expect(range.hasDate(new Date('09/9/2009'))).toBeFalsy()
     expect(range.hasDate(new Date('09/10/2009'))).toBeTruthy()
     expect(range.hasDate(new Date('09/11/2009'))).toBeTruthy()
     expect(range.hasDate(new Date('09/12/2009'))).toBeTruthy()
-    expect(!range.hasDate(new Date('09/13/2009'))).toBeTruthy()
+    expect(range.hasDate(new Date('09/13/2009'))).toBeFalsy()
     expect(range.toString(DATE_LOCALE_FI)).toEqual("10.9.2009 - 12.9.2009")
   })
 
@@ -47,9 +47,9 @@ describe("date range default behavior", function() {
 
   it("range can be asked if it is a subset of another range", function() {
     expect(range.isInside(range)).toBeTruthy()
-    expect(!range.isInside(range.shiftDays(1))).toBeTruthy()
+    expect(range.isInside(range.shiftDays(1))).toBeFalsy()
     expect(range.isInside(range.expandDaysTo(7))).toBeTruthy()
-    expect(!range.expandDaysTo(7).isInside(range)).toBeTruthy()
+    expect(range.expandDaysTo(7).isInside(range)).toBeFalsy()
   })
 })
 
@@ -68,7 +68,7 @@ describe("moving date range within outer range", function() {
   it("range can be moved forward inside outer range", function() {
     var range1 = new DateRange(new Date('03/15/2011'), new Date('03/21/2011'))
     var range2 = range1.shiftInside(outerRange)
-    expect(!range1.isInside(outerRange)).toBeTruthy()
+    expect(range1.isInside(outerRange)).toBeFalsy()
     expect(range2.isInside(outerRange)).toBeTruthy()
     expect(range2.start.getDate()).toEqual(28)
     expect(range2.end.getDate()).toEqual(3)
@@ -77,7 +77,7 @@ describe("moving date range within outer range", function() {
   it("range can be moved backward inside outer range", function() {
     var range1 = new DateRange(new Date('04/28/2011'), new Date('05/04/2011'))
     var range2 = range1.shiftInside(outerRange)
-    expect(!range1.isInside(outerRange)).toBeTruthy()
+    expect(range1.isInside(outerRange)).toBeFalsy()
     expect(range2.isInside(outerRange)).toBeTruthy()
     expect(range2.start.getDate()).toEqual(25)
     expect(range2.end.getDate()).toEqual(1)
@@ -150,11 +150,11 @@ describe("date range with time behavior", function() {
   it("one day range with start time after end time is not valid", function() {
     expect(range.isValid()).toBeTruthy()
     range.start = new Date('09/13/2009')
-    expect(!range.isValid()).toBeTruthy()
+    expect(range.isValid()).toBeFalsy()
     range.start = new Date('09/12/2009')
     expect(range.isValid()).toBeTruthy()
     range.setTimes('15:00', '14:30')
-    expect(!range.isValid()).toBeTruthy()
+    expect(range.isValid()).toBeFalsy()
     range.setTimes('15:00', '15:00')
     expect(range.isValid()).toBeTruthy()
     range.setTimes('15:00', '15:30')
@@ -166,16 +166,16 @@ describe("date range with time behavior", function() {
     expect(range.isValid()).toBeTruthy()
 
     range.setTimes('', '15:30')
-    expect(!range.isValid()).toBeTruthy()
+    expect(range.isValid()).toBeFalsy()
 
     range.setTimes('15:00', '15:30')
     expect(range.isValid()).toBeTruthy()
 
     range.setTimes('asdf', 'fddd')
-    expect(!range.isValid()).toBeTruthy()
+    expect(range.isValid()).toBeFalsy()
 
     range.setTimes('00', '25')
-    expect(!range.isValid()).toBeTruthy()
+    expect(range.isValid()).toBeFalsy()
 
   })
 
