@@ -154,7 +154,7 @@ function clickOnDate(date) {
 }
 
 function assertSelectedDate(expectedDate) {
-  equals(cal().find(".selected").text(), ''+expectedDate)
+  expect(cal().find(".selected").text()).toEqual(''+expectedDate)
 }
 
 function mouseEventOnDay(eventType, date, options) {
@@ -204,9 +204,9 @@ function value(selector) {
 }
 
 function assertHasValues(selector, expectedArray, comment) {
-  same($.map(cal().find(selector), function (elem) {
+  expect($.map(cal().find(selector), function (elem) {
     return $(elem).text()
-  }), $.map(expectedArray, function(i) {
+  })).toEqual($.map(expectedArray, function(i) {
     return i.toString()
   }), comment)
 }
