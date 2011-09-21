@@ -88,17 +88,22 @@ describe("calendar bounds", function() {
   it("disabled date is not selectable", function() {
     createCalendarFields().continuousCalendar({firstDate:"4/15/2009",lastDate:"5/9/2009", disableWeekends: true, disabledDates:"4/22/2009 4/29/2009"})
     clickOnDate(15)
-    assertSelectedDate(15)
+    keepsSameDate()
     clickOnDate(13)
-    assertSelectedDate(15)
+    keepsSameDate()
     clickOnDate(18)
-    assertSelectedDate(15)
+    keepsSameDate()
     clickOnDate(19)
-    assertSelectedDate(15)
+    keepsSameDate()
     clickOnDate(22)
-    assertSelectedDate(15)
+    keepsSameDate()
     clickOnDate(29)
-    assertSelectedDate(15)
+    keepsSameDate()
+
+    function keepsSameDate() {
+      expect(cal().find(".selected")).toHaveText(15)
+    }
+
   })
 })
 

@@ -119,10 +119,6 @@ function clickOnDate(date) {
   cal().find(".date:contains(" + date + ")").click()
 }
 
-function assertSelectedDate(expectedDate) {
-  expect(cal().find(".selected").text()).toEqual(''+expectedDate)
-}
-
 function mouseEventOnDay(eventType, date, options) {
   mouseEvent(eventType, cal().find(".date").withText(date), options);
 }
