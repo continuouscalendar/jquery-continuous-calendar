@@ -12,28 +12,13 @@
  * the License.
  */
 
-/*
-var moduleName = ""
-QUnit.moduleStart = function(name) {
-  moduleName = name
-}
-
-var testName = ""
-QUnit.testStart = function(name) {
-  testName = name
-}
-*/
 var testIndex = 0
-
-moduleName='moduleName'
 function createCalendarContainer() {
   testIndex++
   var container = $("<div>").addClass('testCalendarContainer')
   var containerWrapper = $("<div>").addClass('containerWrapper')
-
   var suite_description = jasmine.currentEnv_.currentSpec.suite.description;
   var description = jasmine.currentEnv_.currentSpec.description;
-
   var index = $('<div></div>').append('<strong>'+suite_description+'</strong><br>'+description).addClass('testLabel')
   container.attr("id", calendarId())
   containerWrapper.append(index)
@@ -55,7 +40,6 @@ function createCalendarFields(params) {
       container.append(field)
     }
   }
-
   return container
 }
 
@@ -93,7 +77,6 @@ function dragDatesSlowly(enter, exit) {
   }
   mouseUpOnDay(exit)
 }
-
 
 function createCalendarWithOneWeek() {
   createCalendarFields({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0})
