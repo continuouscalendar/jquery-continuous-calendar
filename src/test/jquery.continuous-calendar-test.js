@@ -48,7 +48,7 @@ describe('empty calendar of full year', function() {
   })
 
   it("render week numbers", function() {
-    ok(cal().find(".week").text() > 0)
+    expect(cal().find(".week").text()).toBeGreaterThan(0)
   })
 })
 
