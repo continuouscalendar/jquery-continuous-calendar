@@ -107,7 +107,7 @@ describe("date picker calendar with day selected", function() {
 
   it("calendar with no range has no range class", function() {
     createCalendarWithOneWeek()
-    ok(!cal().find(".calendarBody").hasClass("range"))
+    expect(cal().find(".calendarBody")).not.toHaveClass("range")
   })
 
   it("highlights selected date", function() {
@@ -129,12 +129,12 @@ describe("calendar range selection", function() {
     createRangeCalendarWithFiveWeeks()
     expect(cal().find(".selected").size()).toEqual(7)
     expect(cal().find(".rangeLengthLabel").text()).toEqual("7 Days")
-    ok(cal().find(".selected:first").hasClass("rangeStart"), "has class rangeStart")
+    expect(cal().find(".selected:first")).toHaveClass("rangeStart")
   })
 
   it("calendar with range has freeRange class", function() {
     createRangeCalendarWithFiveWeeks()
-    ok(cal().find(".calendarBody").hasClass("freeRange"))
+    expect(cal().find(".calendarBody")).toHaveClass("freeRange")
   })
 })
 
@@ -339,7 +339,7 @@ describe("calendar events", function() {
   it("date label click does nothing when not pop-up", function() {
     createRangeCalendarWithFiveWeeks()
     cal().find(".startDateLabel").click()
-    ok(cal().find(".continuousCalendar:visible").exists())
+    expect(cal().find(".continuousCalendar")).toBeVisible()
   })
 })
 
@@ -348,10 +348,10 @@ describe("pop-up calendar", function() {
 
   it("", function() {
     createPopupCalendar()
-    ok(!cal().find('.continuousCalendar:visible').exists(), "pop-up calendar is not initially shown")
+    expect(cal().find('.continuousCalendar')).not.toBeVisible()
     expect(startLabelValue()).toEqual("Wed 4/29/2009", "Initially selected date is shown correctly")
     cal().find(".calendarIcon").click()
-    ok(cal().find('.continuousCalendar:visible').exists(), "calendar pops up on click")
+    expect(cal().find('.continuousCalendar')).toBeVisible()
     //TODO fix this
     //assertHasValues(".continuousCalendar thead th.month", ["2008"], "month is shown correctly")
   })
@@ -361,8 +361,8 @@ describe("pop-up calendar", function() {
     createPopupCalendar()
     cal().find(".calendarIcon").click()
     cal().find(".date:first").click()
-    ok(!cal().find('.continuousCalendar:visible').exists(), "calendar is closed when date is selected")
-    ok(previous.find('.continuousCalendar:visible').exists(), "only selected calendar is closed")
+    expect(cal().find('.continuousCalendar')).not.toBeVisible()
+    expect(previous.find('.continuousCalendar')).toBeVisible()
     expect(startLabelValue()).toEqual("Sun 10/26/2008", "selected date is shown correctly with day of week")
     expect(startFieldValue()).toEqual("10/26/2008", "selected date is set correctly to hidden field without day of week")
   })
@@ -431,7 +431,7 @@ describe("calendar week selection", function() {
     createPopupWeekCalendar()
     cal().find(".calendarIcon").click()
     mouseClick(cal().find(".date").withText(11))
-    ok(!cal().find(".continuousCalendar:visible").exists())
+    expect(cal().find(".continuousCalendar")).not.toBeVisible()
     expect(startFieldValue()).toEqual("5/8/2011")
     expect(endFieldValue()).toEqual("5/14/2011")
   })
@@ -440,7 +440,7 @@ describe("calendar week selection", function() {
     createPopupWeekCalendar()
     cal().find(".calendarIcon").click()
     mouseClick(cal().find(".week").withText(21))
-    ok(!cal().find(".continuousCalendar:visible").exists())
+    expect(cal().find(".continuousCalendar")).not.toBeVisible()
     expect(startFieldValue()).toEqual("5/29/2011")
     expect(endFieldValue()).toEqual("5/31/2011")
   })
