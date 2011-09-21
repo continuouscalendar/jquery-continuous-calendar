@@ -12,30 +12,14 @@
  * the License.
  */
 
-QUnit.begin = function() {
-  $('#tests').hide()
-}
-
-QUnit.done = function() {
-  $('#tests').show()
-}
-
-var moduleName = ""
-QUnit.moduleStart = function(name) {
-  moduleName = name
-}
-
-var testName = ""
-QUnit.testStart = function(name) {
-  testName = name
-}
 var testIndex = 0
-
 function createCalendarContainer() {
   testIndex++
   var container = $("<div>").addClass('testCalendarContainer')
   var containerWrapper = $("<div>").addClass('containerWrapper')
-  var index = $('<div></div>').append(testName.name).addClass('testLabel')
+  var suite_description = jasmine.currentEnv_.currentSpec.suite.description;
+  var description = jasmine.currentEnv_.currentSpec.description;
+  var index = $('<div></div>').append('<strong>'+suite_description+'</strong><br>'+description).addClass('testLabel')
   container.attr("id", calendarId())
   containerWrapper.append(index)
   containerWrapper.append(container)
@@ -56,7 +40,6 @@ function createCalendarFields(params) {
       container.append(field)
     }
   }
-
   return container
 }
 
@@ -94,7 +77,6 @@ function dragDatesSlowly(enter, exit) {
   }
   mouseUpOnDay(exit)
 }
-
 
 function createCalendarWithOneWeek() {
   createCalendarFields({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0})
@@ -135,10 +117,6 @@ function createPopupWeekCalendar() {
 
 function clickOnDate(date) {
   cal().find(".date:contains(" + date + ")").click()
-}
-
-function assertSelectedDate(expectedDate) {
-  equals(cal().find(".selected").text(), expectedDate)
 }
 
 function mouseEventOnDay(eventType, date, options) {
@@ -188,9 +166,9 @@ function value(selector) {
 }
 
 function assertHasValues(selector, expectedArray, comment) {
-  same($.map(cal().find(selector), function (elem) {
+  expect($.map(cal().find(selector), function (elem) {
     return $(elem).text()
-  }), $.map(expectedArray, function(i) {
+  })).toEqual($.map(expectedArray, function(i) {
     return i.toString()
   }), comment)
 }
