@@ -24,14 +24,17 @@ QUnit.testStart = function(name) {
 }
 */
 var testIndex = 0
-testName='testName'
+
 moduleName='moduleName'
 function createCalendarContainer() {
   testIndex++
   var container = $("<div>").addClass('testCalendarContainer')
   var containerWrapper = $("<div>").addClass('containerWrapper')
 
-  var index = $('<div></div>').append("testName.name").addClass('testLabel')
+  var suite_description = jasmine.currentEnv_.currentSpec.suite.description;
+  var description = jasmine.currentEnv_.currentSpec.description;
+
+  var index = $('<div></div>').append('<strong>'+suite_description+'</strong><br>'+description).addClass('testLabel')
   container.attr("id", calendarId())
   containerWrapper.append(index)
   containerWrapper.append(container)
