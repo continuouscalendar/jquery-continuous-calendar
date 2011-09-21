@@ -103,7 +103,6 @@ describe("calendar bounds", function() {
     function keepsSameDate() {
       expect(cal().find(".selected")).toHaveText(15)
     }
-
   })
 })
 
@@ -239,7 +238,7 @@ describe("calendar events", function() {
     assertHasValues(".selected", [ 29, 30, 1, 2, 3, 4, 5, 6, 7])
     clickDateWithShift(13)
     assertHasValues(".selected", [ 29, 30, 1, 2, 3, 4, 5, 6, 7])
-    expect(cal().find(".disabled").size()).toEqual(7, "disabled")
+    expect(cal().find(".disabled").size()).toEqual(7)
     //4/15/2009",lastDate:"5/12/2009
   })
 
@@ -279,7 +278,7 @@ describe("calendar events", function() {
     })
     clickOnDate(28)
     expect(bindCalled).toEqual(1, 'bind')
-    expect(calendarCallBack).toEqual(2, 'callback')
+    expect(calendarCallBack).toEqual(2)
     //expect(window.calendarChanged).toEqual(2)
   })
 
