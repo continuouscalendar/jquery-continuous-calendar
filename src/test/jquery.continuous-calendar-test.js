@@ -35,11 +35,11 @@ describe('empty calendar of full year', function() {
   it("shows month name on first row of full week", function() {
     var months = cal().find("tbody .month")
     var firstMonth = months.eq(1)
-    expect(firstMonth.text()).toEqual("January")
-    expect(firstMonth.next().next().text()).toEqual("4")
+    expect(firstMonth).toHaveText("January")
+    expect(firstMonth.next().next()).toHaveText("4")
     var secondMonth = months.eq(5)
-    expect(secondMonth.text()).toEqual("February")
-    expect(secondMonth.next().next().text()).toEqual("1")
+    expect(secondMonth).toHaveText("February")
+    expect(secondMonth.next().next()).toHaveText("1")
   })
 
   it("shows year for january", function() {
@@ -117,7 +117,7 @@ describe("date picker calendar with day selected", function() {
 
   it("highlights selected date", function() {
     createCalendarFields({startDate:"4/30/2009"}).continuousCalendar({weeksBefore:2,weeksAfter:2})
-    expect(cal().find(".selected").text()).toEqual("30")
+    expect(cal().find(".selected")).toHaveText("30")
   })
 
   it("week number click on single date calendar does nothing", function () {
@@ -133,7 +133,7 @@ describe("calendar range selection", function() {
   it("highlights selected date range with move handles in first and last data", function() {
     createRangeCalendarWithFiveWeeks()
     expect(cal().find(".selected").size()).toEqual(7)
-    expect(cal().find(".rangeLengthLabel").text()).toEqual("7 Days")
+    expect(cal().find(".rangeLengthLabel")).toHaveText("7 Days")
     expect(cal().find(".selected:first")).toHaveClass("rangeStart")
   })
 
@@ -149,7 +149,7 @@ describe("calendar events", function() {
   it("highlights and selects clicked day", function() {
     createCalendarWithOneWeek()
     cal().find(".date:eq(1)").click()
-    expect(cal().find(".selected").text()).toEqual("28")
+    expect(cal().find(".selected")).toHaveText("28")
     expect(startFieldValue()).toEqual("4/28/2008")
     expect(startLabelValue()).toEqual("Mon 4/28/2008")
   })
@@ -161,7 +161,7 @@ describe("calendar events", function() {
     assertHasValues(".selected", [3,4,5,6,7,8,9])
     expect(startFieldValue()).toEqual("5/3/2009")
     expect(endFieldValue()).toEqual("5/9/2009")
-    expect(cal().find(".rangeLengthLabel").text()).toEqual("7 Days")
+    expect(cal().find(".rangeLengthLabel")).toHaveText("7 Days")
   })
 
   it("week number click selects whole week without weekend", function () {
@@ -171,7 +171,7 @@ describe("calendar events", function() {
     assertHasValues(".selected", [4,5,6,7,8])
     expect(startFieldValue()).toEqual("5/4/2009")
     expect(endFieldValue()).toEqual("5/8/2009")
-    expect(cal().find(".rangeLengthLabel").text()).toEqual("5 Days")
+    expect(cal().find(".rangeLengthLabel")).toHaveText("5 Days")
   })
 
   it("week number click selects whole week within the calendar range", function () {
@@ -181,7 +181,7 @@ describe("calendar events", function() {
     assertHasValues(".selected", [10, 11, 12])
     expect(startFieldValue()).toEqual("5/10/2009")
     expect(endFieldValue()).toEqual("5/12/2009")
-    expect(cal().find(".rangeLengthLabel").text()).toEqual("3 Days")
+    expect(cal().find(".rangeLengthLabel")).toHaveText("3 Days")
   })
 
   it("mouse click and drag highlights range and updates fields", function() {
@@ -192,14 +192,14 @@ describe("calendar events", function() {
     expect(cal().find(".selected").size()).toEqual(15, "(" + duration + " ms)")
     expect(startFieldValue()).toEqual("4/15/2009")
     expect(endFieldValue()).toEqual("4/29/2009")
-    expect(cal().find(".rangeLengthLabel").text()).toEqual("15 Days")
+    expect(cal().find(".rangeLengthLabel")).toHaveText("15 Days")
   })
 
   it("mouse click and drag works with no initial selection", function() {
     createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"1/1/2009",lastDate:"2/1/2009"})
     dragDates(22, 23)
     expect(cal().find(".selected").size()).toEqual(2)
-    expect(cal().find(".rangeLengthLabel").text()).toEqual("2 Days")
+    expect(cal().find(".rangeLengthLabel")).toHaveText("2 Days")
   })
 
   it("mouse click on month on range calendar selects whole month", function() {
@@ -210,7 +210,7 @@ describe("calendar events", function() {
     var year = startFieldValue().split('/')[2]
     expect(startFieldValue()).toEqual("5/1/" + year, "start field value")
     expect(endFieldValue()).toEqual("5/31/" + year, "end field value")
-    expect(cal().find(".rangeLengthLabel").text()).toEqual("31 Days")
+    expect(cal().find(".rangeLengthLabel")).toHaveText("31 Days")
   })
 
   it("mouse click on month in single date calendar does nothing", function() {
@@ -252,7 +252,7 @@ describe("calendar events", function() {
     createBigCalendar()
     var cells = cal().find(".today")
     expect(cells.size()).toEqual(1)
-    expect(cells.text()).toEqual('' + Date.NOW.getDate())
+    expect(cells).toHaveText('' + Date.NOW.getDate())
   })
 
   it("range has current day selected as default when configured so", function() {
@@ -420,7 +420,7 @@ describe("calendar week selection", function() {
     assertHasValues(".selected", [19, 20, 21, 22, 23, 24, 25])
     expect(startFieldValue()).toEqual("4/19/2009")
     expect(endFieldValue()).toEqual("4/25/2009")
-    expect(cal().find(".rangeLengthLabel").text()).toEqual("7 Days")
+    expect(cal().find(".rangeLengthLabel")).toHaveText("7 Days")
   })
 
   it("date click selects whole week within calendar range", function() {
@@ -429,7 +429,7 @@ describe("calendar week selection", function() {
     assertHasValues(".selected", [15, 16, 17, 18])
     expect(startFieldValue()).toEqual("4/15/2009")
     expect(endFieldValue()).toEqual("4/18/2009")
-    expect(cal().find(".rangeLengthLabel").text()).toEqual("4 Days")
+    expect(cal().find(".rangeLengthLabel")).toHaveText("4 Days")
   })
 
   it("date click closes the calendar", function() {
