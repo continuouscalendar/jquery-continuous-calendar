@@ -12,26 +12,6 @@
  * the License.
  */
 
-
-window.ok = function(actual) {
- expect(actual).toBeTruthy()
-}
-
-window.equals = window.same = function(actual, expected) {
-  expect(actual).toEqual(expected)
-}
-
-window.test = it
-
-/*
-QUnit.begin = function() {
-  $('#tests').hide()
-}
-
-QUnit.done = function() {
-  $('#tests').show()
-}
-*/
 /*
 var moduleName = ""
 QUnit.moduleStart = function(name) {
