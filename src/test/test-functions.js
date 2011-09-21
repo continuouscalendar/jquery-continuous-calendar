@@ -154,7 +154,7 @@ function clickOnDate(date) {
 }
 
 function assertSelectedDate(expectedDate) {
-  equals(cal().find(".selected").text(), expectedDate)
+  equals(cal().find(".selected").text(), ''+expectedDate)
 }
 
 function mouseEventOnDay(eventType, date, options) {
