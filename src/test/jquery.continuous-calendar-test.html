@@ -16,31 +16,49 @@
 <html>
 <head>
   <title>Tests for jquery.continuous-calendar</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <link rel="stylesheet" href="../lib/qunit.css" type="text/css" media="screen" />
-  <link rel="stylesheet" href="../main/jquery.continuous-calendar.css" type="text/css" media="screen" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  <link rel="stylesheet" href="../lib/jasmine.css" type="text/css" media="screen"/>
+  <link rel="stylesheet" href="../main/jquery.continuous-calendar.css" type="text/css" media="screen"/>
   <style type="text/css">
-    .containerWrapper {margin: 10px;float: left;height: 160px;width: 220px;}
-    .testCalendarContainer {}
-    .testLabel {color:green;font-family:"trebuchet ms",verdana,arial,serif;font-size:8pt;}
-    .continuousCalendarContainer div.label span { font-size: 13px;}
+    .containerWrapper {
+      margin: 10px;
+      float: left;
+      height: 160px;
+      width: 220px;
+    }
+
+    .testCalendarContainer {
+    }
+
+    .testLabel {
+      color: green;
+      font-family: "trebuchet ms", verdana, arial, serif;
+      font-size: 8pt;
+    }
+
+    .continuousCalendarContainer div.label span {
+      font-size: 13px;
+    }
   </style>
   <script type="text/javascript" src="../lib/jquery-1.6.js"></script>
   <script type="text/javascript" src="../main/date-functions.js"></script>
   <script type="text/javascript" src="../main/date-locales.js"></script>
   <script type="text/javascript" src="../main/date-range.js"></script>
   <script type="text/javascript" src="../main/jquery.continuous-calendar.js"></script>
-  <script type="text/javascript" src="../lib/qunit.js"></script>
+  <script type="text/javascript" src="../lib/jasmine.js"></script>
+  <script type="text/javascript" src="../lib/jasmine-html.js"></script>
   <script type="text/javascript" language="JavaScript" src="test-functions.js"></script>
   <script type="text/javascript" src="jquery.continuous-calendar-test.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      var env = jasmine.getEnv()
+      env.addReporter(new jasmine.TrivialReporter())
+      env.execute()
+    })
+  </script>
 </head>
 <body>
-<div id="tests">
-  <h1 id="qunit-header">jquery.continuous-calendar tests</h1>
-  <h2 id="qunit-banner"></h2>
-  <h2 id="qunit-userAgent"></h2>
-  <ol id="qunit-tests"></ol>
-</div>
-<div id="calendars" style="display:block;clear:both"></div>
+<div id="calendars" style="display:block;clear:both;overflow: hidden;"></div>
+
 </body>
 </html>

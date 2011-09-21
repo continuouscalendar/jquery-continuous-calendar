@@ -12,6 +12,18 @@
  * the License.
  */
 
+
+window.ok = function(actual) {
+ expect(actual).toBeTruthy()
+}
+
+window.equals = window.same = function(actual, expected) {
+  expect(actual).toEqual(expected)
+}
+
+window.test = it
+
+/*
 QUnit.begin = function() {
   $('#tests').hide()
 }
@@ -19,7 +31,8 @@ QUnit.begin = function() {
 QUnit.done = function() {
   $('#tests').show()
 }
-
+*/
+/*
 var moduleName = ""
 QUnit.moduleStart = function(name) {
   moduleName = name
@@ -29,13 +42,16 @@ var testName = ""
 QUnit.testStart = function(name) {
   testName = name
 }
+*/
 var testIndex = 0
-
+testName='testName'
+moduleName='moduleName'
 function createCalendarContainer() {
   testIndex++
   var container = $("<div>").addClass('testCalendarContainer')
   var containerWrapper = $("<div>").addClass('containerWrapper')
-  var index = $('<div></div>').append(testName.name).addClass('testLabel')
+
+  var index = $('<div></div>').append("testName.name").addClass('testLabel')
   container.attr("id", calendarId())
   containerWrapper.append(index)
   containerWrapper.append(container)
