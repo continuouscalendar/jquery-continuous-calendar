@@ -51,8 +51,8 @@ describe('empty calendar of full year', function() {
     ok(cal().find(".week").text() > 0)
   })
 })
-describe("calendar bounds", function() {
 
+describe("calendar bounds", function() {
   beforeEach(createCalendarContainer)
 
   it("lists given number of weeks before given date", function() {
@@ -100,10 +100,11 @@ describe("calendar bounds", function() {
     clickOnDate(29)
     assertSelectedDate(15)
   })
-
 })
+
 describe("date picker calendar with day selected", function() {
   beforeEach(createCalendarContainer)
+
   it("calendar with no range has no range class", function() {
     createCalendarWithOneWeek()
     ok(!cal().find(".calendarBody").hasClass("range"))
@@ -120,8 +121,10 @@ describe("date picker calendar with day selected", function() {
     equals(cal().find(".selected").size(), 1)
   })
 })
+
 describe("calendar range selection", function() {
   beforeEach(createCalendarContainer)
+
   it("highlights selected date range with move handles in first and last data", function() {
     createRangeCalendarWithFiveWeeks()
     equals(cal().find(".selected").size(), 7)
@@ -134,8 +137,10 @@ describe("calendar range selection", function() {
     ok(cal().find(".calendarBody").hasClass("freeRange"))
   })
 })
+
 describe("calendar events", function() {
   beforeEach(createCalendarContainer)
+
   it("highlights and selects clicked day", function() {
     createCalendarWithOneWeek()
     cal().find(".date:eq(1)").click()
@@ -242,7 +247,7 @@ describe("calendar events", function() {
     createBigCalendar()
     var cells = cal().find(".today")
     equals(cells.size(), 1)
-    equals(cells.text(), ''+Date.NOW.getDate())
+    equals(cells.text(), '' + Date.NOW.getDate())
   })
 
   it("range has current day selected as default when configured so", function() {
@@ -337,8 +342,10 @@ describe("calendar events", function() {
     ok(cal().find(".continuousCalendar:visible").exists())
   })
 })
+
 describe("pop-up calendar", function() {
   beforeEach(createCalendarContainer)
+
   it("", function() {
     createPopupCalendar()
     ok(!cal().find('.continuousCalendar:visible').exists(), "pop-up calendar is not initially shown")
@@ -360,14 +367,13 @@ describe("pop-up calendar", function() {
     equals(startFieldValue(), "10/26/2008", "selected date is set correctly to hidden field without day of week")
   })
 })
-describe("minimum range with disabled weekends", function() {
 
+describe("minimum range with disabled weekends", function() {
   beforeEach(function() {
     createCalendarContainer()
     createCalendarFields({startDate: "4/15/2009", endDate: "4/15/2009"})
       .continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009", minimumRange: 4, disableWeekends: true})
   })
-
 
   it("moving and creation has constraints", function() {
     assertHasValues('.selected', [17, 18, 19 , 20], "initial range is in bounds")
@@ -399,6 +405,7 @@ describe("minimum range with disabled weekends", function() {
     assertHasValues('.selected', [5, 6, 7, 8], "selecting range that don't start or end on weekend id is permitted")
   })
 })
+
 describe("calendar week selection", function() {
   beforeEach(createCalendarContainer)
 

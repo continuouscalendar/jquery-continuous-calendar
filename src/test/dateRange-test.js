@@ -15,7 +15,6 @@ var range
 describe("date range default behavior", function() {
   beforeEach(resetRange)
 
-
   it("creates range of three days", function() {
     equals(range.start, start)
     equals(range.end, end)
@@ -53,9 +52,9 @@ describe("date range default behavior", function() {
     ok(!range.expandDaysTo(7).isInside(range))
   })
 })
+
 describe("moving date range within outer range", function() {
   beforeEach(resetOuterRange)
-
 
   it("range already inside outer range is not moved", function() {
     var range1 = new DateRange(new Date('04/04/2011'), new Date('04/10/2011'))
@@ -87,6 +86,7 @@ describe("moving date range within outer range", function() {
     equals(range2.days(), 0)
   })
 })
+
 describe("date range with minimum size within outer range", function() {
   beforeEach(resetOuterRange)
 
@@ -116,9 +116,9 @@ describe("date range with minimum size within outer range", function() {
     equals(newRange.days(), 0)
   })
 })
+
 describe("date range with time behavior", function() {
   beforeEach(resetRange)
-
 
   it("date range can have times", function() {
     DATE_LOCALE_EN.init()
@@ -218,16 +218,19 @@ describe("date range with time behavior", function() {
     equals(range.printDefiningDuration(), '7 päivää', "multiple days")
   })
 })
+
 function assertHasCorrectHoursAndMinutes(hours, minutes) {
   ok(range.isValid(), "valid range")
   equals(range.hours(), hours, "correct hours")
   equals(range.minutes(), minutes, "correct minutes")
 }
+
 function resetRange() {
   start = new Date('09/10/2009')
   end = new Date('09/12/2009')
   range = new DateRange(end, start)
 }
+
 function resetOuterRange() {
   start = new Date('03/28/2011')
   end = new Date('05/01/2011')
