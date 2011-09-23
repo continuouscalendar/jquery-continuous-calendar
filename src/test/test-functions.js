@@ -19,7 +19,7 @@ function createCalendarContainer() {
   var containerWrapper = $("<div>").addClass('containerWrapper')
   var suite_description = jasmine.currentEnv_.currentSpec.suite.description;
   var description = jasmine.currentEnv_.currentSpec.description;
-  var index = $('<div></div>').append('<strong>'+suite_description+'</strong><br>'+description).addClass('testLabel')
+  var index = $('<div></div>').append('<strong>' + suite_description + '</strong><br>' + description).addClass('testLabel')
   container.attr("id", calendarId())
   containerWrapper.append(index)
   containerWrapper.append(container)
@@ -40,6 +40,7 @@ function createCalendarFields(params) {
       container.append(field)
     }
   }
+
   return container
 }
 
@@ -165,12 +166,12 @@ function value(selector) {
   }
 }
 
-function assertHasValues(selector, expectedArray, comment) {
+function assertHasValues(selector, expectedArray) {
   expect($.map(cal().find(selector), function (elem) {
     return $(elem).text()
   })).toEqual($.map(expectedArray, function(i) {
     return i.toString()
-  }), comment)
+  }))
 }
 
 $.fn.callEvent = function(eventType, eventObj) {
@@ -187,3 +188,36 @@ $.fn.withText = function(text) {
     return $(this).text() == text.toString()
   })
 }
+
+var custom_matchers = {
+  toHaveLength: function(length) {
+    var result = $(this.actual).length == length;
+    if(this.actual instanceof jQuery) {
+      this.actual = $('<div></div>').append(this.actual.clone()).html();
+    }
+    return result
+  },
+  toBeBetween: function(start, end) {
+    var value = this.actual
+    return value >= start && value <= end
+  },
+  toEndWith: function(end_string) {
+    return this.actual.lastIndexOf(end_string) == this.actual.length - end_string.length
+  },
+  toHaveDate: function(date_str) {
+    return this.actual.hasDate(new Date(date_str))
+  },
+  toBeInside: function(range) {
+    return this.actual.isInside(range)
+  },
+  toBeValidRange: function() {
+    return this.actual.isValid()
+  },
+  toPrintDefiningDurationOf: function(duration_str) {
+    return this.actual.printDefiningDuration() == duration_str
+  }
+};
+
+beforeEach(function() {
+  this.addMatchers(custom_matchers)
+})

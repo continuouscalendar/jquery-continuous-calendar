@@ -207,8 +207,8 @@ describe("calendar events", function() {
     mouseClick(monthName)
     expect(cal().find(".selected").size()).toEqual(31)
     var year = startFieldValue().split('/')[2]
-    expect(startFieldValue()).toEqual("5/1/" + year, "start field value")
-    expect(endFieldValue()).toEqual("5/31/" + year, "end field value")
+    expect(startFieldValue()).toEqual("5/1/" + year)
+    expect(endFieldValue()).toEqual("5/31/" + year)
     expect(cal().find(".rangeLengthLabel")).toHaveText("31 Days")
   })
 
@@ -295,7 +295,7 @@ describe("calendar events", function() {
     expect(window.calendarCallBack).toEqual(0)
     dragDates(28, 29)
     expect(window.calendarCallBack).toEqual(2)
-    expect(window.calendarContainer.find('.selected').length).toEqual(2)
+    expect(window.calendarContainer.find('.selected')).toHaveLength(2)
     expect(window.calendarChanged).toEqual(2)
   })
 
@@ -367,8 +367,8 @@ describe("pop-up calendar", function() {
     cal().find(".date:first").click()
     expect(cal().find('.continuousCalendar')).not.toBeVisible()
     expect(previous.find('.continuousCalendar')).toBeVisible()
-    expect(startLabelValue()).toEqual("Sun 10/26/2008", "selected date is shown correctly with day of week")
-    expect(startFieldValue()).toEqual("10/26/2008", "selected date is set correctly to hidden field without day of week")
+    expect(startLabelValue()).toEqual("Sun 10/26/2008")
+    expect(startFieldValue()).toEqual("10/26/2008")
   })
 })
 
@@ -380,33 +380,33 @@ describe("minimum range with disabled weekends", function() {
   })
 
   it("moving and creation has constraints", function() {
-    assertHasValues('.selected', [17, 18, 19 , 20], "initial range is in bounds")
+    assertHasValues('.selected', [17, 18, 19 , 20]) //initial range is in bounds
 
   })
 
   it("moving and creation has constraints", function() {
     dragDates(27, 27)
-    assertHasValues('.selected', [27,28,29,30], "initial range has minimum required size")
+    assertHasValues('.selected', [27,28,29,30]) //initial range has minimum required size
     dragDates(27, 28)
-    assertHasValues('.selected', [27,28,29,30], "resizing to smaller that permitted from start is ignored")
+    assertHasValues('.selected', [27,28,29,30]) //resizing to smaller that permitted from start is ignored
     dragDates(30, 29)
-    assertHasValues('.selected', [27,28,29,30], "resizing to smaller that permitted from end is ignored")
+    assertHasValues('.selected', [27,28,29,30]) //resizing to smaller that permitted from end is ignored
     dragDates(27, 26)
-    assertHasValues('.selected', [27,28,29,30], "resizing to earlier skips weekends")
+    assertHasValues('.selected', [27,28,29,30]) //resizing to earlier skips weekends
     dragDates(30, 1)
-    assertHasValues('.selected', [27,28,29,30, 1], "resizing to later is allowed if not on weekend")
+    assertHasValues('.selected', [27,28,29,30, 1]) //resizing to later is allowed if not on weekend
     dragDates(28, 29)
-    assertHasValues('.selected', [27, 28,29,30, 1], "no reaction when moving over weekend (snap to weekdays)")
+    assertHasValues('.selected', [27, 28,29,30, 1]) //no reaction when moving over weekend (snap to weekdays)
     dragDatesSlowly(28, 1)
-    assertHasValues('.selected', [30, 1, 2, 3, 4], "moving skips weekends")
+    assertHasValues('.selected', [30, 1, 2, 3, 4]) //moving skips weekends
     dragDatesSlowly(3, 4)
-    assertHasValues('.selected', [1, 2, 3, 4, 5], "moving right allowed")
+    assertHasValues('.selected', [1, 2, 3, 4, 5]) //moving right allowed
     dragDatesSlowly(4, 3)
-    assertHasValues('.selected', [30, 1, 2, 3, 4], "moving left allowed")
+    assertHasValues('.selected', [30, 1, 2, 3, 4]) //moving left allowed
     mouseDownMouseUpOnDate(19)
-    assertHasValues('.selected', [30, 1, 2, 3, 4], "prevent selecting range that starts or ends on weekend")
+    assertHasValues('.selected', [30, 1, 2, 3, 4]) //prevent selecting range that starts or ends on weekend
     mouseDownMouseUpOnDate(6)
-    assertHasValues('.selected', [5, 6, 7, 8], "selecting range that don't start or end on weekend id is permitted")
+    assertHasValues('.selected', [5, 6, 7, 8]) //selecting range that don't start or end on weekend id is permitted
   })
 })
 
