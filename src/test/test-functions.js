@@ -1,12 +1,12 @@
 /* ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * Licensed under the Apache License, Version 2.0 (the 'License'); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
@@ -15,28 +15,28 @@
 var testIndex = 0
 function createCalendarContainer() {
   testIndex++
-  var container = $("<div>").addClass('testCalendarContainer')
-  var containerWrapper = $("<div>").addClass('containerWrapper')
+  var container = $('<div>').addClass('testCalendarContainer')
+  var containerWrapper = $('<div>').addClass('containerWrapper')
   var suite_description = jasmine.currentEnv_.currentSpec.suite.description;
   var description = jasmine.currentEnv_.currentSpec.description;
   var index = $('<div></div>').append('<strong>' + suite_description + '</strong><br>' + description).addClass('testLabel')
-  container.attr("id", calendarId())
+  container.attr('id', calendarId())
   containerWrapper.append(index)
   containerWrapper.append(container)
-  $("#calendars").append(containerWrapper)
+  $('#calendars').append(containerWrapper)
 }
 
 function cal(delta) {
-  return $("#" + calendarId(delta))
+  return $('#' + calendarId(delta))
 }
 
 function createCalendarFields(params) {
-  var container = $("#" + calendarId())
-  addFieldIfRequired("startDate")
-  addFieldIfRequired("endDate")
+  var container = $('#' + calendarId())
+  addFieldIfRequired('startDate')
+  addFieldIfRequired('endDate')
   function addFieldIfRequired(fieldName) {
     if(params && params[fieldName] != undefined) {
-      var field = $("<input>").attr("type", "text").addClass(fieldName).val(params[fieldName])
+      var field = $('<input>').attr('type', 'text').addClass(fieldName).val(params[fieldName])
       container.append(field)
     }
   }
@@ -80,19 +80,19 @@ function dragDatesSlowly(enter, exit) {
 }
 
 function createCalendarWithOneWeek() {
-  createCalendarFields({startDate:"4/30/2008"}).continuousCalendar({weeksBefore: 0,weeksAfter: 0})
+  createCalendarFields({startDate:'4/30/2008'}).continuousCalendar({weeksBefore: 0,weeksAfter: 0})
 }
 
 function createRangeCalendarWithFiveWeeks() {
-  createCalendarFields({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009"})
+  createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate:'4/15/2009',lastDate:'5/12/2009'})
 }
 
 function createRangeCalendarWithFiveWeeksAndDisabledWeekends() {
-  createCalendarFields({startDate: "4/29/2009", endDate: "5/5/2009"}).continuousCalendar({firstDate: "4/15/2009",lastDate:"5/12/2009",disableWeekends:true})
+  createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate: '4/15/2009',lastDate:'5/12/2009',disableWeekends:true})
 }
 
 function createWeekCalendar() {
-  createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"4/15/2009",lastDate:"5/12/2009",selectWeek:true})
+  createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate:'4/15/2009',lastDate:'5/12/2009',selectWeek:true})
 }
 
 function createBigCalendar() {
@@ -101,56 +101,56 @@ function createBigCalendar() {
 }
 
 function createBigCalendarForSingleDate() {
-  createCalendarFields({startDate: ""}).continuousCalendar({weeksBefore: 20,weeksAfter: 20})
+  createCalendarFields({startDate: ''}).continuousCalendar({weeksBefore: 20,weeksAfter: 20})
 }
 
 function createCalendarFromJanuary() {
-  createCalendarFields({startDate: ""}).continuousCalendar({firstDate:"1/1/2009", lastDate:"12/31/2009"})
+  createCalendarFields({startDate: ''}).continuousCalendar({firstDate:'1/1/2009', lastDate:'12/31/2009'})
 }
 
 function createPopupCalendar() {
-  createCalendarFields({startDate: "4/29/2009"}).continuousCalendar({isPopup: true})
+  createCalendarFields({startDate: '4/29/2009'}).continuousCalendar({isPopup: true})
 }
 
 function createPopupWeekCalendar() {
-  createCalendarFields({startDate: "", endDate: ""}).continuousCalendar({firstDate:"5/1/2011", lastDate:"5/31/2011", isPopup: true, selectWeek: true})
+  createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate:'5/1/2011', lastDate:'5/31/2011', isPopup: true, selectWeek: true})
 }
 
 function clickOnDate(date) {
-  cal().find(".date:contains(" + date + ")").click()
+  cal().find('.date:contains(' + date + ')').click()
 }
 
 function mouseEventOnDay(eventType, date, options) {
-  mouseEvent(eventType, cal().find(".date").withText(date), options);
+  mouseEvent(eventType, cal().find('.date').withText(date), options);
 }
 
 function mouseDownOnDay(date) {
-  mouseEventOnDay("mousedown", date, arguments[1]);
+  mouseEventOnDay('mousedown', date, arguments[1]);
 }
 
 function mouseMoveOnDay(date) {
-  mouseEventOnDay("mouseover", date);
+  mouseEventOnDay('mouseover', date);
 }
 
 function mouseUpOnDay(date, options) {
-  mouseEventOnDay("mouseover", date, options)
-  mouseEventOnDay("mouseup", date, options)
+  mouseEventOnDay('mouseover', date, options)
+  mouseEventOnDay('mouseup', date, options)
 }
 
 function calendarId(delta) {
-  return "continuousCalendar" + (testIndex - (delta || 0));
+  return 'continuousCalendar' + (testIndex - (delta || 0));
 }
 
 function startFieldValue() {
-  return cal().find("input.startDate").val();
+  return cal().find('input.startDate').val();
 }
 
 function startLabelValue() {
-  return cal().find("span.startDateLabel").text();
+  return cal().find('span.startDateLabel').text();
 }
 
 function endFieldValue() {
-  return cal().find("input.endDate").val();
+  return cal().find('input.endDate').val();
 }
 
 function click(selector) {
@@ -159,7 +159,7 @@ function click(selector) {
 
 function value(selector) {
   var elem = $(selector)
-  if(elem.is("input")) {
+  if(elem.is('input')) {
     return elem.val()
   } else {
     return elem.text()

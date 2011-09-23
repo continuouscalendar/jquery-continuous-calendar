@@ -1,21 +1,21 @@
 /* ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * Licensed under the Apache License, Version 2.0 (the 'License'); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * distributed under the License is distributed on an 'AS IS' BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
  */
 var range
-describe("date range default behavior", function() {
+describe('date range default behavior', function() {
   beforeEach(resetRange)
 
-  it("creates range of three days", function() {
+  it('creates range of three days', function() {
     expect(range.start).toEqual(start)
     expect(range.end).toEqual(end)
     expect(range.days()).toEqual(3)
@@ -24,28 +24,28 @@ describe("date range default behavior", function() {
     expect(range).toHaveDate('09/11/2009')
     expect(range).toHaveDate('09/12/2009')
     expect(range).not.toHaveDate('09/13/2009')
-    expect(range.toString(DATE_LOCALE_FI)).toEqual("10.9.2009 - 12.9.2009")
+    expect(range.toString(DATE_LOCALE_FI)).toEqual('10.9.2009 - 12.9.2009')
   })
 
-  it("range is movable", function() {
+  it('range is movable', function() {
     range = range.shiftDays(2)
     expect(range.start.getDate()).toEqual(12)
     expect(range.end.getDate()).toEqual(12 + 2)
   })
 
-  it("range is expandable", function() {
+  it('range is expandable', function() {
     range = range.expandTo(new Date('09/15/2009'))
     expect(range.days()).toEqual(6)
   })
 
-  it("two ranges can do interception", function() {
+  it('two ranges can do interception', function() {
     var range2 = new DateRange(new Date('09/11/2009'), new Date('09/19/2009'))
     expect(range.and(range2).days()).toEqual(2)
     range2 = new DateRange(new Date('09/16/2009'), new Date('09/19/2009'))
     expect(range.and(range2).days()).toEqual(0)
   })
 
-  it("range can be asked if it is a subset of another range", function() {
+  it('range can be asked if it is a subset of another range', function() {
     expect(range).toBeInside(range)
     expect(range).not.toBeInside(range.shiftDays(1))
     expect(range).toBeInside(range.expandDaysTo(7))
@@ -53,10 +53,10 @@ describe("date range default behavior", function() {
   })
 })
 
-describe("moving date range within outer range", function() {
+describe('moving date range within outer range', function() {
   beforeEach(resetOuterRange)
 
-  it("range already inside outer range is not moved", function() {
+  it('range already inside outer range is not moved', function() {
     var range1 = new DateRange(new Date('04/04/2011'), new Date('04/10/2011'))
     var range2 = range1.shiftInside(outerRange)
     expect(range1).toBeInside(outerRange)
@@ -65,7 +65,7 @@ describe("moving date range within outer range", function() {
     expect(range1.end.getDate()).toEqual(range2.end.getDate())
   })
 
-  it("range can be moved forward inside outer range", function() {
+  it('range can be moved forward inside outer range', function() {
     var range1 = new DateRange(new Date('03/15/2011'), new Date('03/21/2011'))
     var range2 = range1.shiftInside(outerRange)
     expect(range1).not.toBeInside(outerRange)
@@ -74,7 +74,7 @@ describe("moving date range within outer range", function() {
     expect(range2.end.getDate()).toEqual(3)
   })
 
-  it("range can be moved backward inside outer range", function() {
+  it('range can be moved backward inside outer range', function() {
     var range1 = new DateRange(new Date('04/28/2011'), new Date('05/04/2011'))
     var range2 = range1.shiftInside(outerRange)
     expect(range1).not.toBeInside(outerRange)
@@ -83,17 +83,17 @@ describe("moving date range within outer range", function() {
     expect(range2.end.getDate()).toEqual(1)
   })
 
-  it("range longer than outer range cannot be moved", function() {
+  it('range longer than outer range cannot be moved', function() {
     var range1 = new DateRange(outerRange.start.plusDays(-1), outerRange.end.plusDays(1))
     var range2 = range1.shiftInside(outerRange)
     expect(range2.days()).toEqual(0)
   })
 })
 
-describe("date range with minimum size within outer range", function() {
+describe('date range with minimum size within outer range', function() {
   beforeEach(resetOuterRange)
 
-  it("range can be requested near the beginning of outer range", function() {
+  it('range can be requested near the beginning of outer range', function() {
     var oldRange = new DateRange(new Date('03/28/2011'), new Date('04/03/2011'))
     var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
     expect(newRange.days()).toEqual(7)
@@ -101,38 +101,38 @@ describe("date range with minimum size within outer range", function() {
     expect(newRange.end.getDate()).toEqual(4)
   })
 
-  it("range can be requested near the end of outer range", function() {
+  it('range can be requested near the end of outer range', function() {
     var oldRange = new DateRange(new Date('04/25/2011'), new Date('04/25/2011'))
     var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, false, outerRange)
     expect(newRange.days()).toEqual(7)
   })
 
-  it("range cannot be requested to be outside outer range", function() {
+  it('range cannot be requested to be outside outer range', function() {
     var oldRange = new DateRange(new Date('04/26/2011'), new Date('04/26/2011'))
     var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, false, outerRange)
     expect(newRange.days()).toEqual(0)
   })
 
-  it("range may not be found near the end of outer range due to weekends", function() {
+  it('range may not be found near the end of outer range due to weekends', function() {
     var oldRange = new DateRange(new Date('04/24/2011'), new Date('04/24/2011'))
     var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
     expect(newRange.days()).toEqual(0)
   })
 })
 
-describe("date range with time behavior", function() {
+describe('date range with time behavior', function() {
   beforeEach(resetRange)
 
-  it("date range can have times", function() {
+  it('date range can have times', function() {
     DATE_LOCALE_EN.init()
     range.setTimes('10:00', '14:45')
     expect(range.days()).toEqual(2)
     expect(range.hours()).toEqual(4)
     expect(range.minutes()).toEqual(45)
-    expect(range.toString()).toEqual("2 Days 4.75 Hours")
+    expect(range.toString()).toEqual('2 Days 4.75 Hours')
 
     DATE_LOCALE_FI.init()
-    expect(range.toString()).toEqual("2 päivää 4,75 tuntia")
+    expect(range.toString()).toEqual('2 päivää 4,75 tuntia')
 
     range.setTimes('17:00', '16:00')
     expect(range.days()).toEqual(1)
@@ -141,13 +141,13 @@ describe("date range with time behavior", function() {
     range.start = range.start.plusDays(1)
 
     range.setTimes('10:00', '11:00')
-    expect(range.toString()).toEqual("1 päivä 1 tunti")
+    expect(range.toString()).toEqual('1 päivä 1 tunti')
 
     DATE_LOCALE_EN.init()
-    expect(range.toString()).toEqual("1 Day 1 Hour")
+    expect(range.toString()).toEqual('1 Day 1 Hour')
   })
 
-  it("one day range with start time after end time is not valid", function() {
+  it('one day range with start time after end time is not valid', function() {
     expect(range).toBeValidRange()
     range.start = new Date('09/13/2009')
     expect(range).not.toBeValidRange()
@@ -161,7 +161,7 @@ describe("date range with time behavior", function() {
     expect(range).toBeValidRange()
   })
 
-  it("invalid time will make range invalid while keeping date information", function() {
+  it('invalid time will make range invalid while keeping date information', function() {
     range.setTimes('15:00', '15:30')
     expect(range).toBeValidRange()
 
@@ -179,7 +179,7 @@ describe("date range with time behavior", function() {
 
   })
 
-  it("different time formats are accepted", function() {
+  it('different time formats are accepted', function() {
     range.setTimes('15:00', '16:10')
     assertHasCorrectHoursAndMinutes(1, 10)
 
@@ -199,14 +199,14 @@ describe("date range with time behavior", function() {
     assertHasCorrectHoursAndMinutes(5, 0)
   })
 
-  it("minutes are rounded to 2 digits", function() {
+  it('minutes are rounded to 2 digits', function() {
     range.setTimes('15:00', '16:10')
     assertHasCorrectHoursAndMinutes(1, 10)
     DATE_LOCALE_FI.init()
-    expect(range.toString()).toEqual("2 päivää 1,17 tuntia")
+    expect(range.toString()).toEqual('2 päivää 1,17 tuntia')
   })
 
-  it("range is displayed with the most defining unit", function() {
+  it('range is displayed with the most defining unit', function() {
     range = new DateRange(new Date('01/01/2004'), new Date('05/01/2006'))
     expect(range).toPrintDefiningDurationOf('2 vuotta')
     range = new DateRange(new Date('01/01/2004'), new Date('05/01/2005'))
