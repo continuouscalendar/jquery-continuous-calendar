@@ -39,9 +39,9 @@ describe('date range default behavior', function() {
   })
 
   it('two ranges can do interception', function() {
-    var range2 = new DateRange(new Date('09/11/2009'), new Date('09/19/2009'))
+    var range2 = createRange('09/11/2009', '09/19/2009')
     expect(range.and(range2).days()).toEqual(2)
-    range2 = new DateRange(new Date('09/16/2009'), new Date('09/19/2009'))
+    range2 = createRange('09/16/2009', '09/19/2009')
     expect(range.and(range2).days()).toEqual(0)
   })
 
@@ -57,7 +57,7 @@ describe('moving date range within outer range', function() {
   beforeEach(resetOuterRange)
 
   it('range already inside outer range is not moved', function() {
-    var range1 = new DateRange(new Date('04/04/2011'), new Date('04/10/2011'))
+    var range1 = createRange('04/04/2011', '04/10/2011')
     var range2 = range1.shiftInside(outerRange)
     expect(range1).toBeInside(outerRange)
     expect(range2).toBeInside(outerRange)
@@ -66,7 +66,7 @@ describe('moving date range within outer range', function() {
   })
 
   it('range can be moved forward inside outer range', function() {
-    var range1 = new DateRange(new Date('03/15/2011'), new Date('03/21/2011'))
+    var range1 = createRange('03/15/2011', '03/21/2011')
     var range2 = range1.shiftInside(outerRange)
     expect(range1).not.toBeInside(outerRange)
     expect(range2).toBeInside(outerRange)
@@ -75,7 +75,7 @@ describe('moving date range within outer range', function() {
   })
 
   it('range can be moved backward inside outer range', function() {
-    var range1 = new DateRange(new Date('04/28/2011'), new Date('05/04/2011'))
+    var range1 = createRange('04/28/2011', '05/04/2011')
     var range2 = range1.shiftInside(outerRange)
     expect(range1).not.toBeInside(outerRange)
     expect(range2).toBeInside(outerRange)
@@ -94,7 +94,7 @@ describe('date range with minimum size within outer range', function() {
   beforeEach(resetOuterRange)
 
   it('range can be requested near the beginning of outer range', function() {
-    var oldRange = new DateRange(new Date('03/28/2011'), new Date('04/03/2011'))
+    var oldRange = createRange('03/28/2011', '04/03/2011')
     var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
     expect(newRange.days()).toEqual(7)
     expect(newRange.start.getDate()).toEqual(29)
@@ -102,19 +102,19 @@ describe('date range with minimum size within outer range', function() {
   })
 
   it('range can be requested near the end of outer range', function() {
-    var oldRange = new DateRange(new Date('04/25/2011'), new Date('04/25/2011'))
+    var oldRange = createRange('04/25/2011', '04/25/2011')
     var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, false, outerRange)
     expect(newRange.days()).toEqual(7)
   })
 
   it('range cannot be requested to be outside outer range', function() {
-    var oldRange = new DateRange(new Date('04/26/2011'), new Date('04/26/2011'))
+    var oldRange = createRange('04/26/2011', '04/26/2011')
     var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, false, outerRange)
     expect(newRange.days()).toEqual(0)
   })
 
   it('range may not be found near the end of outer range due to weekends', function() {
-    var oldRange = new DateRange(new Date('04/24/2011'), new Date('04/24/2011'))
+    var oldRange = createRange('04/24/2011', '04/24/2011')
     var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
     expect(newRange.days()).toEqual(0)
   })
@@ -207,17 +207,17 @@ describe('date range with time behavior', function() {
   })
 
   it('range is displayed with the most defining unit', function() {
-    range = new DateRange(new Date('01/01/2004'), new Date('05/01/2006'))
+    range = createRange('01/01/2004', '05/01/2006')
     expect(range).toPrintDefiningDurationOf('2 vuotta')
-    range = new DateRange(new Date('01/01/2004'), new Date('05/01/2005'))
+    range = createRange('01/01/2004', '05/01/2005')
     expect(range).toPrintDefiningDurationOf('1 vuosi')
-    range = new DateRange(new Date('01/01/2004'), new Date('05/01/2004'))
+    range = createRange('01/01/2004', '05/01/2004')
     expect(range).toPrintDefiningDurationOf('4 kuukautta')
-    range = new DateRange(new Date('01/01/2004'), new Date('02/16/2004'))
+    range = createRange('01/01/2004', '02/16/2004')
     expect(range).toPrintDefiningDurationOf('1 kuukausi')
-    range = new DateRange(new Date('01/01/2004'), new Date('01/31/2004'))
+    range = createRange('01/01/2004', '01/31/2004')
     expect(range).toPrintDefiningDurationOf('1 kuukausi')
-    range = new DateRange(new Date('01/01/2004'), new Date('01/07/2004'))
+    range = createRange('01/01/2004', '01/07/2004')
     expect(range).toPrintDefiningDurationOf('7 päivää')
   })
 })
@@ -238,4 +238,8 @@ function resetOuterRange() {
   start = new Date('03/28/2011')
   end = new Date('05/01/2011')
   outerRange = new DateRange(start, end)
+}
+
+function createRange(date1, date2) {
+  return new DateRange(new Date(date1), new Date(date2))
 }
