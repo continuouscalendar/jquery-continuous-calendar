@@ -18,7 +18,8 @@
       _continuousCalendar.call($(this), options)
     })
     function _continuousCalendar(options) {
-      $(this).addClass('continuousCalendarContainer')
+      $(this).addClass('continuousCalendarContainer').append('&nbsp;') //IE fix for popup version
+
 
       var defaults = {
         weeksBefore: 26,
@@ -163,6 +164,7 @@
           initUI: function() {
             calendarContainer.addClass('popup').hide()
             var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
+            container.prepend('<div></div>')
             container.prepend(icon)
           },
           initState: $.noop,
