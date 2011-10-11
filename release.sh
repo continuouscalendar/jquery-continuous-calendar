@@ -19,7 +19,7 @@ echo "Compressing css..."
 java -jar yuicompressor-2.4.6.jar --type css $LATEST_CSS -o $LATEST_CSS_MIN
 if [ "$version" = "" ]
 then
-	echo "Version information not found. Type ./build.sh <version>" 
+	echo "Version information not found. Type ./release.sh <version>" 
 	echo "Previous version was $old_version"
 else
 	if [ -f $BUILD_PREFIX-$version.js ]
