@@ -14,6 +14,7 @@
         href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css"/>
   <link rel="stylesheet" type="text/css" href="site/styles.css"/>
   <link rel="stylesheet" href="build/jquery.continuous-calendar-latest-min.css" type="text/css" media="all"/>
+  <!--<link rel="stylesheet" href="src/main/jquery.continuous-calendar.css" type="text/css" media="all"/>-->
   <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
   <script src="site/modernizr.1.7-custom.min.js"></script>
   <meta content="Jquery continuous calendar. A JavaScript Calendar component and date picker for selecting dates and date ranges." name="description"/>
@@ -33,7 +34,7 @@
   </p>
 <![endif]-->
 <article>
-	
+
   <p><h1>Jquery continuous calendar</h1></p>
 
   <ul class="section">
@@ -162,7 +163,14 @@
 
 </article>
 <script type="text/javascript" src="src/lib/jquery-1.6.js"></script>
+<!--
+<script type="text/javascript" src="src/main/date-functions.js" charset="UTF-8"></script>
+<script type="text/javascript" src="src/main/date-locales.js" charset="UTF-8"></script>
+<script type="text/javascript" src="src/main/date-range.js" charset="UTF-8"></script>
+<script type="text/javascript" src="src/main/jquery.continuous-calendar.js" charset="UTF-8"></script>
+-->
 <script type="text/javascript" src="build/jquery.continuous-calendar-latest-min.js" charset="UTF-8"></script>
+
 <script type="text/javascript" language="JavaScript">
   $("#timeCalendar").continuousCalendar({weeksBefore: 30,lastDate: "today", selectToday: true});
   $("#timeCalendar").bind('calendarChange', function() {
