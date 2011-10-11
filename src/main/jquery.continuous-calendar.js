@@ -14,10 +14,9 @@
 ;
 (function($) {
   $.fn.continuousCalendar = function(options) {
-    this.each(function() {
+    return this.each(function() {
       _continuousCalendar.call($(this), options)
     })
-    return this
     function _continuousCalendar(options) {
       $(this).addClass('continuousCalendarContainer')
 
@@ -88,7 +87,7 @@
         if($('.startDateLabel', container).isEmpty()) {
           addDateLabels(container, calendar)
         }
-        calendar.initUI() 
+        calendar.initUI()
         calendar.showInitialSelection()
         container.data('calendarRange', selection)
         executeCallback()
@@ -130,8 +129,7 @@
           },
           addRangeLengthLabel: function() {
             if($('.rangeLengthLabel', container).isEmpty()) {
-              var rangeLengthContainer = $('<div class="label">')
-              rangeLengthContainer.append('<span class="rangeLengthLabel"></span>')
+              var rangeLengthContainer = $('<div class="label"><span class="rangeLengthLabel"></span></div>')
               $('.continuousCalendar', container).append(rangeLengthContainer)
             }
           },
@@ -172,7 +170,7 @@
             return $('<div>').addClass('popUpContainer').append(newContainer);
           },
           addCloseButton: function(tr) {
-            var close = $('<th><a href="#"><span>close</span></a>')
+            var close = $('<th><a href="#"><span>close</span></a></th>')
             $('a', close).click(toggleCalendar)
             tr.append(close)
           },
@@ -216,8 +214,7 @@
       }
 
       function addDateLabels(container, calendar) {
-        var dateLabelContainer = $('<div class="label">')
-        dateLabelContainer.append('<span class="startDateLabel"></span>')
+        var dateLabelContainer = $('<div class="label"><span class="startDateLabel"></span></div>')
         calendar.addEndDateLabel(dateLabelContainer)
         container.prepend(dateLabelContainer)
         calendar.addDateLabelBehaviour(dateLabelContainer.children())
