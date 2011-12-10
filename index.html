@@ -17,6 +17,7 @@
   <!--<link rel="stylesheet" href="src/main/jquery.continuous-calendar.css" type="text/css" media="all"/>-->
   <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
   <script src="site/modernizr.1.7-custom.min.js"></script>
+  <script src="http://shjs.sourceforge.net/sh_main.min.js"></script>
   <meta content="Jquery continuous calendar. A JavaScript Calendar component and date picker for selecting dates and date ranges." name="description"/>
 </head>
 
@@ -41,7 +42,7 @@
 	<li><a href="https://github.com/reaktor/jquery-continuous-calendar">Project in Github</a></li>
 	<li><a href="http://reaktor.github.com/jquery-continuous-calendar/src/example.html">Examples</a></li>
 	<li><a href="http://reaktor.github.com/jquery-continuous-calendar/src/playground.html">Playground</a></li>
-	<li><a href="http://reaktor.github.com/jquery-continuous-calendar/src/test/jquery.continuous-calendar-test.html">QUnit tests</a></li>
+	<li><a href="http://reaktor.github.com/jquery-continuous-calendar/src/test/jquery.continuous-calendar-test.html">Jasmine tests</a></li>
 	<li><a href="http://github.com/reaktor/jquery-continuous-calendar/zipball/master">Download</a></li>
   </ul>
     <section class="section">
@@ -109,31 +110,30 @@
   <section class="section">
     <h2>Insert in head</h2>
 	<pre>&lt;!-- basic default calendar styles --&gt;
-	&lt;link rel="stylesheet" type="text/css" 
-	href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.css" /&gt;
+&lt;link rel="stylesheet" type="text/css" 
+href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.css" /&gt;
 
-	&lt;!-- custom user specified calendar styles --&gt;
-	&lt;style type="text/css"&gt;
-	    .calendarScrollContent {height: 250px;}
-	&lt;/style&gt;
-
-	&lt;!-- required JavaScript files --&gt;
-	&lt;script type="text/javascript" 
+&lt;!-- custom user specified calendar styles --&gt;
+&lt;style type="text/css"&gt;
+    .calendarScrollContent {height: 250px;}
+&lt;/style&gt;
+&lt;!-- required JavaScript files --&gt;
+&lt;script type="text/javascript" 
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"&gt;&lt;/script&gt;
-	&lt;script type="text/javascript" 
+&lt;script type="text/javascript" 
 	src="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.js"&gt;
-	&lt;/script&gt;
+&lt;/script&gt;
 	</pre>
     <h2>Insert in body</h2>
 	<pre>&lt;!-- range selection is attached to fields with class startDate and endDate --&gt;
-	&lt;div id="dateRange1"&gt;
-	  &lt;input type="hidden" class="startDate" name="range_start"&gt;
-	  &lt;input type="hidden" class="endDate" name="range_end"&gt;
-	&lt;/div&gt;
-	&lt;script type="text/javascript" language="JavaScript"&gt;
-	  $("#dateRange1").continuousCalendar();
-	&lt;/script&gt;
-	</pre>
+&lt;div id="dateRange1"&gt;
+  &lt;input type="hidden" class="startDate" name="range_start"&gt;
+  &lt;input type="hidden" class="endDate" name="range_end"&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript" language="JavaScript"&gt;
+  $("#dateRange1").continuousCalendar();
+&lt;/script&gt;
+</pre>
   </section>
 
   <h1>Instructions for contributors</h1>
