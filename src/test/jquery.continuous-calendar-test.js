@@ -447,8 +447,14 @@ describe('calendar week selection', function() {
     expect(cal().find('.continuousCalendar')).not.toBeVisible()
     expect(startFieldValue()).toEqual('5/29/2011')
     expect(endFieldValue()).toEqual('5/31/2011')
+
+  })
+
+  it('tear down', function() {
+    $(window).scrollTop(9999999)
   })
 })
+
 
 function startTimer() {
   timerStart = new Date().getTime()
