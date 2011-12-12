@@ -36,8 +36,7 @@
         minimumRange: -1,
         selectWeek: false,
         fadeOutDuration: 0,
-        callback: function() {
-        }
+        callback: $.noop
       }
       var params = $.extend(defaults, options)
       var Status = {
@@ -91,7 +90,7 @@
         calendar.initUI()
         calendar.showInitialSelection()
         container.data('calendarRange', selection)
-        executeCallback()
+        executeCallback(selection)
       }
 
       function initCalendarTable() {
@@ -151,10 +150,8 @@
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
           },
-          addRangeLengthLabel: function() {
-          },
-          addEndDateLabel: function() {
-          }
+          addRangeLengthLabel: $.noop,
+          addEndDateLabel: $.noop
         }
         return isRange ? rangeVersion : singleDateVersion
       }
@@ -360,10 +357,11 @@
           if(dateCell.hasClass('disabled')) return
           $('td.selected', container).removeClass('selected')
           dateCell.addClass('selected')
-          params.startField.val(getElemDate(dateCell.get(0)).dateFormat(params.locale.shortDateFormat))
-          setDateLabel(getElemDate(dateCell.get(0)).dateFormat(params.locale.weekDateFormat))
+          var selectedDate = getElemDate(dateCell.get(0));
+          params.startField.val(selectedDate.dateFormat(params.locale.shortDateFormat))
+          setDateLabel(selectedDate.dateFormat(params.locale.weekDateFormat))
           calendar.close(this)
-          executeCallback()
+          executeCallback(selectedDate)
         })
       }
 
@@ -528,7 +526,7 @@
         if(params.selectWeek) {
           calendar.close($('td.selected', container).first())
         }
-        executeCallback()
+        executeCallback(selection)
       }
 
       function setRangeLabels() {
@@ -566,7 +564,7 @@
         }
       }
 
-      function executeCallback() {
+      function executeCallback(selection) {
         params.callback.call(container, selection)
         container.trigger('calendarChange', selection)
       }
