@@ -87,4 +87,4 @@ input { border: none; background: none; }
 .navi li span {display: block;padding: 3px 7px 3px 13px; margin:5px;border-left:1px solid  #ccc;}
 .navi .first {border-left: none;}
 
-
+.footer {margin-bottom:0;}
