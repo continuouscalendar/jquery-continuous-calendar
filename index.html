@@ -34,51 +34,60 @@
     <a href="http://www.apple.com/fi/safari/">Safari</a>
   </p>
 <![endif]-->
-<article>
-
-  <p><h1>Jquery continuous calendar</h1></p>
-
-  <ul class="section">
-	<li><a href="https://github.com/reaktor/jquery-continuous-calendar">Project in Github</a></li>
-	<li><a href="http://reaktor.github.com/jquery-continuous-calendar/src/example.html">Examples</a></li>
-	<li><a href="http://reaktor.github.com/jquery-continuous-calendar/src/playground.html">Playground</a></li>
-	<li><a href="http://reaktor.github.com/jquery-continuous-calendar/src/test/jquery.continuous-calendar-test.html">Jasmine tests</a></li>
-	<li><a href="http://github.com/reaktor/jquery-continuous-calendar/zipball/master">Download</a></li>
+  <ul class="navi section">
+    <li><span>Home</span></li>
+    <li><a href="src/playground.html">Playground</a></li>
+    <li><a href="src/test/jquery.continuous-calendar-test.html">Jasmine tests</a></li>
+    <li><a href="https://github.com/reaktor/jquery-continuous-calendar">Project in Github</a></li>
+    <li><a href="http://github.com/reaktor/jquery-continuous-calendar/zipball/master">Download ZIP</a></li>
   </ul>
-    <section class="section">
-      <h2>An example of range select with integrated time values</h2>
+<article>
+<h1 id="live_example">Jquery continuous calendar</h1>
+<ul class="section">
+  <li><a class="first" href="#live_example">Live example</a></li>
+  <li><a href="#features">Features</a></li>
+  <li><a href="#supported_browsers">Supported browsers</a></li>
+  <li><a href="#getting_started">Getting started</a></li>
+  <li><a href="#api_documentation">Api documentation</a></li>
+  <li><a href="#license">License</a></li>
+</ul>
 
-      <div id="timeCalendar">
-        <input type="hidden" class="startDate" name="tripStartDate"/>
-        <input type="hidden" class="endDate" name="tripEndDate"/>
 
-        <h3>Select Days</h3>
+  <section class="section">
+    <h2>An example of range select with integrated time values</h2>
 
-        <div class="continuousCalendar"></div>
-        <div class="dateLabels">
-          <div>
-            <strong>Starts</strong>
-            <span class="startDateLabel"></span>
-            <select name="tripStartTime"></select>
-          </div>
-          <div>
-            <strong>Ends</strong>
-            <span class="endDateLabel"></span>
-            <select name="tripEndTime"></select>
-          </div>
-          <div>
-            <strong>Duration</strong>
-            <span class="totalTimeOfTrip"></span>
-          </div>
+    <div id="timeCalendar">
+      <input type="hidden" class="startDate" name="tripStartDate"/>
+      <input type="hidden" class="endDate" name="tripEndDate"/>
+
+      <h3>Select Days</h3>
+
+      <div class="continuousCalendar"></div>
+      <div class="dateLabels">
+        <div>
+          <strong>Starts</strong>
+          <span class="startDateLabel"></span>
+          <select name="tripStartTime"></select>
+        </div>
+        <div>
+          <strong>Ends</strong>
+          <span class="endDateLabel"></span>
+          <select name="tripEndTime"></select>
+        </div>
+        <div>
+          <strong>Duration</strong>
+          <span class="totalTimeOfTrip"></span>
         </div>
       </div>
-      <div class="c"></div>
-      <h2>Date picker example</h2>
-      <div id="date-picker"></div>
-      <div class="c"></div>
-    </section>
+    </div>
+    <div class="c"></div>
+    <h2>Date picker example</h2>
 
-  <h1>Features</h1>
+    <div id="date-picker"></div>
+    <div class="c"></div>
+  </section>
+
+  <h1 id="features">Features</h1>
 
   <ul class="section">
     <li>Date dragging</li>
@@ -95,7 +104,7 @@
     <li>Support for setting minimum range</li>
   </ul>
 
-  <h1>Supported browsers</h1>
+  <h1 id="supported_browsers">Supported browsers</h1>
 
   <ul class="section">
     <li>IE6 →</li>
@@ -105,7 +114,7 @@
     <li>Safari</li>
   </ul>
 
-  <h1>Getting started</h1>
+  <h1 id="getting_started">Getting started</h1>
 
   <section class="section">
     <h2>Insert in head</h2>
@@ -136,17 +145,91 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
 </pre>
   </section>
 
-  <h1>Instructions for contributors</h1>
+  <h1 id="api_documentation">Api Documentation</h1>
+  <section class="section">
+
+    <h2>Events</h2>
+
+    <dl>
+      <dt>calendarChange</dt>
+      <dd>Triggered in calendar init and calendar selections. Event object contains DateRange or Date for current selection</dd>
+    </dl>
+
+    <h2>Methods</h2>
+
+    <dl>
+      <dt>.continuousCalendar(options)</dt>
+      <dd>Creates a continuous calendar. Start and end input's are created if they don't exist. When created manually, they must have classes startDate and endDate and they must be inside the container. Options are passed in object. See options below.</dd>
+
+      <dt>.calendarRange(), returns <span class="type">DateRange</span></dt>
+      <dd>Returns calendar range object for current selection</dd>
+    </dl>
+
+    <h2>Options, color codes:
+    </h2>
+
+    <dl>
+      <dt class="title"><span>Property name</span>, <span class="default">Default value</span> <span class="type">Type</span></dt>
+
+      <dt>weeksBefore <span class="default">26</span> <span class="type">Number</span></dt>
+      <dd>Specifies amount of weeks displayed before selection. If no default selection then count from current day.</dd>
+
+      <dt>weeksAfter <span class="default">26</span> <span class="type">Number</span></dt>
+      <dd>Specifies amount of weeks displayed after selection. If no default selection then count from current day.</dd>
+
+      <dt>firstDate <span class="default">null</span> <span class="type">String</span></dt>
+      <dd>Specifies exact date for calendar start. this is alternative for weeksBefore. Date is in current short date format, i.e. 12/31/2011 or 31.1.2011.</dd>
+
+      <dt>lastDate <span class="default">null</span> <span class="type">String</span></dt>
+      <dd>Specifies exact date for calendar end. This is alternative for weeksAfter. Date is in current short date format, i.e. 12/31/2011 or 31.1.2011.</dd>
+
+      <dt>startField <span class="default">$('input.startDate', this)</span> <span class="type">jQuery object</span></dt>
+      <dd>Specifies jquery element for start input field. This is used also for single date calendar</dd>
+
+      <dt>endField <span class="default">$('input.endDate', this)</span> <span class="type">jQuery object</span></dt>
+      <dd>Specifies jquery element for end input field.</dd>
+
+      <dt>isPopup <span class="default">false</span> <span class="type">Boolean</span></dt>
+      <dd>Specifies if calendar opens as popup or as inline version</dd>
+
+      <dt>selectToday <span class="default">false</span> <span class="type">Boolean</span></dt>
+      <dd>True, of current date is to be chosen, even if input field is empty.</dd>
+
+      <dt>locale <span class="default">DATE_LOCALE_EN</span> <span class="type">Object</span></dt>
+      <dd>Specifies locale for rendering calendar and parsing input fields. Currently DATE_LOCALE_EN and DATE_LOCALE_FI are found in global namespace.</dd>
+
+      <dt>disableWeekends <span class="default">false</span> <span class="type">Boolean</span></dt>
+      <dd>True if weekends are disabled.</dd>
+
+      <dt>disabledDates <span class="default">null</span> <span class="type">String</span></dt>
+      <dd>Space separated list of disabled dates. Dates are presented in short date format of current locale.</dd>
+
+      <dt>minimumRange <span class="default">-1</span> <span class="type">Number</span></dt>
+      <dd>Sets minimum range permitted in days. Shorter selections are expanded automatically.</dd>
+
+      <dt>selectWeek <span class="default">false</span> <span class="type">Boolean</span></dt>
+      <dd>Set to true for automatically selecting full weeks.</dd>
+
+      <dt>fadeOutDuration <span class="default">0</span> <span class="type">Number</span></dt>
+      <dd>Duration for fade out. Value is passed for jQuery's <a href="http://api.jquery.com/fadeOut/">.fadeOut</a> function.</dd>
+
+      <dt>callback <span class="default">$.noop</span> <span class="type">Function</span></dt>
+      <dd>Function called in init and after date selection. DateRange or Date is passed as argument and this points to calendar container.</dd>
+
+    </dl>
+  </section>
+  <h1 id="instructions_for_contributors">Instructions for contributors</h1>
 
   <ul class="section">
     <li>make a fork</li>
     <li>code</li>
     <li>run tests (<strong>jquery.continuous-calendar-test.html</strong> and <strong>dateRange-test.html</strong>)</li>
+    <li>Update documentation to index.html</li>
     <li>run release.sh (see <strong>git tag</strong> for previous versions)</li>
     <li>push --tags</li>
     <li>make pull request</li>
   </ul>
-  <h1>License</h1>
+  <h1 id="license">License</h1>
 
   <section class="section">
     <p>Licensed under the Apache License, Version 2.0 (the “License”); you may not<br>
@@ -172,8 +255,8 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
 <script type="text/javascript" src="build/jquery.continuous-calendar-latest-min.js" charset="UTF-8"></script>
 
 <script type="text/javascript" language="JavaScript">
-  $("#timeCalendar").continuousCalendar({weeksBefore: 30,lastDate: "today", selectToday: true});
-  $("#timeCalendar").bind('calendarChange', function() {
+  $("#timeCalendar").continuousCalendar({weeksBefore:30, lastDate:"today", selectToday:true});
+  $("#timeCalendar").bind('calendarChange', function () {
     var container = $(this);
     var startTime = container.find('select[name=tripStartTime]').val();
     var endTime = container.find('select[name=tripEndTime]').val();
@@ -181,15 +264,15 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
     range.setTimes(startTime, endTime);
     container.find('.totalTimeOfTrip').text(range.toString(DATE_LOCALE_EN)).toggleClass('invalid', !range.isValid());
   });
-  $("#timeCalendar select").bind('change', function() {
+  $("#timeCalendar select").bind('change', function () {
     $("#timeCalendar").trigger('calendarChange');
   });
-  $("#timeCalendar select").each(function() {
+  $("#timeCalendar select").each(function () {
     for(i = 0; i < 24; i++) {
       $(this).append($("<option>").text(i + ":00")).append($("<option>").text(i + ":30"));
     }
   });
-  $('#date-picker').continuousCalendar({isPopup:true,firstDate:'today'});
+  $('#date-picker').continuousCalendar({isPopup:true, firstDate:'today'});
 </script>
 <script type="text/javascript">
 
@@ -197,10 +280,13 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
   _gaq.push(['_setAccount', 'UA-4154602-6']);
   _gaq.push(['_trackPageview']);
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  (function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
   })();
 
 </script>

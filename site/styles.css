@@ -1,13 +1,25 @@
 /*
 Run at project root:  sass  --watch scss:css --style compact
 */
-@font-face { font-family: 'HelveticaNeueLTStd45Light'; src: url("../fonts/helveticaneueltstd-lt-webfont.eot"); src: local("â˜º"), url("../fonts/helveticaneueltstd-lt-webfont.woff") format("woff"), url("../fonts/helveticaneueltstd-lt-webfont.ttf") format("truetype"), url("../fonts/helveticaneueltstd-lt-webfont.svg#webfontVvp2idrr") format("svg"); font-weight: normal; font-style: normal; }
+@font-face {
+    font-family: 'HelveticaNeueLTStd45Light';
+    src: url("../fonts/helveticaneueltstd-lt-webfont.eot");
+    src: local("â˜º"), url("../fonts/helveticaneueltstd-lt-webfont.woff") format("woff"), url("../fonts/helveticaneueltstd-lt-webfont.ttf") format("truetype"), url("../fonts/helveticaneueltstd-lt-webfont.svg#webfontVvp2idrr") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
 
-@font-face { font-family: 'HelveticaNeueLTStd65Medium'; src: url("../fonts/helveticaneueltstd-md-webfont.eot"); src: local("â˜º"), url("../fonts/helveticaneueltstd-md-webfont.woff") format("woff"), url("../fonts/helveticaneueltstd-md-webfont.ttf") format("truetype"), url("../fonts/helveticaneueltstd-md-webfont.svg#webfontoMoA6nSX") format("svg"); font-weight: normal; font-style: normal; }
+@font-face {
+    font-family: 'HelveticaNeueLTStd65Medium';
+    src: url("../fonts/helveticaneueltstd-md-webfont.eot");
+    src: local("â˜º"), url("../fonts/helveticaneueltstd-md-webfont.woff") format("woff"), url("../fonts/helveticaneueltstd-md-webfont.ttf") format("truetype"), url("../fonts/helveticaneueltstd-md-webfont.svg#webfontoMoA6nSX") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
 
 html { background: #f5f5f5; }
 
-body { font-family: Arial, Helvetica,sans-serif; font-size: 13px; color: #4c4c4c; line-height: 17px; font-size: 14px; margin: 0 auto; }
+body { font-family: Arial, Helvetica, sans-serif; color: #4c4c4c; line-height: 17px; font-size: 14px; margin: 0 auto; }
 
 header, nav, section, footer, article { display: block; }
 
@@ -21,10 +33,10 @@ h4 { margin-bottom: 10px; }
 
 p { margin-bottom: 20px; }
 
-pre {font-size:11px;background:#fafafa;border:1px solid #ccc;padding:4px;color:#000;}
+pre { font-size: 11px; background: #fafafa; border: 1px solid #ccc; padding: 4px; color: #000; }
 
 a { color: #25b2ff; text-decoration: none; }
-a:hover { text-decoration: underline; }
+a:hover {text-decoration: underline;}
 
 strong { font-weight: bold; }
 
@@ -40,56 +52,39 @@ h1 { width: 600px; line-height: 30px; }
 
 li { list-style-type: disc; list-style-position: inside; }
 
-
 .wrap { display: block; }
 .wrap:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
 * html .wrap { height: 1px; }
 
-.section { box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); background-color: #fff; filter: progid:DXImageTransform.Microsoft.Shadow(color='#f0f0f0', Direction=135, Strength=4); background: #fff; padding: 24px 43px 20px 30px; margin-bottom: 27px; }
-.section a { text-decoration: underline; }
+.section { box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); background-color: #fff; filter: progid:DXImageTransform.Microsoft.Shadow(color = '#f0f0f0', Direction = 135, Strength = 4); background: #fff; padding: 24px 43px 20px 30px; margin-bottom: 27px; }
 
+.calendarScrollContent { height: 250px; }
+ul {margin-bottom: 10px;}
+dt {margin-bottom: 10px;font-family: monospace;font-size: 18px;}
+dt.title {margin-bottom: 20px;text-decoration: underline;}
+.default {color: green;}
+.type {color: #0041c4;}
+dd {margin-bottom: 20px;margin-left: 10px;}
+input { border: none; background: none; }
 
+#timeCalendar .continuousCalendar { float: left; }
+#timeCalendar .dateLabels div { clear: both; margin: 1em; }
+#timeCalendar .dateLabels div strong { float: left; display: block; width: 5em; }
+#timeCalendar .dateLabels div span { float: left; display: block; width: 9em; }
 
-  .calendarScrollContent {
-    height: 250px;
-  }
+#singleDate2 { z-index: 4; }
+#singleDate3 { z-index: 3; }
+#range1 { z-index: 2; }
+#range1 .continuousCalendar,
+#singleDate3 .continuousCalendar { top: 15pt; }
 
-  input {
-    border: none;
-    background: none;
-  }
+.dateLabels { float: left; }
+.c { clear: both; }
 
-  #timeCalendar .continuousCalendar {
-    float: left;
-  }
-
-  #timeCalendar .dateLabels div {
-    clear: both;
-    margin: 1em;
-  }
-
-  #timeCalendar .dateLabels div strong {
-    float: left;
-    display: block;
-    width: 5em;
-  }
-
-  #timeCalendar .dateLabels div span {
-    float: left;
-    display: block;
-    width: 9em;
-  }
-
-	#singleDate2 {z-index:4;}
-	#singleDate3 {z-index:3;}
-	#range1 {z-index:2;}
-  #range1 .continuousCalendar, #singleDate3 .continuousCalendar {
-    top: 15pt;
-  }
-
-  .dateLabels {
-    float: left;
-  }
-  .c {clear:both;}
+.navi {overflow: hidden;padding: 0;}
+.navi li {display: block; float: left;background: #fff;margin:0;}
+.navi li a,
+.navi li span {display: block;padding: 3px 7px 3px 13px; margin:5px;border-left:1px solid  #ccc;}
+.navi .first {border-left: none;}
 
 
