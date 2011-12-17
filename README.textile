@@ -1,11 +1,11 @@
 
 "Homepage":http://reaktor.github.com/jquery-continuous-calendar/
 
-"Examples":http://reaktor.github.com/jquery-continuous-calendar/src/example.html
+"Examples":http://reaktor.github.com/jquery-continuous-calendar/site/example.html
 
-"Playground":http://reaktor.github.com/jquery-continuous-calendar/src/playground.html
+"Playground":http://reaktor.github.com/jquery-continuous-calendar/site/playground.html
 
-"unit tests":http://reaktor.github.com/jquery-continuous-calendar/src/test/jquery.continuous-calendar-test.html
+"Unit tests":http://reaktor.github.com/jquery-continuous-calendar/src/test/jquery.continuous-calendar-test.html
 
 "Latest revision as ZIP file":http://github.com/reaktor/jquery-continuous-calendar/zipball/master
 
