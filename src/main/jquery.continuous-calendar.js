@@ -20,7 +20,6 @@
     function _continuousCalendar(options) {
       $(this).addClass('continuousCalendarContainer').append('&nbsp;') //IE fix for popup version
 
-
       var defaults = {
         weeksBefore: 26,
         weeksAfter: 26,
@@ -40,9 +39,9 @@
       }
       var params = $.extend(defaults, options)
       var Status = {
-        CREATE_OR_RESIZE:'create',
-        MOVE:'move',
-        NONE:'none'
+        CREATE_OR_RESIZE: 'create',
+        MOVE: 'move',
+        NONE: 'none'
       }
       params.locale.init()
       var startDate = fieldDate(params.startField)
@@ -84,6 +83,9 @@
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
         calendarRange = new DateRange(rangeStart, rangeEnd)
         calendarContainer = getCalendarContainerOrCreateOne()
+        calendarContainer.click(function(e) {
+          e.stopPropagation()
+        })
         if($('.startDateLabel', container).isEmpty()) {
           addDateLabels(container, calendar)
         }
@@ -94,7 +96,7 @@
       }
 
       function initCalendarTable() {
-        if (scrollContent) return
+        if(scrollContent) return
         var headerTable = $('<table>').addClass('calendarHeader').append(headerRow())
         bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
         scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
@@ -268,15 +270,18 @@
         initCalendarTable()
         if(calendarContainer.is(':visible')) {
           calendarContainer.fadeOut(params.fadeOutDuration)
-          return false
+          $(document).unbind('click.continuousCalendar')
+        } else {
+          calendarContainer.show()
+          if(beforeFirstOpening) {
+            calculateCellHeight()
+            setYearLabel()
+            beforeFirstOpening = false
+          }
+          scrollToSelection()
+          $(document).bind('click.continuousCalendar', toggleCalendar)
+
         }
-        calendarContainer.show()
-        if(beforeFirstOpening) {
-          calculateCellHeight()
-          setYearLabel()
-          beforeFirstOpening = false
-        }
-        scrollToSelection()
         return false
       }
 
@@ -313,7 +318,7 @@
       function monthCell(firstDayOfWeek, isFirst) {
         var th = '<th class="month ' + backgroundBy(firstDayOfWeek)
         if(isFirst || firstDayOfWeek.getDate() <= 7) {
-          th += ' monthName">'
+          th += ' monthName">'
           th += Date.monthNames[firstDayOfWeek.getMonth()]
         } else {
           th += '">'
@@ -447,7 +452,7 @@
         var date = getElemDate(event.target)
           ;
         ({
-          move : function() {
+          move: function() {
             var deltaDays = mouseDownDate.distanceInDays(date)
             var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
             if(isPermittedRange(movedSelection)) {
@@ -455,7 +460,7 @@
               selection = movedSelection
             }
           },
-          create : function() {
+          create: function() {
             var newSelection = new DateRange(mouseDownDate, date)
             if(isEnabled(event.target) && isPermittedRange(newSelection)) {
               selection = newSelection
@@ -584,14 +589,14 @@
       function isEnabled(elem) {
         return !$(elem).hasClass('disabled')
       }
-      
+
       function getElemDate(elem) {
-      	var dateIndex = $(elem).attr('date-cell-index')
-      	return dateCellDates[dateIndex]
+        var dateIndex = $(elem).attr('date-cell-index')
+        return dateCellDates[dateIndex]
       }
-      
+
       function getDateCell(index) {
-      	return $(dateCells[index])
+        return $(dateCells[index])
       }
 
       function setStartField(value) {
