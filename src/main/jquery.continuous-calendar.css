@@ -193,6 +193,8 @@
 
 .continuousCalendarContainer div.label span.clickable {
   cursor: pointer;
+  text-decoration: underline;
+
 }
 
 .continuousCalendarContainer .popUpContainer {
