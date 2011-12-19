@@ -87,8 +87,6 @@
         }
         calendar.initUI()
         calendar.showInitialSelection()
-        container.data('calendarRange', selection)
-        executeCallback(selection)
       }
 
       function initCalendarTable() {
@@ -122,6 +120,8 @@
           initEvents: function() {
             initRangeCalendarEvents(container, bodyTable)
             drawSelection()
+            container.data('calendarRange', selection)
+            executeCallback(selection)
           },
           addRangeLengthLabel: function() {
             if($('.rangeLengthLabel', container).isEmpty()) {
@@ -143,6 +143,8 @@
             if(dateCellMap[selectedDateKey]) {
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
+            container.data('calendarRange', startDate)
+            executeCallback(startDate)
           },
           addRangeLengthLabel: $.noop,
           addEndDateLabel: $.noop
