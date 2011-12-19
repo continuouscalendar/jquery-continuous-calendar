@@ -45,13 +45,9 @@ Date.getDayInYear = function(year, month, day) {
   return days
 }
 
-Date.prototype.getDaysInMonth = function() {
-  return Date.getDaysInMonth(this.getFullYear(), this.getMonth())
-}
+Date.prototype.getDaysInMonth = function() { return Date.getDaysInMonth(this.getFullYear(), this.getMonth()) }
 
-Date.prototype.getDayInYear = function() {
-  return Date.getDayInYear(this.getFullYear(), this.getMonth(), this.getDate())
-}
+Date.prototype.getDayInYear = function() { return Date.getDayInYear(this.getFullYear(), this.getMonth(), this.getDate()) }
 
 Date.prototype.plusDays = function(days) {
   var newDate = this.clone()
@@ -79,9 +75,7 @@ Date.prototype.plusYears = function(years) {
   return newDate()
 }
 
-Date.prototype.stripped = function() {
-  return new Date(parseInt(this.getTime() / Date.DAY, 10))
-}
+Date.prototype.stripped = function() { return new Date(parseInt(this.getTime() / Date.DAY, 10)) }
 
 Date.prototype.compareTo = function(date) {
   if(!date) {
@@ -107,9 +101,7 @@ Date.prototype.compareDateOnlyTo = function(date) {
   return this.stripped().compareTo(date.stripped())
 }
 
-Date.prototype.isToday = function() {
-  return this.equalsOnlyDate(Date.NOW)
-}
+Date.prototype.isToday = function() { return this.equalsOnlyDate(Date.NOW) }
 
 Date.prototype.getWeekInYear = function(weekNumberingSystem) {
   if(weekNumberingSystem != "US" && weekNumberingSystem != "ISO") {
@@ -168,13 +160,9 @@ Date.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
   return thisFirst.getMonth() != lastFirst.getMonth()
 }
 
-Date.prototype.clone = function() {
-  return new Date(this.getTime())
-}
+Date.prototype.clone = function() { return new Date(this.getTime()) }
 
-Date.prototype.isOddMonth = function() {
-  return this.getMonth() % 2 != 0
-}
+Date.prototype.isOddMonth = function() { return this.getMonth() % 2 != 0 }
 
 Date.prototype.equalsOnlyDate = function(date) {
   if(!date) {
@@ -183,17 +171,11 @@ Date.prototype.equalsOnlyDate = function(date) {
   return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getYear() == date.getYear()
 }
 
-Date.prototype.isBetweenDates = function(start, end) {
-  return this.compareTo(start) >= 0 && this.compareTo(end) <= 0
-}
+Date.prototype.isBetweenDates = function(start, end) { return this.compareTo(start) >= 0 && this.compareTo(end) <= 0 }
 
-Date.prototype.firstDateOfMonth = function() {
-  return new Date((this.getMonth() + 1) + "/1/" + this.getFullYear())
-}
+Date.prototype.firstDateOfMonth = function() { return new Date((this.getMonth() + 1) + "/1/" + this.getFullYear()) }
 
-Date.prototype.lastDateOfMonth = function() {
-  return new Date((this.getMonth() + 1) + "/" + this.getDaysInMonth() + "/" + this.getFullYear())
-}
+Date.prototype.lastDateOfMonth = function() { return new Date((this.getMonth() + 1) + "/" + this.getDaysInMonth() + "/" + this.getFullYear()) }
 
 Date.prototype.distanceInDays = function(date) {
   var first = parseInt(this.getTime() / Date.DAY, 10)
@@ -201,14 +183,9 @@ Date.prototype.distanceInDays = function(date) {
   return (last - first)
 }
 
-Date.prototype.withWeekday = function(weekday) {
-  return this.plusDays(weekday - this.getDay())
-}
+Date.prototype.withWeekday = function(weekday) { return this.plusDays(weekday - this.getDay()) }
 
-Date.prototype.getOnlyDate = function() {
-  return new Date(this.getFullYear(), this.getMonth(), this.getDate())
-}
-
+Date.prototype.getOnlyDate = function() { return new Date(this.getFullYear(), this.getMonth(), this.getDate()) }
 
 /*
  * Copyright (C) 2004 Baron Schwartz <baron at sequent dot org>
@@ -471,13 +448,9 @@ Date.formatCodeToRegex = function(character, currentGroup) {
   }
 }
 
-Date.prototype.getTimezone = function() {
-  return this.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3")
-}
+Date.prototype.getTimezone = function() { return this.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3") }
 
-Date.prototype.getGMTOffset = function() {
-  return (this.getTimezoneOffset() > 0 ? "-" : "+") + String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0") + String.leftPad(this.getTimezoneOffset() % 60, 2, "0")
-}
+Date.prototype.getGMTOffset = function() { return (this.getTimezoneOffset() > 0 ? "-" : "+") + String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0") + String.leftPad(this.getTimezoneOffset() % 60, 2, "0") }
 
 Date.prototype.getDayOfYear = function() {
   var num = 0
@@ -535,13 +508,9 @@ Date.prototype.getSuffix = function() {
   }
 }
 
-Date.prototype.isWeekend = function() {
-  return this.getDay() == 6 || this.getDay() == 0
-}
+Date.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
 
-String.escape = function(string) {
-  return string.replace(/('|\\)/g, "\\$1")
-}
+String.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
 
 String.leftPad = function (val, size, ch) {
   var result = new String(val)
@@ -621,16 +590,10 @@ Date.parseTime = function parseTime(timeStr) {
     }
   }
 
-  function isMinute(minutes) {
-    return !isNaN(minutes) && minutes >= 0 && minutes <= 59
-  }
+  function isMinute(minutes) { return !isNaN(minutes) && minutes >= 0 && minutes <= 59 }
 
-  function isHour(hours) {
-    return !isNaN(hours) && hours >= 0 && hours <= 23
-  }
+  function isHour(hours) { return !isNaN(hours) && hours >= 0 && hours <= 23 }
 }
 
-Date.hoursAndMinutes = function(hours, minutes) {
-  return (Math.round((hours + minutes / 60) * 100) / 100).toString()
-}
+Date.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
