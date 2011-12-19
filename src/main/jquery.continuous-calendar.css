@@ -17,7 +17,7 @@
  */
 .continuousCalendarContainer { position:relative; }
 .continuousCalendarContainer a.calendarIcon { font-size: 7pt; color: #000; text-decoration: none; display: block; background: #eee; border: 1px solid #666; border-top: 4px solid #a00; float: left; padding: 1px 3px; line-height: 1; text-align: center; width: 10px; }
-.continuousCalendarContainer .popup { position: absolute; z-index:10000 !important; }
+.continuousCalendarContainer .popup { position: absolute; z-index:10000 !important; box-shadow: 5px 5px 5px -5px #999999;}
 .continuousCalendarContainer .popup .calendarHeader { width: 220px; }
 .continuousCalendarContainer input.endDate,
 .continuousCalendarContainer input.startDate { display: none; }
@@ -51,7 +51,8 @@
 .continuousCalendar .calendarBody .month { text-align: left; }
 .continuousCalendar td:hover { font-weight: bold; color: blue; }
 .continuousCalendar table .odd { background-color: #e8e8e8; }
-.continuousCalendar td.today { border: 1px solid red; }
+.continuousCalendar td.today  {  position: relative; }
+.continuousCalendar td.today div { border: 2px solid red;margin-right: -6px; *margin-right:-3px; padding-right: 3px;margin-left: -1px; border-radius: 10px;position: relative;z-index: 99999999;}
 .continuousCalendar td.selected { background: #0041c4; color: white; }
 .continuousCalendar td.disabled { color: gray; }
 .continuousCalendar .freeRange .week,

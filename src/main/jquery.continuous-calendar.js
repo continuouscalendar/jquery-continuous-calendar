@@ -189,7 +189,7 @@
       function highlightToday() {
         var todayKey = Date.NOW.dateFormat('Ymd')
         if(dateCellMap[todayKey]) {
-          getDateCell(dateCellMap[todayKey]).addClass('today')
+          getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
         }
       }
 
