@@ -87,6 +87,7 @@
         }
         calendar.initUI()
         calendar.showInitialSelection()
+        calendar.performTrigger()
       }
 
       function initCalendarTable() {
@@ -120,8 +121,6 @@
           initEvents: function() {
             initRangeCalendarEvents(container, bodyTable)
             drawSelection()
-            container.data('calendarRange', selection)
-            executeCallback(selection)
           },
           addRangeLengthLabel: function() {
             if($('.rangeLengthLabel', container).isEmpty()) {
@@ -129,7 +128,11 @@
               $('.continuousCalendar', container).append(rangeLengthContainer)
             }
           },
-          addEndDateLabel: function(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') }
+          addEndDateLabel: function(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') },
+          performTrigger: function() {
+            container.data('calendarRange', selection)
+            executeCallback(selection)
+          }
         }
         var singleDateVersion = {
           showInitialSelection: function() {
@@ -143,11 +146,13 @@
             if(dateCellMap[selectedDateKey]) {
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
-            container.data('calendarRange', startDate)
-            executeCallback(startDate)
           },
           addRangeLengthLabel: $.noop,
-          addEndDateLabel: $.noop
+          addEndDateLabel: $.noop,
+          performTrigger: function() {
+            container.data('calendarRange', startDate)
+            executeCallback(startDate)
+          }
         }
         return isRange ? rangeVersion : singleDateVersion
       }

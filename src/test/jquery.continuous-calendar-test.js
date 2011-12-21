@@ -56,7 +56,7 @@ describe('calendar bounds', function() {
   beforeEach(createCalendarContainer)
 
   it('lists given number of weeks before given date', function() {
-    createCalendarFields({startDate: '4/18/2009'}).continuousCalendar({weeksBefore: 2,weeksAfter: 0})
+    createCalendarFields({startDate: '4/18/2009'}).continuousCalendar({weeksBefore: 2, weeksAfter: 0})
     assertHasValues('.date', [
       29, 30, 31, 1, 2, 3, 4, 5,
       6, 7, 8, 9, 10, 11, 12,
@@ -65,7 +65,7 @@ describe('calendar bounds', function() {
   })
 
   it('lists given number of weeks after given date', function() {
-    createCalendarFields({startDate: '4/18/2009'}).continuousCalendar({weeksBefore: 0,weeksAfter: 2})
+    createCalendarFields({startDate: '4/18/2009'}).continuousCalendar({weeksBefore: 0, weeksAfter: 2})
     assertHasValues('.date', [
       12, 13, 14, 15, 16, 17, 18, 19,
       20, 21, 22, 23, 24, 25, 26,
@@ -74,7 +74,7 @@ describe('calendar bounds', function() {
   })
 
   it('if start date not selected show around current day instead', function() {
-    createCalendarFields().continuousCalendar({weeksBefore: 0,weeksAfter: 0})
+    createCalendarFields().continuousCalendar({weeksBefore: 0, weeksAfter: 0})
     expect(cal().find('.date').size()).toEqual(7)
     var weekDays = []
     var firstDay = Date.NOW.getFirstDateOfWeek(Date.SUNDAY)
@@ -86,7 +86,7 @@ describe('calendar bounds', function() {
   })
 
   it('disabled date is not selectable', function() {
-    createCalendarFields().continuousCalendar({firstDate:'4/15/2009',lastDate:'5/9/2009', disableWeekends: true, disabledDates:'4/22/2009 4/29/2009'})
+    createCalendarFields().continuousCalendar({firstDate: '4/15/2009', lastDate: '5/9/2009', disableWeekends: true, disabledDates: '4/22/2009 4/29/2009'})
     clickOnDate(15)
     keepsSameDate()
     clickOnDate(13)
@@ -115,12 +115,12 @@ describe('date picker calendar with day selected', function() {
   })
 
   it('highlights selected date', function() {
-    createCalendarFields({startDate:'4/30/2009'}).continuousCalendar({weeksBefore:2,weeksAfter:2})
+    createCalendarFields({startDate: '4/30/2009'}).continuousCalendar({weeksBefore: 2, weeksAfter: 2})
     expect(cal().find('.selected')).toHaveText('30')
   })
 
-  it('week number click on single date calendar does nothing', function () {
-    createCalendarFields({startDate: '4/18/2009'}).continuousCalendar({weeksBefore: 2,weeksAfter: 0})
+  it('week number click on single date calendar does nothing', function() {
+    createCalendarFields({startDate: '4/18/2009'}).continuousCalendar({weeksBefore: 2, weeksAfter: 0})
     cal().find('.week').withText(15).click()
     expect(cal().find('.selected').size()).toEqual(1)
   })
@@ -153,27 +153,27 @@ describe('calendar events', function() {
     expect(startLabelValue()).toEqual('Mon 4/28/2008')
   })
 
-  it('week number click selects whole week', function () {
+  it('week number click selects whole week', function() {
     createRangeCalendarWithFiveWeeks()
     var weekNumber = cal().find('.week').withText(18)
     mouseClick(weekNumber)
-    assertHasValues('.selected', [3,4,5,6,7,8,9])
+    assertHasValues('.selected', [3, 4, 5, 6, 7, 8, 9])
     expect(startFieldValue()).toEqual('5/3/2009')
     expect(endFieldValue()).toEqual('5/9/2009')
     expect(cal().find('.rangeLengthLabel')).toHaveText('7 Days')
   })
 
-  it('week number click selects whole week without weekend', function () {
+  it('week number click selects whole week without weekend', function() {
     createRangeCalendarWithFiveWeeksAndDisabledWeekends()
     var weekNumber = cal().find('.week').withText(18)
     mouseClick(weekNumber)
-    assertHasValues('.selected', [4,5,6,7,8])
+    assertHasValues('.selected', [4, 5, 6, 7, 8])
     expect(startFieldValue()).toEqual('5/4/2009')
     expect(endFieldValue()).toEqual('5/8/2009')
     expect(cal().find('.rangeLengthLabel')).toHaveText('5 Days')
   })
 
-  it('week number click selects whole week within the calendar range', function () {
+  it('week number click selects whole week within the calendar range', function() {
     createRangeCalendarWithFiveWeeks()
     var weekNumber = cal().find('.week').withText(19)
     mouseClick(weekNumber)
@@ -195,7 +195,7 @@ describe('calendar events', function() {
   })
 
   it('mouse click and drag works with no initial selection', function() {
-    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate:'1/1/2009',lastDate:'2/1/2009'})
+    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '2/1/2009'})
     dragDates(22, 23)
     expect(cal().find('.selected').size()).toEqual(2)
     expect(cal().find('.rangeLengthLabel')).toHaveText('2 Days')
@@ -222,11 +222,11 @@ describe('calendar events', function() {
   it('range is movable', function() {
     createRangeCalendarWithFiveWeeks()
     dragDates(30, 27)
-    assertHasValues('.selected', [26,27,28,29,30,1,2])
+    assertHasValues('.selected', [26, 27, 28, 29, 30, 1, 2])
     expect(startFieldValue()).toEqual('4/26/2009')
     expect(endFieldValue()).toEqual('5/2/2009')
     dragDates(28, 29)
-    assertHasValues('.selected', [27,28,29,30,1,2,3])
+    assertHasValues('.selected', [27, 28, 29, 30, 1, 2, 3])
     expect(startFieldValue()).toEqual('4/27/2009')
     expect(startLabelValue()).toEqual('Mon 4/27/2009')
     expect(endFieldValue()).toEqual('5/3/2009')
@@ -255,12 +255,12 @@ describe('calendar events', function() {
   })
 
   it('range has current day selected as default when configured so', function() {
-    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({weeksBefore:20, lastDate:'today', selectToday:true})
+    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({weeksBefore: 20, lastDate: 'today', selectToday: true})
     expect(cal().find('.selected').size()).toEqual(1)
   })
 
   it('range can be specified with weeks and dates mixed', function() {
-    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({weeksBefore:20, lastDate:'today'})
+    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({weeksBefore: 20, lastDate: 'today'})
     expect(cal().find('.week').length).toEqual(22)
   })
 
@@ -272,7 +272,7 @@ describe('calendar events', function() {
 
     bindCalled = 0
     window.calendarCallBack = 0
-    createCalendarFields({startDate: ''}).continuousCalendar({firstDate:'4/26/2009', lastDate:'5/2/2009', callback:testFunction})
+    createCalendarFields({startDate: ''}).continuousCalendar({firstDate: '4/26/2009', lastDate: '5/2/2009', callback: testFunction})
     cal().bind('calendarChange', function() {
       bindCalled++
     })
@@ -288,7 +288,7 @@ describe('calendar events', function() {
       window.calendarCallBack = range.days()
     }
 
-    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate:'4/26/2009', lastDate:'5/2/2009', callback:testFunction})
+    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '4/26/2009', lastDate: '5/2/2009', callback: testFunction})
     cal().bind('calendarChange', function() {
       window.calendarChanged = $(this).find('.selected').length
     })
@@ -305,8 +305,8 @@ describe('calendar events', function() {
   })
 
   it('month and day names are localizable', function() {
-    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate:'1.1.2009', lastDate:'31.12.2009', locale: DATE_LOCALE_FI})
-    assertHasValues('.continuousCalendar thead th.weekDay', ['ma','ti','ke','to','pe','la','su'])
+    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1.1.2009', lastDate: '31.12.2009', locale: DATE_LOCALE_FI})
+    assertHasValues('.continuousCalendar thead th.weekDay', ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'])
     assertHasValues('.monthName', [
       'joulukuu',
       'tammikuu',
@@ -332,12 +332,12 @@ describe('calendar events', function() {
     assertHasValues('.selected', [16])
 
     dragDates(16, 18)
-    assertHasValues('.selected', [16,17,18])
+    assertHasValues('.selected', [16, 17, 18])
 
     mouseDownMouseUpOnDate(19)
     assertHasValues('.selected', [19])
     dragDates(19, 17)
-    assertHasValues('.selected', [17,18,19])
+    assertHasValues('.selected', [17, 18, 19])
   })
 
   it('date label click does nothing when not pop-up', function() {
@@ -376,7 +376,7 @@ describe('minimum range with disabled weekends', function() {
   beforeEach(function() {
     createCalendarContainer()
     createCalendarFields({startDate: '4/15/2009', endDate: '4/15/2009'})
-      .continuousCalendar({firstDate:'4/15/2009',lastDate:'5/12/2009', minimumRange: 4, disableWeekends: true})
+      .continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', minimumRange: 4, disableWeekends: true})
   })
 
   it('moving and creation has constraints', function() {
@@ -386,17 +386,17 @@ describe('minimum range with disabled weekends', function() {
 
   it('moving and creation has constraints', function() {
     dragDates(27, 27)
-    assertHasValues('.selected', [27,28,29,30]) //initial range has minimum required size
+    assertHasValues('.selected', [27, 28, 29, 30]) //initial range has minimum required size
     dragDates(27, 28)
-    assertHasValues('.selected', [27,28,29,30]) //resizing to smaller that permitted from start is ignored
+    assertHasValues('.selected', [27, 28, 29, 30]) //resizing to smaller that permitted from start is ignored
     dragDates(30, 29)
-    assertHasValues('.selected', [27,28,29,30]) //resizing to smaller that permitted from end is ignored
+    assertHasValues('.selected', [27, 28, 29, 30]) //resizing to smaller that permitted from end is ignored
     dragDates(27, 26)
-    assertHasValues('.selected', [27,28,29,30]) //resizing to earlier skips weekends
+    assertHasValues('.selected', [27, 28, 29, 30]) //resizing to earlier skips weekends
     dragDates(30, 1)
-    assertHasValues('.selected', [27,28,29,30, 1]) //resizing to later is allowed if not on weekend
+    assertHasValues('.selected', [27, 28, 29, 30, 1]) //resizing to later is allowed if not on weekend
     dragDates(28, 29)
-    assertHasValues('.selected', [27, 28,29,30, 1]) //no reaction when moving over weekend (snap to weekdays)
+    assertHasValues('.selected', [27, 28, 29, 30, 1]) //no reaction when moving over weekend (snap to weekdays)
     dragDatesSlowly(28, 1)
     assertHasValues('.selected', [30, 1, 2, 3, 4]) //moving skips weekends
     dragDatesSlowly(3, 4)
@@ -449,12 +449,33 @@ describe('calendar week selection', function() {
     expect(endFieldValue()).toEqual('5/31/2011')
 
   })
+})
+describe('calendar trigger and callback', function() {
+  beforeEach(createCalendarContainer)
+
+  it('when using single date calendar', function() {
+    var _this;
+    var _arguments
+    var container = createCalendarFields({startDate: '4/29/2009'})
+      debugger
+    container.trigger('calendarChange', function() {
+      _this = this
+      _arguments = arguments
+    })
+    container.continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009'})
+    expect(_arguments).toHaveLength(2)
+    expect(_this).toBe(container)
+  })
+
+  it('when using range calendar', function() {
+    var container = createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'})
+    container.continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009'})
+  })
 
   it('tear down', function() {
     $(window).scrollTop(9999999)
   })
 })
-
 
 function startTimer() {
   timerStart = new Date().getTime()
