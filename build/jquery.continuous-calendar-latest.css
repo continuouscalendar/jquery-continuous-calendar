@@ -56,7 +56,7 @@
 .continuousCalendar td:hover { font-weight: bold; color: blue; }
 .continuousCalendar table .odd { background-color: #e8e8e8; }
 .continuousCalendar td.today  {  position: relative; padding: 0;}
-.continuousCalendar td.today div { border: 2px solid red;margin:0;border-radius: 10px;position: relative;z-index: 99999999;}
+.continuousCalendar td.today div { border: 2px solid red;margin:0;border-radius: 10px;position: relative;}
 .continuousCalendar td.selected { background: #88AAFF; color: white; }
 .continuousCalendar td.disabled { color: gray; }
 .continuousCalendar .freeRange .week,

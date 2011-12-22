@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '1.1.2';$.continuousCalendar.released = '2011-12-21'
+$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2011-12-22'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -991,6 +991,7 @@ DateRange = $.extend(DateRange, {
         }
         calendar.initUI()
         calendar.showInitialSelection()
+        calendar.performTrigger()
       }
 
       function initCalendarTable() {
@@ -1024,8 +1025,6 @@ DateRange = $.extend(DateRange, {
           initEvents: function() {
             initRangeCalendarEvents(container, bodyTable)
             drawSelection()
-            container.data('calendarRange', selection)
-            executeCallback(selection)
           },
           addRangeLengthLabel: function() {
             if($('.rangeLengthLabel', container).isEmpty()) {
@@ -1033,7 +1032,11 @@ DateRange = $.extend(DateRange, {
               $('.continuousCalendar', container).append(rangeLengthContainer)
             }
           },
-          addEndDateLabel: function(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') }
+          addEndDateLabel: function(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') },
+          performTrigger: function() {
+            container.data('calendarRange', selection)
+            executeCallback(selection)
+          }
         }
         var singleDateVersion = {
           showInitialSelection: function() {
@@ -1047,11 +1050,13 @@ DateRange = $.extend(DateRange, {
             if(dateCellMap[selectedDateKey]) {
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
-            container.data('calendarRange', startDate)
-            executeCallback(startDate)
           },
           addRangeLengthLabel: $.noop,
-          addEndDateLabel: $.noop
+          addEndDateLabel: $.noop,
+          performTrigger: function() {
+            container.data('calendarRange', startDate)
+            executeCallback(startDate)
+          }
         }
         return isRange ? rangeVersion : singleDateVersion
       }
