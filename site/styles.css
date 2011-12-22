@@ -79,7 +79,7 @@ input {margin:3px;}
 .dateLabels { float: left; }
 .c { clear: both; }
 
-.navi {overflow: hidden;padding: 0;position:fixed;z-index:99999;width:100%;}
+.navi {overflow: hidden;padding: 0;position:fixed;z-index:99999;width:100%;left: 0;}
 .navi li {display: block; float: left;background: #fff;margin:0;}
 .navi li a,
 .navi li span {display: block;padding: 3px 7px 3px 13px; margin:5px;border-left:1px solid  #ccc;}
