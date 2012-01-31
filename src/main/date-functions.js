@@ -326,7 +326,7 @@ Date.createParser = function(format) {
         special = false
         regex += String.escape(ch)
       } else {
-        obj = Date.formatCodeToRegex(ch, currentGroup)
+        var obj = Date.formatCodeToRegex(ch, currentGroup)
         currentGroup += obj.g
         regex += obj.s
         if(obj.g && obj.c) {
