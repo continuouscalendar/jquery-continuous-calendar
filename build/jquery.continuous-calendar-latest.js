@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2011-12-22'
+$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2012-02-24'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -327,7 +327,7 @@ Date.createParser = function(format) {
         special = false
         regex += String.escape(ch)
       } else {
-        obj = Date.formatCodeToRegex(ch, currentGroup)
+        var obj = Date.formatCodeToRegex(ch, currentGroup)
         currentGroup += obj.g
         regex += obj.s
         if(obj.g && obj.c) {
