@@ -457,14 +457,13 @@ describe('calendar trigger and callback', function() {
     var _this;
     var _arguments
     var container = createCalendarFields({startDate: '4/29/2009'})
-      debugger
-    container.trigger('calendarChange', function() {
+    container.bind('calendarChange', function() {
       _this = this
       _arguments = arguments
     })
     container.continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009'})
     expect(_arguments).toHaveLength(2)
-    expect(_this).toBe(container)
+    expect(_this).toBe(container.get(0))
   })
 
   it('when using range calendar', function() {
