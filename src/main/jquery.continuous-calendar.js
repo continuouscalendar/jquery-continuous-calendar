@@ -551,7 +551,7 @@
 
       function isEnabled(elem) { return !$(elem).hasClass('disabled') }
 
-      function getElemDate(elem) { return dateCellDates[$(elem).attr('date-cell-index')] }
+      function getElemDate(elem) { return dateCellDates[$(elem).closest('[date-cell-index]').attr('date-cell-index')] }
 
       function getDateCell(index) { return $(dateCells[index]) }
 

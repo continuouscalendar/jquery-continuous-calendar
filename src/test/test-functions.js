@@ -83,6 +83,10 @@ function createCalendarWithOneWeek() {
   createCalendarFields({startDate:'4/30/2008'}).continuousCalendar({weeksBefore: 0,weeksAfter: 0})
 }
 
+function createCalendarWithNoRange(start, end) {
+  createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: start, lastDate: end})
+}
+
 function createRangeCalendarWithFiveWeeks() {
   createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate:'4/15/2009',lastDate:'5/12/2009'})
 }
@@ -121,7 +125,10 @@ function clickOnDate(date) {
 }
 
 function mouseEventOnDay(eventType, date, options) {
-  mouseEvent(eventType, cal().find('.date').withText(date), options);
+  var elem = cal().find('.date div').withText(date).length === 0 ?
+    cal().find('.date').withText(date) :
+    cal().find('.date div').withText(date);
+  mouseEvent(eventType, elem, options);
 }
 
 function mouseDownOnDay(date) {
