@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '1.1.4';$.continuousCalendar.released = '2012-04-20'
+$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2012-04-23'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -1097,7 +1097,7 @@ DateRange = $.extend(DateRange, {
 
       function highlightToday() {
         var todayKey = Date.NOW.dateFormat('Ymd')
-        if(dateCellMap[todayKey]) {
+        if(todayKey in dateCellMap) {
           getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
         }
       }
