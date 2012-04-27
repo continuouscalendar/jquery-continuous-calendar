@@ -100,7 +100,7 @@ function createWeekCalendar() {
 }
 
 function createBigCalendar() {
-  var todayText = Date.NOW.dateFormat(DATE_LOCALE_EN.shortDateFormat)
+  var todayText = DateTime.NOW.dateFormat(Locale.EN.shortDateFormat)
   createCalendarFields({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30})
 }
 
@@ -212,7 +212,7 @@ var custom_matchers = {
     return this.actual.lastIndexOf(end_string) == this.actual.length - end_string.length
   },
   toHaveDate: function(date_str) {
-    return this.actual.hasDate(new Date(date_str))
+    return this.actual.hasDate(new DateTime(date_str))
   },
   toBeInside: function(range) {
     return this.actual.isInside(range)

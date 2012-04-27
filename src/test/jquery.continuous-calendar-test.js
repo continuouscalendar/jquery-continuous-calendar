@@ -29,7 +29,7 @@ describe('empty calendar of full year', function() {
   })
 
   it('shows months', function() {
-    assertHasValues('.monthName', [Date.monthNames[11]].concat(Date.monthNames))
+    assertHasValues('.monthName', [Locale.DEFAULT.monthNames[11]].concat(Locale.DEFAULT.monthNames))
   })
 
   it('shows month name on first row of full week', function() {
@@ -77,7 +77,7 @@ describe('calendar bounds', function() {
     createCalendarFields().continuousCalendar({weeksBefore: 0, weeksAfter: 0})
     expect(cal().find('.date').size()).toEqual(7)
     var weekDays = []
-    var firstDay = Date.NOW.getFirstDateOfWeek(Date.SUNDAY)
+    var firstDay = DateTime.NOW.getFirstDateOfWeek(Locale.SUNDAY)
     for(var i = 0; i < 7; i++) {
       weekDays.push(firstDay.plusDays(i).getDate())
     }
@@ -280,7 +280,7 @@ describe('calendar events', function() {
     createBigCalendar()
     var cells = cal().find('.today')
     expect(cells.size()).toEqual(1)
-    expect(cells).toHaveText('' + Date.NOW.getDate())
+    expect(cells).toHaveText('' + DateTime.NOW.getDate())
   })
 
   it('range has current day selected as default when configured so', function() {
@@ -334,7 +334,9 @@ describe('calendar events', function() {
   })
 
   it('month and day names are localizable', function() {
-    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1.1.2009', lastDate: '31.12.2009', locale: DATE_LOCALE_FI})
+    //TODO remove
+    Locale.DEFAULT = Locale.FI
+    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1.1.2009', lastDate: '31.12.2009', locale: Locale.FI})
     assertHasValues('.continuousCalendar thead th.weekDay', ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'])
     assertHasValues('.monthName', [
       'joulukuu',
@@ -353,6 +355,7 @@ describe('calendar events', function() {
     mouseDownMouseUpOnDate(1)
     expect(startFieldValue()).toEqual('1.1.2009')
     expect(startLabelValue()).toEqual('to 1.1.2009')
+    Locale.DEFAULT = Locale.EN
   })
 
   it('forward drag after one day selection expands selection', function() {

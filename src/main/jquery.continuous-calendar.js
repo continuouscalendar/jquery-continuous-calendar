@@ -27,7 +27,7 @@
         endField: $('input.endDate', this),
         isPopup: false,
         selectToday: false,
-        locale: DATE_LOCALE_EN,
+        locale: Locale.DEFAULT,
         disableWeekends: false,
         disabledDates: null,
         minimumRange: -1,
@@ -41,18 +41,17 @@
         MOVE: 'move',
         NONE: 'none'
       }
-      params.locale.init()
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
       if(params.selectToday) {
-        var today = Date.NOW
+        var today = DateTime.NOW
         var formattedToday = formatDate(today)
         startDate = today
         endDate = today
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = (startDate || Date.NOW).getFirstDateOfWeek(params.locale.firstWeekday)
+      var firstWeekdayOfGivenDate = (startDate || DateTime.NOW).getFirstDateOfWeek(params.locale.firstWeekday)
       var container = this,
         dateCells = [],
         dateCellDates = [],
@@ -75,8 +74,8 @@
         calendar = $.extend(popUpBehaviour(params.isPopup), dateBehaviour(isRange()))
         selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange();
         oldSelection = selection.clone()
-        var rangeStart = params.firstDate ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
-        var rangeEnd = params.lastDate ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
+        var rangeStart = params.firstDate ? DateTime.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
+        var rangeEnd = params.lastDate ? DateTime.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
         params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
         calendarRange = new DateRange(rangeStart, rangeEnd)
@@ -111,7 +110,7 @@
 
       function parseDisabledDates(dates) {
         var dateMap = {}
-        $.each(dates.split(' '), function(index, date) { dateMap[Date.parseDate(date, params.locale.shortDateFormat)] = true })
+        $.each(dates.split(' '), function(index, date) { dateMap[DateTime.parseDate(date, params.locale.shortDateFormat).date] = true })
         return dateMap
       }
 
@@ -137,7 +136,7 @@
         var singleDateVersion = {
           showInitialSelection: function() {
             if(params.startField.val()) {
-              setDateLabel(Date.parseDate(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat))
+              setDateLabel(DateTime.parseDate(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat))
             }
           },
           initEvents: function() {
@@ -161,7 +160,7 @@
         var popUpVersion = {
           initUI: function() {
             calendarContainer.addClass('popup').hide()
-            var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
+            var icon = $('<a href="#" class="calendarIcon">' + DateTime.NOW.getDate() + '</a>').click(toggleCalendar)
             container.prepend('<div></div>')
             container.prepend(icon)
           },
@@ -192,7 +191,7 @@
       }
 
       function highlightToday() {
-        var todayKey = Date.NOW.dateFormat('Ymd')
+        var todayKey = DateTime.NOW.dateFormat('Ymd')
         if(todayKey in dateCellMap) {
           getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
         }
@@ -217,7 +216,7 @@
       }
 
       function initRangeCalendarEvents(container, bodyTable) {
-        $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
+        $('span.rangeLengthLabel', container).text(params.locale.daysLabel(selection.days()))
         bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
         disableTextSelection(bodyTable.get(0))
@@ -241,8 +240,8 @@
       function headerRow() {
         var tr = $('<tr>').append(yearCell())
         tr.append($('<th class="week">&nbsp;</th>'))
-        $(Date.dayNames).each(function(index) {
-          var weekDay = $('<th>').append(Date.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
+        $(params.locale.dayNames).each(function(index) {
+          var weekDay = $('<th>').append(params.locale.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
           tr.append(weekDay)
         })
         calendar.addCloseButton(tr);
@@ -310,7 +309,7 @@
         var th = '<th class="month ' + backgroundBy(firstDayOfWeek)
         if(isFirst || firstDayOfWeek.getDate() <= 7) {
           th += ' monthName">'
-          th += Date.monthNames[firstDayOfWeek.getMonth()]
+          th += params.locale.monthNames[firstDayOfWeek.getMonth()]
         } else {
           th += '">'
           if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 0) {
@@ -328,7 +327,7 @@
 
       function disabledOrNot(date) {
         var disabledWeekendDay = params.disableWeekends && date.isWeekend()
-        var disabledDay = params.disabledDates[date.getOnlyDate()]
+        var disabledDay = params.disabledDates[date.getOnlyDate().date]
         var outOfBounds = !calendarRange.hasDate(date)
         return outOfBounds || disabledWeekendDay || disabledDay ? 'disabled' : ''
       }
@@ -415,8 +414,8 @@
           var firstDay = firstDayOfWeek
           var lastDay = firstDayOfWeek.plusDays(6)
           if(params.disableWeekends) {
-            firstDay = firstDayOfWeek.withWeekday(Date.MONDAY)
-            lastDay = firstDayOfWeek.withWeekday(Date.FRIDAY)
+            firstDay = firstDayOfWeek.withWeekday(Locale.MONDAY)
+            lastDay = firstDayOfWeek.withWeekday(Locale.FRIDAY)
           }
           return new DateRange(firstDay, lastDay).and(calendarRange)
         }
@@ -459,7 +458,7 @@
       function drawSelection() {
         selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends, calendarRange)
         drawSelectionBetweenDates(selection)
-        $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
+        $('span.rangeLengthLabel', container).text(params.locale.daysLabel(selection.days()))
       }
 
       function drawSelectionBetweenDates(range) {
@@ -520,7 +519,7 @@
         }
       }
 
-      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? Date.parseDate(field.val(), params.locale.shortDateFormat) : null; }
+      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateTime.parseDate(field.val(), params.locale.shortDateFormat) : null; }
 
       function disableTextSelection(elem) {
         if($.browser.mozilla) {//Firefox
