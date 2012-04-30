@@ -239,15 +239,16 @@ DateTime.parseFunctions = {count:0}
 DateTime.parseRegexes = []
 DateTime.formatFunctions = {count:0}
 
+//TODO refactor next three functions
 DateTime.prototype.dateFormat = function(format) {
   if(DateTime.formatFunctions[format] == null) {
-    DateTime.createNewFormat(format)
+    this.createNewFormat(format)
   }
   var func = DateTime.formatFunctions[format]
   return this[func]()
 }
 
-DateTime.createNewFormat = function(format) {
+DateTime.prototype.createNewFormat = function(format) {
   var funcName = "format" + DateTime.formatFunctions.count++
   DateTime.formatFunctions[format] = funcName
   var code = "DateTime.prototype." + funcName + " = function(){return "
@@ -262,14 +263,14 @@ DateTime.createNewFormat = function(format) {
         special = false
         code += "'" + String.escape(ch) + "' + "
       } else {
-        code += DateTime.getFormatCode(ch)
+        code += this.getFormatCode(ch)
       }
     }
   }
   eval(code.substring(0, code.length - 3) + ";}")
 }
 
-DateTime.getFormatCode = function(character) {
+DateTime.prototype.getFormatCode = function(character) {
   switch(character) {
     case "d":
       return "String.leftPad(this.getDate(), 2, '0') + "
