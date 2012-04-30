@@ -97,6 +97,7 @@ DateRange.prototype = {
 
   hasEndsOnWeekend: function() { return this.start.isWeekend() || this.end.isWeekend() },
 
+  //TODO make immutable
   setTimes: function(startTimeStr, endTimeStr) {
     var parsedStartTime = DateTime.parseTime(startTimeStr)
     var parsedEndTime = DateTime.parseTime(endTimeStr)
@@ -114,25 +115,22 @@ DateRange.prototype = {
 
   clone: function() { return new DateRange(this.start, this.end) },
 
-  toString: function(locale) {
-    //locale |= Locale.DEFAULT
+  toString: function() {
     if(this._hasTimes) {
-      return  locale.daysLabel(this.days()) + ' ' + locale.hoursLabel(this.hours(), this.minutes())
+      return  this.locale.daysLabel(this.days()) + ' ' + this.locale.hoursLabel(this.hours(), this.minutes())
     } else {
-      return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat)
+      return this.start.dateFormat(this.locale.shortDateFormat) + ' - ' + this.end.dateFormat(this.locale.shortDateFormat)
     }
   },
 
   printDefiningDuration: function() {
-    //TODO fix
-    var locale = Locale.DEFAULT
     var years = parseInt(this.days() / 360, 10)
-    if(years > 0) return locale.yearsLabel(years)
+    if(years > 0) return this.locale.yearsLabel(years)
 
     var months = parseInt(this.days() / 30, 10)
-    if(months > 0) return locale.monthsLabel(months)
+    if(months > 0) return this.locale.monthsLabel(months)
 
-    return locale.daysLabel(this.days())
+    return this.locale.daysLabel(this.days())
   },
 
   isPermittedRange: function(minimumSize, disableWeekends, outerRange) { return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend())) && this.isInside(outerRange) },

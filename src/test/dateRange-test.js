@@ -124,13 +124,14 @@ describe('date range with time behavior', function() {
   beforeEach(resetRange)
 
   it('date range can have times', function() {
-    Locale.DEFAULT = Locale.EN
     range.setTimes('10:00', '14:45')
     expect(range.days()).toEqual(2)
     expect(range.hours()).toEqual(4)
     expect(range.minutes()).toEqual(45)
-    expect(range.toString(Locale.EN)).toEqual('2 Days 4.75 Hours')
-    expect(range.toString(Locale.FI)).toEqual('2 päivää 4,75 tuntia')
+    expect(range.toString()).toEqual('2 päivää 4,75 tuntia')
+    var dateRangeEn = new DateRange(range.start, range.end, Locale.EN);
+    dateRangeEn.setTimes('10:00', '14:45')
+    expect(dateRangeEn.toString()).toEqual('2 Days 4.75 Hours')
     range.setTimes('17:00', '16:00')
     expect(range.days()).toEqual(1)
     expect(range.hours()).toEqual(23)
@@ -139,8 +140,9 @@ describe('date range with time behavior', function() {
 
     range.setTimes('10:00', '11:00')
     expect(range.toString(Locale.FI)).toEqual('1 päivä 1 tunti')
-
-    expect(range.toString(Locale.EN)).toEqual('1 Day 1 Hour')
+    var dateRangeEn2 = new DateRange(range.start, range.end, Locale.EN);
+    dateRangeEn2.setTimes('10:00', '11:00')
+    expect(dateRangeEn2.toString()).toEqual('1 Day 1 Hour')
   })
 
   it('one day range with start time after end time is not valid', function() {
@@ -227,7 +229,7 @@ function assertHasCorrectHoursAndMinutes(hours, minutes) {
 function resetRange() {
   start = new DateTime('09/10/2009')
   end = new DateTime('09/12/2009')
-  range = new DateRange(end, start)
+  range = new DateRange(end, start, Locale.FI)
 }
 
 function resetOuterRange() {
