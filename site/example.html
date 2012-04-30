@@ -113,7 +113,7 @@
     var startTime = container.find('select[name=tripStartTime]').val();
     var endTime = container.find('select[name=tripEndTime]').val();
     var range = container.calendarRange();
-    range.setTimes(startTime, endTime);
+    range = range.withTimes(startTime, endTime);
     container.find('.totalTimeOfTrip').text(range.toString(DATE_LOCALE_EN)).toggleClass('invalid', !range.isValid());
   });
   $("#timeCalendar select").bind('change', function () {

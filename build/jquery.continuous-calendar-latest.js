@@ -97,20 +97,20 @@ DateRange.prototype = {
 
   hasEndsOnWeekend: function() { return this.start.isWeekend() || this.end.isWeekend() },
 
-  //TODO make immutable
-  setTimes: function(startTimeStr, endTimeStr) {
+  withTimes: function(startTimeStr, endTimeStr) {
     var parsedStartTime = DateTime.parseTime(startTimeStr)
     var parsedEndTime = DateTime.parseTime(endTimeStr)
+    var rangeWithTimes = this.clone()
     if(parsedStartTime && parsedEndTime) {
-      this._valid = true
-      this._hasTimes = true
-      this.start = this._dateWithTime(this.start, parsedStartTime)
-      this.end = this._dateWithTime(this.end, parsedEndTime)
-      this._setDaysHoursAndMinutes()
+      rangeWithTimes._valid = true
+      rangeWithTimes._hasTimes = true
+      rangeWithTimes.start = this._dateWithTime(this.start, parsedStartTime)
+      rangeWithTimes.end = this._dateWithTime(this.end, parsedEndTime)
+      rangeWithTimes._setDaysHoursAndMinutes()
     } else {
-      this._valid = false
+      rangeWithTimes._valid = false
     }
-    return this._valid
+    return rangeWithTimes
   },
 
   clone: function() { return new DateRange(this.start, this.end, this.locale) },

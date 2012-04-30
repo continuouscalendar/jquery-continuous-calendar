@@ -28,21 +28,18 @@ describe('date range default behavior', function() {
   })
 
   it('range is movable', function() {
-    range = range.shiftDays(2)
-    expect(range.start.getDate()).toEqual(12)
-    expect(range.end.getDate()).toEqual(12 + 2)
+    var twoDaysAfter = range.shiftDays(2)
+    expect(twoDaysAfter.start.getDate()).toEqual(12)
+    expect(twoDaysAfter.end.getDate()).toEqual(12 + 2)
   })
 
   it('range is expandable', function() {
-    range = range.expandTo(new DateTime('09/15/2009'))
-    expect(range.days()).toEqual(6)
+    expect(range.expandTo(new DateTime('09/15/2009')).days()).toEqual(6)
   })
 
   it('two ranges can do interception', function() {
-    var range2 = createRange('09/11/2009', '09/19/2009')
-    expect(range.and(range2).days()).toEqual(2)
-    range2 = createRange('09/16/2009', '09/19/2009')
-    expect(range.and(range2).days()).toEqual(0)
+    expect(range.and(createRange('09/11/2009', '09/19/2009')).days()).toEqual(2)
+    expect(range.and(createRange('09/16/2009', '09/19/2009')).days()).toEqual(0)
   })
 
   it('range can be asked if it is a subset of another range', function() {
@@ -124,25 +121,19 @@ describe('date range with time behavior', function() {
   beforeEach(resetRange)
 
   it('date range can have times', function() {
-    range.setTimes('10:00', '14:45')
-    expect(range.days()).toEqual(2)
-    expect(range.hours()).toEqual(4)
-    expect(range.minutes()).toEqual(45)
-    expect(range.toString()).toEqual('2 päivää 4,75 tuntia')
-    var dateRangeEn = new DateRange(range.start, range.end, Locale.EN);
-    dateRangeEn.setTimes('10:00', '14:45')
-    expect(dateRangeEn.toString()).toEqual('2 Days 4.75 Hours')
-    range.setTimes('17:00', '16:00')
-    expect(range.days()).toEqual(1)
-    expect(range.hours()).toEqual(23)
-    expect(range.minutes()).toEqual(0)
+    var rangeWithTimes = range.withTimes('10:00', '14:45')
+    expect(rangeWithTimes.days()).toEqual(2)
+    expect(rangeWithTimes.hours()).toEqual(4)
+    expect(rangeWithTimes.minutes()).toEqual(45)
+    expect(rangeWithTimes.toString()).toEqual('2 päivää 4,75 tuntia')
+    expect(new DateRange(range.start, range.end, Locale.EN).withTimes('10:00', '14:45').toString()).toEqual('2 Days 4.75 Hours')
+    var rangeWithPmTimes = range.withTimes('17:00', '16:00')
+    expect(rangeWithPmTimes.days()).toEqual(1)
+    expect(rangeWithPmTimes.hours()).toEqual(23)
+    expect(rangeWithPmTimes.minutes()).toEqual(0)
     range.start = range.start.plusDays(1)
-
-    range.setTimes('10:00', '11:00')
-    expect(range.toString()).toEqual('1 päivä 1 tunti')
-    var dateRangeEn2 = new DateRange(range.start, range.end, Locale.EN);
-    dateRangeEn2.setTimes('10:00', '11:00')
-    expect(dateRangeEn2.toString()).toEqual('1 Day 1 Hour')
+    expect(range.withTimes('10:00', '11:00').toString()).toEqual('1 päivä 1 tunti')
+    expect(new DateRange(range.start, range.end, Locale.EN).withTimes('10:00', '11:00').toString()).toEqual('1 Day 1 Hour')
   })
 
   it('one day range with start time after end time is not valid', function() {
@@ -151,56 +142,45 @@ describe('date range with time behavior', function() {
     expect(range).not.toBeValidRange()
     range.start = new DateTime('09/12/2009')
     expect(range).toBeValidRange()
-    range.setTimes('15:00', '14:30')
+    range = range.withTimes('15:00', '14:30')
     expect(range).not.toBeValidRange()
-    range.setTimes('15:00', '15:00')
+    range = range.withTimes('15:00', '15:00')
     expect(range).toBeValidRange()
-    range.setTimes('15:00', '15:30')
+    range = range.withTimes('15:00', '15:30')
     expect(range).toBeValidRange()
   })
 
   it('invalid time will make range invalid while keeping date information', function() {
-    range.setTimes('15:00', '15:30')
+    range = range.withTimes('15:00', '15:30')
     expect(range).toBeValidRange()
 
-    range.setTimes('', '15:30')
+    range = range.withTimes('', '15:30')
     expect(range).not.toBeValidRange()
 
-    range.setTimes('15:00', '15:30')
+    range = range.withTimes('15:00', '15:30')
     expect(range).toBeValidRange()
 
-    range.setTimes('asdf', 'fddd')
+    range = range.withTimes('asdf', 'fddd')
     expect(range).not.toBeValidRange()
 
-    range.setTimes('00', '25')
+    range = range.withTimes('00', '25')
     expect(range).not.toBeValidRange()
 
   })
 
   it('different time formats are accepted', function() {
-    range.setTimes('15:00', '16:10')
-    assertHasCorrectHoursAndMinutes(1, 10)
-
-    range.setTimes('14.00', '16.20')
-    assertHasCorrectHoursAndMinutes(2, 20)
-
-    range.setTimes('13,00', '16,30')
-    assertHasCorrectHoursAndMinutes(3, 30)
-
-    range.setTimes('1200', '1640')
-    assertHasCorrectHoursAndMinutes(4, 40)
-
-    range.setTimes('830', '1240')
-    assertHasCorrectHoursAndMinutes(4, 10)
-
-    range.setTimes('08', '13')
-    assertHasCorrectHoursAndMinutes(5, 0)
+    assertHasCorrectHoursAndMinutes(range.withTimes('15:00', '16:10'), 1, 10)
+    assertHasCorrectHoursAndMinutes(range.withTimes('14.00', '16.20'), 2, 20)
+    assertHasCorrectHoursAndMinutes(range.withTimes('13,00', '16,30'), 3, 30)
+    assertHasCorrectHoursAndMinutes(range.withTimes('1200', '1640'), 4, 40)
+    assertHasCorrectHoursAndMinutes(range.withTimes('830', '1240'), 4, 10)
+    assertHasCorrectHoursAndMinutes(range.withTimes('08', '13'), 5, 0)
   })
 
   it('minutes are rounded to 2 digits', function() {
-    range.setTimes('15:00', '16:10')
-    assertHasCorrectHoursAndMinutes(1, 10)
-    expect(range.toString()).toEqual('2 päivää 1,17 tuntia')
+    var rangeWithTimes = range.withTimes('15:00', '16:10');
+    assertHasCorrectHoursAndMinutes(rangeWithTimes, 1, 10)
+    expect(rangeWithTimes.toString()).toEqual('2 päivää 1,17 tuntia')
   })
 
   it('range is displayed with the most defining unit', function() {
@@ -219,7 +199,7 @@ describe('date range with time behavior', function() {
   })
 })
 
-function assertHasCorrectHoursAndMinutes(hours, minutes) {
+function assertHasCorrectHoursAndMinutes(range, hours, minutes) {
   expect(range).toBeValidRange()
   expect(range.hours()).toEqual(hours)
   expect(range.minutes()).toEqual(minutes)
