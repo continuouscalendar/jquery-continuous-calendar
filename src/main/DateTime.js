@@ -337,8 +337,7 @@ DateTime.prototype.getFormatCode = function(character) {
   }
 }
 
-//TODO rename
-DateTime.parseDate = function(input, format, localeOrEmpty) {
+DateTime.parse = function(input, format, localeOrEmpty) {
   var locale = Locale.fromArgument(localeOrEmpty)
   if(input == 'today') {
     return DateTime.NOW.withLocale(locale)

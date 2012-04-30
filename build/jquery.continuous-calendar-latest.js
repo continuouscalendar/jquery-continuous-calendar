@@ -532,8 +532,7 @@ DateTime.prototype.getFormatCode = function(character) {
   }
 }
 
-//TODO rename
-DateTime.parseDate = function(input, format, localeOrEmpty) {
+DateTime.parse = function(input, format, localeOrEmpty) {
   var locale = Locale.fromArgument(localeOrEmpty)
   if(input == 'today') {
     return DateTime.NOW.withLocale(locale)
@@ -918,8 +917,8 @@ DateTime.parseTime = function(timeStr) {
         calendar = $.extend(popUpBehaviour(params.isPopup), dateBehaviour(isRange()))
         selection = startDate && endDate ? new DateRange(startDate, endDate, params.locale) : DateRange.emptyRange(params.locale);
         oldSelection = selection.clone()
-        var rangeStart = params.firstDate ? DateTime.parseDate(params.firstDate, params.locale.shortDateFormat, params.locale) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
-        var rangeEnd = params.lastDate ? DateTime.parseDate(params.lastDate, params.locale.shortDateFormat, params.locale) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
+        var rangeStart = params.firstDate ? DateTime.parse(params.firstDate, params.locale.shortDateFormat, params.locale) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
+        var rangeEnd = params.lastDate ? DateTime.parse(params.lastDate, params.locale.shortDateFormat, params.locale) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
         params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
         calendarRange = new DateRange(rangeStart, rangeEnd, params.locale)
@@ -954,7 +953,7 @@ DateTime.parseTime = function(timeStr) {
 
       function parseDisabledDates(dates) {
         var dateMap = {}
-        $.each(dates.split(' '), function(index, date) { dateMap[DateTime.parseDate(date, params.locale.shortDateFormat).date] = true })
+        $.each(dates.split(' '), function(index, date) { dateMap[DateTime.parse(date, params.locale.shortDateFormat).date] = true })
         return dateMap
       }
 
@@ -980,7 +979,7 @@ DateTime.parseTime = function(timeStr) {
         var singleDateVersion = {
           showInitialSelection: function() {
             if(params.startField.val()) {
-              setDateLabel(DateTime.parseDate(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat))
+              setDateLabel(DateTime.parse(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat))
             }
           },
           initEvents: function() {
@@ -1363,7 +1362,7 @@ DateTime.parseTime = function(timeStr) {
         }
       }
 
-      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateTime.parseDate(field.val(), params.locale.shortDateFormat) : null; }
+      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateTime.parse(field.val(), params.locale.shortDateFormat) : null; }
 
       function disableTextSelection(elem) {
         if($.browser.mozilla) {//Firefox
