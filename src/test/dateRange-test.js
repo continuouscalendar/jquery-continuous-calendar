@@ -24,7 +24,7 @@ describe('date range default behavior', function() {
     expect(range).toHaveDate('09/11/2009')
     expect(range).toHaveDate('09/12/2009')
     expect(range).not.toHaveDate('09/13/2009')
-    expect(range.toString(Locale.FI)).toEqual('10.9.2009 - 12.9.2009')
+    expect(range.toString()).toEqual('10.9.2009 - 12.9.2009')
   })
 
   it('range is movable', function() {
@@ -139,7 +139,7 @@ describe('date range with time behavior', function() {
     range.start = range.start.plusDays(1)
 
     range.setTimes('10:00', '11:00')
-    expect(range.toString(Locale.FI)).toEqual('1 päivä 1 tunti')
+    expect(range.toString()).toEqual('1 päivä 1 tunti')
     var dateRangeEn2 = new DateRange(range.start, range.end, Locale.EN);
     dateRangeEn2.setTimes('10:00', '11:00')
     expect(dateRangeEn2.toString()).toEqual('1 Day 1 Hour')
@@ -200,7 +200,7 @@ describe('date range with time behavior', function() {
   it('minutes are rounded to 2 digits', function() {
     range.setTimes('15:00', '16:10')
     assertHasCorrectHoursAndMinutes(1, 10)
-    expect(range.toString(Locale.FI)).toEqual('2 päivää 1,17 tuntia')
+    expect(range.toString()).toEqual('2 päivää 1,17 tuntia')
   })
 
   it('range is displayed with the most defining unit', function() {
