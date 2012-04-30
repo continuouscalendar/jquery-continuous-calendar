@@ -219,7 +219,6 @@ DateTime = function(date, locale) {
   this.locale = Locale.fromArgument(locale)
 }
 
-//TODO remove these later
 DateTime.prototype.getTime = function() { return this.date.getTime() }
 
 DateTime.prototype.getDate = function() { return this.date.getDate() }
@@ -250,11 +249,6 @@ DateTime.MINUTE = 60 * DateTime.SECOND
 DateTime.HOUR = 60 * DateTime.MINUTE
 DateTime.DAY = 24 * DateTime.HOUR
 DateTime.WEEK = 7 * DateTime.DAY
-
-//TODO remove these
-DateTime.MONDAY = 1
-DateTime.FRIDAY = 5
-DateTime.SUNDAY = 0
 
 DateTime.NOW = new DateTime()
 
