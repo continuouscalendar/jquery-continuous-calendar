@@ -246,7 +246,7 @@ DateTime.parseRegexes = []
 DateTime.formatFunctions = {count:0}
 
 //TODO refactor next three functions
-DateTime.prototype.dateFormat = function(format) {
+DateTime.prototype.format = function(format) {
   if(DateTime.formatFunctions[format] == null) {
     this.createNewFormat(format)
   }

@@ -138,12 +138,12 @@
         var singleDateVersion = {
           showInitialSelection: function() {
             if(params.startField.val()) {
-              setDateLabel(DateTime.parse(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat))
+              setDateLabel(DateTime.parse(params.startField.val(), params.locale.shortDateFormat).format(params.locale.weekDateFormat))
             }
           },
           initEvents: function() {
             initSingleDateCalendarEvents()
-            var selectedDateKey = startDate && startDate.dateFormat('Ymd')
+            var selectedDateKey = startDate && startDate.format('Ymd')
             if(selectedDateKey in dateCellMap) {
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
@@ -193,7 +193,7 @@
       }
 
       function highlightToday() {
-        var todayKey = today.dateFormat('Ymd')
+        var todayKey = today.format('Ymd')
         if(todayKey in dateCellMap) {
           getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
         }
@@ -302,7 +302,7 @@
 
       function dateCell(date) {
         var dateCell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '">' + date.getDate() + '</td>'
-        dateCellMap[date.dateFormat('Ymd')] = dateCellDates.length
+        dateCellMap[date.format('Ymd')] = dateCellDates.length
         dateCellDates.push(date)
         return dateCell
       }
@@ -345,8 +345,8 @@
           $('td.selected', container).removeClass('selected')
           dateCell.addClass('selected')
           var selectedDate = getElemDate(dateCell.get(0));
-          params.startField.val(selectedDate.dateFormat(params.locale.shortDateFormat))
-          setDateLabel(selectedDate.dateFormat(params.locale.weekDateFormat))
+          params.startField.val(selectedDate.format(params.locale.shortDateFormat))
+          setDateLabel(selectedDate.format(params.locale.weekDateFormat))
           calendar.close(this)
           executeCallback(selectedDate)
         })
@@ -472,8 +472,8 @@
 
       function iterateAndToggleCells(range) {
         if(range.days() == 0) return
-        var startIndex = dateCellMap[range.start.dateFormat('Ymd')]
-        var endIndex = dateCellMap[range.end.dateFormat('Ymd')]
+        var startIndex = dateCellMap[range.start.format('Ymd')]
+        var endIndex = dateCellMap[range.end.format('Ymd')]
         for(var i = startIndex; i <= endIndex; i++) {
           setDateCellStyle(i, range.start, range.end)
         }
@@ -513,8 +513,8 @@
       function setRangeLabels() {
         if(selection.start && selection.end) {
           var format = params.locale.weekDateFormat
-          $('span.startDateLabel', container).text(selection.start.dateFormat(format))
-          $('span.endDateLabel', container).text(selection.end.dateFormat(format))
+          $('span.startDateLabel', container).text(selection.start.format(format))
+          $('span.endDateLabel', container).text(selection.end.format(format))
           $('span.separator', container).show()
         } else {
           $('span.separator', container).hide()
@@ -560,7 +560,7 @@
 
       function setEndField(value) { params.endField.val(value) }
 
-      function formatDate(date) { return date.dateFormat(params.locale.shortDateFormat) }
+      function formatDate(date) { return date.format(params.locale.shortDateFormat) }
 
       function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
 

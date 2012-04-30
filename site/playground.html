@@ -143,13 +143,13 @@
   var disabledDates = $([Date.NOW,Date.NOW,Date.NOW])
           .map(
               function(i, el) {
-                return el.plusDays(i + 3).dateFormat('n/j/Y')
+                return el.plusDays(i + 3).format('n/j/Y')
               }).toArray().join(' ')
   $('#disabledDates').val(disabledDates)
   var selection = $([Date.NOW.plusDays(10),Date.NOW.plusDays(18)])
           .map(
               function(i, el) {
-                return el.dateFormat('n/j/Y')
+                return el.format('n/j/Y')
               }).toArray()
   $('#selectionStart').val(selection[0])
   $('#selectionEnd').val(selection[1])
