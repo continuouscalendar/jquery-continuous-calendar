@@ -204,18 +204,17 @@ describe('date range with time behavior', function() {
   })
 
   it('range is displayed with the most defining unit', function() {
-    Locale.DEFAULT = Locale.FI
-    range = createRange('01/01/2004', '05/01/2006')
+    range = createRange('01/01/2004', '05/01/2006', 'FI')
     expect(range).toPrintDefiningDurationOf('2 vuotta')
-    range = createRange('01/01/2004', '05/01/2005')
+    range = createRange('01/01/2004', '05/01/2005', 'FI')
     expect(range).toPrintDefiningDurationOf('1 vuosi')
-    range = createRange('01/01/2004', '05/01/2004')
+    range = createRange('01/01/2004', '05/01/2004', 'FI')
     expect(range).toPrintDefiningDurationOf('4 kuukautta')
-    range = createRange('01/01/2004', '02/16/2004')
+    range = createRange('01/01/2004', '02/16/2004', 'FI')
     expect(range).toPrintDefiningDurationOf('1 kuukausi')
-    range = createRange('01/01/2004', '01/31/2004')
+    range = createRange('01/01/2004', '01/31/2004', 'FI')
     expect(range).toPrintDefiningDurationOf('1 kuukausi')
-    range = createRange('01/01/2004', '01/07/2004')
+    range = createRange('01/01/2004', '01/07/2004', 'FI')
     expect(range).toPrintDefiningDurationOf('7 päivää')
   })
 })
@@ -238,6 +237,6 @@ function resetOuterRange() {
   outerRange = new DateRange(start, end)
 }
 
-function createRange(date1, date2) {
-  return new DateRange(new DateTime(date1), new DateTime(date2))
+function createRange(date1, date2, locale) {
+  return new DateRange(new DateTime(date1), new DateTime(date2), locale)
 }
