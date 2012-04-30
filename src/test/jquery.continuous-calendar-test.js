@@ -77,7 +77,7 @@ describe('calendar bounds', function() {
     createCalendarFields().continuousCalendar({weeksBefore: 0, weeksAfter: 0})
     expect(cal().find('.date').size()).toEqual(7)
     var weekDays = []
-    var firstDay = DateTime.NOW.getFirstDateOfWeek(Locale.SUNDAY)
+    var firstDay = DateTime.NOW.getFirstDateOfWeek()
     for(var i = 0; i < 7; i++) {
       weekDays.push(firstDay.plusDays(i).getDate())
     }

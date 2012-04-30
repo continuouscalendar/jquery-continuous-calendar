@@ -52,7 +52,7 @@
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = (startDate || today.withLocale(params.locale)).getFirstDateOfWeek(params.locale.firstWeekday)
+      var firstWeekdayOfGivenDate = (startDate || today.withLocale(params.locale)).getFirstDateOfWeek()
       var container = this,
         dateCells = [],
         dateCellDates = [],
@@ -277,7 +277,7 @@
       }
 
       function calendarBody() {
-        var firstWeekDay = calendarRange.start.getFirstDateOfWeek(params.locale.firstWeekday)
+        var firstWeekDay = calendarRange.start.getFirstDateOfWeek()
         var isFirst = true;
         var rows = []
         while(firstWeekDay.compareTo(calendarRange.end) <= 0) {

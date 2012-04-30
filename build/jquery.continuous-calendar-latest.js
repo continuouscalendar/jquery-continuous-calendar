@@ -376,7 +376,8 @@ DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
   return week
 }
 
-DateTime.prototype.getFirstDateOfWeek = function(firstDayOfWeek) {
+DateTime.prototype.getFirstDateOfWeek = function() {
+  var firstDayOfWeek = this.locale.firstWeekday
   if(firstDayOfWeek < this.getDay()) {
     return this.plusDays(firstDayOfWeek - this.getDay())
   } else {
@@ -894,7 +895,7 @@ DateTime.parseTime = function parseTime(timeStr) {
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = (startDate || today.withLocale(params.locale)).getFirstDateOfWeek(params.locale.firstWeekday)
+      var firstWeekdayOfGivenDate = (startDate || today.withLocale(params.locale)).getFirstDateOfWeek()
       var container = this,
         dateCells = [],
         dateCellDates = [],
@@ -1119,7 +1120,7 @@ DateTime.parseTime = function parseTime(timeStr) {
       }
 
       function calendarBody() {
-        var firstWeekDay = calendarRange.start.getFirstDateOfWeek(params.locale.firstWeekday)
+        var firstWeekDay = calendarRange.start.getFirstDateOfWeek()
         var isFirst = true;
         var rows = []
         while(firstWeekDay.compareTo(calendarRange.end) <= 0) {

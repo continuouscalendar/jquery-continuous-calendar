@@ -180,7 +180,8 @@ DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
   return week
 }
 
-DateTime.prototype.getFirstDateOfWeek = function(firstDayOfWeek) {
+DateTime.prototype.getFirstDateOfWeek = function() {
+  var firstDayOfWeek = this.locale.firstWeekday
   if(firstDayOfWeek < this.getDay()) {
     return this.plusDays(firstDayOfWeek - this.getDay())
   } else {
