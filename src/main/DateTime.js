@@ -622,7 +622,7 @@ DateTime.patterns = {
   UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
   YearMonthPattern: "F, Y"
 }
-DateTime.parseTime = function parseTime(timeStr) {
+DateTime.parseTime = function(timeStr) {
   var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
   var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)]
   return (isHour(time[0]) && isMinute(time[1])) ? time : null

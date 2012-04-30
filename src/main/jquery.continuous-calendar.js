@@ -35,7 +35,8 @@
         fadeOutDuration: 0,
         callback: $.noop
       }
-      var params = $.extend(defaults, options)
+      var params = $.extend({}, defaults, options)
+      params.locale = Locale.fromArgument(params.locale)
       var Status = {
         CREATE_OR_RESIZE: 'create',
         MOVE: 'move',
@@ -52,7 +53,7 @@
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = (startDate || today.withLocale(params.locale)).getFirstDateOfWeek()
+      var firstWeekdayOfGivenDate = (startDate || today).getFirstDateOfWeek()
       var container = this,
         dateCells = [],
         dateCellDates = [],
@@ -73,13 +74,13 @@
 
       function createCalendar() {
         calendar = $.extend(popUpBehaviour(params.isPopup), dateBehaviour(isRange()))
-        selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange();
+        selection = startDate && endDate ? new DateRange(startDate, endDate, params.locale) : DateRange.emptyRange(params.locale);
         oldSelection = selection.clone()
-        var rangeStart = params.firstDate ? DateTime.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
-        var rangeEnd = params.lastDate ? DateTime.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
+        var rangeStart = params.firstDate ? DateTime.parseDate(params.firstDate, params.locale.shortDateFormat, params.locale) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
+        var rangeEnd = params.lastDate ? DateTime.parseDate(params.lastDate, params.locale.shortDateFormat, params.locale) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
         params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
-        calendarRange = new DateRange(rangeStart, rangeEnd)
+        calendarRange = new DateRange(rangeStart, rangeEnd, params.locale)
         calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.click(function(e) { e.stopPropagation() })
         if($('.startDateLabel', container).isEmpty()) {
@@ -351,7 +352,7 @@
         })
       }
 
-      function startNewRange() { selection = new DateRange(mouseDownDate, mouseDownDate) }
+      function startNewRange() { selection = new DateRange(mouseDownDate, mouseDownDate, params.locale) }
 
       function mouseDown(event) {
         var elem = event.target
@@ -400,7 +401,7 @@
           } else if(isMonthCell(elem)) {
             status = Status.NONE
             var dayInMonth = getElemDate($(elem).siblings('.date').get(0))
-            return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth())
+            return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth(), params.locale)
           } else if(event.shiftKey) {
             if(selection.days() > 0 && enabledCell(elem)) {
               status = Status.NONE
@@ -418,7 +419,7 @@
             firstDay = firstDayOfWeek.withWeekday(Locale.MONDAY)
             lastDay = firstDayOfWeek.withWeekday(Locale.FRIDAY)
           }
-          return new DateRange(firstDay, lastDay).and(calendarRange)
+          return new DateRange(firstDay, lastDay, params.locale).and(calendarRange)
         }
       }
 
@@ -438,7 +439,7 @@
             }
           },
           create: function() {
-            var newSelection = new DateRange(mouseDownDate, date)
+            var newSelection = new DateRange(mouseDownDate, date, params.locale)
             if(isEnabled(event.target) && isPermittedRange(newSelection)) {
               selection = newSelection
             }

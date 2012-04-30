@@ -16,9 +16,9 @@ function DateRange(date1, date2, locale) {
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
-  this.start = date1.compareTo(date2) > 0 ? date2 : date1
-  this.end = date1.compareTo(date2) > 0 ? date1 : date2
   this.locale = Locale.fromArgument(locale)
+  this.start = (date1.compareTo(date2) > 0 ? date2 : date1).withLocale(this.locale)
+  this.end = (date1.compareTo(date2) > 0 ? date1 : date2).withLocale(this.locale)
   this._days = 0
   this._hours = 0
   this._minutes = 0
@@ -151,22 +151,21 @@ DateRange.prototype = {
 }
 
 DateRange = $.extend(DateRange, {
-  emptyRange: function() {
-    function NullDateRange() {
+  emptyRange: function(locale) {
+    function NullDateRange(locale) {
       this.start = null
       this.end = null
+      this.locale = locale
       this.days = function() {
         return 0;
       }
       this.shiftDays = $.noop
       this.hasDate = function() { return false; }
-      this.clone = function() { return DateRange.emptyRange() }
+      this.clone = function() { return DateRange.emptyRange(locale) }
     }
 
-    return new NullDateRange()
+    return new NullDateRange(Locale.fromArgument(locale))
   },
-
-  parse: function(dateStr1, dateStr2, dateFormat) { return new DateRange(Date.parseDate(dateStr1, dateFormat), Date.parseDate(dateStr2, dateFormat)) },
 
   rangeWithMinimumSize: function(oldRange, minimumSize, disableWeekends, outerRange) {
     if(isTooSmallSelection()) {

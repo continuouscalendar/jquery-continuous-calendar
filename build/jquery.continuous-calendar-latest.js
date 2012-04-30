@@ -17,9 +17,9 @@ function DateRange(date1, date2, locale) {
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
-  this.start = date1.compareTo(date2) > 0 ? date2 : date1
-  this.end = date1.compareTo(date2) > 0 ? date1 : date2
   this.locale = Locale.fromArgument(locale)
+  this.start = (date1.compareTo(date2) > 0 ? date2 : date1).withLocale(this.locale)
+  this.end = (date1.compareTo(date2) > 0 ? date1 : date2).withLocale(this.locale)
   this._days = 0
   this._hours = 0
   this._minutes = 0
@@ -152,22 +152,21 @@ DateRange.prototype = {
 }
 
 DateRange = $.extend(DateRange, {
-  emptyRange: function() {
-    function NullDateRange() {
+  emptyRange: function(locale) {
+    function NullDateRange(locale) {
       this.start = null
       this.end = null
+      this.locale = locale
       this.days = function() {
         return 0;
       }
       this.shiftDays = $.noop
       this.hasDate = function() { return false; }
-      this.clone = function() { return DateRange.emptyRange() }
+      this.clone = function() { return DateRange.emptyRange(locale) }
     }
 
-    return new NullDateRange()
+    return new NullDateRange(Locale.fromArgument(locale))
   },
-
-  parse: function(dateStr1, dateStr2, dateFormat) { return new DateRange(Date.parseDate(dateStr1, dateFormat), Date.parseDate(dateStr2, dateFormat)) },
 
   rangeWithMinimumSize: function(oldRange, minimumSize, disableWeekends, outerRange) {
     if(isTooSmallSelection()) {
@@ -818,7 +817,7 @@ DateTime.patterns = {
   UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
   YearMonthPattern: "F, Y"
 }
-DateTime.parseTime = function parseTime(timeStr) {
+DateTime.parseTime = function(timeStr) {
   var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
   var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)]
   return (isHour(time[0]) && isMinute(time[1])) ? time : null
@@ -878,7 +877,8 @@ DateTime.parseTime = function parseTime(timeStr) {
         fadeOutDuration: 0,
         callback: $.noop
       }
-      var params = $.extend(defaults, options)
+      var params = $.extend({}, defaults, options)
+      params.locale = Locale.fromArgument(params.locale)
       var Status = {
         CREATE_OR_RESIZE: 'create',
         MOVE: 'move',
@@ -895,7 +895,7 @@ DateTime.parseTime = function parseTime(timeStr) {
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = (startDate || today.withLocale(params.locale)).getFirstDateOfWeek()
+      var firstWeekdayOfGivenDate = (startDate || today).getFirstDateOfWeek()
       var container = this,
         dateCells = [],
         dateCellDates = [],
@@ -916,13 +916,13 @@ DateTime.parseTime = function parseTime(timeStr) {
 
       function createCalendar() {
         calendar = $.extend(popUpBehaviour(params.isPopup), dateBehaviour(isRange()))
-        selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange();
+        selection = startDate && endDate ? new DateRange(startDate, endDate, params.locale) : DateRange.emptyRange(params.locale);
         oldSelection = selection.clone()
-        var rangeStart = params.firstDate ? DateTime.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
-        var rangeEnd = params.lastDate ? DateTime.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
+        var rangeStart = params.firstDate ? DateTime.parseDate(params.firstDate, params.locale.shortDateFormat, params.locale) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
+        var rangeEnd = params.lastDate ? DateTime.parseDate(params.lastDate, params.locale.shortDateFormat, params.locale) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
         params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
-        calendarRange = new DateRange(rangeStart, rangeEnd)
+        calendarRange = new DateRange(rangeStart, rangeEnd, params.locale)
         calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.click(function(e) { e.stopPropagation() })
         if($('.startDateLabel', container).isEmpty()) {
@@ -1194,7 +1194,7 @@ DateTime.parseTime = function parseTime(timeStr) {
         })
       }
 
-      function startNewRange() { selection = new DateRange(mouseDownDate, mouseDownDate) }
+      function startNewRange() { selection = new DateRange(mouseDownDate, mouseDownDate, params.locale) }
 
       function mouseDown(event) {
         var elem = event.target
@@ -1243,7 +1243,7 @@ DateTime.parseTime = function parseTime(timeStr) {
           } else if(isMonthCell(elem)) {
             status = Status.NONE
             var dayInMonth = getElemDate($(elem).siblings('.date').get(0))
-            return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth())
+            return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth(), params.locale)
           } else if(event.shiftKey) {
             if(selection.days() > 0 && enabledCell(elem)) {
               status = Status.NONE
@@ -1261,7 +1261,7 @@ DateTime.parseTime = function parseTime(timeStr) {
             firstDay = firstDayOfWeek.withWeekday(Locale.MONDAY)
             lastDay = firstDayOfWeek.withWeekday(Locale.FRIDAY)
           }
-          return new DateRange(firstDay, lastDay).and(calendarRange)
+          return new DateRange(firstDay, lastDay, params.locale).and(calendarRange)
         }
       }
 
@@ -1281,7 +1281,7 @@ DateTime.parseTime = function parseTime(timeStr) {
             }
           },
           create: function() {
-            var newSelection = new DateRange(mouseDownDate, date)
+            var newSelection = new DateRange(mouseDownDate, date, params.locale)
             if(isEnabled(event.target) && isPermittedRange(newSelection)) {
               selection = newSelection
             }

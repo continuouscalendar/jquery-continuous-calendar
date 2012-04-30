@@ -226,8 +226,8 @@ function assertHasCorrectHoursAndMinutes(hours, minutes) {
 } 
 
 function resetRange() {
-  start = new DateTime('09/10/2009')
-  end = new DateTime('09/12/2009')
+  start = new DateTime('09/10/2009', Locale.FI)
+  end = new DateTime('09/12/2009', Locale.FI)
   range = new DateRange(end, start, Locale.FI)
 }
 
