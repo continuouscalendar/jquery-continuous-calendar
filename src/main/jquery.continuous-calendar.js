@@ -43,15 +43,16 @@
       }
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
+      var today = DateTime.NOW.withLocale(params.locale)
+
       if(params.selectToday) {
-        var today = DateTime.NOW
         var formattedToday = formatDate(today)
         startDate = today
         endDate = today
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = (startDate || DateTime.NOW).getFirstDateOfWeek(params.locale.firstWeekday)
+      var firstWeekdayOfGivenDate = (startDate || today.withLocale(params.locale)).getFirstDateOfWeek(params.locale.firstWeekday)
       var container = this,
         dateCells = [],
         dateCellDates = [],
@@ -160,7 +161,7 @@
         var popUpVersion = {
           initUI: function() {
             calendarContainer.addClass('popup').hide()
-            var icon = $('<a href="#" class="calendarIcon">' + DateTime.NOW.getDate() + '</a>').click(toggleCalendar)
+            var icon = $('<a href="#" class="calendarIcon">' + today.getDate() + '</a>').click(toggleCalendar)
             container.prepend('<div></div>')
             container.prepend(icon)
           },
@@ -191,7 +192,7 @@
       }
 
       function highlightToday() {
-        var todayKey = DateTime.NOW.dateFormat('Ymd')
+        var todayKey = today.dateFormat('Ymd')
         if(todayKey in dateCellMap) {
           getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
         }
