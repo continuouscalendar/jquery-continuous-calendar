@@ -275,11 +275,11 @@ DateTime.prototype.getFormatCode = function(character) {
     case "d":
       return "String.leftPad(this.getDate(), 2, '0') + "
     case "D":
-      return "Locale.DEFAULT.dayNames[this.getDay()].substring(0, 3) + "
+      return "this.locale.dayNames[this.getDay()].substring(0, 3) + "
     case "j":
       return "this.getDate() + "
     case "l":
-      return "Locale.DEFAULT.dayNames[this.getDay()] + "
+      return "this.locale.dayNames[this.getDay()] + "
     case "S":
       return "this.getSuffix() + "
     case "w":
@@ -289,11 +289,11 @@ DateTime.prototype.getFormatCode = function(character) {
     case "W":
       return "this.getWeekOfYear() + "
     case "F":
-      return "Locale.DEFAULT.monthNames[this.getMonth()] + "
+      return "this.locale.monthNames[this.getMonth()] + "
     case "m":
       return "String.leftPad(this.getMonth() + 1, 2, '0') + "
     case "M":
-      return "Locale.DEFAULT.monthNames[this.getMonth()].substring(0, 3) + "
+      return "this.locale.monthNames[this.getMonth()].substring(0, 3) + "
     case "n":
       return "(this.getMonth() + 1) + "
     case "t":
