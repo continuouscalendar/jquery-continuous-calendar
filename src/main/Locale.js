@@ -110,3 +110,9 @@ Locale.AU = {
   firstWeekday: Locale.SUNDAY
 }
 Locale.DEFAULT = Locale.EN
+
+Locale.fromArgument = function(stringOrObject) {
+  if(typeof stringOrObject == 'string')
+    return Locale[stringOrObject]
+  else return stringOrObject || Locale.DEFAULT
+}

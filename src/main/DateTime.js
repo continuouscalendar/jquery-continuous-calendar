@@ -21,9 +21,7 @@
 DateTime = function(date, locale) {
   if(typeof date == 'string') this.date = new Date(date)
   else this.date = date || new Date()
-  if(typeof locale == 'string') this.locale = Locale[locale]
-  else this.locale = locale || Locale.DEFAULT
-
+  this.locale = Locale.fromArgument(locale)
 }
 
 //TODO remove these later

@@ -12,13 +12,14 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-function DateRange(date1, date2) {
+function DateRange(date1, date2, locale) {
   var _hasTimes = false
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
   this.start = date1.compareTo(date2) > 0 ? date2 : date1
   this.end = date1.compareTo(date2) > 0 ? date1 : date2
+  this.locale = Locale.fromArgument(locale)
   this._days = 0
   this._hours = 0
   this._minutes = 0
@@ -218,9 +219,7 @@ DateRange = $.extend(DateRange, {
 DateTime = function(date, locale) {
   if(typeof date == 'string') this.date = new Date(date)
   else this.date = date || new Date()
-  if(typeof locale == 'string') this.locale = Locale[locale]
-  else this.locale = locale || Locale.DEFAULT
-
+  this.locale = Locale.fromArgument(locale)
 }
 
 //TODO remove these later
@@ -1520,3 +1519,9 @@ Locale.AU = {
   firstWeekday: Locale.SUNDAY
 }
 Locale.DEFAULT = Locale.EN
+
+Locale.fromArgument = function(stringOrObject) {
+  if(typeof stringOrObject == 'string')
+    return Locale[stringOrObject]
+  else return stringOrObject || Locale.DEFAULT
+}
