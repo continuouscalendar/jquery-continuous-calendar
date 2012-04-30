@@ -201,7 +201,7 @@ DateTime.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
 }
 
 //TODO refactor
-DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime())) }
+DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime()), this.locale) }
 
 DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 != 0 }
 
