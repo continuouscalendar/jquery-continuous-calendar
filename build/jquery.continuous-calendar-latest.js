@@ -258,6 +258,11 @@ DateTime.FRIDAY = 5
 DateTime.SUNDAY = 0
 
 DateTime.NOW = new DateTime()
+
+DateTime.prototype.withLocale = function(locale) {
+  return new DateTime(this.date, Locale.fromArgument(locale))
+}
+
 DateTime.getDaysInMonth = function(year, month) {
   if(((0 == (year % 4)) && ( (0 != (year % 100)) || (0 == (year % 400)))) && month == 1) {
     return 29
@@ -528,26 +533,27 @@ DateTime.prototype.getFormatCode = function(character) {
 }
 
 //TODO rename
-DateTime.parseDate = function(input, format) {
+DateTime.parseDate = function(input, format, localeOrEmpty) {
+  var locale = Locale.fromArgument(localeOrEmpty)
   if(input == 'today') {
-    return DateTime.NOW
+    return DateTime.NOW.withLocale(locale)
   }
-  if(DateTime.parseFunctions[format] == null) {
-    DateTime.createParser(format)
+  if(DateTime.parseFunctions[format + locale.id] == null) {
+    DateTime.createParser(format, locale)
   }
-  var func = DateTime.parseFunctions[format]
+  var func = DateTime.parseFunctions[format + locale.id]
   return DateTime[func](input)
 }
 
-DateTime.createParser = function(format) {
+DateTime.createParser = function(format, locale) {
   var funcName = "parse" + DateTime.parseFunctions.count++
   var regexNum = DateTime.parseRegexes.length
   var currentGroup = 1
-  DateTime.parseFunctions[format] = funcName
+  DateTime.parseFunctions[format + locale.id] = funcName
 
   var code = "DateTime." + funcName + " = function(input){\n" +
     "var y = -1, m = -1, d = -1, h = -1, i = -1, s = -1;\n" +
-    "var d = DateTime.NOW;\n" + "y = d.getFullYear();\n" +
+    "var d = DateTime.NOW.withLocale(locale);\n" + "y = d.getFullYear();\n" +
     "m = d.getMonth();\n" +
     "d = d.getDate();\n" +
     "var results = input.match(DateTime.parseRegexes[" + regexNum + "]);\n" +
@@ -565,7 +571,7 @@ DateTime.createParser = function(format) {
         special = false
         regex += String.escape(ch)
       } else {
-        var obj = DateTime.formatCodeToRegex(ch, currentGroup)
+        var obj = DateTime.formatCodeToRegex(ch, currentGroup, locale)
         currentGroup += obj.g
         regex += obj.s
         if(obj.g && obj.c) {
@@ -593,7 +599,7 @@ DateTime.createParser = function(format) {
   eval(code)
 }
 
-DateTime.formatCodeToRegex = function(character, currentGroup) {
+DateTime.formatCodeToRegex = function(character, currentGroup, locale) {
   switch(character) {
     case "D":
       return {g:0,
@@ -607,7 +613,7 @@ DateTime.formatCodeToRegex = function(character, currentGroup) {
     case "l":
       return {g:0,
         c:null,
-        s:"(?:" + DateTime.dayNames.join("|") + ")"}
+        s:"(?:" + locale.dayNames.join("|") + ")"}
     case "S":
       return {g:0,
         c:null,
@@ -625,10 +631,9 @@ DateTime.formatCodeToRegex = function(character, currentGroup) {
         c:null,
         s:"(?:\\d{2})"}
     case "F":
-      //TODO add locale as parameter
       return {g:1,
         c:"m = parseInt(DateTime.monthNumbers[results[" + currentGroup + "].substring(0, 3)], 10);\n",
-        s:"(" + Locale.DEFAULT.monthNames.join("|") + ")"}
+        s:"(" + locale.monthNames.join("|") + ")"}
     case "M":
       return {g:1,
         c:"m = parseInt(DateTime.monthNumbers[results[" + currentGroup + "]], 10);\n",
@@ -1427,6 +1432,7 @@ Locale.SUNDAY = 0
 Locale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
 Locale.FI = {
+  id:'FI',
   monthNames: [
     'tammikuu',
     'helmikuu',
@@ -1454,6 +1460,7 @@ Locale.FI = {
   firstWeekday: Locale.MONDAY
 }
 Locale.EN = {
+  id:'EN',
   monthNames: ['January',
     'February',
     'March',
@@ -1486,6 +1493,7 @@ Locale.EN = {
   firstWeekday: Locale.SUNDAY
 };
 Locale.AU = {
+  id:'AU',
   monthNames: ['January',
     'February',
     'March',

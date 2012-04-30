@@ -19,6 +19,7 @@ Locale.SUNDAY = 0
 Locale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
 Locale.FI = {
+  id:'FI',
   monthNames: [
     'tammikuu',
     'helmikuu',
@@ -46,6 +47,7 @@ Locale.FI = {
   firstWeekday: Locale.MONDAY
 }
 Locale.EN = {
+  id:'EN',
   monthNames: ['January',
     'February',
     'March',
@@ -78,6 +80,7 @@ Locale.EN = {
   firstWeekday: Locale.SUNDAY
 };
 Locale.AU = {
+  id:'AU',
   monthNames: ['January',
     'February',
     'March',
