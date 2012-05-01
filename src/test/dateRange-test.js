@@ -203,7 +203,7 @@ function assertHasCorrectHoursAndMinutes(range, hours, minutes) {
   expect(range).toBeValidRange()
   expect(range.hours()).toEqual(hours)
   expect(range.minutes()).toEqual(minutes)
-} 
+}
 
 function resetRange() {
   start = new DateTime('09/10/2009', Locale.FI)

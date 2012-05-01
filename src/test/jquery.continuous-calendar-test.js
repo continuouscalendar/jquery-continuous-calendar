@@ -194,15 +194,13 @@ describe('calendar events', function() {
     expect(cal().find('.rangeLengthLabel')).toHaveText('15 Days')
   })
 
-
-
   it('mouse click and drag can start or end on current date', function() {
     var d_today = new Date(),
-      s_today   = (d_today.getMonth() + 1) + '/' + d_today.getDate() + '/' + d_today.getFullYear(),
-      d_start   = new Date(d_today.setDate(d_today.getDate() - 7)),
-      s_start   = (d_start.getMonth() + 1) + '/' + d_start.getDate() + '/' + d_start.getFullYear(),
-      d_end     = new Date(d_today.setDate(d_today.getDate() + 14)),
-      s_end     = (d_end.getMonth() + 1) + '/' + d_end.getDate() + '/' + d_end.getFullYear()
+      s_today = (d_today.getMonth() + 1) + '/' + d_today.getDate() + '/' + d_today.getFullYear(),
+      d_start = new Date(d_today.setDate(d_today.getDate() - 7)),
+      s_start = (d_start.getMonth() + 1) + '/' + d_start.getDate() + '/' + d_start.getFullYear(),
+      d_end = new Date(d_today.setDate(d_today.getDate() + 14)),
+      s_end = (d_end.getMonth() + 1) + '/' + d_end.getDate() + '/' + d_end.getFullYear()
     d_today = new Date();
     createCalendarWithNoRange(s_start, s_end)
     startTimer()
@@ -220,8 +218,6 @@ describe('calendar events', function() {
     expect(endFieldValue()).toEqual(s_today)
     expect(cal().find('.rangeLengthLabel')).toHaveText('8 Days')
   })
-
-
 
   it('mouse click and drag works with no initial selection', function() {
     createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '2/1/2009'})

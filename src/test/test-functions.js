@@ -51,12 +51,12 @@ function mouseClick(selector) {
 }
 
 function mouseEvent(eventType, elements, options) {
-  var event = $.extend({target:elements.get(0)}, options)
+  var event = $.extend({target: elements.get(0)}, options)
   cal().find('.calendarBody').callEvent(eventType, event)
 }
 
 function clickDateWithShift(date) {
-  var options = {shiftKey:true}
+  var options = {shiftKey: true}
   mouseDownOnDay(date, options)
   mouseUpOnDay(date, options)
 }
@@ -80,7 +80,7 @@ function dragDatesSlowly(enter, exit) {
 }
 
 function createCalendarWithOneWeek() {
-  createCalendarFields({startDate:'4/30/2008'}).continuousCalendar({weeksBefore: 0,weeksAfter: 0})
+  createCalendarFields({startDate: '4/30/2008'}).continuousCalendar({weeksBefore: 0, weeksAfter: 0})
 }
 
 function createCalendarWithNoRange(start, end) {
@@ -88,28 +88,28 @@ function createCalendarWithNoRange(start, end) {
 }
 
 function createRangeCalendarWithFiveWeeks() {
-  createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate:'4/15/2009',lastDate:'5/12/2009'})
+  createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009'})
 }
 
 function createRangeCalendarWithFiveWeeksAndDisabledWeekends() {
-  createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate: '4/15/2009',lastDate:'5/12/2009',disableWeekends:true})
+  createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', disableWeekends: true})
 }
 
 function createWeekCalendar() {
-  createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate:'4/15/2009',lastDate:'5/12/2009',selectWeek:true})
+  createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', selectWeek: true})
 }
 
 function createBigCalendar() {
   var todayText = DateTime.NOW.format(Locale.EN.shortDateFormat)
-  createCalendarFields({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60,weeksAfter: 30})
+  createCalendarFields({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60, weeksAfter: 30})
 }
 
 function createBigCalendarForSingleDate() {
-  createCalendarFields({startDate: ''}).continuousCalendar({weeksBefore: 20,weeksAfter: 20})
+  createCalendarFields({startDate: ''}).continuousCalendar({weeksBefore: 20, weeksAfter: 20})
 }
 
 function createCalendarFromJanuary() {
-  createCalendarFields({startDate: ''}).continuousCalendar({firstDate:'1/1/2009', lastDate:'12/31/2009'})
+  createCalendarFields({startDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009'})
 }
 
 function createPopupCalendar() {
@@ -117,7 +117,7 @@ function createPopupCalendar() {
 }
 
 function createPopupWeekCalendar() {
-  createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate:'5/1/2011', lastDate:'5/31/2011', isPopup: true, selectWeek: true})
+  createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '5/1/2011', lastDate: '5/31/2011', isPopup: true, selectWeek: true})
 }
 
 function clickOnDate(date) {
@@ -174,7 +174,7 @@ function value(selector) {
 }
 
 function assertHasValues(selector, expectedArray) {
-  expect($.map(cal().find(selector), function (elem) {
+  expect($.map(cal().find(selector), function(elem) {
     return $(elem).text()
   })).toEqual($.map(expectedArray, function(i) {
     return i.toString()

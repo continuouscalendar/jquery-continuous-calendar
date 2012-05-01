@@ -430,9 +430,9 @@ DateTime.prototype.getOnlyDate = function() { return new DateTime(new Date(this.
  * details.
  */
 
-DateTime.parseFunctions = {count:0}
+DateTime.parseFunctions = {count: 0}
 DateTime.parseRegexes = []
-DateTime.formatFunctions = {count:0}
+DateTime.formatFunctions = {count: 0}
 
 //TODO refactor next three functions
 DateTime.prototype.format = function(format) {
@@ -595,106 +595,106 @@ DateTime.createParser = function(format, locale) {
 DateTime.formatCodeToRegex = function(character, currentGroup, locale) {
   switch(character) {
     case "D":
-      return {g:0,
-        c:null,
-        s:"(?:Sun|Mon|Tue|Wed|Thu|Fri|Sat)"}
+      return {g: 0,
+        c: null,
+        s: "(?:Sun|Mon|Tue|Wed|Thu|Fri|Sat)"}
     case "j":
     case "d":
-      return {g:1,
-        c:"d = parseInt(results[" + currentGroup + "], 10);\n",
-        s:"(\\d{1,2})"}
+      return {g: 1,
+        c: "d = parseInt(results[" + currentGroup + "], 10);\n",
+        s: "(\\d{1,2})"}
     case "l":
-      return {g:0,
-        c:null,
-        s:"(?:" + locale.dayNames.join("|") + ")"}
+      return {g: 0,
+        c: null,
+        s: "(?:" + locale.dayNames.join("|") + ")"}
     case "S":
-      return {g:0,
-        c:null,
-        s:"(?:st|nd|rd|th)"}
+      return {g: 0,
+        c: null,
+        s: "(?:st|nd|rd|th)"}
     case "w":
-      return {g:0,
-        c:null,
-        s:"\\d"}
+      return {g: 0,
+        c: null,
+        s: "\\d"}
     case "z":
-      return {g:0,
-        c:null,
-        s:"(?:\\d{1,3})"}
+      return {g: 0,
+        c: null,
+        s: "(?:\\d{1,3})"}
     case "W":
-      return {g:0,
-        c:null,
-        s:"(?:\\d{2})"}
+      return {g: 0,
+        c: null,
+        s: "(?:\\d{2})"}
     case "F":
-      return {g:1,
-        c:"m = parseInt(DateTime.monthNumbers[results[" + currentGroup + "].substring(0, 3)], 10);\n",
-        s:"(" + locale.monthNames.join("|") + ")"}
+      return {g: 1,
+        c: "m = parseInt(DateTime.monthNumbers[results[" + currentGroup + "].substring(0, 3)], 10);\n",
+        s: "(" + locale.monthNames.join("|") + ")"}
     case "M":
-      return {g:1,
-        c:"m = parseInt(DateTime.monthNumbers[results[" + currentGroup + "]], 10);\n",
-        s:"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"}
+      return {g: 1,
+        c: "m = parseInt(DateTime.monthNumbers[results[" + currentGroup + "]], 10);\n",
+        s: "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"}
     case "n":
     case "m":
-      return {g:1,
-        c:"m = parseInt(results[" + currentGroup + "], 10) - 1;\n",
-        s:"(\\d{1,2})"}
+      return {g: 1,
+        c: "m = parseInt(results[" + currentGroup + "], 10) - 1;\n",
+        s: "(\\d{1,2})"}
     case "t":
-      return {g:0,
-        c:null,
-        s:"\\d{1,2}"}
+      return {g: 0,
+        c: null,
+        s: "\\d{1,2}"}
     case "L":
-      return {g:0,
-        c:null,
-        s:"(?:1|0)"}
+      return {g: 0,
+        c: null,
+        s: "(?:1|0)"}
     case "Y":
-      return {g:1,
-        c:"y = parseInt(results[" + currentGroup + "], 10);\n",
-        s:"(\\d{4})"}
+      return {g: 1,
+        c: "y = parseInt(results[" + currentGroup + "], 10);\n",
+        s: "(\\d{4})"}
     case "y":
-      return {g:1,
-        c:"var ty = parseInt(results[" + currentGroup + "], 10);\n" + "y = ty > DateTime.y2kYear ? 1900 + ty : 2000 + ty;\n",
-        s:"(\\d{1,2})"}
+      return {g: 1,
+        c: "var ty = parseInt(results[" + currentGroup + "], 10);\n" + "y = ty > DateTime.y2kYear ? 1900 + ty : 2000 + ty;\n",
+        s: "(\\d{1,2})"}
     case "a":
-      return {g:1,
-        c:"if (results[" + currentGroup + "] == 'am') {\n" + "if (h == 12) { h = 0; }\n" + "} else { if (h < 12) { h += 12; }}",
-        s:"(am|pm)"}
+      return {g: 1,
+        c: "if (results[" + currentGroup + "] == 'am') {\n" + "if (h == 12) { h = 0; }\n" + "} else { if (h < 12) { h += 12; }}",
+        s: "(am|pm)"}
     case "A":
-      return {g:1,
-        c:"if (results[" + currentGroup + "] == 'AM') {\n" + "if (h == 12) { h = 0; }\n" + "} else { if (h < 12) { h += 12; }}",
-        s:"(AM|PM)"}
+      return {g: 1,
+        c: "if (results[" + currentGroup + "] == 'AM') {\n" + "if (h == 12) { h = 0; }\n" + "} else { if (h < 12) { h += 12; }}",
+        s: "(AM|PM)"}
     case "g":
     case "G":
     case "h":
     case "H":
-      return {g:1,
-        c:"h = parseInt(results[" + currentGroup + "], 10);\n",
-        s:"(\\d{1,2})"}
+      return {g: 1,
+        c: "h = parseInt(results[" + currentGroup + "], 10);\n",
+        s: "(\\d{1,2})"}
     case "i":
-      return {g:1,
-        c:"i = parseInt(results[" + currentGroup + "], 10);\n",
-        s:"(\\d{2})"}
+      return {g: 1,
+        c: "i = parseInt(results[" + currentGroup + "], 10);\n",
+        s: "(\\d{2})"}
     case "s":
-      return {g:1,
-        c:"s = parseInt(results[" + currentGroup + "], 10);\n",
-        s:"(\\d{2})"}
+      return {g: 1,
+        c: "s = parseInt(results[" + currentGroup + "], 10);\n",
+        s: "(\\d{2})"}
     case "O":
-      return {g:0,
-        c:null,
-        s:"[+-]\\d{4}"}
+      return {g: 0,
+        c: null,
+        s: "[+-]\\d{4}"}
     case "T":
-      return {g:0,
-        c:null,
-        s:"[A-Z]{3}"}
+      return {g: 0,
+        c: null,
+        s: "[A-Z]{3}"}
     case "Z":
-      return {g:0,
-        c:null,
-        s:"[+-]\\d{1,5}"}
+      return {g: 0,
+        c: null,
+        s: "[+-]\\d{1,5}"}
     case ".":
-      return {g:0,
-        c:null,
-        s:"\\."}
+      return {g: 0,
+        c: null,
+        s: "\\."}
     default:
-      return {g:0,
-        c:null,
-        s:String.escape(character)}
+      return {g: 0,
+        c: null,
+        s: String.escape(character)}
   }
 }
 
@@ -768,7 +768,7 @@ DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.ge
 
 String.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
 
-String.leftPad = function (val, size, ch) {
+String.leftPad = function(val, size, ch) {
   var result = new String(val)
   if(ch == null) {
     ch = " "
@@ -779,24 +779,24 @@ String.leftPad = function (val, size, ch) {
   return result
 }
 
-DateTime.daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
+DateTime.daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 DateTime.y2kYear = 50
 DateTime.monthNumbers = {
-  Jan:0,
-  Feb:1,
-  Mar:2,
-  Apr:3,
-  May:4,
-  Jun:5,
-  Jul:6,
-  Aug:7,
-  Sep:8,
-  Oct:9,
-  Nov:10,
-  Dec:11}
+  Jan: 0,
+  Feb: 1,
+  Mar: 2,
+  Apr: 3,
+  May: 4,
+  Jun: 5,
+  Jul: 6,
+  Aug: 7,
+  Sep: 8,
+  Oct: 9,
+  Nov: 10,
+  Dec: 11}
 DateTime.patterns = {
-  ISO8601LongPattern:"Y-m-d H:i:s",
-  ISO8601ShortPattern:"Y-m-d",
+  ISO8601LongPattern: "Y-m-d H:i:s",
+  ISO8601ShortPattern: "Y-m-d",
   ShortDatePattern: "n/j/Y",
   FiShortDatePattern: "j.n.Y",
   FiWeekdayDatePattern: "D j.n.Y",
@@ -820,10 +820,14 @@ DateTime.parseTime = function(timeStr) {
       return  timeStr.split('.')
     }
     switch(timeStr.length) {
-      case 4: return [timeStr.slice(0, 2) ,timeStr.slice(2, 4)]
-      case 3: return [timeStr.slice(0, 1) ,timeStr.slice(1, 3)]
-      case 2: return [timeStr, 0]
-      default: return [-1,-1]
+      case 4:
+        return [timeStr.slice(0, 2) , timeStr.slice(2, 4)]
+      case 3:
+        return [timeStr.slice(0, 1) , timeStr.slice(1, 3)]
+      case 2:
+        return [timeStr, 0]
+      default:
+        return [-1, -1]
     }
   }
 
@@ -1427,7 +1431,7 @@ Locale.SUNDAY = 0
 Locale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
 Locale.FI = {
-  id:'FI',
+  id: 'FI',
   monthNames: [
     'tammikuu',
     'helmikuu',
@@ -1455,7 +1459,7 @@ Locale.FI = {
   firstWeekday: Locale.MONDAY
 }
 Locale.EN = {
-  id:'EN',
+  id: 'EN',
   monthNames: ['January',
     'February',
     'March',
@@ -1488,7 +1492,7 @@ Locale.EN = {
   firstWeekday: Locale.SUNDAY
 };
 Locale.AU = {
-  id:'AU',
+  id: 'AU',
   monthNames: ['January',
     'February',
     'March',

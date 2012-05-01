@@ -34,7 +34,7 @@ p { margin-bottom: 20px; }
 pre { font-size: 11px; background: #fafafa; border: 1px solid #ccc; padding: 4px; color: #000; }
 
 a { color: #25b2ff; text-decoration: none; }
-a:hover {text-decoration: underline;}
+a:hover { text-decoration: underline; }
 
 strong { font-weight: bold; }
 
@@ -57,14 +57,14 @@ li { list-style-type: disc; list-style-position: inside; }
 .section { box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); background-color: #fff; filter: progid:DXImageTransform.Microsoft.Shadow(color = '#f0f0f0', Direction = 135, Strength = 4); background: #fff; padding: 24px 43px 20px 30px; margin-bottom: 27px; }
 
 .calendarScrollContent { height: 250px; }
-ul {margin-bottom: 10px;}
-dt {margin-bottom: 10px;font-family: monospace;font-size: 18px;}
-dt.title {margin-bottom: 20px;text-decoration: underline;}
-.default {color: green;}
-.type {color: #0041c4;}
-dd {margin-bottom: 20px;margin-left: 10px;}
-input {margin:3px;}
-.wide {margin:20px;}
+ul { margin-bottom: 10px; }
+dt { margin-bottom: 10px; font-family: monospace; font-size: 18px; }
+dt.title { margin-bottom: 20px; text-decoration: underline; }
+.default { color: green; }
+.type { color: #0041c4; }
+dd { margin-bottom: 20px; margin-left: 10px; }
+input { margin: 3px; }
+.wide { margin: 20px; }
 #timeCalendar .continuousCalendar { float: left; }
 #timeCalendar .dateLabels div { clear: both; margin: 1em; }
 #timeCalendar .dateLabels div strong { float: left; display: block; width: 5em; }
@@ -79,10 +79,10 @@ input {margin:3px;}
 .dateLabels { float: left; }
 .c { clear: both; }
 
-.navi {overflow: hidden;padding: 0;position:fixed;z-index:99999;width:100%;left: 0;}
-.navi li {display: block; float: left;background: #fff;margin:0;}
+.navi { overflow: hidden; padding: 0; position: fixed; z-index: 99999; width: 100%; left: 0; }
+.navi li { display: block; float: left; background: #fff; margin: 0; }
 .navi li a,
-.navi li span {display: block;padding: 3px 7px 3px 13px; margin:5px;border-left:1px solid  #ccc;}
-.navi .first {border-left: none;}
+.navi li span { display: block; padding: 3px 7px 3px 13px; margin: 5px; border-left: 1px solid #ccc; }
+.navi .first { border-left: none; }
 
-.footer {margin-bottom:0;}
+.footer { margin-bottom: 0; }

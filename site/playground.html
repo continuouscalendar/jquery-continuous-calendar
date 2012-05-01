@@ -37,10 +37,10 @@
     .row input[type=checkbox], .row input[type=radio] { float: left; }
     #create { margin-top: 10px; }
     .calendarScrollContent { height: 200px; }
-    .continuousCalendarContainer {  }
-    .hint {font-size:80%;color:#666;}
-    .example_params {width:100%;height:50px; font-size:10px;display:block;margin:4px 0;}
-    .containerWrapper {float:left; margin: 5px;width: 240px;}
+    .continuousCalendarContainer { }
+    .hint { font-size: 80%; color: #666; }
+    .example_params { width: 100%; height: 50px; font-size: 10px; display: block; margin: 4px 0; }
+    .containerWrapper { float: left; margin: 5px; width: 240px; }
   </style>
   <style type="text/css" media="print">
     fieldset { display: none; }
@@ -130,7 +130,7 @@
     }
     options.locale = window[$('[name=locale]').filter(':checked').val()]
     var params = JSON.stringify(options);
-    containerWrapper.prepend('<textarea  class="example_params">$(selector).continuousCalendar('+params+')</textarea>')
+    containerWrapper.prepend('<textarea  class="example_params">$(selector).continuousCalendar(' + params + ')</textarea>')
     container.continuousCalendar(options)
     function valueOf(id) {
       var elem = $('#' + id)
@@ -140,17 +140,17 @@
     return false
   }
 
-  var disabledDates = $([Date.NOW,Date.NOW,Date.NOW])
+  var disabledDates = $([Date.NOW, Date.NOW, Date.NOW])
           .map(
-              function(i, el) {
-                return el.plusDays(i + 3).format('n/j/Y')
-              }).toArray().join(' ')
+          function(i, el) {
+            return el.plusDays(i + 3).format('n/j/Y')
+          }).toArray().join(' ')
   $('#disabledDates').val(disabledDates)
-  var selection = $([Date.NOW.plusDays(10),Date.NOW.plusDays(18)])
+  var selection = $([Date.NOW.plusDays(10), Date.NOW.plusDays(18)])
           .map(
-              function(i, el) {
-                return el.format('n/j/Y')
-              }).toArray()
+          function(i, el) {
+            return el.format('n/j/Y')
+          }).toArray()
   $('#selectionStart').val(selection[0])
   $('#selectionEnd').val(selection[1])
 
