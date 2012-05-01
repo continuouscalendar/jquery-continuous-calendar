@@ -78,7 +78,7 @@ describe('jquery.continuous-calendar', function() {
       createCalendarFields().continuousCalendar({weeksBefore: 0, weeksAfter: 0})
       expect(cal().find('.date').size()).toEqual(7)
       var weekDays = []
-      var firstDay = DateTime.NOW.getFirstDateOfWeek()
+      var firstDay = DateTime.now().getFirstDateOfWeek()
       for(var i = 0; i < 7; i++) {
         weekDays.push(firstDay.plusDays(i).getDate())
       }
@@ -277,7 +277,7 @@ describe('jquery.continuous-calendar', function() {
       createBigCalendar()
       var cells = cal().find('.today')
       expect(cells.size()).toEqual(1)
-      expect(cells).toHaveText('' + DateTime.NOW.getDate())
+      expect(cells).toHaveText('' + DateTime.now().getDate())
     })
 
     it('range has current day selected as default when configured so', function() {

@@ -111,7 +111,7 @@ DateTime.prototype.getFormatCode = function(character) {
 DateTime.parse = function(input, format, localeOrEmpty) {
   var locale = Locale.fromArgument(localeOrEmpty)
   if(input == 'today') {
-    return DateTime.NOW.withLocale(locale)
+    return DateTime.now().withLocale(locale)
   }
   if(DateTime.parseFunctions[format + locale.id] == null) {
     DateTime.createParser(format, locale)
@@ -128,7 +128,7 @@ DateTime.createParser = function(format, locale) {
 
   var code = "DateTime." + funcName + " = function(input){\n" +
     "var y = -1, m = -1, d = -1, h = -1, i = -1, s = -1;\n" +
-    "var d = DateTime.NOW.withLocale(locale);\n" + "y = d.getFullYear();\n" +
+    "var d = DateTime.now().withLocale(locale);\n" + "y = d.getFullYear();\n" +
     "m = d.getMonth();\n" +
     "d = d.getDate();\n" +
     "var results = input.match(DateTime.parseRegexes[" + regexNum + "]);\n" +
@@ -650,7 +650,12 @@ DateTime.HOUR = 60 * DateTime.MINUTE
 DateTime.DAY = 24 * DateTime.HOUR
 DateTime.WEEK = 7 * DateTime.DAY
 
-DateTime.NOW = new DateTime()
+DateTime.now = function() {
+  if(typeof DateTime._now == 'undefined') {
+    DateTime._now = new DateTime()
+  }
+  return DateTime._now
+}
 
 DateTime.prototype.withLocale = function(locale) {
   return new DateTime(this.date, Locale.fromArgument(locale))
@@ -729,7 +734,7 @@ DateTime.prototype.compareDateOnlyTo = function(DateTime) {
   return this.stripped().compareTo(DateTime.stripped())
 }
 
-DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.NOW) }
+DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.now()) }
 
 DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
   if(weekNumberingSystem != "US" && weekNumberingSystem != "ISO") {
@@ -1002,7 +1007,7 @@ DateTime.parseTime = function(timeStr) {
       }
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
-      var today = DateTime.NOW.withLocale(params.locale)
+      var today = DateTime.now().withLocale(params.locale)
 
       if(params.selectToday) {
         var formattedToday = formatDate(today)

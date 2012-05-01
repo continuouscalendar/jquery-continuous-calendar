@@ -55,7 +55,12 @@ DateTime.HOUR = 60 * DateTime.MINUTE
 DateTime.DAY = 24 * DateTime.HOUR
 DateTime.WEEK = 7 * DateTime.DAY
 
-DateTime.NOW = new DateTime()
+DateTime.now = function() {
+  if(typeof DateTime._now == 'undefined') {
+    DateTime._now = new DateTime()
+  }
+  return DateTime._now
+}
 
 DateTime.prototype.withLocale = function(locale) {
   return new DateTime(this.date, Locale.fromArgument(locale))
@@ -134,7 +139,7 @@ DateTime.prototype.compareDateOnlyTo = function(DateTime) {
   return this.stripped().compareTo(DateTime.stripped())
 }
 
-DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.NOW) }
+DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.now()) }
 
 DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
   if(weekNumberingSystem != "US" && weekNumberingSystem != "ISO") {

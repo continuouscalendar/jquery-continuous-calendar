@@ -110,7 +110,7 @@ DateTime.prototype.getFormatCode = function(character) {
 DateTime.parse = function(input, format, localeOrEmpty) {
   var locale = Locale.fromArgument(localeOrEmpty)
   if(input == 'today') {
-    return DateTime.NOW.withLocale(locale)
+    return DateTime.now().withLocale(locale)
   }
   if(DateTime.parseFunctions[format + locale.id] == null) {
     DateTime.createParser(format, locale)
@@ -127,7 +127,7 @@ DateTime.createParser = function(format, locale) {
 
   var code = "DateTime." + funcName + " = function(input){\n" +
     "var y = -1, m = -1, d = -1, h = -1, i = -1, s = -1;\n" +
-    "var d = DateTime.NOW.withLocale(locale);\n" + "y = d.getFullYear();\n" +
+    "var d = DateTime.now().withLocale(locale);\n" + "y = d.getFullYear();\n" +
     "m = d.getMonth();\n" +
     "d = d.getDate();\n" +
     "var results = input.match(DateTime.parseRegexes[" + regexNum + "]);\n" +

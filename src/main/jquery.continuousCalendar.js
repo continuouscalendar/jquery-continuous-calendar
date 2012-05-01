@@ -44,7 +44,7 @@
       }
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
-      var today = DateTime.NOW.withLocale(params.locale)
+      var today = DateTime.now().withLocale(params.locale)
 
       if(params.selectToday) {
         var formattedToday = formatDate(today)
