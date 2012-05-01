@@ -12,8 +12,10 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
  * details.
  */
 
-DateTime.parseFunctions = {count: 0}
-DateTime.parseRegexes = []
+DateFormat = {}
+
+DateFormat.parseFunctions = {count: 0}
+DateFormat.parseRegexes = []
 DateTime.formatFunctions = {count: 0}
 
 //TODO refactor next three functions
@@ -108,30 +110,35 @@ DateTime.getFormatCode = function(character) {
   }
 }
 
+
 DateTime.parse = function(input, format, localeOrEmpty) {
+  return DateFormat.parse(input, format, localeOrEmpty)
+}
+
+DateFormat.parse = function(input, format, localeOrEmpty) {
   var locale = Locale.fromArgument(localeOrEmpty)
   if(input == 'today') {
     return DateTime.now().withLocale(locale)
   }
-  if(DateTime.parseFunctions[format + locale.id] == null) {
-    DateTime.createParser(format, locale)
+  if(DateFormat.parseFunctions[format + locale.id] == null) {
+    DateFormat.createParser(format, locale)
   }
-  var func = DateTime.parseFunctions[format + locale.id]
-  return DateTime[func](input)
+  var func = DateFormat.parseFunctions[format + locale.id]
+  return DateFormat[func](input)
 }
 
-DateTime.createParser = function(format, locale) {
-  var funcName = "parse" + DateTime.parseFunctions.count++
-  var regexNum = DateTime.parseRegexes.length
+DateFormat.createParser = function(format, locale) {
+  var funcName = "parse" + DateFormat.parseFunctions.count++
+  var regexNum = DateFormat.parseRegexes.length
   var currentGroup = 1
-  DateTime.parseFunctions[format + locale.id] = funcName
+  DateFormat.parseFunctions[format + locale.id] = funcName
 
-  var code = "DateTime." + funcName + " = function(input){\n" +
+  var code = "DateFormat." + funcName + " = function(input){\n" +
     "var y = -1, m = -1, d = -1, h = -1, i = -1, s = -1;\n" +
     "var d = DateTime.now().withLocale(locale);\n" + "y = d.getFullYear();\n" +
     "m = d.getMonth();\n" +
     "d = d.getDate();\n" +
-    "var results = input.match(DateTime.parseRegexes[" + regexNum + "]);\n" +
+    "var results = input.match(DateFormat.parseRegexes[" + regexNum + "]);\n" +
     "if (results && results.length > 0) {"
   var regex = ""
 
@@ -146,7 +153,7 @@ DateTime.createParser = function(format, locale) {
         special = false
         regex += String.escape(ch)
       } else {
-        var obj = DateTime.formatCodeToRegex(ch, currentGroup, locale)
+        var obj = DateFormat.formatCodeToRegex(ch, currentGroup, locale)
         currentGroup += obj.g
         regex += obj.s
         if(obj.g && obj.c) {
@@ -170,11 +177,11 @@ DateTime.createParser = function(format, locale) {
     "{return new DateTime(new Date(y));}\n" +
     "}return null;}"
 
-  DateTime.parseRegexes[regexNum] = new RegExp("^" + regex + "$")
+  DateFormat.parseRegexes[regexNum] = new RegExp("^" + regex + "$")
   eval(code)
 }
 
-DateTime.formatCodeToRegex = function(character, currentGroup, locale) {
+DateFormat.formatCodeToRegex = function(character, currentGroup, locale) {
   switch(character) {
     case "D":
       return {g: 0,
