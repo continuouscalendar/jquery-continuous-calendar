@@ -91,9 +91,9 @@
   </div>
   <div class="col">
     <label>Locale:</label>
-    <label class="row"><input type="radio" name="locale" value="Locale.EN" id="EN" checked="checked"/><span class="label">Locale.EN</span></label>
-    <label class="row"><input type="radio" name="locale" value="DATE_LOCALE_FI" id="FI"/><span class="label">DATE_LOCALE_FI</span></label>
-    <label class="row"><input type="radio" name="locale" value="DATE_LOCALE_AU" id="AU"/><span class="label">DATE_LOCALE_AU</span></label>
+    <label class="row"><input type="radio" name="locale" value="EN" id="EN" checked="checked"/><span class="label">Locale.EN</span></label>
+    <label class="row"><input type="radio" name="locale" value="FI" id="FI"/><span class="label">Locale.FI</span></label>
+    <label class="row"><input type="radio" name="locale" value="AU" id="AU"/><span class="label">Locale.AU</span></label>
   </div>
   <div>Examples of other options</div>
   <ul class="col">
@@ -128,7 +128,7 @@
         options[optionsList[i]] = value
       }
     }
-    options.locale = window[$('[name=locale]').filter(':checked').val()]
+    options.locale = Locale[$('[name=locale]').filter(':checked').val()]
     var params = JSON.stringify(options);
     containerWrapper.prepend('<textarea  class="example_params">$(selector).continuousCalendar(' + params + ')</textarea>')
     container.continuousCalendar(options)
@@ -140,13 +140,13 @@
     return false
   }
 
-  var disabledDates = $([DateTime.NOW, DateTime.NOW, DateTime.NOW])
+  var disabledDates = $([DateTime.now(), DateTime.now(), DateTime.now()])
           .map(
           function(i, el) {
             return DateFormat.format(el.plusDays(i + 3), 'n/j/Y')
           }).toArray().join(' ')
   $('#disabledDates').val(disabledDates)
-  var selection = $([DateTime.NOW.plusDays(10), DateTime.NOW.plusDays(18)])
+  var selection = $([DateTime.now().plusDays(10), DateTime.now().plusDays(18)])
           .map(
           function(i, el) {
             return DateFormat.format(el, 'n/j/Y')
