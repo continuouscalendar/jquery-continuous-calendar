@@ -11,14 +11,6 @@
  * details.
  */
 
-DateTime.parse = function(input, format, localeOrEmpty) {
-  return DateFormat.parse(input, format, localeOrEmpty)
-}
-
-DateTime.prototype.format = function(format) {
-  return DateFormat.format(this, format)
-}
-
 DateFormat = {}
 
 DateFormat.parseFunctions = {count: 0}

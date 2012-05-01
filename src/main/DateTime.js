@@ -48,6 +48,14 @@ DateTime.prototype.setMinutes = function(minutes) { this.date.setMinutes(minutes
 
 DateTime.prototype.setMilliseconds = function(ms) { this.date.setMilliseconds(ms) }
 
+DateTime.parse = function(input, format, localeOrEmpty) {
+  return DateFormat.parse(input, format, localeOrEmpty)
+}
+
+DateTime.prototype.format = function(format) {
+  return DateFormat.format(this, format)
+}
+
 DateTime.DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 DateTime.SECOND = 1000
 DateTime.MINUTE = 60 * DateTime.SECOND
