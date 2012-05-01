@@ -15,20 +15,20 @@ DateFormat = {}
 
 DateFormat.parseFunctions = {count: 0}
 DateFormat.parseRegexes = []
-DateTime.formatFunctions = {count: 0}
+DateFormat.formatFunctions = {count: 0}
 
 //TODO refactor next three functions
 DateTime.prototype.format = function(format) {
-  if(DateTime.formatFunctions[format] == null) {
+  if(DateFormat.formatFunctions[format] == null) {
     this.createNewFormat(format)
   }
-  var func = DateTime.formatFunctions[format]
+  var func = DateFormat.formatFunctions[format]
   return this[func]()
 }
 
 DateTime.prototype.createNewFormat = function(format) {
-  var funcName = "format" + DateTime.formatFunctions.count++
-  DateTime.formatFunctions[format] = funcName
+  var funcName = "format" + DateFormat.formatFunctions.count++
+  DateFormat.formatFunctions[format] = funcName
   var code = "DateTime.prototype." + funcName + " = function(){return "
   var special = false
   var ch = ''
