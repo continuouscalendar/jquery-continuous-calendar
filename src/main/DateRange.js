@@ -97,8 +97,8 @@ DateRange.prototype = {
   hasEndsOnWeekend: function() { return this.start.isWeekend() || this.end.isWeekend() },
 
   withTimes: function(startTimeStr, endTimeStr) {
-    var parsedStartTime = DateTime.parseTime(startTimeStr)
-    var parsedEndTime = DateTime.parseTime(endTimeStr)
+    var parsedStartTime = DateFormat.parseTime(startTimeStr)
+    var parsedEndTime = DateFormat.parseTime(endTimeStr)
     var rangeWithTimes = this.clone()
     if(parsedStartTime && parsedEndTime) {
       rangeWithTimes._valid = true

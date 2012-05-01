@@ -48,13 +48,9 @@ DateTime.prototype.setMinutes = function(minutes) { this.date.setMinutes(minutes
 
 DateTime.prototype.setMilliseconds = function(ms) { this.date.setMilliseconds(ms) }
 
-DateTime.parse = function(input, format, localeOrEmpty) {
-  return DateFormat.parse(input, format, localeOrEmpty)
-}
+DateTime.parse = function(input, format, localeOrEmpty) { return DateFormat.parse(input, format, localeOrEmpty) }
 
-DateTime.prototype.format = function(format) {
-  return DateFormat.format(this, format)
-}
+DateTime.prototype.format = function(format) { return DateFormat.format(this, format) }
 
 DateTime.DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 DateTime.SECOND = 1000
@@ -183,7 +179,6 @@ DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
   if(firstDay > THU) {
     week--
   }
-
   return week
 }
 
@@ -198,7 +193,6 @@ DateTime.prototype.getFirstDateOfWeek = function() {
       return this.clone()
     }
   }
-
 }
 
 DateTime.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
@@ -318,59 +312,4 @@ String.leftPad = function(val, size, ch) {
 
 DateTime.daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 DateTime.y2kYear = 50
-DateTime.monthNumbers = {
-  Jan: 0,
-  Feb: 1,
-  Mar: 2,
-  Apr: 3,
-  May: 4,
-  Jun: 5,
-  Jul: 6,
-  Aug: 7,
-  Sep: 8,
-  Oct: 9,
-  Nov: 10,
-  Dec: 11}
-DateTime.patterns = {
-  ISO8601LongPattern: "Y-m-d H:i:s",
-  ISO8601ShortPattern: "Y-m-d",
-  ShortDatePattern: "n/j/Y",
-  FiShortDatePattern: "j.n.Y",
-  FiWeekdayDatePattern: "D j.n.Y",
-  FiWeekdayDateTimePattern: "D j.n.Y k\\lo G:i",
-  LongDatePattern: "l, F d, Y",
-  FullDateTimePattern: "l, F d, Y g:i:s A",
-  MonthDayPattern: "F d",
-  ShortTimePattern: "g:i A",
-  LongTimePattern: "g:i:s A",
-  SortableDateTimePattern: "Y-m-d\\TH:i:s",
-  UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
-  YearMonthPattern: "F, Y"
-}
-DateTime.parseTime = function(timeStr) {
-  var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
-  var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)]
-  return (isHour(time[0]) && isMinute(time[1])) ? time : null
-
-  function splitTime(timeStr) {
-    if(timeStr.indexOf('.') != -1) {
-      return  timeStr.split('.')
-    }
-    switch(timeStr.length) {
-      case 4:
-        return [timeStr.slice(0, 2) , timeStr.slice(2, 4)]
-      case 3:
-        return [timeStr.slice(0, 1) , timeStr.slice(1, 3)]
-      case 2:
-        return [timeStr, 0]
-      default:
-        return [-1, -1]
-    }
-  }
-
-  function isMinute(minutes) { return !isNaN(minutes) && minutes >= 0 && minutes <= 59 }
-
-  function isHour(hours) { return !isNaN(hours) && hours >= 0 && hours <= 23 }
-}
-
-
+DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 }
