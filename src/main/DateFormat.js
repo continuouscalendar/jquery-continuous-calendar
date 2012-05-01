@@ -39,14 +39,14 @@ DateTime.prototype.createNewFormat = function(format) {
         special = false
         code += "'" + String.escape(ch) + "' + "
       } else {
-        code += this.getFormatCode(ch)
+        code += DateTime.getFormatCode.call(this, ch)
       }
     }
   }
   eval(code.substring(0, code.length - 3) + ";}")
 }
 
-DateTime.prototype.getFormatCode = function(character) {
+DateTime.getFormatCode = function(character) {
   switch(character) {
     case "d":
       return "String.leftPad(this.getDate(), 2, '0') + "
