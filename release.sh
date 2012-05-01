@@ -1,5 +1,5 @@
 #!/bin/bash
-BUILD_PREFIX=build/jquery.continuous-calendar
+BUILD_PREFIX=build/jquery.continuousCalendar
 LATEST_JS=$BUILD_PREFIX-latest.js
 LATEST_JS_MIN=$BUILD_PREFIX-latest-min.js
 LATEST_CSS=$BUILD_PREFIX-latest.css
@@ -14,7 +14,7 @@ echo "$.continuousCalendar = {};$.continuousCalendar.version = '$version';$.cont
 find src/main -name *.js |xargs cat >>$LATEST_JS
 echo "Compressing js..."
 java -jar yuicompressor-2.4.6.jar --type js $LATEST_JS -o $LATEST_JS_MIN
-cp src/main/jquery.continuous-calendar.css $LATEST_CSS
+cp src/main/jquery.continuousCalendar.css $LATEST_CSS
 echo "Compressing css..."
 java -jar yuicompressor-2.4.6.jar --type css $LATEST_CSS -o $LATEST_CSS_MIN
 if [ "$version" = "" ]

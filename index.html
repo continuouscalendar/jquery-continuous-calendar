@@ -12,8 +12,8 @@
         content="Jquery continuous calendar. A JavaScript Calendar component and date picker for selecting dates and date ranges."/>
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css"/>
   <link rel="stylesheet" type="text/css" href="site/styles.css"/>
-  <link rel="stylesheet" href="build/jquery.continuous-calendar-latest-min.css" type="text/css" media="all"/>
-  <!--<link rel="stylesheet" href="src/main/jquery.continuous-calendar.css" type="text/css" media="all"/>-->
+  <link rel="stylesheet" href="build/jquery.continuousCalendar-latest-min.css" type="text/css" media="all"/>
+  <!--<link rel="stylesheet" href="src/main/jquery.continuousCalendar.css" type="text/css" media="all"/>-->
   <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
   <script src="http://shjs.sourceforge.net/sh_main.min.js"></script>
   <meta content="Jquery continuous calendar. A JavaScript Calendar component and date picker for selecting dates and date ranges." name="description"/>
@@ -35,7 +35,7 @@
 <ul class="navi section">
   <li><span>Home</span></li>
   <li><a href="site/playground.html">Playground</a></li>
-  <li><a href="src/test/jquery.continuous-calendar-test.html">Jasmine tests</a></li>
+  <li><a href="src/test/jquery.continuousCalendar.spec.html">Jasmine tests</a></li>
   <li><a href="https://github.com/reaktor/jquery-continuous-calendar">Project in Github</a></li>
   <li><a href="http://github.com/reaktor/jquery-continuous-calendar/zipball/master">Download ZIP</a></li>
 </ul>
@@ -194,8 +194,8 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
     <dt>selectToday <span class="default">false</span> <span class="type">Boolean</span></dt>
     <dd>True, of current date is to be chosen, even if input field is empty.</dd>
 
-    <dt>locale <span class="default">DATE_LOCALE_EN</span> <span class="type">Object</span></dt>
-    <dd>Specifies locale for rendering calendar and parsing input fields. Currently DATE_LOCALE_EN and DATE_LOCALE_FI are found in global namespace.</dd>
+    <dt>locale <span class="default">Locale.EN</span> <span class="type">Object</span></dt>
+    <dd>Specifies locale for rendering calendar and parsing input fields. Currently Locale.EN and DATE_LOCALE_FI are found in global namespace.</dd>
 
     <dt>disableWeekends <span class="default">false</span> <span class="type">Boolean</span></dt>
     <dd>True if weekends are disabled.</dd>
@@ -247,11 +247,11 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
 <script type="text/javascript" src="src/lib/jquery-1.6.js"></script>
 <!--
 <script type="text/javascript" src="src/main/DateTime.js" charset="UTF-8"></script>
-<script type="text/javascript" src="src/main/Locale.js" charset="UTF-8"></script>
+<script type="text/javascript" src="src/main/DateLocale.js" charset="UTF-8"></script>
 <script type="text/javascript" src="src/main/DateRange.js" charset="UTF-8"></script>
-<script type="text/javascript" src="src/main/jquery.continuous-calendar.js" charset="UTF-8"></script>
+<script type="text/javascript" src="src/main/jquery.continuousCalendar.js" charset="UTF-8"></script>
 -->
-<script type="text/javascript" src="build/jquery.continuous-calendar-latest-min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="build/jquery.continuousCalendar-latest.js" charset="UTF-8"></script>
 
 <script type="text/javascript" language="JavaScript">
   $("#timeCalendar").continuousCalendar({weeksBefore: 30, lastDate: "today", selectToday: true});
@@ -261,7 +261,7 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
     var endTime = container.find('select[name=tripEndTime]').val();
     var range = container.calendarRange();
     range = range.withTimes(startTime, endTime);
-    container.find('.totalTimeOfTrip').text(range.toString(DATE_LOCALE_EN)).toggleClass('invalid', !range.isValid());
+    container.find('.totalTimeOfTrip').text(range.toString(Locale.EN)).toggleClass('invalid', !range.isValid());
   });
   $("#timeCalendar select").bind('change', function() {
     $("#timeCalendar").trigger('calendarChange');
