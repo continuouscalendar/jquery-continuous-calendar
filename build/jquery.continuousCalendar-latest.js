@@ -12,22 +12,29 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
  * details.
  */
 
+DateTime.parse = function(input, format, localeOrEmpty) {
+  return DateFormat.parse(input, format, localeOrEmpty)
+}
+
+DateTime.prototype.format = function(format) {
+  return DateFormat.format(this, format)
+}
+
 DateFormat = {}
 
 DateFormat.parseFunctions = {count: 0}
 DateFormat.parseRegexes = []
 DateFormat.formatFunctions = {count: 0}
 
-//TODO refactor next three functions
-DateTime.prototype.format = function(format) {
+DateFormat.format = function(dateTime, format) {
   if(DateFormat.formatFunctions[format] == null) {
-    this.createNewFormat(format)
+    DateFormat.createNewFormat(dateTime, format)
   }
   var func = DateFormat.formatFunctions[format]
-  return this[func]()
+  return dateTime[func]()
 }
 
-DateTime.prototype.createNewFormat = function(format) {
+DateFormat.createNewFormat = function(dateTime, format) {
   var funcName = "format" + DateFormat.formatFunctions.count++
   DateFormat.formatFunctions[format] = funcName
   var code = "DateTime.prototype." + funcName + " = function(){return "
@@ -42,14 +49,14 @@ DateTime.prototype.createNewFormat = function(format) {
         special = false
         code += "'" + String.escape(ch) + "' + "
       } else {
-        code += DateTime.getFormatCode.call(this, ch)
+        code += DateFormat.getFormatCode.call(dateTime, ch)
       }
     }
   }
   eval(code.substring(0, code.length - 3) + ";}")
 }
 
-DateTime.getFormatCode = function(character) {
+DateFormat.getFormatCode = function(character) {
   switch(character) {
     case "d":
       return "String.leftPad(this.getDate(), 2, '0') + "
@@ -108,11 +115,6 @@ DateTime.getFormatCode = function(character) {
     default:
       return "'" + String.escape(character) + "' + "
   }
-}
-
-
-DateTime.parse = function(input, format, localeOrEmpty) {
-  return DateFormat.parse(input, format, localeOrEmpty)
 }
 
 DateFormat.parse = function(input, format, localeOrEmpty) {
