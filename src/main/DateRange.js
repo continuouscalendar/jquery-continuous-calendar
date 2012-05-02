@@ -118,7 +118,7 @@ DateRange.prototype = {
     if(this._hasTimes) {
       return  this.locale.daysLabel(this.days()) + ' ' + this.locale.hoursLabel(this.hours(), this.minutes())
     } else {
-      return this.start.format(this.locale.shortDateFormat) + ' - ' + this.end.format(this.locale.shortDateFormat)
+      return DateFormat.format(this.start, this.locale.shortDateFormat) + ' - ' + DateFormat.format(this.end, this.locale.shortDateFormat)
     }
   },
 
