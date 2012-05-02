@@ -332,7 +332,7 @@ describe('jquery.continuous-calendar', function() {
     })
 
     it('month and day names are localizable', function() {
-      createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1.1.2009', lastDate: '31.12.2009', locale: Locale.FI})
+      createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009', locale: Locale.FI})
       assertHasValues('.continuousCalendar thead th.weekDay', ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'])
       assertHasValues('.monthName', [
         'joulukuu',
