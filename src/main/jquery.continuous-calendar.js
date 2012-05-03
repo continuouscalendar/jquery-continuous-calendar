@@ -143,7 +143,7 @@
           initEvents: function() {
             initSingleDateCalendarEvents()
             var selectedDateKey = startDate && startDate.dateFormat('Ymd')
-            if(dateCellMap[selectedDateKey]) {
+            if(selectedDateKey in dateCellMap) {
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
           },
