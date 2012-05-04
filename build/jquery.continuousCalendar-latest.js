@@ -18,15 +18,19 @@ DateFormat.parseFunctions = {count: 0}
 DateFormat.parseRegexes = []
 DateFormat.formatFunctions = {count: 0}
 
-DateFormat.format = function(dateTime, format) {
+DateFormat.format = function(dateTime, format, locale) {
   if(DateFormat.formatFunctions[format] == null) {
-    DateFormat.createNewFormat(dateTime, format)
+    DateFormat.createNewFormat(dateTime, format, locale)
   }
   var func = DateFormat.formatFunctions[format]
   return dateTime[func]()
 }
 
-DateFormat.createNewFormat = function(dateTime, format) {
+DateFormat.shortDateFormat = function(dateTime, locale) {
+  return DateFormat.format(dateTime, locale.shortDateFormat, locale)
+}
+
+DateFormat.createNewFormat = function(dateTime, format, locale) {
   var funcName = "format" + DateFormat.formatFunctions.count++
   DateFormat.formatFunctions[format] = funcName
   var code = "DateTime.prototype." + funcName + " = function(){return "
@@ -41,23 +45,23 @@ DateFormat.createNewFormat = function(dateTime, format) {
         special = false
         code += "'" + String.escape(ch) + "' + "
       } else {
-        code += DateFormat.getFormatCode.call(dateTime, ch)
+        code += DateFormat.getFormatCode(ch, locale)
       }
     }
   }
   eval(code.substring(0, code.length - 3) + ";}")
 }
 
-DateFormat.getFormatCode = function(character) {
+DateFormat.getFormatCode = function(character, locale) {
   switch(character) {
     case "d":
       return "String.leftPad(this.getDate(), 2, '0') + "
     case "D":
-      return "this.locale.dayNames[this.getDay()].substring(0, 3) + "
+      return "locale.dayNames[this.getDay()].substring(0, 3) + "
     case "j":
       return "this.getDate() + "
     case "l":
-      return "this.locale.dayNames[this.getDay()] + "
+      return "locale.dayNames[this.getDay()] + "
     case "S":
       return "this.getSuffix() + "
     case "w":
@@ -67,11 +71,11 @@ DateFormat.getFormatCode = function(character) {
     case "W":
       return "this.getWeekOfYear() + "
     case "F":
-      return "this.locale.monthNames[this.getMonth()] + "
+      return "locale.monthNames[this.getMonth()] + "
     case "m":
       return "String.leftPad(this.getMonth() + 1, 2, '0') + "
     case "M":
-      return "this.locale.monthNames[this.getMonth()].substring(0, 3) + "
+      return "locale.monthNames[this.getMonth()].substring(0, 3) + "
     case "n":
       return "(this.getMonth() + 1) + "
     case "t":
@@ -111,7 +115,7 @@ DateFormat.getFormatCode = function(character) {
 
 DateFormat.parse = function(input, locale) {
   if(input == 'today') {
-    return DateTime.now().withLocale(locale)
+    return DateTime.now()
   }
   var date = new Date(input);
   if(isNaN(date.getTime())) {
@@ -326,8 +330,8 @@ function DateRange(date1, date2, locale) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
   this.locale = Locale.fromArgument(locale)
-  this.start = (date1.compareTo(date2) > 0 ? date2 : date1).withLocale(this.locale)
-  this.end = (date1.compareTo(date2) > 0 ? date1 : date2).withLocale(this.locale)
+  this.start = (date1.compareTo(date2) > 0 ? date2 : date1)
+  this.end = (date1.compareTo(date2) > 0 ? date1 : date2)
   this._days = 0
   this._hours = 0
   this._minutes = 0
@@ -427,7 +431,7 @@ DateRange.prototype = {
     if(this._hasTimes) {
       return  this.locale.daysLabel(this.days()) + ' ' + this.locale.hoursLabel(this.hours(), this.minutes())
     } else {
-      return DateFormat.format(this.start, this.locale.shortDateFormat) + ' - ' + DateFormat.format(this.end, this.locale.shortDateFormat)
+      return DateFormat.shortDateFormat(this.start, this.locale) + ' - ' + DateFormat.shortDateFormat(this.end, this.locale)
     }
   },
 
@@ -521,10 +525,9 @@ DateRange = $.extend(DateRange, {
  * @author Eero Anttila (eeroan)
  */
 
-DateTime = function(date, locale) {
+DateTime = function(date) {
   if(typeof date == 'string') this.date = new Date(date)
   else this.date = date || new Date()
-  this.locale = Locale.fromArgument(locale)
 }
 
 DateTime.prototype.getTime = function() { return this.date.getTime() }
@@ -563,10 +566,6 @@ DateTime.now = function() {
     DateTime._now = new DateTime()
   }
   return DateTime._now
-}
-
-DateTime.prototype.withLocale = function(locale) {
-  return new DateTime(this.date, Locale.fromArgument(locale))
 }
 
 DateTime.getDaysInMonth = function(year, month) {
@@ -688,7 +687,7 @@ DateTime.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
 }
 
 //TODO refactor
-DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime()), this.locale) }
+DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime())) }
 
 DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 != 0 }
 
@@ -845,7 +844,7 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
       }
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
-      var today = DateTime.now().withLocale(params.locale)
+      var today = DateTime.now()
 
       if(params.selectToday) {
         var formattedToday = formatDate(today)
@@ -939,12 +938,12 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
         var singleDateVersion = {
           showInitialSelection: function() {
             if(params.startField.val()) {
-              setDateLabel(DateFormat.format(DateFormat.parse(params.startField.val()), params.locale.weekDateFormat))
+              setDateLabel(DateFormat.format(DateFormat.parse(params.startField.val()), params.locale.weekDateFormat, params.locale))
             }
           },
           initEvents: function() {
             initSingleDateCalendarEvents()
-            var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd')
+            var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd', params.locale)
             if(selectedDateKey in dateCellMap) {
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
@@ -994,7 +993,7 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
       }
 
       function highlightToday() {
-        var todayKey = DateFormat.format(today, 'Ymd')
+        var todayKey = DateFormat.format(today, 'Ymd', params.locale)
         if(todayKey in dateCellMap) {
           getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
         }
@@ -1104,7 +1103,7 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
 
       function dateCell(date) {
         var dateCell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '">' + date.getDate() + '</td>'
-        dateCellMap[DateFormat.format(date, 'Ymd')] = dateCellDates.length
+        dateCellMap[DateFormat.format(date, 'Ymd', params.locale)] = dateCellDates.length
         dateCellDates.push(date)
         return dateCell
       }
@@ -1147,8 +1146,8 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
           $('td.selected', container).removeClass('selected')
           dateCell.addClass('selected')
           var selectedDate = getElemDate(dateCell.get(0));
-          params.startField.val(DateFormat.format(selectedDate, params.locale.shortDateFormat))
-          setDateLabel(DateFormat.format(selectedDate, params.locale.weekDateFormat))
+          params.startField.val(DateFormat.shortDateFormat(selectedDate, params.locale))
+          setDateLabel(DateFormat.format(selectedDate, params.locale.weekDateFormat, params.locale))
           calendar.close(this)
           executeCallback(selectedDate)
         })
@@ -1274,8 +1273,8 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
 
       function iterateAndToggleCells(range) {
         if(range.days() == 0) return
-        var startIndex = dateCellMap[DateFormat.format(range.start, 'Ymd')]
-        var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd')]
+        var startIndex = dateCellMap[DateFormat.format(range.start, 'Ymd', params.locale)]
+        var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd', params.locale)]
         for(var i = startIndex; i <= endIndex; i++) {
           setDateCellStyle(i, range.start, range.end)
         }
@@ -1315,8 +1314,8 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
       function setRangeLabels() {
         if(selection.start && selection.end) {
           var format = params.locale.weekDateFormat
-          $('span.startDateLabel', container).text(DateFormat.format(selection.start, format))
-          $('span.endDateLabel', container).text(DateFormat.format(selection.end, format))
+          $('span.startDateLabel', container).text(DateFormat.format(selection.start, format, params.locale))
+          $('span.endDateLabel', container).text(DateFormat.format(selection.end, format, params.locale))
           $('span.separator', container).show()
         } else {
           $('span.separator', container).hide()
@@ -1362,7 +1361,7 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
 
       function setEndField(value) { params.endField.val(value) }
 
-      function formatDate(date) { return DateFormat.format(date, params.locale.shortDateFormat) }
+      function formatDate(date) { return DateFormat.shortDateFormat(date, params.locale) }
 
       function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
 

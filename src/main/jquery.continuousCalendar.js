@@ -346,7 +346,7 @@
           $('td.selected', container).removeClass('selected')
           dateCell.addClass('selected')
           var selectedDate = getElemDate(dateCell.get(0));
-          params.startField.val(DateFormat.format(selectedDate, params.locale.shortDateFormat, params.locale))
+          params.startField.val(DateFormat.shortDateFormat(selectedDate, params.locale))
           setDateLabel(DateFormat.format(selectedDate, params.locale.weekDateFormat, params.locale))
           calendar.close(this)
           executeCallback(selectedDate)
@@ -561,7 +561,7 @@
 
       function setEndField(value) { params.endField.val(value) }
 
-      function formatDate(date) { return DateFormat.format(date, params.locale.shortDateFormat, params.locale) }
+      function formatDate(date) { return DateFormat.shortDateFormat(date, params.locale) }
 
       function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
 

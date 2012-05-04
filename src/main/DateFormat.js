@@ -25,6 +25,10 @@ DateFormat.format = function(dateTime, format, locale) {
   return dateTime[func]()
 }
 
+DateFormat.shortDateFormat = function(dateTime, locale) {
+  return DateFormat.format(dateTime, locale.shortDateFormat, locale)
+}
+
 DateFormat.createNewFormat = function(dateTime, format, locale) {
   var funcName = "format" + DateFormat.formatFunctions.count++
   DateFormat.formatFunctions[format] = funcName
