@@ -18,6 +18,8 @@ Locale.FRIDAY = 5
 Locale.SUNDAY = 0
 Locale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
+
+
 Locale.FI = {
   id: 'FI',
   monthNames: [
@@ -44,7 +46,10 @@ Locale.FI = {
   shortDateFormat: 'j.n.Y',
   weekDateFormat: 'D j.n.Y',
   dateTimeFormat: 'D j.n.Y k\\lo G:i',
-  firstWeekday: Locale.MONDAY
+  firstWeekday: Locale.MONDAY,
+  getFirstDateOfWeek: function(dateTime) {
+    return Locale.getFirstDateOfWeek(dateTime, Locale.MONDAY)
+  }
 }
 Locale.EN = {
   id: 'EN',
@@ -77,7 +82,10 @@ Locale.EN = {
   shortDateFormat: 'n/j/Y',
   weekDateFormat: 'D n/j/Y',
   dateTimeFormat: 'D n/j/Y G:i',
-  firstWeekday: Locale.SUNDAY
+  firstWeekday: Locale.SUNDAY,
+  getFirstDateOfWeek: function(dateTime) {
+    return Locale.getFirstDateOfWeek(dateTime, Locale.SUNDAY)
+  }
 };
 Locale.AU = {
   id: 'AU',
@@ -110,9 +118,25 @@ Locale.AU = {
   shortDateFormat: 'j/n/Y',
   weekDateFormat: 'D j/n/Y',
   dateTimeFormat: 'D j/n/Y G:i',
-  firstWeekday: Locale.SUNDAY
+  firstWeekday: Locale.SUNDAY,
+  getFirstDateOfWeek: function(dateTime) {
+    return Locale.getFirstDateOfWeek(dateTime, Locale.SUNDAY)
+  }
 }
 Locale.DEFAULT = Locale.EN
+
+Locale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
+  if(firstWeekday < dateTime.getDay()) {
+    return dateTime.plusDays(firstWeekday - dateTime.getDay())
+  } else {
+    if(firstWeekday > dateTime.getDay()) {
+      return dateTime.plusDays(firstWeekday - dateTime.getDay() - 7)
+    } else {
+      return dateTime.clone()
+    }
+  }
+}
+
 
 Locale.fromArgument = function(stringOrObject) {
   if(typeof stringOrObject == 'string')

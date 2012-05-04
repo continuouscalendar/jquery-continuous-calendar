@@ -79,7 +79,7 @@ describe('jquery.continuous-calendar', function() {
       createCalendarFields().continuousCalendar({weeksBefore: 0, weeksAfter: 0})
       expect(cal().find('.date').size()).toEqual(7)
       var weekDays = []
-      var firstDay = DateTime.now().getFirstDateOfWeek()
+      var firstDay = Locale.EN.getFirstDateOfWeek(DateTime.now())
       for(var i = 0; i < 7; i++) {
         weekDays.push(firstDay.plusDays(i).getDate())
       }

@@ -178,19 +178,6 @@ DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
   return week
 }
 
-DateTime.prototype.getFirstDateOfWeek = function() {
-  var firstDayOfWeek = this.locale.firstWeekday
-  if(firstDayOfWeek < this.getDay()) {
-    return this.plusDays(firstDayOfWeek - this.getDay())
-  } else {
-    if(firstDayOfWeek > this.getDay()) {
-      return this.plusDays(firstDayOfWeek - this.getDay() - 7)
-    } else {
-      return this.clone()
-    }
-  }
-}
-
 DateTime.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
   var thisFirst = this.getFirstDateTimeOfWeek(firstDayOfWeek)
   var lastFirst = thisFirst.plusDays(-7)

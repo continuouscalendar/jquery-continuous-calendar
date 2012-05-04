@@ -53,7 +53,7 @@
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = (startDate || today).getFirstDateOfWeek()
+      var firstWeekdayOfGivenDate = params.locale.getFirstDateOfWeek(startDate || today)
       var container = this,
         dateCells = [],
         dateCellDates = [],
@@ -243,6 +243,7 @@
         var tr = $('<tr>').append(yearCell())
         tr.append($('<th class="week">&nbsp;</th>'))
         $(params.locale.dayNames).each(function(index) {
+          //TODO move to Locale
           var weekDay = $('<th>').append(params.locale.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
           tr.append(weekDay)
         })
@@ -278,7 +279,7 @@
       }
 
       function calendarBody() {
-        var firstWeekDay = calendarRange.start.getFirstDateOfWeek()
+        var firstWeekDay = params.locale.getFirstDateOfWeek(calendarRange.start)
         var isFirst = true;
         var rows = []
         while(firstWeekDay.compareTo(calendarRange.end) <= 0) {

@@ -182,6 +182,8 @@ Locale.FRIDAY = 5
 Locale.SUNDAY = 0
 Locale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
+
+
 Locale.FI = {
   id: 'FI',
   monthNames: [
@@ -208,7 +210,10 @@ Locale.FI = {
   shortDateFormat: 'j.n.Y',
   weekDateFormat: 'D j.n.Y',
   dateTimeFormat: 'D j.n.Y k\\lo G:i',
-  firstWeekday: Locale.MONDAY
+  firstWeekday: Locale.MONDAY,
+  getFirstDateOfWeek: function(dateTime) {
+    return Locale.getFirstDateOfWeek(dateTime, Locale.MONDAY)
+  }
 }
 Locale.EN = {
   id: 'EN',
@@ -241,7 +246,10 @@ Locale.EN = {
   shortDateFormat: 'n/j/Y',
   weekDateFormat: 'D n/j/Y',
   dateTimeFormat: 'D n/j/Y G:i',
-  firstWeekday: Locale.SUNDAY
+  firstWeekday: Locale.SUNDAY,
+  getFirstDateOfWeek: function(dateTime) {
+    return Locale.getFirstDateOfWeek(dateTime, Locale.SUNDAY)
+  }
 };
 Locale.AU = {
   id: 'AU',
@@ -274,15 +282,32 @@ Locale.AU = {
   shortDateFormat: 'j/n/Y',
   weekDateFormat: 'D j/n/Y',
   dateTimeFormat: 'D j/n/Y G:i',
-  firstWeekday: Locale.SUNDAY
+  firstWeekday: Locale.SUNDAY,
+  getFirstDateOfWeek: function(dateTime) {
+    return Locale.getFirstDateOfWeek(dateTime, Locale.SUNDAY)
+  }
 }
 Locale.DEFAULT = Locale.EN
+
+Locale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
+  if(firstWeekday < dateTime.getDay()) {
+    return dateTime.plusDays(firstWeekday - dateTime.getDay())
+  } else {
+    if(firstWeekday > dateTime.getDay()) {
+      return dateTime.plusDays(firstWeekday - dateTime.getDay() - 7)
+    } else {
+      return dateTime.clone()
+    }
+  }
+}
+
 
 Locale.fromArgument = function(stringOrObject) {
   if(typeof stringOrObject == 'string')
     return Locale[stringOrObject]
   else return stringOrObject || Locale.DEFAULT
-}/* ==============================================================================
+}
+/* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
@@ -656,19 +681,6 @@ DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
   return week
 }
 
-DateTime.prototype.getFirstDateOfWeek = function() {
-  var firstDayOfWeek = this.locale.firstWeekday
-  if(firstDayOfWeek < this.getDay()) {
-    return this.plusDays(firstDayOfWeek - this.getDay())
-  } else {
-    if(firstDayOfWeek > this.getDay()) {
-      return this.plusDays(firstDayOfWeek - this.getDay() - 7)
-    } else {
-      return this.clone()
-    }
-  }
-}
-
 DateTime.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
   var thisFirst = this.getFirstDateTimeOfWeek(firstDayOfWeek)
   var lastFirst = thisFirst.plusDays(-7)
@@ -842,7 +854,7 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = (startDate || today).getFirstDateOfWeek()
+      var firstWeekdayOfGivenDate = params.locale.getFirstDateOfWeek(startDate || today)
       var container = this,
         dateCells = [],
         dateCellDates = [],
@@ -1032,6 +1044,7 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
         var tr = $('<tr>').append(yearCell())
         tr.append($('<th class="week">&nbsp;</th>'))
         $(params.locale.dayNames).each(function(index) {
+          //TODO move to Locale
           var weekDay = $('<th>').append(params.locale.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
           tr.append(weekDay)
         })
@@ -1067,7 +1080,7 @@ DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6
       }
 
       function calendarBody() {
-        var firstWeekDay = calendarRange.start.getFirstDateOfWeek()
+        var firstWeekDay = params.locale.getFirstDateOfWeek(calendarRange.start)
         var isFirst = true;
         var rows = []
         while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
