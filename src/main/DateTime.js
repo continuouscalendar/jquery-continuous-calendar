@@ -18,10 +18,9 @@
  * @author Eero Anttila (eeroan)
  */
 
-DateTime = function(date, locale) {
+DateTime = function(date) {
   if(typeof date == 'string') this.date = new Date(date)
   else this.date = date || new Date()
-  this.locale = Locale.fromArgument(locale)
 }
 
 DateTime.prototype.getTime = function() { return this.date.getTime() }
@@ -60,10 +59,6 @@ DateTime.now = function() {
     DateTime._now = new DateTime()
   }
   return DateTime._now
-}
-
-DateTime.prototype.withLocale = function(locale) {
-  return new DateTime(this.date, Locale.fromArgument(locale))
 }
 
 DateTime.getDaysInMonth = function(year, month) {
@@ -185,7 +180,7 @@ DateTime.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
 }
 
 //TODO refactor
-DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime()), this.locale) }
+DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime())) }
 
 DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 != 0 }
 

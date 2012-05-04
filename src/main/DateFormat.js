@@ -17,15 +17,15 @@ DateFormat.parseFunctions = {count: 0}
 DateFormat.parseRegexes = []
 DateFormat.formatFunctions = {count: 0}
 
-DateFormat.format = function(dateTime, format) {
+DateFormat.format = function(dateTime, format, locale) {
   if(DateFormat.formatFunctions[format] == null) {
-    DateFormat.createNewFormat(dateTime, format)
+    DateFormat.createNewFormat(dateTime, format, locale)
   }
   var func = DateFormat.formatFunctions[format]
   return dateTime[func]()
 }
 
-DateFormat.createNewFormat = function(dateTime, format) {
+DateFormat.createNewFormat = function(dateTime, format, locale) {
   var funcName = "format" + DateFormat.formatFunctions.count++
   DateFormat.formatFunctions[format] = funcName
   var code = "DateTime.prototype." + funcName + " = function(){return "
@@ -40,23 +40,23 @@ DateFormat.createNewFormat = function(dateTime, format) {
         special = false
         code += "'" + String.escape(ch) + "' + "
       } else {
-        code += DateFormat.getFormatCode.call(dateTime, ch)
+        code += DateFormat.getFormatCode(ch, locale)
       }
     }
   }
   eval(code.substring(0, code.length - 3) + ";}")
 }
 
-DateFormat.getFormatCode = function(character) {
+DateFormat.getFormatCode = function(character, locale) {
   switch(character) {
     case "d":
       return "String.leftPad(this.getDate(), 2, '0') + "
     case "D":
-      return "this.locale.dayNames[this.getDay()].substring(0, 3) + "
+      return "locale.dayNames[this.getDay()].substring(0, 3) + "
     case "j":
       return "this.getDate() + "
     case "l":
-      return "this.locale.dayNames[this.getDay()] + "
+      return "locale.dayNames[this.getDay()] + "
     case "S":
       return "this.getSuffix() + "
     case "w":
@@ -66,11 +66,11 @@ DateFormat.getFormatCode = function(character) {
     case "W":
       return "this.getWeekOfYear() + "
     case "F":
-      return "this.locale.monthNames[this.getMonth()] + "
+      return "locale.monthNames[this.getMonth()] + "
     case "m":
       return "String.leftPad(this.getMonth() + 1, 2, '0') + "
     case "M":
-      return "this.locale.monthNames[this.getMonth()].substring(0, 3) + "
+      return "locale.monthNames[this.getMonth()].substring(0, 3) + "
     case "n":
       return "(this.getMonth() + 1) + "
     case "t":
@@ -110,7 +110,7 @@ DateFormat.getFormatCode = function(character) {
 
 DateFormat.parse = function(input, locale) {
   if(input == 'today') {
-    return DateTime.now().withLocale(locale)
+    return DateTime.now()
   }
   var date = new Date(input);
   if(isNaN(date.getTime())) {

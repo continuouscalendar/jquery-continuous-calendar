@@ -44,7 +44,7 @@
       }
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
-      var today = DateTime.now().withLocale(params.locale)
+      var today = DateTime.now()
 
       if(params.selectToday) {
         var formattedToday = formatDate(today)
@@ -138,12 +138,12 @@
         var singleDateVersion = {
           showInitialSelection: function() {
             if(params.startField.val()) {
-              setDateLabel(DateFormat.format(DateFormat.parse(params.startField.val()), params.locale.weekDateFormat))
+              setDateLabel(DateFormat.format(DateFormat.parse(params.startField.val()), params.locale.weekDateFormat, params.locale))
             }
           },
           initEvents: function() {
             initSingleDateCalendarEvents()
-            var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd')
+            var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd', params.locale)
             if(selectedDateKey in dateCellMap) {
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
@@ -193,7 +193,7 @@
       }
 
       function highlightToday() {
-        var todayKey = DateFormat.format(today, 'Ymd')
+        var todayKey = DateFormat.format(today, 'Ymd', params.locale)
         if(todayKey in dateCellMap) {
           getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
         }
@@ -303,7 +303,7 @@
 
       function dateCell(date) {
         var dateCell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '">' + date.getDate() + '</td>'
-        dateCellMap[DateFormat.format(date, 'Ymd')] = dateCellDates.length
+        dateCellMap[DateFormat.format(date, 'Ymd', params.locale)] = dateCellDates.length
         dateCellDates.push(date)
         return dateCell
       }
@@ -346,8 +346,8 @@
           $('td.selected', container).removeClass('selected')
           dateCell.addClass('selected')
           var selectedDate = getElemDate(dateCell.get(0));
-          params.startField.val(DateFormat.format(selectedDate, params.locale.shortDateFormat))
-          setDateLabel(DateFormat.format(selectedDate, params.locale.weekDateFormat))
+          params.startField.val(DateFormat.format(selectedDate, params.locale.shortDateFormat, params.locale))
+          setDateLabel(DateFormat.format(selectedDate, params.locale.weekDateFormat, params.locale))
           calendar.close(this)
           executeCallback(selectedDate)
         })
@@ -473,8 +473,8 @@
 
       function iterateAndToggleCells(range) {
         if(range.days() == 0) return
-        var startIndex = dateCellMap[DateFormat.format(range.start, 'Ymd')]
-        var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd')]
+        var startIndex = dateCellMap[DateFormat.format(range.start, 'Ymd', params.locale)]
+        var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd', params.locale)]
         for(var i = startIndex; i <= endIndex; i++) {
           setDateCellStyle(i, range.start, range.end)
         }
@@ -514,8 +514,8 @@
       function setRangeLabels() {
         if(selection.start && selection.end) {
           var format = params.locale.weekDateFormat
-          $('span.startDateLabel', container).text(DateFormat.format(selection.start, format))
-          $('span.endDateLabel', container).text(DateFormat.format(selection.end, format))
+          $('span.startDateLabel', container).text(DateFormat.format(selection.start, format, params.locale))
+          $('span.endDateLabel', container).text(DateFormat.format(selection.end, format, params.locale))
           $('span.separator', container).show()
         } else {
           $('span.separator', container).hide()
@@ -561,7 +561,7 @@
 
       function setEndField(value) { params.endField.val(value) }
 
-      function formatDate(date) { return DateFormat.format(date, params.locale.shortDateFormat) }
+      function formatDate(date) { return DateFormat.format(date, params.locale.shortDateFormat, params.locale) }
 
       function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
 
