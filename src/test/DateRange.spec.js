@@ -26,7 +26,7 @@ describe('DateRange', function() {
       expect(range).toHaveDate('09/11/2009')
       expect(range).toHaveDate('09/12/2009')
       expect(range).not.toHaveDate('09/13/2009')
-      expect(range.toString()).toEqual('10.9.2009 - 12.9.2009')
+      expect(DateFormat.formatRange(range, Locale.FI)).toEqual('10.9.2009 - 12.9.2009')
     })
 
     it('range is movable', function() {
@@ -127,15 +127,15 @@ describe('DateRange', function() {
       expect(rangeWithTimes.days()).toEqual(2)
       expect(rangeWithTimes.hours()).toEqual(4)
       expect(rangeWithTimes.minutes()).toEqual(45)
-      expect(rangeWithTimes.toString()).toEqual('2 päivää 4,75 tuntia')
-      expect(new DateRange(range.start, range.end, Locale.EN).withTimes('10:00', '14:45').toString()).toEqual('2 Days 4.75 Hours')
+      expect(DateFormat.formatRange(rangeWithTimes, Locale.FI)).toEqual('2 päivää 4,75 tuntia')
+      expect(DateFormat.formatRange(new DateRange(range.start, range.end).withTimes('10:00', '14:45'), Locale.EN)).toEqual('2 Days 4.75 Hours')
       var rangeWithPmTimes = range.withTimes('17:00', '16:00')
       expect(rangeWithPmTimes.days()).toEqual(1)
       expect(rangeWithPmTimes.hours()).toEqual(23)
       expect(rangeWithPmTimes.minutes()).toEqual(0)
       range.start = range.start.plusDays(1)
-      expect(range.withTimes('10:00', '11:00').toString()).toEqual('1 päivä 1 tunti')
-      expect(new DateRange(range.start, range.end, Locale.EN).withTimes('10:00', '11:00').toString()).toEqual('1 Day 1 Hour')
+      expect(DateFormat.formatRange(range.withTimes('10:00', '11:00'), Locale.FI)).toEqual('1 päivä 1 tunti')
+      expect(DateFormat.formatRange(new DateRange(range.start, range.end).withTimes('10:00', '11:00'), Locale.EN)).toEqual('1 Day 1 Hour')
     })
 
     it('one day range with start time after end time is not valid', function() {
@@ -182,22 +182,22 @@ describe('DateRange', function() {
     it('minutes are rounded to 2 digits', function() {
       var rangeWithTimes = range.withTimes('15:00', '16:10');
       assertHasCorrectHoursAndMinutes(rangeWithTimes, 1, 10)
-      expect(rangeWithTimes.toString()).toEqual('2 päivää 1,17 tuntia')
+      expect(DateFormat.formatRange(rangeWithTimes, Locale.FI)).toEqual('2 päivää 1,17 tuntia')
     })
 
     it('range is displayed with the most defining unit', function() {
-      range = createRange('01/01/2004', '05/01/2006', 'FI')
-      expect(range).toPrintDefiningDurationOf('2 vuotta')
-      range = createRange('01/01/2004', '05/01/2005', 'FI')
-      expect(range).toPrintDefiningDurationOf('1 vuosi')
-      range = createRange('01/01/2004', '05/01/2004', 'FI')
-      expect(range).toPrintDefiningDurationOf('4 kuukautta')
-      range = createRange('01/01/2004', '02/16/2004', 'FI')
-      expect(range).toPrintDefiningDurationOf('1 kuukausi')
-      range = createRange('01/01/2004', '01/31/2004', 'FI')
-      expect(range).toPrintDefiningDurationOf('1 kuukausi')
-      range = createRange('01/01/2004', '01/07/2004', 'FI')
-      expect(range).toPrintDefiningDurationOf('7 päivää')
+      range = createRange('01/01/2004', '05/01/2006')
+      expect(range).toPrintDefiningDurationOf('2 vuotta', Locale.FI)
+      range = createRange('01/01/2004', '05/01/2005')
+      expect(range).toPrintDefiningDurationOf('1 vuosi', Locale.FI)
+      range = createRange('01/01/2004', '05/01/2004')
+      expect(range).toPrintDefiningDurationOf('4 kuukautta', Locale.FI)
+      range = createRange('01/01/2004', '02/16/2004')
+      expect(range).toPrintDefiningDurationOf('1 kuukausi', Locale.FI)
+      range = createRange('01/01/2004', '01/31/2004')
+      expect(range).toPrintDefiningDurationOf('1 kuukausi', Locale.FI)
+      range = createRange('01/01/2004', '01/07/2004')
+      expect(range).toPrintDefiningDurationOf('7 päivää', Locale.FI)
     })
   })
 
@@ -208,9 +208,9 @@ describe('DateRange', function() {
   }
 
   function resetRange() {
-    start = new DateTime('09/10/2009', Locale.FI)
-    end = new DateTime('09/12/2009', Locale.FI)
-    range = new DateRange(end, start, Locale.FI)
+    start = new DateTime('09/10/2009')
+    end = new DateTime('09/12/2009')
+    range = new DateRange(end, start)
   }
 
   function resetOuterRange() {
@@ -219,8 +219,8 @@ describe('DateRange', function() {
     outerRange = new DateRange(start, end)
   }
 
-  function createRange(date1, date2, locale) {
-    return new DateRange(new DateTime(date1), new DateTime(date2), locale)
+  function createRange(date1, date2) {
+    return new DateRange(new DateTime(date1), new DateTime(date2))
   }
 })
 

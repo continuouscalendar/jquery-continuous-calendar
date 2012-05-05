@@ -261,7 +261,7 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
     var endTime = container.find('select[name=tripEndTime]').val();
     var range = container.calendarRange();
     range = range.withTimes(startTime, endTime);
-    container.find('.totalTimeOfTrip').text(range.toString(Locale.EN)).toggleClass('invalid', !range.isValid());
+    container.find('.totalTimeOfTrip').text(DateFormat.formatRange(range, Locale.EN)).toggleClass('invalid', !range.isValid());
   });
   $("#timeCalendar select").bind('change', function() {
     $("#timeCalendar").trigger('calendarChange');

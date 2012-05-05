@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2012-05-04'
+$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2012-05-05'
 /*
  * Copyright (C) 2004 Baron Schwartz <baron at sequent dot org>
  *
@@ -28,6 +28,81 @@ DateFormat.format = function(dateTime, format, locale) {
 
 DateFormat.shortDateFormat = function(dateTime, locale) {
   return DateFormat.format(dateTime, locale.shortDateFormat, locale)
+}
+
+DateFormat.formatRange = function(dateRange, locale) {
+  if(dateRange._hasTimes) {
+    return  locale.daysLabel(dateRange.days()) + ' ' + locale.hoursLabel(dateRange.hours(), dateRange.minutes())
+  } else {
+    return DateFormat.shortDateFormat(dateRange.start, locale) + ' - ' + DateFormat.shortDateFormat(dateRange.end, locale)
+  }
+}
+
+DateFormat.formatDefiningRangeDuration = function(dateRange, locale) {
+  var years = parseInt(dateRange.days() / 360, 10)
+  if(years > 0) return locale.yearsLabel(years)
+
+  var months = parseInt(dateRange.days() / 30, 10)
+  if(months > 0) return locale.monthsLabel(months)
+
+  return locale.daysLabel(dateRange.days())
+},
+
+
+
+
+DateFormat.parse = function(input, locale) {
+  if(input == 'today') {
+    return DateTime.now()
+  }
+  var date = new Date(input);
+  if(isNaN(date.getTime())) {
+    throw Error('Could not parse date from "' + input + '"')
+  }
+  return new DateTime(date, locale)
+}
+
+DateFormat.patterns = {
+  ISO8601LongPattern: "Y-m-d H:i:s",
+  ISO8601ShortPattern: "Y-m-d",
+  ShortDatePattern: "n/j/Y",
+  FiShortDatePattern: "j.n.Y",
+  FiWeekdayDatePattern: "D j.n.Y",
+  FiWeekdayDateTimePattern: "D j.n.Y k\\lo G:i",
+  LongDatePattern: "l, F d, Y",
+  FullDateTimePattern: "l, F d, Y g:i:s A",
+  MonthDayPattern: "F d",
+  ShortTimePattern: "g:i A",
+  LongTimePattern: "g:i:s A",
+  SortableDateTimePattern: "Y-m-d\\TH:i:s",
+  UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
+  YearMonthPattern: "F, Y"
+}
+
+DateFormat.parseTime = function(timeStr) {
+  var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
+  var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)]
+  return (isHour(time[0]) && isMinute(time[1])) ? time : null
+
+  function splitTime(timeStr) {
+    if(timeStr.indexOf('.') != -1) {
+      return  timeStr.split('.')
+    }
+    switch(timeStr.length) {
+      case 4:
+        return [timeStr.slice(0, 2) , timeStr.slice(2, 4)]
+      case 3:
+        return [timeStr.slice(0, 1) , timeStr.slice(1, 3)]
+      case 2:
+        return [timeStr, 0]
+      default:
+        return [-1, -1]
+    }
+  }
+
+  function isMinute(minutes) { return !isNaN(minutes) && minutes >= 0 && minutes <= 59 }
+
+  function isHour(hours) { return !isNaN(hours) && hours >= 0 && hours <= 23 }
 }
 
 DateFormat.createNewFormat = function(dateTime, format, locale) {
@@ -111,60 +186,6 @@ DateFormat.getFormatCode = function(character, locale) {
     default:
       return "'" + String.escape(character) + "' + "
   }
-}
-
-DateFormat.parse = function(input, locale) {
-  if(input == 'today') {
-    return DateTime.now()
-  }
-  var date = new Date(input);
-  if(isNaN(date.getTime())) {
-    throw Error('Could not parse date from "' + input + '"')
-  }
-  return new DateTime(date, locale)
-}
-
-DateFormat.patterns = {
-  ISO8601LongPattern: "Y-m-d H:i:s",
-  ISO8601ShortPattern: "Y-m-d",
-  ShortDatePattern: "n/j/Y",
-  FiShortDatePattern: "j.n.Y",
-  FiWeekdayDatePattern: "D j.n.Y",
-  FiWeekdayDateTimePattern: "D j.n.Y k\\lo G:i",
-  LongDatePattern: "l, F d, Y",
-  FullDateTimePattern: "l, F d, Y g:i:s A",
-  MonthDayPattern: "F d",
-  ShortTimePattern: "g:i A",
-  LongTimePattern: "g:i:s A",
-  SortableDateTimePattern: "Y-m-d\\TH:i:s",
-  UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
-  YearMonthPattern: "F, Y"
-}
-
-DateFormat.parseTime = function(timeStr) {
-  var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
-  var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)]
-  return (isHour(time[0]) && isMinute(time[1])) ? time : null
-
-  function splitTime(timeStr) {
-    if(timeStr.indexOf('.') != -1) {
-      return  timeStr.split('.')
-    }
-    switch(timeStr.length) {
-      case 4:
-        return [timeStr.slice(0, 2) , timeStr.slice(2, 4)]
-      case 3:
-        return [timeStr.slice(0, 1) , timeStr.slice(1, 3)]
-      case 2:
-        return [timeStr, 0]
-      default:
-        return [-1, -1]
-    }
-  }
-
-  function isMinute(minutes) { return !isNaN(minutes) && minutes >= 0 && minutes <= 59 }
-
-  function isHour(hours) { return !isNaN(hours) && hours >= 0 && hours <= 23 }
 }
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -324,12 +345,11 @@ Locale.fromArgument = function(stringOrObject) {
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-function DateRange(date1, date2, locale) {
+function DateRange(date1, date2) {
   var _hasTimes = false
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
-  this.locale = Locale.fromArgument(locale)
   this.start = (date1.compareTo(date2) > 0 ? date2 : date1)
   this.end = (date1.compareTo(date2) > 0 ? date1 : date2)
   this._days = 0
@@ -374,7 +394,7 @@ DateRange.prototype = {
     }
   },
 
-  shiftDays: function(days) { return new DateRange(this.start.plusDays(days), this.end.plusDays(days), this.locale) },
+  shiftDays: function(days) { return new DateRange(this.start.plusDays(days), this.end.plusDays(days)) },
 
   expandTo: function(date) {
     var newStart = this.start.clone()
@@ -386,10 +406,10 @@ DateRange.prototype = {
         newEnd = date
       }
     }
-    return new DateRange(newStart, newEnd, this.locale)
+    return new DateRange(newStart, newEnd)
   },
 
-  expandDaysTo: function(days) { return new DateRange(this.start, this.start.plusDays(days - 1), this.locale) },
+  expandDaysTo: function(days) { return new DateRange(this.start, this.start.plusDays(days - 1)) },
 
   hasValidSize: function(minimumDays) { return minimumDays < 0 || this.days() >= minimumDays },
 
@@ -399,7 +419,7 @@ DateRange.prototype = {
     var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start
     var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end
     if(latestStart.compareTo(earliestEnd) < 0) {
-      return new DateRange(latestStart, earliestEnd, this.locale)
+      return new DateRange(latestStart, earliestEnd)
     } else {
       return DateRange.emptyRange()
     }
@@ -425,24 +445,22 @@ DateRange.prototype = {
     return rangeWithTimes
   },
 
-  clone: function() { return new DateRange(this.start, this.end, this.locale) },
+  clone: function() { return new DateRange(this.start, this.end) },
 
   toString: function() {
-    if(this._hasTimes) {
-      return  this.locale.daysLabel(this.days()) + ' ' + this.locale.hoursLabel(this.hours(), this.minutes())
-    } else {
-      return DateFormat.shortDateFormat(this.start, this.locale) + ' - ' + DateFormat.shortDateFormat(this.end, this.locale)
-    }
-  },
-
-  printDefiningDuration: function() {
-    var years = parseInt(this.days() / 360, 10)
-    if(years > 0) return this.locale.yearsLabel(years)
-
-    var months = parseInt(this.days() / 30, 10)
-    if(months > 0) return this.locale.monthsLabel(months)
-
-    return this.locale.daysLabel(this.days())
+    return [
+      'DateRange:',
+      this.start.toString(),
+      '-',
+      this.end.toString(),
+      this._days,
+      'days',
+      this._hours,
+      'hours',
+      this._minutes,
+      'minutes',
+      this._valid ? 'valid' : 'invalid'
+    ].join(' ')
   },
 
   isPermittedRange: function(minimumSize, disableWeekends, outerRange) { return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend())) && this.isInside(outerRange) },
@@ -464,20 +482,19 @@ DateRange.prototype = {
 }
 
 DateRange = $.extend(DateRange, {
-  emptyRange: function(locale) {
-    function NullDateRange(locale) {
+  emptyRange: function() {
+    function NullDateRange() {
       this.start = null
       this.end = null
-      this.locale = locale
       this.days = function() {
         return 0;
       }
       this.shiftDays = $.noop
       this.hasDate = function() { return false; }
-      this.clone = function() { return DateRange.emptyRange(locale) }
+      this.clone = function() { return DateRange.emptyRange() }
     }
 
-    return new NullDateRange(Locale.fromArgument(locale))
+    return new NullDateRange()
   },
 
   rangeWithMinimumSize: function(oldRange, minimumSize, disableWeekends, outerRange) {
@@ -715,11 +732,11 @@ DateTime.prototype.withWeekday = function(weekday) { return this.plusDays(weekda
 DateTime.prototype.getOnlyDate = function() { return new DateTime(new Date(this.getFullYear(), this.getMonth(), this.getDate())) }
 
 DateTime.prototype.getTimezone = function() {
-  return this.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3")
+  return this.date.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3")
 }
 
 DateTime.prototype.getGMTOffset = function() {
-  return (this.getTimezoneOffset() > 0 ? "-" : "+") +
+  return (this.date.getTimezoneOffset() > 0 ? "-" : "+") +
     String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0") +
     String.leftPad(this.getTimezoneOffset() % 60, 2, "0")
 }
@@ -781,6 +798,8 @@ DateTime.prototype.getSuffix = function() {
 }
 
 DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
+
+DateTime.prototype.toString = function() { return this.date.toISOString() }
 
 String.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
 

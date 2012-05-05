@@ -220,8 +220,8 @@ var custom_matchers = {
   toBeValidRange: function() {
     return this.actual.isValid()
   },
-  toPrintDefiningDurationOf: function(duration_str) {
-    return this.actual.printDefiningDuration() == duration_str
+  toPrintDefiningDurationOf: function(duration_str, locale) {
+    return DateFormat.formatDefiningRangeDuration(this.actual, locale) == duration_str
   }
 };
 

@@ -11,12 +11,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-function DateRange(date1, date2, locale) {
+function DateRange(date1, date2) {
   var _hasTimes = false
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
-  this.locale = Locale.fromArgument(locale)
   this.start = (date1.compareTo(date2) > 0 ? date2 : date1)
   this.end = (date1.compareTo(date2) > 0 ? date1 : date2)
   this._days = 0
@@ -61,7 +60,7 @@ DateRange.prototype = {
     }
   },
 
-  shiftDays: function(days) { return new DateRange(this.start.plusDays(days), this.end.plusDays(days), this.locale) },
+  shiftDays: function(days) { return new DateRange(this.start.plusDays(days), this.end.plusDays(days)) },
 
   expandTo: function(date) {
     var newStart = this.start.clone()
@@ -73,10 +72,10 @@ DateRange.prototype = {
         newEnd = date
       }
     }
-    return new DateRange(newStart, newEnd, this.locale)
+    return new DateRange(newStart, newEnd)
   },
 
-  expandDaysTo: function(days) { return new DateRange(this.start, this.start.plusDays(days - 1), this.locale) },
+  expandDaysTo: function(days) { return new DateRange(this.start, this.start.plusDays(days - 1)) },
 
   hasValidSize: function(minimumDays) { return minimumDays < 0 || this.days() >= minimumDays },
 
@@ -86,7 +85,7 @@ DateRange.prototype = {
     var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start
     var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end
     if(latestStart.compareTo(earliestEnd) < 0) {
-      return new DateRange(latestStart, earliestEnd, this.locale)
+      return new DateRange(latestStart, earliestEnd)
     } else {
       return DateRange.emptyRange()
     }
@@ -112,24 +111,22 @@ DateRange.prototype = {
     return rangeWithTimes
   },
 
-  clone: function() { return new DateRange(this.start, this.end, this.locale) },
+  clone: function() { return new DateRange(this.start, this.end) },
 
   toString: function() {
-    if(this._hasTimes) {
-      return  this.locale.daysLabel(this.days()) + ' ' + this.locale.hoursLabel(this.hours(), this.minutes())
-    } else {
-      return DateFormat.shortDateFormat(this.start, this.locale) + ' - ' + DateFormat.shortDateFormat(this.end, this.locale)
-    }
-  },
-
-  printDefiningDuration: function() {
-    var years = parseInt(this.days() / 360, 10)
-    if(years > 0) return this.locale.yearsLabel(years)
-
-    var months = parseInt(this.days() / 30, 10)
-    if(months > 0) return this.locale.monthsLabel(months)
-
-    return this.locale.daysLabel(this.days())
+    return [
+      'DateRange:',
+      this.start.toString(),
+      '-',
+      this.end.toString(),
+      this._days,
+      'days',
+      this._hours,
+      'hours',
+      this._minutes,
+      'minutes',
+      this._valid ? 'valid' : 'invalid'
+    ].join(' ')
   },
 
   isPermittedRange: function(minimumSize, disableWeekends, outerRange) { return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend())) && this.isInside(outerRange) },
@@ -151,20 +148,19 @@ DateRange.prototype = {
 }
 
 DateRange = $.extend(DateRange, {
-  emptyRange: function(locale) {
-    function NullDateRange(locale) {
+  emptyRange: function() {
+    function NullDateRange() {
       this.start = null
       this.end = null
-      this.locale = locale
       this.days = function() {
         return 0;
       }
       this.shiftDays = $.noop
       this.hasDate = function() { return false; }
-      this.clone = function() { return DateRange.emptyRange(locale) }
+      this.clone = function() { return DateRange.emptyRange() }
     }
 
-    return new NullDateRange(Locale.fromArgument(locale))
+    return new NullDateRange()
   },
 
   rangeWithMinimumSize: function(oldRange, minimumSize, disableWeekends, outerRange) {

@@ -29,6 +29,81 @@ DateFormat.shortDateFormat = function(dateTime, locale) {
   return DateFormat.format(dateTime, locale.shortDateFormat, locale)
 }
 
+DateFormat.formatRange = function(dateRange, locale) {
+  if(dateRange._hasTimes) {
+    return  locale.daysLabel(dateRange.days()) + ' ' + locale.hoursLabel(dateRange.hours(), dateRange.minutes())
+  } else {
+    return DateFormat.shortDateFormat(dateRange.start, locale) + ' - ' + DateFormat.shortDateFormat(dateRange.end, locale)
+  }
+}
+
+DateFormat.formatDefiningRangeDuration = function(dateRange, locale) {
+  var years = parseInt(dateRange.days() / 360, 10)
+  if(years > 0) return locale.yearsLabel(years)
+
+  var months = parseInt(dateRange.days() / 30, 10)
+  if(months > 0) return locale.monthsLabel(months)
+
+  return locale.daysLabel(dateRange.days())
+},
+
+
+
+
+DateFormat.parse = function(input, locale) {
+  if(input == 'today') {
+    return DateTime.now()
+  }
+  var date = new Date(input);
+  if(isNaN(date.getTime())) {
+    throw Error('Could not parse date from "' + input + '"')
+  }
+  return new DateTime(date, locale)
+}
+
+DateFormat.patterns = {
+  ISO8601LongPattern: "Y-m-d H:i:s",
+  ISO8601ShortPattern: "Y-m-d",
+  ShortDatePattern: "n/j/Y",
+  FiShortDatePattern: "j.n.Y",
+  FiWeekdayDatePattern: "D j.n.Y",
+  FiWeekdayDateTimePattern: "D j.n.Y k\\lo G:i",
+  LongDatePattern: "l, F d, Y",
+  FullDateTimePattern: "l, F d, Y g:i:s A",
+  MonthDayPattern: "F d",
+  ShortTimePattern: "g:i A",
+  LongTimePattern: "g:i:s A",
+  SortableDateTimePattern: "Y-m-d\\TH:i:s",
+  UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
+  YearMonthPattern: "F, Y"
+}
+
+DateFormat.parseTime = function(timeStr) {
+  var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
+  var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)]
+  return (isHour(time[0]) && isMinute(time[1])) ? time : null
+
+  function splitTime(timeStr) {
+    if(timeStr.indexOf('.') != -1) {
+      return  timeStr.split('.')
+    }
+    switch(timeStr.length) {
+      case 4:
+        return [timeStr.slice(0, 2) , timeStr.slice(2, 4)]
+      case 3:
+        return [timeStr.slice(0, 1) , timeStr.slice(1, 3)]
+      case 2:
+        return [timeStr, 0]
+      default:
+        return [-1, -1]
+    }
+  }
+
+  function isMinute(minutes) { return !isNaN(minutes) && minutes >= 0 && minutes <= 59 }
+
+  function isHour(hours) { return !isNaN(hours) && hours >= 0 && hours <= 23 }
+}
+
 DateFormat.createNewFormat = function(dateTime, format, locale) {
   var funcName = "format" + DateFormat.formatFunctions.count++
   DateFormat.formatFunctions[format] = funcName
@@ -110,58 +185,4 @@ DateFormat.getFormatCode = function(character, locale) {
     default:
       return "'" + String.escape(character) + "' + "
   }
-}
-
-DateFormat.parse = function(input, locale) {
-  if(input == 'today') {
-    return DateTime.now()
-  }
-  var date = new Date(input);
-  if(isNaN(date.getTime())) {
-    throw Error('Could not parse date from "' + input + '"')
-  }
-  return new DateTime(date, locale)
-}
-
-DateFormat.patterns = {
-  ISO8601LongPattern: "Y-m-d H:i:s",
-  ISO8601ShortPattern: "Y-m-d",
-  ShortDatePattern: "n/j/Y",
-  FiShortDatePattern: "j.n.Y",
-  FiWeekdayDatePattern: "D j.n.Y",
-  FiWeekdayDateTimePattern: "D j.n.Y k\\lo G:i",
-  LongDatePattern: "l, F d, Y",
-  FullDateTimePattern: "l, F d, Y g:i:s A",
-  MonthDayPattern: "F d",
-  ShortTimePattern: "g:i A",
-  LongTimePattern: "g:i:s A",
-  SortableDateTimePattern: "Y-m-d\\TH:i:s",
-  UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
-  YearMonthPattern: "F, Y"
-}
-
-DateFormat.parseTime = function(timeStr) {
-  var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
-  var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)]
-  return (isHour(time[0]) && isMinute(time[1])) ? time : null
-
-  function splitTime(timeStr) {
-    if(timeStr.indexOf('.') != -1) {
-      return  timeStr.split('.')
-    }
-    switch(timeStr.length) {
-      case 4:
-        return [timeStr.slice(0, 2) , timeStr.slice(2, 4)]
-      case 3:
-        return [timeStr.slice(0, 1) , timeStr.slice(1, 3)]
-      case 2:
-        return [timeStr, 0]
-      default:
-        return [-1, -1]
-    }
-  }
-
-  function isMinute(minutes) { return !isNaN(minutes) && minutes >= 0 && minutes <= 59 }
-
-  function isHour(hours) { return !isNaN(hours) && hours >= 0 && hours <= 23 }
 }

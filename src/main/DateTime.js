@@ -208,11 +208,11 @@ DateTime.prototype.withWeekday = function(weekday) { return this.plusDays(weekda
 DateTime.prototype.getOnlyDate = function() { return new DateTime(new Date(this.getFullYear(), this.getMonth(), this.getDate())) }
 
 DateTime.prototype.getTimezone = function() {
-  return this.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3")
+  return this.date.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3")
 }
 
 DateTime.prototype.getGMTOffset = function() {
-  return (this.getTimezoneOffset() > 0 ? "-" : "+") +
+  return (this.date.getTimezoneOffset() > 0 ? "-" : "+") +
     String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0") +
     String.leftPad(this.getTimezoneOffset() % 60, 2, "0")
 }
@@ -274,6 +274,8 @@ DateTime.prototype.getSuffix = function() {
 }
 
 DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
+
+DateTime.prototype.toString = function() { return this.date.toISOString() }
 
 String.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
 
