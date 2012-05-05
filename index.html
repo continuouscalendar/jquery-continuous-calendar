@@ -12,8 +12,8 @@
         content="Jquery continuous calendar. A JavaScript Calendar component and date picker for selecting dates and date ranges."/>
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css"/>
   <link rel="stylesheet" type="text/css" href="site/styles.css"/>
-  <link rel="stylesheet" href="build/jquery.continuous-calendar-latest-min.css" type="text/css" media="all"/>
-  <!--<link rel="stylesheet" href="src/main/jquery.continuous-calendar.css" type="text/css" media="all"/>-->
+  <link rel="stylesheet" href="build/jquery.continuousCalendar-latest-min.css" type="text/css" media="all"/>
+  <!--<link rel="stylesheet" href="src/main/jquery.continuousCalendar.css" type="text/css" media="all"/>-->
   <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
   <script src="http://shjs.sourceforge.net/sh_main.min.js"></script>
   <meta content="Jquery continuous calendar. A JavaScript Calendar component and date picker for selecting dates and date ranges." name="description"/>
@@ -32,13 +32,13 @@
     <a href="http://www.apple.com/fi/safari/">Safari</a>
   </p>
 <![endif]-->
-  <ul class="navi section">
-    <li><span>Home</span></li>
-    <li><a href="site/playground.html">Playground</a></li>
-    <li><a href="src/test/jquery.continuous-calendar-test.html">Jasmine tests</a></li>
-    <li><a href="https://github.com/reaktor/jquery-continuous-calendar">Project in Github</a></li>
-    <li><a href="http://github.com/reaktor/jquery-continuous-calendar/zipball/master">Download ZIP</a></li>
-  </ul>
+<ul class="navi section">
+  <li><span>Home</span></li>
+  <li><a href="site/playground.html">Playground</a></li>
+  <li><a href="src/test/jquery.continuousCalendar.spec.html">Jasmine tests</a></li>
+  <li><a href="https://github.com/reaktor/jquery-continuous-calendar">Project in Github</a></li>
+  <li><a href="http://github.com/reaktor/jquery-continuous-calendar/zipball/master">Download ZIP</a></li>
+</ul>
 <div class="article">
 <h1 id="live_example">Jquery continuous calendar</h1>
 <ul class="section">
@@ -51,71 +51,71 @@
 </ul>
 
 
-  <div class="section">
-    <h2>An example of range select with integrated time values</h2>
+<div class="section">
+  <h2>An example of range select with integrated time values</h2>
 
-    <div id="timeCalendar">
-      <input type="hidden" class="startDate" name="tripStartDate"/>
-      <input type="hidden" class="endDate" name="tripEndDate"/>
+  <div id="timeCalendar">
+    <input type="hidden" class="startDate" name="tripStartDate"/>
+    <input type="hidden" class="endDate" name="tripEndDate"/>
 
-      <h3>Select Days</h3>
+    <h3>Select Days</h3>
 
-      <div class="continuousCalendar"></div>
-      <div class="dateLabels">
-        <div>
-          <strong>Starts</strong>
-          <span class="startDateLabel"></span>
-          <select name="tripStartTime"></select>
-        </div>
-        <div>
-          <strong>Ends</strong>
-          <span class="endDateLabel"></span>
-          <select name="tripEndTime"></select>
-        </div>
-        <div>
-          <strong>Duration</strong>
-          <span class="totalTimeOfTrip"></span>
-        </div>
+    <div class="continuousCalendar"></div>
+    <div class="dateLabels">
+      <div>
+        <strong>Starts</strong>
+        <span class="startDateLabel"></span>
+        <select name="tripStartTime"></select>
+      </div>
+      <div>
+        <strong>Ends</strong>
+        <span class="endDateLabel"></span>
+        <select name="tripEndTime"></select>
+      </div>
+      <div>
+        <strong>Duration</strong>
+        <span class="totalTimeOfTrip"></span>
       </div>
     </div>
-    <div class="c"></div>
-    <h2>Date picker example</h2>
-
-    <div id="date-picker"></div>
-    <div class="c"></div>
   </div>
+  <div class="c"></div>
+  <h2>Date picker example</h2>
 
-  <h1 id="features">Features</h1>
+  <div id="date-picker"></div>
+  <div class="c"></div>
+</div>
 
-  <ul class="section">
-    <li>Date dragging</li>
-    <li>No pagination, continuous month flow</li>
-    <li>Range shifting by dragging</li>
-    <li>Range expand with Shift + Mouse click</li>
-    <li>Display current date</li>
-    <li>Allow disabling of dates</li>
-    <li>Month select</li>
-    <li>Week select</li>
-    <li>Popup support</li>
-    <li>Support for different date formats</li>
-    <li>Support for specifying holidays or disabled days</li>
-    <li>Support for setting minimum range</li>
-  </ul>
+<h1 id="features">Features</h1>
 
-  <h1 id="supported_browsers">Supported browsers</h1>
+<ul class="section">
+  <li>Date dragging</li>
+  <li>No pagination, continuous month flow</li>
+  <li>Range shifting by dragging</li>
+  <li>Range expand with Shift + Mouse click</li>
+  <li>Display current date</li>
+  <li>Allow disabling of dates</li>
+  <li>Month select</li>
+  <li>Week select</li>
+  <li>Popup support</li>
+  <li>Support for different date formats</li>
+  <li>Support for specifying holidays or disabled days</li>
+  <li>Support for setting minimum range</li>
+</ul>
 
-  <ul class="section">
-    <li>IE6 →</li>
-    <li>FireFox</li>
-    <li>Chrome</li>
-    <li>Opera</li>
-    <li>Safari</li>
-  </ul>
+<h1 id="supported_browsers">Supported browsers</h1>
 
-  <h1 id="getting_started">Getting started</h1>
+<ul class="section">
+  <li>IE6 →</li>
+  <li>FireFox</li>
+  <li>Chrome</li>
+  <li>Opera</li>
+  <li>Safari</li>
+</ul>
 
-  <div class="section">
-    <h2>Insert in head</h2>
+<h1 id="getting_started">Getting started</h1>
+
+<div class="section">
+  <h2>Insert in head</h2>
 	<pre>&lt;!-- basic default calendar styles --&gt;
 &lt;link rel="stylesheet" type="text/css" 
 href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.css" /&gt;
@@ -131,7 +131,7 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
 	src="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.js"&gt;
 &lt;/script&gt;
 	</pre>
-    <h2>Insert in body</h2>
+  <h2>Insert in body</h2>
 	<pre>&lt;!-- range selection is attached to fields with class startDate and endDate --&gt;
 &lt;div id="dateRange1"&gt;
   &lt;input type="hidden" class="startDate" name="range_start"&gt;
@@ -141,136 +141,137 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
   $("#dateRange1").continuousCalendar();
 &lt;/script&gt;
 </pre>
-  </div>
+</div>
 
-  <h1 id="api_documentation">Api Documentation</h1>
-  <div class="section">
+<h1 id="api_documentation">Api Documentation</h1>
 
-    <h2>Events</h2>
+<div class="section">
 
-    <dl>
-      <dt>calendarChange</dt>
-      <dd>Triggered in calendar init and calendar selections. Event object contains DateRange or Date for current selection</dd>
-    </dl>
+  <h2>Events</h2>
 
-    <h2>Methods</h2>
+  <dl>
+    <dt>calendarChange</dt>
+    <dd>Triggered in calendar init and calendar selections. Event object contains DateRange or Date for current selection</dd>
+  </dl>
 
-    <dl>
-      <dt>.continuousCalendar(options)</dt>
-      <dd>Creates a continuous calendar. Start and end input's are created if they don't exist. When created manually, they must have classes startDate and endDate and they must be inside the container. Options are passed in object. See options below.</dd>
+  <h2>Methods</h2>
 
-      <dt>.calendarRange(), returns <span class="type">DateRange</span></dt>
-      <dd>Returns calendar range object for current selection</dd>
-    </dl>
+  <dl>
+    <dt>.continuousCalendar(options)</dt>
+    <dd>Creates a continuous calendar. Start and end input's are created if they don't exist. When created manually, they must have classes startDate and endDate and they must be inside the container. Options are passed in object. See options below.</dd>
 
-    <h2>Options, color codes:
-    </h2>
+    <dt>.calendarRange(), returns <span class="type">DateRange</span></dt>
+    <dd>Returns calendar range object for current selection</dd>
+  </dl>
 
-    <dl>
-      <dt class="title"><span>Property name</span>, <span class="default">Default value</span> <span class="type">Type</span></dt>
+  <h2>Options, color codes:
+  </h2>
 
-      <dt>weeksBefore <span class="default">26</span> <span class="type">Number</span></dt>
-      <dd>Specifies amount of weeks displayed before selection. If no default selection then count from current day.</dd>
+  <dl>
+    <dt class="title"><span>Property name</span>, <span class="default">Default value</span> <span class="type">Type</span></dt>
 
-      <dt>weeksAfter <span class="default">26</span> <span class="type">Number</span></dt>
-      <dd>Specifies amount of weeks displayed after selection. If no default selection then count from current day.</dd>
+    <dt>weeksBefore <span class="default">26</span> <span class="type">Number</span></dt>
+    <dd>Specifies amount of weeks displayed before selection. If no default selection then count from current day.</dd>
 
-      <dt>firstDate <span class="default">null</span> <span class="type">String</span></dt>
-      <dd>Specifies exact date for calendar start. this is alternative for weeksBefore. Date is in current short date format, i.e. 12/31/2011 or 31.1.2011.</dd>
+    <dt>weeksAfter <span class="default">26</span> <span class="type">Number</span></dt>
+    <dd>Specifies amount of weeks displayed after selection. If no default selection then count from current day.</dd>
 
-      <dt>lastDate <span class="default">null</span> <span class="type">String</span></dt>
-      <dd>Specifies exact date for calendar end. This is alternative for weeksAfter. Date is in current short date format, i.e. 12/31/2011 or 31.1.2011.</dd>
+    <dt>firstDate <span class="default">null</span> <span class="type">String</span></dt>
+    <dd>Specifies exact date for calendar start. this is alternative for weeksBefore. Date is in current short date format, i.e. 12/31/2011 or 31.1.2011.</dd>
 
-      <dt>startField <span class="default">$('input.startDate', this)</span> <span class="type">jQuery object</span></dt>
-      <dd>Specifies jquery element for start input field. This is used also for single date calendar</dd>
+    <dt>lastDate <span class="default">null</span> <span class="type">String</span></dt>
+    <dd>Specifies exact date for calendar end. This is alternative for weeksAfter. Date is in current short date format, i.e. 12/31/2011 or 31.1.2011.</dd>
 
-      <dt>endField <span class="default">$('input.endDate', this)</span> <span class="type">jQuery object</span></dt>
-      <dd>Specifies jquery element for end input field.</dd>
+    <dt>startField <span class="default">$('input.startDate', this)</span> <span class="type">jQuery object</span></dt>
+    <dd>Specifies jquery element for start input field. This is used also for single date calendar</dd>
 
-      <dt>isPopup <span class="default">false</span> <span class="type">Boolean</span></dt>
-      <dd>Specifies if calendar opens as popup or as inline version</dd>
+    <dt>endField <span class="default">$('input.endDate', this)</span> <span class="type">jQuery object</span></dt>
+    <dd>Specifies jquery element for end input field.</dd>
 
-      <dt>selectToday <span class="default">false</span> <span class="type">Boolean</span></dt>
-      <dd>True, of current date is to be chosen, even if input field is empty.</dd>
+    <dt>isPopup <span class="default">false</span> <span class="type">Boolean</span></dt>
+    <dd>Specifies if calendar opens as popup or as inline version</dd>
 
-      <dt>locale <span class="default">DATE_LOCALE_EN</span> <span class="type">Object</span></dt>
-      <dd>Specifies locale for rendering calendar and parsing input fields. Currently DATE_LOCALE_EN and DATE_LOCALE_FI are found in global namespace.</dd>
+    <dt>selectToday <span class="default">false</span> <span class="type">Boolean</span></dt>
+    <dd>True, of current date is to be chosen, even if input field is empty.</dd>
 
-      <dt>disableWeekends <span class="default">false</span> <span class="type">Boolean</span></dt>
-      <dd>True if weekends are disabled.</dd>
+    <dt>locale <span class="default">Locale.EN</span> <span class="type">Object</span></dt>
+    <dd>Specifies locale for rendering calendar and parsing input fields. Currently Locale.EN and DATE_LOCALE_FI are found in global namespace.</dd>
 
-      <dt>disabledDates <span class="default">null</span> <span class="type">String</span></dt>
-      <dd>Space separated list of disabled dates. Dates are presented in short date format of current locale.</dd>
+    <dt>disableWeekends <span class="default">false</span> <span class="type">Boolean</span></dt>
+    <dd>True if weekends are disabled.</dd>
 
-      <dt>minimumRange <span class="default">-1</span> <span class="type">Number</span></dt>
-      <dd>Sets minimum range permitted in days. Shorter selections are expanded automatically.</dd>
+    <dt>disabledDates <span class="default">null</span> <span class="type">String</span></dt>
+    <dd>Space separated list of disabled dates. Dates are presented in short date format of current locale.</dd>
 
-      <dt>selectWeek <span class="default">false</span> <span class="type">Boolean</span></dt>
-      <dd>Set to true for automatically selecting full weeks.</dd>
+    <dt>minimumRange <span class="default">-1</span> <span class="type">Number</span></dt>
+    <dd>Sets minimum range permitted in days. Shorter selections are expanded automatically.</dd>
 
-      <dt>fadeOutDuration <span class="default">0</span> <span class="type">Number</span></dt>
-      <dd>Duration for fade out. Value is passed for jQuery's <a href="http://api.jquery.com/fadeOut/">.fadeOut</a> function.</dd>
+    <dt>selectWeek <span class="default">false</span> <span class="type">Boolean</span></dt>
+    <dd>Set to true for automatically selecting full weeks.</dd>
 
-      <dt>callback <span class="default">$.noop</span> <span class="type">Function</span></dt>
-      <dd>Function called in init and after date selection. DateRange or Date is passed as argument and this points to calendar container.</dd>
+    <dt>fadeOutDuration <span class="default">0</span> <span class="type">Number</span></dt>
+    <dd>Duration for fade out. Value is passed for jQuery's <a href="http://api.jquery.com/fadeOut/">.fadeOut</a> function.</dd>
 
-    </dl>
-  </div>
-  <h1 id="instructions_for_contributors">Instructions for contributors</h1>
+    <dt>callback <span class="default">$.noop</span> <span class="type">Function</span></dt>
+    <dd>Function called in init and after date selection. DateRange or Date is passed as argument and this points to calendar container.</dd>
 
-  <ul class="section">
-    <li>make a fork</li>
-    <li>code</li>
-    <li>run tests (<strong>jquery.continuous-calendar-test.html</strong> and <strong>dateRange-test.html</strong>)</li>
-    <li>Update documentation to index.html</li>
-    <li>run release.sh (see <strong>git tag</strong> for previous versions)</li>
-    <li>push --tags</li>
-    <li>make pull request</li>
-  </ul>
-  <h1 id="license">License</h1>
+  </dl>
+</div>
+<h1 id="instructions_for_contributors">Instructions for contributors</h1>
 
-  <div class="section">
-    <p>Licensed under the Apache License, Version 2.0 (the “License”); you may not<br>
-      use this file except in compliance with the License. You may obtain a copy of<br>
-      the License at</p>
+<ul class="section">
+  <li>make a fork</li>
+  <li>code</li>
+  <li>run tests (<strong>jquery.continuous-calendar-test.html</strong> and <strong>dateRange-test.html</strong>)</li>
+  <li>Update documentation to index.html</li>
+  <li>run release.sh (see <strong>git tag</strong> for previous versions)</li>
+  <li>push --tags</li>
+  <li>make pull request</li>
+</ul>
+<h1 id="license">License</h1>
 
-    <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+<div class="section">
+  <p>Licensed under the Apache License, Version 2.0 (the “License”); you may not<br>
+    use this file except in compliance with the License. You may obtain a copy of<br>
+    the License at</p>
 
-    <p>Unless required by applicable law or agreed to in writing, software<br>
-      distributed under the License is distributed on an “AS IS” BASIS, WITHOUT<br>WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the<br>
-      License for the specific language governing permissions and limitations under<br>
-      the License.</p>
-  </div>
+  <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+
+  <p>Unless required by applicable law or agreed to in writing, software<br>
+    distributed under the License is distributed on an “AS IS” BASIS, WITHOUT<br>WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the<br>
+    License for the specific language governing permissions and limitations under<br>
+    the License.</p>
+</div>
 
 </div>
 <script type="text/javascript" src="src/lib/jquery-1.6.js"></script>
 <!--
-<script type="text/javascript" src="src/main/date-functions.js" charset="UTF-8"></script>
-<script type="text/javascript" src="src/main/date-locales.js" charset="UTF-8"></script>
-<script type="text/javascript" src="src/main/date-range.js" charset="UTF-8"></script>
-<script type="text/javascript" src="src/main/jquery.continuous-calendar.js" charset="UTF-8"></script>
+<script type="text/javascript" src="src/main/DateTime.js" charset="UTF-8"></script>
+<script type="text/javascript" src="src/main/DateLocale.js" charset="UTF-8"></script>
+<script type="text/javascript" src="src/main/DateRange.js" charset="UTF-8"></script>
+<script type="text/javascript" src="src/main/jquery.continuousCalendar.js" charset="UTF-8"></script>
 -->
-<script type="text/javascript" src="build/jquery.continuous-calendar-latest-min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="build/jquery.continuousCalendar-latest.js" charset="UTF-8"></script>
 
 <script type="text/javascript" language="JavaScript">
-  $("#timeCalendar").continuousCalendar({weeksBefore:30, lastDate:"today", selectToday:true});
-  $("#timeCalendar").bind('calendarChange', function () {
+  $("#timeCalendar").continuousCalendar({weeksBefore: 30, lastDate: "today", selectToday: true});
+  $("#timeCalendar").bind('calendarChange', function() {
     var container = $(this);
     var startTime = container.find('select[name=tripStartTime]').val();
     var endTime = container.find('select[name=tripEndTime]').val();
     var range = container.calendarRange();
-    range.setTimes(startTime, endTime);
-    container.find('.totalTimeOfTrip').text(range.toString(DATE_LOCALE_EN)).toggleClass('invalid', !range.isValid());
+    range = range.withTimes(startTime, endTime);
+    container.find('.totalTimeOfTrip').text(DateFormat.formatRange(range, Locale.EN)).toggleClass('invalid', !range.isValid());
   });
-  $("#timeCalendar select").bind('change', function () {
+  $("#timeCalendar select").bind('change', function() {
     $("#timeCalendar").trigger('calendarChange');
   });
-  $("#timeCalendar select").each(function () {
+  $("#timeCalendar select").each(function() {
     for(i = 0; i < 24; i++) {
       $(this).append($("<option>").text(i + ":00")).append($("<option>").text(i + ":30"));
     }
   });
-  $('#date-picker').continuousCalendar({isPopup:true, firstDate:'today'});
+  $('#date-picker').continuousCalendar({isPopup: true, firstDate: 'today'});
 </script>
 <script type="text/javascript">
 
@@ -278,7 +279,7 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
   _gaq.push(['_setAccount', 'UA-4154602-6']);
   _gaq.push(['_trackPageview']);
 
-  (function () {
+  (function() {
     var ga = document.createElement('script');
     ga.type = 'text/javascript';
     ga.async = true;
@@ -289,8 +290,16 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
 
 </script>
 <div class="section footer">
-<a href="https://twitter.com/share" class="twitter-share-button" data-via="eeroan" data-lang="en">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  <a href="https://twitter.com/share" class="twitter-share-button" data-via="eeroan" data-lang="en">Tweet</a>
+  <script>!function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if(!d.getElementById(id)) {
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "//platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }
+  }(document, "script", "twitter-wjs");</script>
 </div>
 </body>
 </html>

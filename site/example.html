@@ -17,7 +17,7 @@
 <head>
   <title>Examples of using continuous calendar</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <link rel="stylesheet" href="../src/main/jquery.continuous-calendar.css" type="text/css" media="all"/>
+  <link rel="stylesheet" href="../src/main/jquery.continuousCalendar.css" type="text/css" media="all"/>
   <style type="text/css" media="all">
     body { font-family: "Arial", serif; font-size: 90%; background: #FAF6F4; }
     .calendarScrollContent { height: 250px; }
@@ -97,29 +97,30 @@
 </form>
 <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" charset="UTF-8"></script>-->
 <script type="text/javascript" src="../src/lib/jquery-1.6.js"></script>
-<script type="text/javascript" src="../src/main/date-functions.js" charset="UTF-8"></script>
-<script type="text/javascript" src="../src/main/date-locales.js" charset="UTF-8"></script>
-<script type="text/javascript" src="../src/main/date-range.js" charset="UTF-8"></script>
-<script type="text/javascript" src="../src/main/jquery.continuous-calendar.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../src/main/DateFormat.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../src/main/DateLocale.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../src/main/DateRange.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../src/main/DateTime.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../src/main/jquery.continuousCalendar.js" charset="UTF-8"></script>
 
 <!--<script type="text/javascript" src="../build/jquery.continuous-calendar-latest-min.js" charset="UTF-8"></script>-->
 <script type="text/javascript" language="JavaScript">
-  $("#singleDate2,#singleDate3").continuousCalendar({weeksBefore:60, weeksAfter:1, isPopup:true, locale:DATE_LOCALE_EN});
-  $("#range1").continuousCalendar({firstDate:"2/15/2007", lastDate:"9/10/2009", isPopup:true, locale:DATE_LOCALE_EN});
-  $("#range2").continuousCalendar({weeksBefore:30, weeksAfter:30, locale:DATE_LOCALE_EN});
-  $("#timeCalendar").continuousCalendar({weeksBefore:30, lastDate:"today", selectToday:true});
-  $("#timeCalendar").bind('calendarChange', function () {
+  $("#singleDate2,#singleDate3").continuousCalendar({weeksBefore: 60, weeksAfter: 1, isPopup: true, locale: Locale.EN});
+  $("#range1").continuousCalendar({firstDate: "2/15/2007", lastDate: "9/10/2009", isPopup: true, locale: Locale.EN});
+  $("#range2").continuousCalendar({weeksBefore: 30, weeksAfter: 30, locale: Locale.EN});
+  $("#timeCalendar").continuousCalendar({weeksBefore: 30, lastDate: "today", selectToday: true});
+  $("#timeCalendar").bind('calendarChange', function() {
     var container = $(this);
     var startTime = container.find('select[name=tripStartTime]').val();
     var endTime = container.find('select[name=tripEndTime]').val();
     var range = container.calendarRange();
-    range.setTimes(startTime, endTime);
-    container.find('.totalTimeOfTrip').text(range.toString(DATE_LOCALE_EN)).toggleClass('invalid', !range.isValid());
+    range = range.withTimes(startTime, endTime);
+    container.find('.totalTimeOfTrip').text(DateFormat.formatRange(range, Locale.EN)).toggleClass('invalid', !range.isValid());
   });
-  $("#timeCalendar select").bind('change', function () {
+  $("#timeCalendar select").bind('change', function() {
     $("#timeCalendar").trigger('calendarChange');
   });
-  $("#timeCalendar select").each(function () {
+  $("#timeCalendar select").each(function() {
     for(i = 0; i < 24; i++) {
       $(this).append($("<option>").text(i + ":00")).append($("<option>").text(i + ":30"));
     }
@@ -131,7 +132,7 @@
   _gaq.push(['_setAccount', 'UA-4154602-4']);
   _gaq.push(['_trackPageview']);
 
-  (function () {
+  (function() {
     var ga = document.createElement('script');
     ga.type = 'text/javascript';
     ga.async = true;

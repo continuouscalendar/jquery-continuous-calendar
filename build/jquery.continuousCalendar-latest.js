@@ -1,193 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '1.1.5';$.continuousCalendar.released = '2012-05-04'
-/* ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
-
-/*
- * @author Igor Vaynberg (ivaynberg)
- * @author Karri-Pekka Laakso (kplaakso)
- * @author Eero Anttila (eeroan)
- */
-
-Date.DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-Date.SECOND = 1000
-Date.MINUTE = 60 * Date.SECOND
-Date.HOUR = 60 * Date.MINUTE
-Date.DAY = 24 * Date.HOUR
-Date.WEEK = 7 * Date.DAY
-Date.MONDAY = 1
-Date.FRIDAY = 5
-Date.SUNDAY = 0
-Date.NOW = new Date()
-Date.getDaysInMonth = function(year, month) {
-  if(((0 == (year % 4)) && ( (0 != (year % 100)) || (0 == (year % 400)))) && month == 1) {
-    return 29
-  } else {
-    return Date.DAYS_IN_MONTH[month]
-  }
-}
-
-Date.getDayInYear = function(year, month, day) {
-  var days = 0
-  for(var i = 0; i < month; i++) {
-    days += Date.getDaysInMonth(year, i)
-  }
-  days += day
-  return days
-}
-
-Date.prototype.getDaysInMonth = function() { return Date.getDaysInMonth(this.getFullYear(), this.getMonth()) }
-
-Date.prototype.getDayInYear = function() { return Date.getDayInYear(this.getFullYear(), this.getMonth(), this.getDate()) }
-
-Date.prototype.plusDays = function(days) {
-  var newDate = this.clone()
-  var hours = this.getHours()
-  newDate.setTime(this.getTime() + days * Date.DAY)
-
-  // Fix the date offset caused by daylight saving time
-  var delta = hours - newDate.getHours()
-  if(delta != 0) {
-    // Correct the delta to be between [-12, 12]
-    if(delta > 12) {
-      delta -= 24
-    }
-    if(delta < -12) {
-      delta += 24
-    }
-    newDate.setTime(newDate.getTime() + (delta * Date.HOUR))
-  }
-  return newDate
-}
-
-Date.prototype.plusYears = function(years) {
-  var newDate = this.clone()
-  newDate.setFullYear(this.getFullYear() + years)
-  return newDate()
-}
-
-Date.prototype.stripped = function() { return new Date(parseInt(this.getTime() / Date.DAY, 10)) }
-
-Date.prototype.compareTo = function(date) {
-  if(!date) {
-    return 1
-  }
-  var lhs = this.getTime()
-  var rhs = date.getTime()
-  if(lhs < rhs) {
-    return -1
-  } else {
-    if(lhs > rhs) {
-      return 1
-    } else {
-      return 0
-    }
-  }
-}
-
-Date.prototype.compareDateOnlyTo = function(date) {
-  if(!date) {
-    return 1
-  }
-  return this.stripped().compareTo(date.stripped())
-}
-
-Date.prototype.isToday = function() { return this.equalsOnlyDate(Date.NOW) }
-
-Date.prototype.getWeekInYear = function(weekNumberingSystem) {
-  if(weekNumberingSystem != "US" && weekNumberingSystem != "ISO") {
-    throw("Week numbering system must be either US or ISO, was " + weekNumberingSystem)
-  }
-
-  var firstDay = new Date(this.getFullYear(), 0, 1).getDay()
-  if(weekNumberingSystem == "US") {
-    return Math.ceil((this.getDayInYear() + firstDay) / 7)
-  }
-
-  var THU = 4
-  var weekday = this.getDay()
-  if(weekday == 0) {
-    weekday = 7
-  }
-  if(firstDay == 0) {
-    firstDay = 7
-  }
-
-  // If Dec 29 falls on Mon, Dec 30 on Mon or Tue, Dec 31 on Mon - Wed, it's on the first week of next year
-  if(this.getMonth() == 11 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
-    return 1
-  }
-  // If Jan 1-3 falls on Fri, Sat or Sun, it's on the last week of the previous year
-  if(this.getMonth() == 0 && this.getDate() < 4 && weekday > THU) {
-    return new Date(this.getFullYear() - 1, 11, 31).getWeekInYear('ISO')
-  }
-
-  var week = Math.ceil((this.getDayInYear() + firstDay - 1) / 7)
-
-  // If first days of this year are on last year's last week, the above gives one week too much
-  if(firstDay > THU) {
-    week--
-  }
-
-  return week
-}
-
-Date.prototype.getFirstDateOfWeek = function(firstDayOfWeek) {
-  if(firstDayOfWeek < this.getDay()) {
-    return this.plusDays(firstDayOfWeek - this.getDay())
-  } else {
-    if(firstDayOfWeek > this.getDay()) {
-      return this.plusDays(firstDayOfWeek - this.getDay() - 7)
-    } else {
-      return this.clone()
-    }
-  }
-
-}
-
-Date.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
-  var thisFirst = this.getFirstDateOfWeek(firstDayOfWeek)
-  var lastFirst = thisFirst.plusDays(-7)
-  return thisFirst.getMonth() != lastFirst.getMonth()
-}
-
-Date.prototype.clone = function() { return new Date(this.getTime()) }
-
-Date.prototype.isOddMonth = function() { return this.getMonth() % 2 != 0 }
-
-Date.prototype.equalsOnlyDate = function(date) {
-  if(!date) {
-    return false
-  }
-  return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getYear() == date.getYear()
-}
-
-Date.prototype.isBetweenDates = function(start, end) { return this.compareTo(start) >= 0 && this.compareTo(end) <= 0 }
-
-Date.prototype.firstDateOfMonth = function() { return new Date((this.getMonth() + 1) + "/1/" + this.getFullYear()) }
-
-Date.prototype.lastDateOfMonth = function() { return new Date((this.getMonth() + 1) + "/" + this.getDaysInMonth() + "/" + this.getFullYear()) }
-
-Date.prototype.distanceInDays = function(date) {
-  var first = parseInt(this.getTime() / Date.DAY, 10)
-  var last = parseInt(date.getTime() / Date.DAY, 10)
-  return (last - first)
-}
-
-Date.prototype.withWeekday = function(weekday) { return this.plusDays(weekday - this.getDay()) }
-
-Date.prototype.getOnlyDate = function() { return new Date(this.getFullYear(), this.getMonth(), this.getDate()) }
-
+$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2012-05-05'
 /*
  * Copyright (C) 2004 Baron Schwartz <baron at sequent dot org>
  *
@@ -201,22 +12,103 @@ Date.prototype.getOnlyDate = function() { return new Date(this.getFullYear(), th
  * details.
  */
 
-Date.parseFunctions = {count:0}
-Date.parseRegexes = []
-Date.formatFunctions = {count:0}
+DateFormat = {}
 
-Date.prototype.dateFormat = function(format) {
-  if(Date.formatFunctions[format] == null) {
-    Date.createNewFormat(format)
+DateFormat.parseFunctions = {count: 0}
+DateFormat.parseRegexes = []
+DateFormat.formatFunctions = {count: 0}
+
+DateFormat.format = function(dateTime, format, locale) {
+  if(DateFormat.formatFunctions[format] == null) {
+    DateFormat.createNewFormat(dateTime, format, locale)
   }
-  var func = Date.formatFunctions[format]
-  return this[func]()
+  var func = DateFormat.formatFunctions[format]
+  return dateTime[func]()
 }
 
-Date.createNewFormat = function(format) {
-  var funcName = "format" + Date.formatFunctions.count++
-  Date.formatFunctions[format] = funcName
-  var code = "Date.prototype." + funcName + " = function(){return "
+DateFormat.shortDateFormat = function(dateTime, locale) {
+  return DateFormat.format(dateTime, locale.shortDateFormat, locale)
+}
+
+DateFormat.formatRange = function(dateRange, locale) {
+  if(dateRange._hasTimes) {
+    return  locale.daysLabel(dateRange.days()) + ' ' + locale.hoursLabel(dateRange.hours(), dateRange.minutes())
+  } else {
+    return DateFormat.shortDateFormat(dateRange.start, locale) + ' - ' + DateFormat.shortDateFormat(dateRange.end, locale)
+  }
+}
+
+DateFormat.formatDefiningRangeDuration = function(dateRange, locale) {
+  var years = parseInt(dateRange.days() / 360, 10)
+  if(years > 0) return locale.yearsLabel(years)
+
+  var months = parseInt(dateRange.days() / 30, 10)
+  if(months > 0) return locale.monthsLabel(months)
+
+  return locale.daysLabel(dateRange.days())
+},
+
+
+
+
+DateFormat.parse = function(input, locale) {
+  if(input == 'today') {
+    return DateTime.now()
+  }
+  var date = new Date(input);
+  if(isNaN(date.getTime())) {
+    throw Error('Could not parse date from "' + input + '"')
+  }
+  return new DateTime(date, locale)
+}
+
+DateFormat.patterns = {
+  ISO8601LongPattern: "Y-m-d H:i:s",
+  ISO8601ShortPattern: "Y-m-d",
+  ShortDatePattern: "n/j/Y",
+  FiShortDatePattern: "j.n.Y",
+  FiWeekdayDatePattern: "D j.n.Y",
+  FiWeekdayDateTimePattern: "D j.n.Y k\\lo G:i",
+  LongDatePattern: "l, F d, Y",
+  FullDateTimePattern: "l, F d, Y g:i:s A",
+  MonthDayPattern: "F d",
+  ShortTimePattern: "g:i A",
+  LongTimePattern: "g:i:s A",
+  SortableDateTimePattern: "Y-m-d\\TH:i:s",
+  UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
+  YearMonthPattern: "F, Y"
+}
+
+DateFormat.parseTime = function(timeStr) {
+  var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
+  var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)]
+  return (isHour(time[0]) && isMinute(time[1])) ? time : null
+
+  function splitTime(timeStr) {
+    if(timeStr.indexOf('.') != -1) {
+      return  timeStr.split('.')
+    }
+    switch(timeStr.length) {
+      case 4:
+        return [timeStr.slice(0, 2) , timeStr.slice(2, 4)]
+      case 3:
+        return [timeStr.slice(0, 1) , timeStr.slice(1, 3)]
+      case 2:
+        return [timeStr, 0]
+      default:
+        return [-1, -1]
+    }
+  }
+
+  function isMinute(minutes) { return !isNaN(minutes) && minutes >= 0 && minutes <= 59 }
+
+  function isHour(hours) { return !isNaN(hours) && hours >= 0 && hours <= 23 }
+}
+
+DateFormat.createNewFormat = function(dateTime, format, locale) {
+  var funcName = "format" + DateFormat.formatFunctions.count++
+  DateFormat.formatFunctions[format] = funcName
+  var code = "DateTime.prototype." + funcName + " = function(){return "
   var special = false
   var ch = ''
   for(var i = 0; i < format.length; ++i) {
@@ -228,23 +120,23 @@ Date.createNewFormat = function(format) {
         special = false
         code += "'" + String.escape(ch) + "' + "
       } else {
-        code += Date.getFormatCode(ch)
+        code += DateFormat.getFormatCode(ch, locale)
       }
     }
   }
   eval(code.substring(0, code.length - 3) + ";}")
 }
 
-Date.getFormatCode = function(character) {
+DateFormat.getFormatCode = function(character, locale) {
   switch(character) {
     case "d":
       return "String.leftPad(this.getDate(), 2, '0') + "
     case "D":
-      return "Date.dayNames[this.getDay()].substring(0, 3) + "
+      return "locale.dayNames[this.getDay()].substring(0, 3) + "
     case "j":
       return "this.getDate() + "
     case "l":
-      return "Date.dayNames[this.getDay()] + "
+      return "locale.dayNames[this.getDay()] + "
     case "S":
       return "this.getSuffix() + "
     case "w":
@@ -254,11 +146,11 @@ Date.getFormatCode = function(character) {
     case "W":
       return "this.getWeekOfYear() + "
     case "F":
-      return "Date.monthNames[this.getMonth()] + "
+      return "locale.monthNames[this.getMonth()] + "
     case "m":
       return "String.leftPad(this.getMonth() + 1, 2, '0') + "
     case "M":
-      return "Date.monthNames[this.getMonth()].substring(0, 3) + "
+      return "locale.monthNames[this.getMonth()].substring(0, 3) + "
     case "n":
       return "(this.getMonth() + 1) + "
     case "t":
@@ -295,309 +187,6 @@ Date.getFormatCode = function(character) {
       return "'" + String.escape(character) + "' + "
   }
 }
-
-Date.parseDate = function(input, format) {
-  if(input == 'today') {
-    return Date.NOW
-  }
-  if(Date.parseFunctions[format] == null) {
-    Date.createParser(format)
-  }
-  var func = Date.parseFunctions[format]
-  return Date[func](input)
-}
-
-Date.createParser = function(format) {
-  var funcName = "parse" + Date.parseFunctions.count++
-  var regexNum = Date.parseRegexes.length
-  var currentGroup = 1
-  Date.parseFunctions[format] = funcName
-
-  var code = "Date." + funcName + " = function(input){\n" + "var y = -1, m = -1, d = -1, h = -1, i = -1, s = -1;\n" + "var d = Date.NOW;\n" + "y = d.getFullYear();\n" + "m = d.getMonth();\n" + "d = d.getDate();\n" + "var results = input.match(Date.parseRegexes[" + regexNum + "]);\n" + "if (results && results.length > 0) {"
-  var regex = ""
-
-  var special = false
-  var ch = ''
-  for(var i = 0; i < format.length; ++i) {
-    ch = format.charAt(i)
-    if(!special && ch == "\\") {
-      special = true
-    } else {
-      if(special) {
-        special = false
-        regex += String.escape(ch)
-      } else {
-        var obj = Date.formatCodeToRegex(ch, currentGroup)
-        currentGroup += obj.g
-        regex += obj.s
-        if(obj.g && obj.c) {
-          code += obj.c
-        }
-      }
-    }
-  }
-
-  code += "if (y > 0 && m >= 0 && d > 0 && h >= 0 && i >= 0 && s >= 0)\n" + "{return new Date(y, m, d, h, i, s);}\n" + "else if (y > 0 && m >= 0 && d > 0 && h >= 0 && i >= 0)\n" + "{return new Date(y, m, d, h, i);}\n" + "else if (y > 0 && m >= 0 && d > 0 && h >= 0)\n" + "{return new Date(y, m, d, h);}\n" + "else if (y > 0 && m >= 0 && d > 0)\n" + "{return new Date(y, m, d);}\n" + "else if (y > 0 && m >= 0)\n" + "{return new Date(y, m);}\n" + "else if (y > 0)\n" + "{return new Date(y);}\n" + "}return null;}"
-
-  Date.parseRegexes[regexNum] = new RegExp("^" + regex + "$")
-  eval(code)
-}
-
-Date.formatCodeToRegex = function(character, currentGroup) {
-  switch(character) {
-    case "D":
-      return {g:0,
-        c:null,
-        s:"(?:Sun|Mon|Tue|Wed|Thu|Fri|Sat)"}
-    case "j":
-    case "d":
-      return {g:1,
-        c:"d = parseInt(results[" + currentGroup + "], 10);\n",
-        s:"(\\d{1,2})"}
-    case "l":
-      return {g:0,
-        c:null,
-        s:"(?:" + Date.dayNames.join("|") + ")"}
-    case "S":
-      return {g:0,
-        c:null,
-        s:"(?:st|nd|rd|th)"}
-    case "w":
-      return {g:0,
-        c:null,
-        s:"\\d"}
-    case "z":
-      return {g:0,
-        c:null,
-        s:"(?:\\d{1,3})"}
-    case "W":
-      return {g:0,
-        c:null,
-        s:"(?:\\d{2})"}
-    case "F":
-      return {g:1,
-        c:"m = parseInt(Date.monthNumbers[results[" + currentGroup + "].substring(0, 3)], 10);\n",
-        s:"(" + Date.monthNames.join("|") + ")"}
-    case "M":
-      return {g:1,
-        c:"m = parseInt(Date.monthNumbers[results[" + currentGroup + "]], 10);\n",
-        s:"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"}
-    case "n":
-    case "m":
-      return {g:1,
-        c:"m = parseInt(results[" + currentGroup + "], 10) - 1;\n",
-        s:"(\\d{1,2})"}
-    case "t":
-      return {g:0,
-        c:null,
-        s:"\\d{1,2}"}
-    case "L":
-      return {g:0,
-        c:null,
-        s:"(?:1|0)"}
-    case "Y":
-      return {g:1,
-        c:"y = parseInt(results[" + currentGroup + "], 10);\n",
-        s:"(\\d{4})"}
-    case "y":
-      return {g:1,
-        c:"var ty = parseInt(results[" + currentGroup + "], 10);\n" + "y = ty > Date.y2kYear ? 1900 + ty : 2000 + ty;\n",
-        s:"(\\d{1,2})"}
-    case "a":
-      return {g:1,
-        c:"if (results[" + currentGroup + "] == 'am') {\n" + "if (h == 12) { h = 0; }\n" + "} else { if (h < 12) { h += 12; }}",
-        s:"(am|pm)"}
-    case "A":
-      return {g:1,
-        c:"if (results[" + currentGroup + "] == 'AM') {\n" + "if (h == 12) { h = 0; }\n" + "} else { if (h < 12) { h += 12; }}",
-        s:"(AM|PM)"}
-    case "g":
-    case "G":
-    case "h":
-    case "H":
-      return {g:1,
-        c:"h = parseInt(results[" + currentGroup + "], 10);\n",
-        s:"(\\d{1,2})"}
-    case "i":
-      return {g:1,
-        c:"i = parseInt(results[" + currentGroup + "], 10);\n",
-        s:"(\\d{2})"}
-    case "s":
-      return {g:1,
-        c:"s = parseInt(results[" + currentGroup + "], 10);\n",
-        s:"(\\d{2})"}
-    case "O":
-      return {g:0,
-        c:null,
-        s:"[+-]\\d{4}"}
-    case "T":
-      return {g:0,
-        c:null,
-        s:"[A-Z]{3}"}
-    case "Z":
-      return {g:0,
-        c:null,
-        s:"[+-]\\d{1,5}"}
-    case ".":
-      return {g:0,
-        c:null,
-        s:"\\."}
-    default:
-      return {g:0,
-        c:null,
-        s:String.escape(character)}
-  }
-}
-
-Date.prototype.getTimezone = function() { return this.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3") }
-
-Date.prototype.getGMTOffset = function() { return (this.getTimezoneOffset() > 0 ? "-" : "+") + String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0") + String.leftPad(this.getTimezoneOffset() % 60, 2, "0") }
-
-Date.prototype.getDayOfYear = function() {
-  var num = 0
-  Date.daysInMonth[1] = this.isLeapYear() ? 29 : 28
-  for(var i = 0; i < this.getMonth(); ++i) {
-    num += Date.daysInMonth[i]
-  }
-  return num + this.getDate() - 1
-}
-
-Date.prototype.getWeekOfYear = function() {
-  // Skip to Thursday of this week
-  var now = this.getDayOfYear() + (4 - this.getDay())
-  // Find the first Thursday of the year
-  var jan1 = new Date(this.getFullYear(), 0, 1)
-  var then = (7 - jan1.getDay() + 4)
-  document.write(then)
-  return String.leftPad(((now - then) / 7) + 1, 2, "0")
-}
-
-Date.prototype.isLeapYear = function() {
-  var year = this.getFullYear()
-  return ((year & 3) == 0 && (year % 100 || (year % 400 == 0 && year)))
-}
-
-Date.prototype.getFirstDayOfMonth = function() {
-  var day = (this.getDay() - (this.getDate() - 1)) % 7
-  return (day < 0) ? (day + 7) : day
-}
-
-Date.prototype.getLastDayOfMonth = function() {
-  var day = (this.getDay() + (Date.daysInMonth[this.getMonth()] - this.getDate())) % 7
-  return (day < 0) ? (day + 7) : day
-}
-
-Date.prototype.getDaysInMonth = function() {
-  Date.daysInMonth[1] = this.isLeapYear() ? 29 : 28
-  return Date.daysInMonth[this.getMonth()]
-}
-
-Date.prototype.getSuffix = function() {
-  switch(this.getDate()) {
-    case 1:
-    case 21:
-    case 31:
-      return "st"
-    case 2:
-    case 22:
-      return "nd"
-    case 3:
-    case 23:
-      return "rd"
-    default:
-      return "th"
-  }
-}
-
-Date.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
-
-String.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
-
-String.leftPad = function (val, size, ch) {
-  var result = new String(val)
-  if(ch == null) {
-    ch = " "
-  }
-  while(result.length < size) {
-    result = ch + result
-  }
-  return result
-}
-
-Date.daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31]
-Date.monthNames = ["January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"]
-Date.dayNames = ["Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday"]
-Date.y2kYear = 50
-Date.monthNumbers = {
-  Jan:0,
-  Feb:1,
-  Mar:2,
-  Apr:3,
-  May:4,
-  Jun:5,
-  Jul:6,
-  Aug:7,
-  Sep:8,
-  Oct:9,
-  Nov:10,
-  Dec:11}
-Date.patterns = {
-  ISO8601LongPattern:"Y-m-d H:i:s",
-  ISO8601ShortPattern:"Y-m-d",
-  ShortDatePattern: "n/j/Y",
-  FiShortDatePattern: "j.n.Y",
-  FiWeekdayDatePattern: "D j.n.Y",
-  FiWeekdayDateTimePattern: "D j.n.Y k\\lo G:i",
-  LongDatePattern: "l, F d, Y",
-  FullDateTimePattern: "l, F d, Y g:i:s A",
-  MonthDayPattern: "F d",
-  ShortTimePattern: "g:i A",
-  LongTimePattern: "g:i:s A",
-  SortableDateTimePattern: "Y-m-d\\TH:i:s",
-  UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
-  YearMonthPattern: "F, Y"
-}
-Date.parseTime = function parseTime(timeStr) {
-  var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
-  var time = [parseInt(splittedTime[0], 10), parseInt(splittedTime[1], 10)]
-  return (isHour(time[0]) && isMinute(time[1])) ? time : null
-
-  function splitTime(timeStr) {
-    if(timeStr.indexOf('.') != -1) {
-      return  timeStr.split('.')
-    }
-    switch(timeStr.length) {
-      case 4: return [timeStr.slice(0, 2) ,timeStr.slice(2, 4)]
-      case 3: return [timeStr.slice(0, 1) ,timeStr.slice(1, 3)]
-      case 2: return [timeStr, 0]
-      default: return [-1,-1]
-    }
-  }
-
-  function isMinute(minutes) { return !isNaN(minutes) && minutes >= 0 && minutes <= 59 }
-
-  function isHour(hours) { return !isNaN(hours) && hours >= 0 && hours <= 23 }
-}
-
-Date.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
-
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -611,104 +200,138 @@ Date.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + mi
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-window.DATE_LOCALE_FI = {
-  init: function() {
-    Date.monthNames = [
-      'tammikuu',
-      'helmikuu',
-      'maaliskuu',
-      'huhtikuu',
-      'toukokuu',
-      'kesäkuu',
-      'heinäkuu',
-      'elokuu',
-      'syyskuu',
-      'lokakuu',
-      'marraskuu',
-      'joulukuu']
-    Date.dayNames = ['su','ma','ti','ke','to','pe','la']
-    Date.yearsLabel = function(years) { return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta'); }
-    Date.monthsLabel = function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta'); }
-    Date.daysLabel = function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää'); }
-    Date.hoursLabel = function(hours, minutes) {
-      var hoursAndMinutes = Date.hoursAndMinutes(hours, minutes).replace('.', ',')
-      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia');
-    }
+Locale = {}
 
+Locale.MONDAY = 1
+Locale.FRIDAY = 5
+Locale.SUNDAY = 0
+Locale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
+
+
+
+Locale.FI = {
+  id: 'FI',
+  monthNames: [
+    'tammikuu',
+    'helmikuu',
+    'maaliskuu',
+    'huhtikuu',
+    'toukokuu',
+    'kesäkuu',
+    'heinäkuu',
+    'elokuu',
+    'syyskuu',
+    'lokakuu',
+    'marraskuu',
+    'joulukuu'],
+  dayNames: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
+  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta'); },
+  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta'); },
+  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää'); },
+  hoursLabel: function(hours, minutes) {
+    var hoursAndMinutes = Locale.hoursAndMinutes(hours, minutes).replace('.', ',')
+    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia');
   },
   shortDateFormat: 'j.n.Y',
   weekDateFormat: 'D j.n.Y',
   dateTimeFormat: 'D j.n.Y k\\lo G:i',
-  firstWeekday: Date.MONDAY
+  firstWeekday: Locale.MONDAY,
+  getFirstDateOfWeek: function(dateTime) {
+    return Locale.getFirstDateOfWeek(dateTime, Locale.MONDAY)
+  }
 }
-window.DATE_LOCALE_EN = {
-  init: function() {
-    Date.monthNames = ['January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December']
-    Date.dayNames = ['Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday']
-    Date.yearsLabel = function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); }
-    Date.monthsLabel = function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months'); }
-    Date.daysLabel = function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days'); }
-    Date.hoursLabel = function(hours, minutes) {
-      var hoursAndMinutes = Date.hoursAndMinutes(hours, minutes)
-      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours');
-    }
+Locale.EN = {
+  id: 'EN',
+  monthNames: ['January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'],
+  dayNames: ['Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'],
+  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
+  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months'); },
+  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days'); },
+  hoursLabel: function(hours, minutes) {
+    var hoursAndMinutes = Locale.hoursAndMinutes(hours, minutes)
+    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours');
   },
   shortDateFormat: 'n/j/Y',
   weekDateFormat: 'D n/j/Y',
   dateTimeFormat: 'D n/j/Y G:i',
-  firstWeekday: Date.SUNDAY
+  firstWeekday: Locale.SUNDAY,
+  getFirstDateOfWeek: function(dateTime) {
+    return Locale.getFirstDateOfWeek(dateTime, Locale.SUNDAY)
+  }
 };
-window.DATE_LOCALE_AU = {
-  init: function() {
-    Date.monthNames = ['January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December']
-    Date.dayNames = ['Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday']
-    Date.yearsLabel = function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); }
-    Date.monthsLabel = function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months'); }
-    Date.daysLabel = function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days'); }
-    Date.hoursLabel = function(hours, minutes) {
-      var hoursAndMinutes = Date.hoursAndMinutes(hours, minutes)
-      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours');
-    }
+Locale.AU = {
+  id: 'AU',
+  monthNames: ['January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'],
+  dayNames: ['Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'],
+  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
+  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months'); },
+  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days'); },
+  hoursLabel: function(hours, minutes) {
+    var hoursAndMinutes = Locale.hoursAndMinutes(hours, minutes)
+    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours');
   },
   shortDateFormat: 'j/n/Y',
   weekDateFormat: 'D j/n/Y',
   dateTimeFormat: 'D j/n/Y G:i',
-  firstWeekday: Date.SUNDAY
-};
+  firstWeekday: Locale.SUNDAY,
+  getFirstDateOfWeek: function(dateTime) {
+    return Locale.getFirstDateOfWeek(dateTime, Locale.SUNDAY)
+  }
+}
+Locale.DEFAULT = Locale.EN
+
+Locale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
+  if(firstWeekday < dateTime.getDay()) {
+    return dateTime.plusDays(firstWeekday - dateTime.getDay())
+  } else {
+    if(firstWeekday > dateTime.getDay()) {
+      return dateTime.plusDays(firstWeekday - dateTime.getDay() - 7)
+    } else {
+      return dateTime.clone()
+    }
+  }
+}
+
+
+Locale.fromArgument = function(stringOrObject) {
+  if(typeof stringOrObject == 'string')
+    return Locale[stringOrObject]
+  else return stringOrObject || Locale.DEFAULT
+}
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -727,8 +350,8 @@ function DateRange(date1, date2) {
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
-  this.start = date1.compareTo(date2) > 0 ? date2 : date1
-  this.end = date1.compareTo(date2) > 0 ? date1 : date2
+  this.start = (date1.compareTo(date2) > 0 ? date2 : date1)
+  this.end = (date1.compareTo(date2) > 0 ? date1 : date2)
   this._days = 0
   this._hours = 0
   this._minutes = 0
@@ -739,11 +362,11 @@ DateRange.prototype = {
   _setDaysHoursAndMinutes: function() {
     if(this._hasTimes) {
       var ms = parseInt((this.end.getTime() - this.start.getTime()))
-      this._days = parseInt(ms / Date.DAY)
-      ms = ms - (this._days * Date.DAY)
-      this._hours = parseInt(ms / Date.HOUR)
-      ms = ms - (this._hours * Date.HOUR)
-      this._minutes = parseInt(ms / Date.MINUTE)
+      this._days = parseInt(ms / DateTime.DAY)
+      ms = ms - (this._days * DateTime.DAY)
+      this._hours = parseInt(ms / DateTime.HOUR)
+      ms = ms - (this._hours * DateTime.HOUR)
+      this._minutes = parseInt(ms / DateTime.MINUTE)
     }
   },
 
@@ -806,39 +429,38 @@ DateRange.prototype = {
 
   hasEndsOnWeekend: function() { return this.start.isWeekend() || this.end.isWeekend() },
 
-  setTimes: function(startTimeStr, endTimeStr) {
-    var parsedStartTime = Date.parseTime(startTimeStr)
-    var parsedEndTime = Date.parseTime(endTimeStr)
+  withTimes: function(startTimeStr, endTimeStr) {
+    var parsedStartTime = DateFormat.parseTime(startTimeStr)
+    var parsedEndTime = DateFormat.parseTime(endTimeStr)
+    var rangeWithTimes = this.clone()
     if(parsedStartTime && parsedEndTime) {
-      this._valid = true
-      this._hasTimes = true
-      this.start = this._dateWithTime(this.start, parsedStartTime)
-      this.end = this._dateWithTime(this.end, parsedEndTime)
-      this._setDaysHoursAndMinutes()
+      rangeWithTimes._valid = true
+      rangeWithTimes._hasTimes = true
+      rangeWithTimes.start = this._dateWithTime(this.start, parsedStartTime)
+      rangeWithTimes.end = this._dateWithTime(this.end, parsedEndTime)
+      rangeWithTimes._setDaysHoursAndMinutes()
     } else {
-      this._valid = false
+      rangeWithTimes._valid = false
     }
-    return this._valid
+    return rangeWithTimes
   },
 
   clone: function() { return new DateRange(this.start, this.end) },
 
-  toString: function(locale) {
-    if(this._hasTimes) {
-      return  Date.daysLabel(this.days()) + ' ' + Date.hoursLabel(this.hours(), this.minutes())
-    } else {
-      return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat)
-    }
-  },
-
-  printDefiningDuration: function() {
-    var years = parseInt(this.days() / 360, 10)
-    if(years > 0) return Date.yearsLabel(years)
-
-    var months = parseInt(this.days() / 30, 10)
-    if(months > 0) return Date.monthsLabel(months)
-
-    return Date.daysLabel(this.days())
+  toString: function() {
+    return [
+      'DateRange:',
+      this.start.toString(),
+      '-',
+      this.end.toString(),
+      this._days,
+      'days',
+      this._hours,
+      'hours',
+      this._minutes,
+      'minutes',
+      this._valid ? 'valid' : 'invalid'
+    ].join(' ')
   },
 
   isPermittedRange: function(minimumSize, disableWeekends, outerRange) { return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend())) && this.isInside(outerRange) },
@@ -874,8 +496,6 @@ DateRange = $.extend(DateRange, {
 
     return new NullDateRange()
   },
-
-  parse: function(dateStr1, dateStr2, dateFormat) { return new DateRange(Date.parseDate(dateStr1, dateFormat), Date.parseDate(dateStr2, dateFormat)) },
 
   rangeWithMinimumSize: function(oldRange, minimumSize, disableWeekends, outerRange) {
     if(isTooSmallSelection()) {
@@ -915,6 +535,301 @@ DateRange = $.extend(DateRange, {
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
+/*
+ * @author Igor Vaynberg (ivaynberg)
+ * @author Karri-Pekka Laakso (kplaakso)
+ * @author Eero Anttila (eeroan)
+ */
+
+DateTime = function(date) {
+  if(typeof date == 'string') this.date = new Date(date)
+  else this.date = date || new Date()
+}
+
+DateTime.prototype.getTime = function() { return this.date.getTime() }
+
+DateTime.prototype.getDate = function() { return this.date.getDate() }
+
+DateTime.prototype.getMonth = function() { return this.date.getMonth() }
+
+DateTime.prototype.getHours = function() { return this.date.getHours() }
+
+DateTime.prototype.getHours = function() { return this.date.getHours() }
+
+DateTime.prototype.getFullYear = function() { return this.date.getFullYear() }
+
+DateTime.prototype.getYear = function() { return this.date.getYear() }
+
+DateTime.prototype.getDay = function() { return this.date.getDay() }
+
+DateTime.prototype.setTime = function(time) { this.date.setTime(time) }
+
+DateTime.prototype.setHours = function(hours) { this.date.setHours(hours) }
+
+DateTime.prototype.setMinutes = function(minutes) { this.date.setMinutes(minutes) }
+
+DateTime.prototype.setMilliseconds = function(ms) { this.date.setMilliseconds(ms) }
+
+DateTime.DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+DateTime.SECOND = 1000
+DateTime.MINUTE = 60 * DateTime.SECOND
+DateTime.HOUR = 60 * DateTime.MINUTE
+DateTime.DAY = 24 * DateTime.HOUR
+DateTime.WEEK = 7 * DateTime.DAY
+
+DateTime.now = function() {
+  if(typeof DateTime._now == 'undefined') {
+    DateTime._now = new DateTime()
+  }
+  return DateTime._now
+}
+
+DateTime.getDaysInMonth = function(year, month) {
+  if(((0 == (year % 4)) && ( (0 != (year % 100)) || (0 == (year % 400)))) && month == 1) {
+    return 29
+  } else {
+    return DateTime.DAYS_IN_MONTH[month]
+  }
+}
+
+DateTime.getDayInYear = function(year, month, day) {
+  var days = 0
+  for(var i = 0; i < month; i++) {
+    days += DateTime.getDaysInMonth(year, i)
+  }
+  days += day
+  return days
+}
+
+DateTime.prototype.getDaysInMonth = function() { return DateTime.getDaysInMonth(this.getFullYear(), this.getMonth()) }
+
+DateTime.prototype.getDayInYear = function() { return DateTime.getDayInYear(this.getFullYear(), this.getMonth(), this.getDate()) }
+
+DateTime.prototype.plusDays = function(days) {
+  var newDateTime = this.clone()
+  var hours = this.getHours()
+  newDateTime.setTime(this.getTime() + days * DateTime.DAY)
+
+  // Fix the DateTime offset caused by daylight saving time
+  var delta = hours - newDateTime.getHours()
+  if(delta != 0) {
+    // Correct the delta to be between [-12, 12]
+    if(delta > 12) {
+      delta -= 24
+    }
+    if(delta < -12) {
+      delta += 24
+    }
+    newDateTime.setTime(newDateTime.getTime() + (delta * DateTime.HOUR))
+  }
+  return newDateTime
+}
+
+DateTime.prototype.plusYears = function(years) {
+  var newDateTime = this.clone()
+  newDateTime.setFullYear(this.getFullYear() + years)
+  return newDateTime()
+}
+
+DateTime.prototype.stripped = function() { return new Date(parseInt(this.getTime() / DateTime.DAY, 10)) }
+
+DateTime.prototype.compareTo = function(date) {
+  if(!date) {
+    return 1
+  }
+  var lhs = this.getTime()
+  var rhs = date.getTime()
+  if(lhs < rhs) {
+    return -1
+  } else {
+    if(lhs > rhs) {
+      return 1
+    } else {
+      return 0
+    }
+  }
+}
+
+DateTime.prototype.compareDateOnlyTo = function(DateTime) {
+  if(!DateTime) {
+    return 1
+  }
+  return this.stripped().compareTo(DateTime.stripped())
+}
+
+DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.now()) }
+
+DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
+  if(weekNumberingSystem != "US" && weekNumberingSystem != "ISO") {
+    throw("Week numbering system must be either US or ISO, was " + weekNumberingSystem)
+  }
+
+  var firstDay = new Date(this.getFullYear(), 0, 1).getDay()
+  if(weekNumberingSystem == "US") {
+    return Math.ceil((this.getDayInYear() + firstDay) / 7)
+  }
+
+  var THU = 4
+  var weekday = this.getDay()
+  if(weekday == 0) {
+    weekday = 7
+  }
+  if(firstDay == 0) {
+    firstDay = 7
+  }
+
+  // If Dec 29 falls on Mon, Dec 30 on Mon or Tue, Dec 31 on Mon - Wed, it's on the first week of next year
+  if(this.getMonth() == 11 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
+    return 1
+  }
+  // If Jan 1-3 falls on Fri, Sat or Sun, it's on the last week of the previous year
+  if(this.getMonth() == 0 && this.getDate() < 4 && weekday > THU) {
+    return new DateTime(new Date(this.getFullYear() - 1, 11, 31)).getWeekInYear('ISO')
+  }
+
+  var week = Math.ceil((this.getDayInYear() + firstDay - 1) / 7)
+
+  // If first days of this year are on last year's last week, the above gives one week too much
+  if(firstDay > THU) {
+    week--
+  }
+  return week
+}
+
+DateTime.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
+  var thisFirst = this.getFirstDateTimeOfWeek(firstDayOfWeek)
+  var lastFirst = thisFirst.plusDays(-7)
+  return thisFirst.getMonth() != lastFirst.getMonth()
+}
+
+//TODO refactor
+DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime())) }
+
+DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 != 0 }
+
+DateTime.prototype.equalsOnlyDate = function(date) {
+  if(!date) {
+    return false
+  }
+  return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getYear() == date.getYear()
+}
+
+DateTime.prototype.isBetweenDates = function(start, end) { return this.compareTo(start) >= 0 && this.compareTo(end) <= 0 }
+
+DateTime.prototype.firstDateOfMonth = function() { return new DateTime((this.getMonth() + 1) + "/1/" + this.getFullYear()) }
+
+DateTime.prototype.lastDateOfMonth = function() { return new DateTime((this.getMonth() + 1) + "/" + this.getDaysInMonth() + "/" + this.getFullYear()) }
+
+DateTime.prototype.distanceInDays = function(date) {
+  var first = parseInt(this.getTime() / DateTime.DAY, 10)
+  var last = parseInt(date.getTime() / DateTime.DAY, 10)
+  return (last - first)
+}
+
+DateTime.prototype.withWeekday = function(weekday) { return this.plusDays(weekday - this.getDay()) }
+
+DateTime.prototype.getOnlyDate = function() { return new DateTime(new Date(this.getFullYear(), this.getMonth(), this.getDate())) }
+
+DateTime.prototype.getTimezone = function() {
+  return this.date.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3")
+}
+
+DateTime.prototype.getGMTOffset = function() {
+  return (this.date.getTimezoneOffset() > 0 ? "-" : "+") +
+    String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0") +
+    String.leftPad(this.getTimezoneOffset() % 60, 2, "0")
+}
+
+DateTime.prototype.getDayOfYear = function() {
+  var num = 0
+  DateTime.daysInMonth[1] = this.isLeapYear() ? 29 : 28
+  for(var i = 0; i < this.getMonth(); ++i) {
+    num += DateTime.daysInMonth[i]
+  }
+  return num + this.getDate() - 1
+}
+
+DateTime.prototype.getWeekOfYear = function() {
+  // Skip to Thursday of this week
+  var now = this.getDayOfYear() + (4 - this.getDay())
+  // Find the first Thursday of the year
+  var jan1 = new Date(this.getFullYear(), 0, 1)
+  var then = (7 - jan1.getDay() + 4)
+  document.write(then)
+  return String.leftPad(((now - then) / 7) + 1, 2, "0")
+}
+
+DateTime.prototype.isLeapYear = function() {
+  var year = this.getFullYear()
+  return ((year & 3) == 0 && (year % 100 || (year % 400 == 0 && year)))
+}
+
+DateTime.prototype.getFirstDayOfMonth = function() {
+  var day = (this.getDay() - (this.getDate() - 1)) % 7
+  return (day < 0) ? (day + 7) : day
+}
+
+DateTime.prototype.getLastDayOfMonth = function() {
+  var day = (this.getDay() + (DateTime.daysInMonth[this.getMonth()] - this.getDate())) % 7
+  return (day < 0) ? (day + 7) : day
+}
+
+DateTime.prototype.getDaysInMonth = function() {
+  DateTime.daysInMonth[1] = this.isLeapYear() ? 29 : 28
+  return DateTime.daysInMonth[this.getMonth()]
+}
+
+DateTime.prototype.getSuffix = function() {
+  switch(this.getDate()) {
+    case 1:
+    case 21:
+    case 31:
+      return "st"
+    case 2:
+    case 22:
+      return "nd"
+    case 3:
+    case 23:
+      return "rd"
+    default:
+      return "th"
+  }
+}
+
+DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
+
+DateTime.prototype.toString = function() { return this.date.toISOString() }
+
+String.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
+
+String.leftPad = function(val, size, ch) {
+  var result = new String(val)
+  if(ch == null) {
+    ch = " "
+  }
+  while(result.length < size) {
+    result = ch + result
+  }
+  return result
+}
+
+DateTime.daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+DateTime.y2kYear = 50
+DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 }
+/* ==============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 ;
 (function($) {
   $.fn.continuousCalendar = function(options) {
@@ -931,7 +846,7 @@ DateRange = $.extend(DateRange, {
         endField: $('input.endDate', this),
         isPopup: false,
         selectToday: false,
-        locale: DATE_LOCALE_EN,
+        locale: Locale.DEFAULT,
         disableWeekends: false,
         disabledDates: null,
         minimumRange: -1,
@@ -939,24 +854,25 @@ DateRange = $.extend(DateRange, {
         fadeOutDuration: 0,
         callback: $.noop
       }
-      var params = $.extend(defaults, options)
+      var params = $.extend({}, defaults, options)
+      params.locale = Locale.fromArgument(params.locale)
       var Status = {
         CREATE_OR_RESIZE: 'create',
         MOVE: 'move',
         NONE: 'none'
       }
-      params.locale.init()
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
+      var today = DateTime.now()
+
       if(params.selectToday) {
-        var today = Date.NOW
         var formattedToday = formatDate(today)
         startDate = today
         endDate = today
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = (startDate || Date.NOW).getFirstDateOfWeek(params.locale.firstWeekday)
+      var firstWeekdayOfGivenDate = params.locale.getFirstDateOfWeek(startDate || today)
       var container = this,
         dateCells = [],
         dateCellDates = [],
@@ -977,13 +893,13 @@ DateRange = $.extend(DateRange, {
 
       function createCalendar() {
         calendar = $.extend(popUpBehaviour(params.isPopup), dateBehaviour(isRange()))
-        selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange();
+        selection = startDate && endDate ? new DateRange(startDate, endDate, params.locale) : DateRange.emptyRange(params.locale);
         oldSelection = selection.clone()
-        var rangeStart = params.firstDate ? Date.parseDate(params.firstDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
-        var rangeEnd = params.lastDate ? Date.parseDate(params.lastDate, params.locale.shortDateFormat) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
+        var rangeStart = params.firstDate ? DateFormat.parse(params.firstDate, params.locale) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
+        var rangeEnd = params.lastDate ? DateFormat.parse(params.lastDate, params.locale) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
         params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
-        calendarRange = new DateRange(rangeStart, rangeEnd)
+        calendarRange = new DateRange(rangeStart, rangeEnd, params.locale)
         calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.click(function(e) { e.stopPropagation() })
         if($('.startDateLabel', container).isEmpty()) {
@@ -1015,7 +931,7 @@ DateRange = $.extend(DateRange, {
 
       function parseDisabledDates(dates) {
         var dateMap = {}
-        $.each(dates.split(' '), function(index, date) { dateMap[Date.parseDate(date, params.locale.shortDateFormat)] = true })
+        $.each(dates.split(' '), function(index, date) { dateMap[DateFormat.parse(date).date] = true })
         return dateMap
       }
 
@@ -1041,12 +957,12 @@ DateRange = $.extend(DateRange, {
         var singleDateVersion = {
           showInitialSelection: function() {
             if(params.startField.val()) {
-              setDateLabel(Date.parseDate(params.startField.val(), params.locale.shortDateFormat).dateFormat(params.locale.weekDateFormat))
+              setDateLabel(DateFormat.format(DateFormat.parse(params.startField.val()), params.locale.weekDateFormat, params.locale))
             }
           },
           initEvents: function() {
             initSingleDateCalendarEvents()
-            var selectedDateKey = startDate && startDate.dateFormat('Ymd')
+            var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd', params.locale)
             if(selectedDateKey in dateCellMap) {
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
@@ -1065,7 +981,7 @@ DateRange = $.extend(DateRange, {
         var popUpVersion = {
           initUI: function() {
             calendarContainer.addClass('popup').hide()
-            var icon = $('<a href="#" class="calendarIcon">' + Date.NOW.getDate() + '</a>').click(toggleCalendar)
+            var icon = $('<a href="#" class="calendarIcon">' + today.getDate() + '</a>').click(toggleCalendar)
             container.prepend('<div></div>')
             container.prepend(icon)
           },
@@ -1096,7 +1012,7 @@ DateRange = $.extend(DateRange, {
       }
 
       function highlightToday() {
-        var todayKey = Date.NOW.dateFormat('Ymd')
+        var todayKey = DateFormat.format(today, 'Ymd', params.locale)
         if(todayKey in dateCellMap) {
           getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
         }
@@ -1121,7 +1037,7 @@ DateRange = $.extend(DateRange, {
       }
 
       function initRangeCalendarEvents(container, bodyTable) {
-        $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
+        $('span.rangeLengthLabel', container).text(params.locale.daysLabel(selection.days()))
         bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
         bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
         disableTextSelection(bodyTable.get(0))
@@ -1145,8 +1061,9 @@ DateRange = $.extend(DateRange, {
       function headerRow() {
         var tr = $('<tr>').append(yearCell())
         tr.append($('<th class="week">&nbsp;</th>'))
-        $(Date.dayNames).each(function(index) {
-          var weekDay = $('<th>').append(Date.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
+        $(params.locale.dayNames).each(function(index) {
+          //TODO move to Locale
+          var weekDay = $('<th>').append(params.locale.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
           tr.append(weekDay)
         })
         calendar.addCloseButton(tr);
@@ -1181,7 +1098,7 @@ DateRange = $.extend(DateRange, {
       }
 
       function calendarBody() {
-        var firstWeekDay = calendarRange.start.getFirstDateOfWeek(params.locale.firstWeekday)
+        var firstWeekDay = params.locale.getFirstDateOfWeek(calendarRange.start)
         var isFirst = true;
         var rows = []
         while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
@@ -1205,7 +1122,7 @@ DateRange = $.extend(DateRange, {
 
       function dateCell(date) {
         var dateCell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '">' + date.getDate() + '</td>'
-        dateCellMap[date.dateFormat('Ymd')] = dateCellDates.length
+        dateCellMap[DateFormat.format(date, 'Ymd', params.locale)] = dateCellDates.length
         dateCellDates.push(date)
         return dateCell
       }
@@ -1214,7 +1131,7 @@ DateRange = $.extend(DateRange, {
         var th = '<th class="month ' + backgroundBy(firstDayOfWeek)
         if(isFirst || firstDayOfWeek.getDate() <= 7) {
           th += ' monthName">'
-          th += Date.monthNames[firstDayOfWeek.getMonth()]
+          th += params.locale.monthNames[firstDayOfWeek.getMonth()]
         } else {
           th += '">'
           if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 0) {
@@ -1232,7 +1149,7 @@ DateRange = $.extend(DateRange, {
 
       function disabledOrNot(date) {
         var disabledWeekendDay = params.disableWeekends && date.isWeekend()
-        var disabledDay = params.disabledDates[date.getOnlyDate()]
+        var disabledDay = params.disabledDates[date.getOnlyDate().date]
         var outOfBounds = !calendarRange.hasDate(date)
         return outOfBounds || disabledWeekendDay || disabledDay ? 'disabled' : ''
       }
@@ -1248,14 +1165,14 @@ DateRange = $.extend(DateRange, {
           $('td.selected', container).removeClass('selected')
           dateCell.addClass('selected')
           var selectedDate = getElemDate(dateCell.get(0));
-          params.startField.val(selectedDate.dateFormat(params.locale.shortDateFormat))
-          setDateLabel(selectedDate.dateFormat(params.locale.weekDateFormat))
+          params.startField.val(DateFormat.shortDateFormat(selectedDate, params.locale))
+          setDateLabel(DateFormat.format(selectedDate, params.locale.weekDateFormat, params.locale))
           calendar.close(this)
           executeCallback(selectedDate)
         })
       }
 
-      function startNewRange() { selection = new DateRange(mouseDownDate, mouseDownDate) }
+      function startNewRange() { selection = new DateRange(mouseDownDate, mouseDownDate, params.locale) }
 
       function mouseDown(event) {
         var elem = event.target
@@ -1304,7 +1221,7 @@ DateRange = $.extend(DateRange, {
           } else if(isMonthCell(elem)) {
             status = Status.NONE
             var dayInMonth = getElemDate($(elem).siblings('.date').get(0))
-            return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth())
+            return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth(), params.locale)
           } else if(event.shiftKey) {
             if(selection.days() > 0 && enabledCell(elem)) {
               status = Status.NONE
@@ -1319,10 +1236,10 @@ DateRange = $.extend(DateRange, {
           var firstDay = firstDayOfWeek
           var lastDay = firstDayOfWeek.plusDays(6)
           if(params.disableWeekends) {
-            firstDay = firstDayOfWeek.withWeekday(Date.MONDAY)
-            lastDay = firstDayOfWeek.withWeekday(Date.FRIDAY)
+            firstDay = firstDayOfWeek.withWeekday(Locale.MONDAY)
+            lastDay = firstDayOfWeek.withWeekday(Locale.FRIDAY)
           }
-          return new DateRange(firstDay, lastDay).and(calendarRange)
+          return new DateRange(firstDay, lastDay, params.locale).and(calendarRange)
         }
       }
 
@@ -1342,7 +1259,7 @@ DateRange = $.extend(DateRange, {
             }
           },
           create: function() {
-            var newSelection = new DateRange(mouseDownDate, date)
+            var newSelection = new DateRange(mouseDownDate, date, params.locale)
             if(isEnabled(event.target) && isPermittedRange(newSelection)) {
               selection = newSelection
             }
@@ -1363,7 +1280,7 @@ DateRange = $.extend(DateRange, {
       function drawSelection() {
         selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends, calendarRange)
         drawSelectionBetweenDates(selection)
-        $('span.rangeLengthLabel', container).text(Date.daysLabel(selection.days()))
+        $('span.rangeLengthLabel', container).text(params.locale.daysLabel(selection.days()))
       }
 
       function drawSelectionBetweenDates(range) {
@@ -1375,8 +1292,8 @@ DateRange = $.extend(DateRange, {
 
       function iterateAndToggleCells(range) {
         if(range.days() == 0) return
-        var startIndex = dateCellMap[range.start.dateFormat('Ymd')]
-        var endIndex = dateCellMap[range.end.dateFormat('Ymd')]
+        var startIndex = dateCellMap[DateFormat.format(range.start, 'Ymd', params.locale)]
+        var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd', params.locale)]
         for(var i = startIndex; i <= endIndex; i++) {
           setDateCellStyle(i, range.start, range.end)
         }
@@ -1416,15 +1333,15 @@ DateRange = $.extend(DateRange, {
       function setRangeLabels() {
         if(selection.start && selection.end) {
           var format = params.locale.weekDateFormat
-          $('span.startDateLabel', container).text(selection.start.dateFormat(format))
-          $('span.endDateLabel', container).text(selection.end.dateFormat(format))
+          $('span.startDateLabel', container).text(DateFormat.format(selection.start, format, params.locale))
+          $('span.endDateLabel', container).text(DateFormat.format(selection.end, format, params.locale))
           $('span.separator', container).show()
         } else {
           $('span.separator', container).hide()
         }
       }
 
-      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? Date.parseDate(field.val(), params.locale.shortDateFormat) : null; }
+      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null; }
 
       function disableTextSelection(elem) {
         if($.browser.mozilla) {//Firefox
@@ -1463,7 +1380,7 @@ DateRange = $.extend(DateRange, {
 
       function setEndField(value) { params.endField.val(value) }
 
-      function formatDate(date) { return date.dateFormat(params.locale.shortDateFormat) }
+      function formatDate(date) { return DateFormat.shortDateFormat(date, params.locale) }
 
       function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
 

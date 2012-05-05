@@ -16,8 +16,8 @@ function DateRange(date1, date2) {
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
-  this.start = date1.compareTo(date2) > 0 ? date2 : date1
-  this.end = date1.compareTo(date2) > 0 ? date1 : date2
+  this.start = (date1.compareTo(date2) > 0 ? date2 : date1)
+  this.end = (date1.compareTo(date2) > 0 ? date1 : date2)
   this._days = 0
   this._hours = 0
   this._minutes = 0
@@ -28,11 +28,11 @@ DateRange.prototype = {
   _setDaysHoursAndMinutes: function() {
     if(this._hasTimes) {
       var ms = parseInt((this.end.getTime() - this.start.getTime()))
-      this._days = parseInt(ms / Date.DAY)
-      ms = ms - (this._days * Date.DAY)
-      this._hours = parseInt(ms / Date.HOUR)
-      ms = ms - (this._hours * Date.HOUR)
-      this._minutes = parseInt(ms / Date.MINUTE)
+      this._days = parseInt(ms / DateTime.DAY)
+      ms = ms - (this._days * DateTime.DAY)
+      this._hours = parseInt(ms / DateTime.HOUR)
+      ms = ms - (this._hours * DateTime.HOUR)
+      this._minutes = parseInt(ms / DateTime.MINUTE)
     }
   },
 
@@ -95,39 +95,38 @@ DateRange.prototype = {
 
   hasEndsOnWeekend: function() { return this.start.isWeekend() || this.end.isWeekend() },
 
-  setTimes: function(startTimeStr, endTimeStr) {
-    var parsedStartTime = Date.parseTime(startTimeStr)
-    var parsedEndTime = Date.parseTime(endTimeStr)
+  withTimes: function(startTimeStr, endTimeStr) {
+    var parsedStartTime = DateFormat.parseTime(startTimeStr)
+    var parsedEndTime = DateFormat.parseTime(endTimeStr)
+    var rangeWithTimes = this.clone()
     if(parsedStartTime && parsedEndTime) {
-      this._valid = true
-      this._hasTimes = true
-      this.start = this._dateWithTime(this.start, parsedStartTime)
-      this.end = this._dateWithTime(this.end, parsedEndTime)
-      this._setDaysHoursAndMinutes()
+      rangeWithTimes._valid = true
+      rangeWithTimes._hasTimes = true
+      rangeWithTimes.start = this._dateWithTime(this.start, parsedStartTime)
+      rangeWithTimes.end = this._dateWithTime(this.end, parsedEndTime)
+      rangeWithTimes._setDaysHoursAndMinutes()
     } else {
-      this._valid = false
+      rangeWithTimes._valid = false
     }
-    return this._valid
+    return rangeWithTimes
   },
 
   clone: function() { return new DateRange(this.start, this.end) },
 
-  toString: function(locale) {
-    if(this._hasTimes) {
-      return  Date.daysLabel(this.days()) + ' ' + Date.hoursLabel(this.hours(), this.minutes())
-    } else {
-      return this.start.dateFormat(locale.shortDateFormat) + ' - ' + this.end.dateFormat(locale.shortDateFormat)
-    }
-  },
-
-  printDefiningDuration: function() {
-    var years = parseInt(this.days() / 360, 10)
-    if(years > 0) return Date.yearsLabel(years)
-
-    var months = parseInt(this.days() / 30, 10)
-    if(months > 0) return Date.monthsLabel(months)
-
-    return Date.daysLabel(this.days())
+  toString: function() {
+    return [
+      'DateRange:',
+      this.start.toString(),
+      '-',
+      this.end.toString(),
+      this._days,
+      'days',
+      this._hours,
+      'hours',
+      this._minutes,
+      'minutes',
+      this._valid ? 'valid' : 'invalid'
+    ].join(' ')
   },
 
   isPermittedRange: function(minimumSize, disableWeekends, outerRange) { return this.hasValidSize(minimumSize) && (!(disableWeekends && this.hasEndsOnWeekend())) && this.isInside(outerRange) },
@@ -163,8 +162,6 @@ DateRange = $.extend(DateRange, {
 
     return new NullDateRange()
   },
-
-  parse: function(dateStr1, dateStr2, dateFormat) { return new DateRange(Date.parseDate(dateStr1, dateFormat), Date.parseDate(dateStr2, dateFormat)) },
 
   rangeWithMinimumSize: function(oldRange, minimumSize, disableWeekends, outerRange) {
     if(isTooSmallSelection()) {

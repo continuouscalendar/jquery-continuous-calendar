@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="reset-min.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="styles.css" type="text/css" media="screen"/>
 
-  <link rel="stylesheet" href="../build/jquery.continuous-calendar-latest-min.css" type="text/css" media="all"/>
+  <link rel="stylesheet" href="../build/jquery.continuousCalendar-latest-min.css" type="text/css" media="all"/>
   <style type="text/css" media="all">
     body { font-family: "Arial", serif; font-size: 90%; }
     h1 { font-size: 120%; }
@@ -37,10 +37,10 @@
     .row input[type=checkbox], .row input[type=radio] { float: left; }
     #create { margin-top: 10px; }
     .calendarScrollContent { height: 200px; }
-    .continuousCalendarContainer {  }
-    .hint {font-size:80%;color:#666;}
-    .example_params {width:100%;height:50px; font-size:10px;display:block;margin:4px 0;}
-    .containerWrapper {float:left; margin: 5px;width: 240px;}
+    .continuousCalendarContainer { }
+    .hint { font-size: 80%; color: #666; }
+    .example_params { width: 100%; height: 50px; font-size: 10px; display: block; margin: 4px 0; }
+    .containerWrapper { float: left; margin: 5px; width: 240px; }
   </style>
   <style type="text/css" media="print">
     fieldset { display: none; }
@@ -50,15 +50,12 @@
 <ul class="navi section">
   <li><a class="first" href="../index.html">Home</a></li>
   <li><span>Playground</span></li>
-  <li><a href="../src/test/jquery.continuous-calendar-test.html">Jasmine tests</a></li>
+  <li><a href="../src/test/jquery.continuousCalendar.spec.html">Jasmine tests</a></li>
   <li><a href="https://github.com/reaktor/jquery-continuous-calendar">Project in Github</a></li>
   <li><a href="http://github.com/reaktor/jquery-continuous-calendar/zipball/master">Download ZIP</a></li>
 </ul>
 <h1>Try it out yourself!</h1>
 <fieldset class="section wide">
-  <ul class="hint">
-    <li>Date format should match locale</li>
-  </ul>
   <div class="col">
     <div class="row">
       <div class="label"><label for="weeksBefore">weeksBefore</label> /
@@ -91,9 +88,9 @@
   </div>
   <div class="col">
     <label>Locale:</label>
-    <label class="row"><input type="radio" name="locale" value="DATE_LOCALE_EN" id="EN" checked="checked"/><span class="label">DATE_LOCALE_EN</span></label>
-    <label class="row"><input type="radio" name="locale" value="DATE_LOCALE_FI" id="FI"/><span class="label">DATE_LOCALE_FI</span></label>
-    <label class="row"><input type="radio" name="locale" value="DATE_LOCALE_AU" id="AU"/><span class="label">DATE_LOCALE_AU</span></label>
+    <label class="row"><input type="radio" name="locale" value="EN" id="EN" checked="checked"/><span class="label">Locale.EN</span></label>
+    <label class="row"><input type="radio" name="locale" value="FI" id="FI"/><span class="label">Locale.FI</span></label>
+    <label class="row"><input type="radio" name="locale" value="AU" id="AU"/><span class="label">Locale.AU</span></label>
   </div>
   <div>Examples of other options</div>
   <ul class="col">
@@ -107,7 +104,7 @@
 
 <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" charset="UTF-8"></script>-->
 <script type="text/javascript" src="../src/lib/jquery-1.6.js"></script>
-<script type="text/javascript" src="../build/jquery.continuous-calendar-latest-min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../build/jquery.continuousCalendar-latest.js" charset="UTF-8"></script>
 <script type="text/javascript">
   counter = 0
   $('#create').click(create)
@@ -128,9 +125,9 @@
         options[optionsList[i]] = value
       }
     }
-    options.locale = window[$('[name=locale]').filter(':checked').val()]
+    options.locale = Locale[$('[name=locale]').filter(':checked').val()]
     var params = JSON.stringify(options);
-    containerWrapper.prepend('<textarea  class="example_params">$(selector).continuousCalendar('+params+')</textarea>')
+    containerWrapper.prepend('<textarea  class="example_params">$(selector).continuousCalendar(' + params + ')</textarea>')
     container.continuousCalendar(options)
     function valueOf(id) {
       var elem = $('#' + id)
@@ -140,17 +137,17 @@
     return false
   }
 
-  var disabledDates = $([Date.NOW,Date.NOW,Date.NOW])
+  var disabledDates = $([DateTime.now(), DateTime.now(), DateTime.now()])
           .map(
-              function(i, el) {
-                return el.plusDays(i + 3).dateFormat('n/j/Y')
-              }).toArray().join(' ')
+          function(i, el) {
+            return DateFormat.format(el.plusDays(i + 3), 'n/j/Y')
+          }).toArray().join(' ')
   $('#disabledDates').val(disabledDates)
-  var selection = $([Date.NOW.plusDays(10),Date.NOW.plusDays(18)])
+  var selection = $([DateTime.now().plusDays(10), DateTime.now().plusDays(18)])
           .map(
-              function(i, el) {
-                return el.dateFormat('n/j/Y')
-              }).toArray()
+          function(i, el) {
+            return DateFormat.format(el, 'n/j/Y')
+          }).toArray()
   $('#selectionStart').val(selection[0])
   $('#selectionEnd').val(selection[1])
 
