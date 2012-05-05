@@ -20,7 +20,7 @@ describe('jquery.continuous-calendar', function() {
     })
 
     //TODO failing randomly
-    xit('shows year', function() {
+    it('shows year', function() {
       assertHasValues('.continuousCalendar thead th.month', ['2008'])
     })
 
@@ -306,7 +306,6 @@ describe('jquery.continuous-calendar', function() {
       clickOnDate(28)
       expect(bindCalled).toEqual(1, 'bind')
       expect(calendarCallBack).toEqual(2)
-      //expect(window.calendarChanged).toEqual(2)
     })
 
     it('range calendar executes callback-function and triggers event when range is created or changed', function() {
