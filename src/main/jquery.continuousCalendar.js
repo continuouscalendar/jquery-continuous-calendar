@@ -102,12 +102,26 @@
         calendar.addRangeLengthLabel()
         highlightToday()
         yearTitle = $('th.month', headerTable)
-        scrollContent.scroll(setYearLabel)
+        bindScrollEvent()
         if(!params.isPopup) {
           setYearLabel()
           scrollToSelection()
         }
         calendar.initEvents()
+      }
+
+      function bindScrollEvent() {
+        var didScroll = false
+        scrollContent.scroll(function() {
+          didScroll = true
+        })
+
+        setInterval(function() {
+          if(didScroll) {
+            didScroll = false
+            setYearLabel()
+          }
+        }, 250)
       }
 
       function parseDisabledDates(dates) {
