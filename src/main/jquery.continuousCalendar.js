@@ -559,7 +559,7 @@
         container.trigger('calendarChange', selection)
       }
 
-      function isDateCell(elem) { return $(elem).hasClass('date') }
+      function isDateCell(elem) { return $(elem).closest('[date-cell-index]').hasClass('date') }
 
       function isWeekCell(elem) { return $(elem).hasClass('week') }
 
