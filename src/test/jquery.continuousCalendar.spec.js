@@ -221,6 +221,22 @@ describe('jquery.continuous-calendar', function() {
       expect(cal().find('.rangeLengthLabel')).toHaveText('8 Days')
     })
 
+    it('mouse click on current date selects current date', function() {
+      var d_today = new Date(),
+        s_today = (d_today.getMonth() + 1) + '/' + d_today.getDate() + '/' + d_today.getFullYear(),
+        d_start = new Date(d_today.setDate(d_today.getDate() - 7)),
+        s_start = (d_start.getMonth() + 1) + '/' + d_start.getDate() + '/' + d_start.getFullYear(),
+        d_end = new Date(d_today.setDate(d_today.getDate() + 14)),
+        s_end = (d_end.getMonth() + 1) + '/' + d_end.getDate() + '/' + d_end.getFullYear()
+      d_today = new Date();
+      createCalendarWithNoRange(s_start, s_end)
+      mouseDownOnDay(d_today.getDate())
+      mouseUpOnDay(d_today.getDate())
+      expect(startFieldValue()).toEqual(s_today)
+      expect(endFieldValue()).toEqual(s_today)
+      expect(cal().find('.rangeLengthLabel')).toHaveText('1 Day')
+    })
+
     it('mouse click and drag works with no initial selection', function() {
       createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '2/1/2009'})
       dragDates(22, 23)

@@ -121,7 +121,10 @@ function createPopupWeekCalendar() {
 }
 
 function clickOnDate(date) {
-  cal().find('.date:contains(' + date + ')').click()
+  var elem = cal().find('.date div').withText(date).length === 0 ?
+    cal().find('.date').withText(date) :
+    cal().find('.date div').withText(date);
+  elem.click()
 }
 
 function mouseEventOnDay(eventType, date, options) {
