@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '1.2.2';$.continuousCalendar.released = '2012-06-04'
+$.continuousCalendar = {};$.continuousCalendar.version = '1.2.3';$.continuousCalendar.released = '2012-06-04'
 /*
  * Copyright (C) 2004 Baron Schwartz <baron at sequent dot org>
  *
@@ -13,7 +13,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.2.2';$.continuousCal
  */
 
 DateFormat = {}
-
 DateFormat.parseFunctions = {count: 0}
 DateFormat.parseRegexes = []
 DateFormat.formatFunctions = {count: 0}
@@ -27,7 +26,7 @@ DateFormat.format = function(dateTime, format, locale) {
 }
 
 DateFormat.shortDateFormat = function(dateTime, locale) {
-  return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y' , locale)
+  return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y', locale)
 }
 
 DateFormat.formatRange = function(dateRange, locale) {
@@ -46,16 +45,13 @@ DateFormat.formatDefiningRangeDuration = function(dateRange, locale) {
   if(months > 0) return locale.monthsLabel(months)
 
   return locale.daysLabel(dateRange.days())
-},
-
-
-
+}
 
 DateFormat.parse = function(input, locale) {
   if(input == 'today') {
     return DateTime.now()
   }
-  var date = new Date(input);
+  var date = new Date(input)
   if(isNaN(date.getTime())) {
     throw Error('Could not parse date from "' + input + '"')
   }
@@ -201,13 +197,10 @@ DateFormat.getFormatCode = function(character, locale) {
  * the License.
  */
 Locale = {}
-
 Locale.MONDAY = 1
 Locale.FRIDAY = 5
 Locale.SUNDAY = 0
 Locale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
-
-
 
 Locale.FI = {
   id: 'FI',
@@ -225,12 +218,12 @@ Locale.FI = {
     'marraskuu',
     'joulukuu'],
   dayNames: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
-  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta'); },
-  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta'); },
-  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää'); },
+  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta') },
+  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta') },
+  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää') },
   hoursLabel: function(hours, minutes) {
     var hoursAndMinutes = Locale.hoursAndMinutes(hours, minutes).replace('.', ',')
-    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia');
+    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia')
   },
   shortDateFormat: 'j.n.Y',
   weekDateFormat: 'D j.n.Y',
@@ -240,6 +233,7 @@ Locale.FI = {
     return Locale.getFirstDateOfWeek(dateTime, Locale.MONDAY)
   }
 }
+
 Locale.EN = {
   id: 'EN',
   monthNames: ['January',
@@ -261,12 +255,12 @@ Locale.EN = {
     'Thursday',
     'Friday',
     'Saturday'],
-  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
-  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months'); },
-  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days'); },
+  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years') },
+  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
+  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
   hoursLabel: function(hours, minutes) {
     var hoursAndMinutes = Locale.hoursAndMinutes(hours, minutes)
-    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours');
+    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
   },
   shortDateFormat: 'n/j/Y',
   weekDateFormat: 'D n/j/Y',
@@ -275,7 +269,8 @@ Locale.EN = {
   getFirstDateOfWeek: function(dateTime) {
     return Locale.getFirstDateOfWeek(dateTime, Locale.SUNDAY)
   }
-};
+}
+
 Locale.AU = {
   id: 'AU',
   monthNames: ['January',
@@ -297,12 +292,12 @@ Locale.AU = {
     'Thursday',
     'Friday',
     'Saturday'],
-  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
-  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months'); },
-  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days'); },
+  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years') },
+  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
+  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
   hoursLabel: function(hours, minutes) {
     var hoursAndMinutes = Locale.hoursAndMinutes(hours, minutes)
-    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours');
+    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
   },
   shortDateFormat: 'j/n/Y',
   weekDateFormat: 'D j/n/Y',
@@ -326,7 +321,6 @@ Locale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
   }
 }
 
-
 Locale.fromArgument = function(stringOrObject) {
   if(typeof stringOrObject == 'string')
     return Locale[stringOrObject]
@@ -346,7 +340,6 @@ Locale.fromArgument = function(stringOrObject) {
  * the License.
  */
 function DateRange(date1, date2) {
-  var _hasTimes = false
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
@@ -371,20 +364,16 @@ DateRange.prototype = {
   },
 
   _dateWithTime: function(dateWithoutTime, parsedTime) {
-    var date = dateWithoutTime.clone()
-    date.setHours(parsedTime[0])
-    date.setMinutes(parsedTime[1])
-    date.setMilliseconds(0)
-    return date
+    return dateWithoutTime.withTime(parsedTime[0], parsedTime[1])
   },
 
-  hours: function() { return this._hours; },
+  hours: function() { return this._hours },
 
-  minutes: function() { return this._minutes; },
+  minutes: function() { return this._minutes },
 
-  hasDate: function(date) { return date.isBetweenDates(this.start, this.end); },
+  hasDate: function(date) { return date.isBetweenDates(this.start, this.end) },
 
-  isValid: function() { return this._valid && this.end.getTime() - this.start.getTime() >= 0; },
+  isValid: function() { return this._valid && this.end.getTime() - this.start.getTime() >= 0 },
 
   days: function() {
     if(this._hasTimes) {
@@ -487,10 +476,10 @@ DateRange = $.extend(DateRange, {
       this.start = null
       this.end = null
       this.days = function() {
-        return 0;
+        return 0
       }
       this.shiftDays = $.noop
-      this.hasDate = function() { return false; }
+      this.hasDate = function() { return false }
       this.clone = function() { return DateRange.emptyRange() }
     }
 
@@ -517,7 +506,7 @@ DateRange = $.extend(DateRange, {
     }
     return oldRange
 
-    function isTooSmallSelection() { return minimumSize && oldRange.days() <= minimumSize; }
+    function isTooSmallSelection() { return minimumSize && oldRange.days() <= minimumSize }
 
     function delta(x) { return -((x + 1) % 7 + 1) }
   }
@@ -559,17 +548,15 @@ DateTime.prototype.getHours = function() { return this.date.getHours() }
 
 DateTime.prototype.getFullYear = function() { return this.date.getFullYear() }
 
-DateTime.prototype.getYear = function() { return this.date.getYear() }
-
 DateTime.prototype.getDay = function() { return this.date.getDay() }
 
-DateTime.prototype.setTime = function(time) { this.date.setTime(time) }
-
-DateTime.prototype.setHours = function(hours) { this.date.setHours(hours) }
-
-DateTime.prototype.setMinutes = function(minutes) { this.date.setMinutes(minutes) }
-
-DateTime.prototype.setMilliseconds = function(ms) { this.date.setMilliseconds(ms) }
+DateTime.prototype.withTime = function(h, m) {
+  var dateWithTime = this.clone()
+  dateWithTime.date.setHours(h)
+  dateWithTime.date.setMinutes(m)
+  dateWithTime.date.setMilliseconds(0)
+  return dateWithTime
+}
 
 DateTime.DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 DateTime.SECOND = 1000
@@ -609,7 +596,7 @@ DateTime.prototype.getDayInYear = function() { return DateTime.getDayInYear(this
 DateTime.prototype.plusDays = function(days) {
   var newDateTime = this.clone()
   var hours = this.getHours()
-  newDateTime.setTime(this.getTime() + days * DateTime.DAY)
+  newDateTime.date.setTime(this.getTime() + days * DateTime.DAY)
 
   // Fix the DateTime offset caused by daylight saving time
   var delta = hours - newDateTime.getHours()
@@ -621,15 +608,9 @@ DateTime.prototype.plusDays = function(days) {
     if(delta < -12) {
       delta += 24
     }
-    newDateTime.setTime(newDateTime.getTime() + (delta * DateTime.HOUR))
+    newDateTime.date.setTime(newDateTime.getTime() + (delta * DateTime.HOUR))
   }
   return newDateTime
-}
-
-DateTime.prototype.plusYears = function(years) {
-  var newDateTime = this.clone()
-  newDateTime.setFullYear(this.getFullYear() + years)
-  return newDateTime()
 }
 
 DateTime.prototype.stripped = function() { return new Date(parseInt(this.getTime() / DateTime.DAY, 10)) }
@@ -649,13 +630,6 @@ DateTime.prototype.compareTo = function(date) {
       return 0
     }
   }
-}
-
-DateTime.prototype.compareDateOnlyTo = function(DateTime) {
-  if(!DateTime) {
-    return 1
-  }
-  return this.stripped().compareTo(DateTime.stripped())
 }
 
 DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.now()) }
@@ -697,12 +671,6 @@ DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
   return week
 }
 
-DateTime.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
-  var thisFirst = this.getFirstDateTimeOfWeek(firstDayOfWeek)
-  var lastFirst = thisFirst.plusDays(-7)
-  return thisFirst.getMonth() != lastFirst.getMonth()
-}
-
 //TODO refactor
 DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime())) }
 
@@ -712,7 +680,7 @@ DateTime.prototype.equalsOnlyDate = function(date) {
   if(!date) {
     return false
   }
-  return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getYear() == date.getYear()
+  return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getFullYear() == date.getFullYear()
 }
 
 DateTime.prototype.isBetweenDates = function(start, end) { return this.compareTo(start) >= 0 && this.compareTo(end) <= 0 }
@@ -763,16 +731,6 @@ DateTime.prototype.getWeekOfYear = function() {
 DateTime.prototype.isLeapYear = function() {
   var year = this.getFullYear()
   return ((year & 3) == 0 && (year % 100 || (year % 400 == 0 && year)))
-}
-
-DateTime.prototype.getFirstDayOfMonth = function() {
-  var day = (this.getDay() - (this.getDate() - 1)) % 7
-  return (day < 0) ? (day + 7) : day
-}
-
-DateTime.prototype.getLastDayOfMonth = function() {
-  var day = (this.getDay() + (DateTime.daysInMonth[this.getMonth()] - this.getDate())) % 7
-  return (day < 0) ? (day + 7) : day
 }
 
 DateTime.prototype.getDaysInMonth = function() {
