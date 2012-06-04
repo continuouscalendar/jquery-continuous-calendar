@@ -102,12 +102,6 @@ DateTime.prototype.plusDays = function(days) {
   return newDateTime
 }
 
-DateTime.prototype.plusYears = function(years) {
-  var newDateTime = this.clone()
-  newDateTime.setFullYear(this.getFullYear() + years)
-  return newDateTime()
-}
-
 DateTime.prototype.stripped = function() { return new Date(parseInt(this.getTime() / DateTime.DAY, 10)) }
 
 DateTime.prototype.compareTo = function(date) {
@@ -125,13 +119,6 @@ DateTime.prototype.compareTo = function(date) {
       return 0
     }
   }
-}
-
-DateTime.prototype.compareDateOnlyTo = function(DateTime) {
-  if(!DateTime) {
-    return 1
-  }
-  return this.stripped().compareTo(DateTime.stripped())
 }
 
 DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.now()) }
@@ -171,12 +158,6 @@ DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
     week--
   }
   return week
-}
-
-DateTime.prototype.hasMonthChangedOnPreviousWeek = function(firstDayOfWeek) {
-  var thisFirst = this.getFirstDateTimeOfWeek(firstDayOfWeek)
-  var lastFirst = thisFirst.plusDays(-7)
-  return thisFirst.getMonth() != lastFirst.getMonth()
 }
 
 //TODO refactor
@@ -239,16 +220,6 @@ DateTime.prototype.getWeekOfYear = function() {
 DateTime.prototype.isLeapYear = function() {
   var year = this.getFullYear()
   return ((year & 3) == 0 && (year % 100 || (year % 400 == 0 && year)))
-}
-
-DateTime.prototype.getFirstDayOfMonth = function() {
-  var day = (this.getDay() - (this.getDate() - 1)) % 7
-  return (day < 0) ? (day + 7) : day
-}
-
-DateTime.prototype.getLastDayOfMonth = function() {
-  var day = (this.getDay() + (DateTime.daysInMonth[this.getMonth()] - this.getDate())) % 7
-  return (day < 0) ? (day + 7) : day
 }
 
 DateTime.prototype.getDaysInMonth = function() {
