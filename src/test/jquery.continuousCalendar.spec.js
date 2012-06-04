@@ -196,45 +196,38 @@ describe('jquery.continuous-calendar', function() {
       expect(cal().find('.rangeLengthLabel')).toHaveText('15 Days')
     })
 
-    it('mouse click and drag can start or end on current date', function() {
-      var d_today = new Date(),
-        s_today = (d_today.getMonth() + 1) + '/' + d_today.getDate() + '/' + d_today.getFullYear(),
-        d_start = new Date(d_today.setDate(d_today.getDate() - 7)),
-        s_start = (d_start.getMonth() + 1) + '/' + d_start.getDate() + '/' + d_start.getFullYear(),
-        d_end = new Date(d_today.setDate(d_today.getDate() + 14)),
-        s_end = (d_end.getMonth() + 1) + '/' + d_end.getDate() + '/' + d_end.getFullYear()
-      d_today = new Date();
-      createCalendarWithNoRange(s_start, s_end)
-      startTimer()
-      dragDatesSlowly(d_today.getDate(), d_end.getDate())
-      var duration = stopTimer()
-      expect(cal().find('.selected').size()).toEqual(8, '(' + duration + ' ms)')
-      expect(startFieldValue()).toEqual(s_today)
-      expect(endFieldValue()).toEqual(s_end)
-      expect(cal().find('.rangeLengthLabel')).toHaveText('8 Days')
-      startTimer()
-      dragDatesSlowly(d_start.getDate(), d_today.getDate())
-      var duration = stopTimer()
-      expect(cal().find('.selected').size()).toEqual(8, '(' + duration + ' ms)')
-      expect(startFieldValue()).toEqual(s_start)
-      expect(endFieldValue()).toEqual(s_today)
-      expect(cal().find('.rangeLengthLabel')).toHaveText('8 Days')
-    })
+    describe('when current date is start or end of selection', function() {
+      var today = DateTime.now()
+      var todayStr = DateFormat.shortDateFormat(today)
+      var weekAgo = today.plusDays(-7)
+      var weekAgoStr = DateFormat.shortDateFormat(weekAgo)
+      var weekAhead = today.plusDays(7)
+      var weekAheadStr = DateFormat.shortDateFormat(weekAhead)
 
-    it('mouse click on current date selects current date', function() {
-      var d_today = new Date(),
-        s_today = (d_today.getMonth() + 1) + '/' + d_today.getDate() + '/' + d_today.getFullYear(),
-        d_start = new Date(d_today.setDate(d_today.getDate() - 7)),
-        s_start = (d_start.getMonth() + 1) + '/' + d_start.getDate() + '/' + d_start.getFullYear(),
-        d_end = new Date(d_today.setDate(d_today.getDate() + 14)),
-        s_end = (d_end.getMonth() + 1) + '/' + d_end.getDate() + '/' + d_end.getFullYear()
-      d_today = new Date();
-      createCalendarWithNoRange(s_start, s_end)
-      mouseDownOnDay(d_today.getDate())
-      mouseUpOnDay(d_today.getDate())
-      expect(startFieldValue()).toEqual(s_today)
-      expect(endFieldValue()).toEqual(s_today)
-      expect(cal().find('.rangeLengthLabel')).toHaveText('1 Day')
+      beforeEach(function() {
+        createCalendarWithNoRange(weekAgoStr, weekAheadStr)
+      })
+
+      it('drag can start or end on current date', function() {
+        dragDatesSlowly(today.getDate(), weekAhead.getDate())
+        expect(cal().find('.selected').size()).toEqual(8)
+        expect(startFieldValue()).toEqual(todayStr)
+        expect(endFieldValue()).toEqual(weekAheadStr)
+        expect(cal().find('.rangeLengthLabel')).toHaveText('8 Days')
+        dragDatesSlowly(weekAgo.getDate(), today.getDate())
+        expect(cal().find('.selected').size()).toEqual(8)
+        expect(startFieldValue()).toEqual(weekAgoStr)
+        expect(endFieldValue()).toEqual(todayStr)
+        expect(cal().find('.rangeLengthLabel')).toHaveText('8 Days')
+      })
+
+      it('mouse click on current date selects current date', function() {
+        mouseDownOnDay(today.getDate())
+        mouseUpOnDay(today.getDate())
+        expect(startFieldValue()).toEqual(todayStr)
+        expect(endFieldValue()).toEqual(todayStr)
+        expect(cal().find('.rangeLengthLabel')).toHaveText('1 Day')
+      })
     })
 
     it('mouse click and drag works with no initial selection', function() {
