@@ -35,17 +35,15 @@ DateTime.prototype.getHours = function() { return this.date.getHours() }
 
 DateTime.prototype.getFullYear = function() { return this.date.getFullYear() }
 
-DateTime.prototype.getYear = function() { return this.date.getYear() }
-
 DateTime.prototype.getDay = function() { return this.date.getDay() }
 
-DateTime.prototype.setTime = function(time) { this.date.setTime(time) }
-
-DateTime.prototype.setHours = function(hours) { this.date.setHours(hours) }
-
-DateTime.prototype.setMinutes = function(minutes) { this.date.setMinutes(minutes) }
-
-DateTime.prototype.setMilliseconds = function(ms) { this.date.setMilliseconds(ms) }
+DateTime.prototype.withTime = function(h, m) {
+  var dateWithTime = this.clone()
+  dateWithTime.date.setHours(h)
+  dateWithTime.date.setMinutes(m)
+  dateWithTime.date.setMilliseconds(0)
+  return dateWithTime
+}
 
 DateTime.DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 DateTime.SECOND = 1000
@@ -85,7 +83,7 @@ DateTime.prototype.getDayInYear = function() { return DateTime.getDayInYear(this
 DateTime.prototype.plusDays = function(days) {
   var newDateTime = this.clone()
   var hours = this.getHours()
-  newDateTime.setTime(this.getTime() + days * DateTime.DAY)
+  newDateTime.date.setTime(this.getTime() + days * DateTime.DAY)
 
   // Fix the DateTime offset caused by daylight saving time
   var delta = hours - newDateTime.getHours()
@@ -97,7 +95,7 @@ DateTime.prototype.plusDays = function(days) {
     if(delta < -12) {
       delta += 24
     }
-    newDateTime.setTime(newDateTime.getTime() + (delta * DateTime.HOUR))
+    newDateTime.date.setTime(newDateTime.getTime() + (delta * DateTime.HOUR))
   }
   return newDateTime
 }
@@ -169,7 +167,7 @@ DateTime.prototype.equalsOnlyDate = function(date) {
   if(!date) {
     return false
   }
-  return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getYear() == date.getYear()
+  return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getFullYear() == date.getFullYear()
 }
 
 DateTime.prototype.isBetweenDates = function(start, end) { return this.compareTo(start) >= 0 && this.compareTo(end) <= 0 }

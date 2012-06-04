@@ -36,11 +36,7 @@ DateRange.prototype = {
   },
 
   _dateWithTime: function(dateWithoutTime, parsedTime) {
-    var date = dateWithoutTime.clone()
-    date.setHours(parsedTime[0])
-    date.setMinutes(parsedTime[1])
-    date.setMilliseconds(0)
-    return date
+    return dateWithoutTime.withTime(parsedTime[0], parsedTime[1])
   },
 
   hours: function() { return this._hours },
