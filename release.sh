@@ -10,6 +10,7 @@ echo Build nightly...
 old_version=$(git tag | tail -n1)
 version=$1
 rm build/*latest*
+[ "$version" != "" -a ! -f $BUILD_PREFIX-$version.js ] && rm build/*
 echo "$.continuousCalendar = {};$.continuousCalendar.version = '$version';$.continuousCalendar.released = '`date '+%Y-%m-%d'`'">$LATEST_JS
 find src/main -name *.js |xargs cat >>$LATEST_JS
 echo "Compressing js..."
@@ -32,7 +33,7 @@ else
 		cp $LATEST_CSS $BUILD_PREFIX-$version.css
 		cp $LATEST_JS_MIN $BUILD_PREFIX-$version-min.js
 		cp $LATEST_CSS_MIN $BUILD_PREFIX-$version-min.css
-		git add build
+		git add -A build
 		git commit -m "Buld for version $version"  
 		git tag $version
 		git status
@@ -42,3 +43,4 @@ else
 	fi
 fi
 cd $current_dir
+
