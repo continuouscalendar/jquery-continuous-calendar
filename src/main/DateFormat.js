@@ -26,7 +26,7 @@ DateFormat.format = function(dateTime, format, locale) {
 }
 
 DateFormat.shortDateFormat = function(dateTime, locale) {
-  return DateFormat.format(dateTime, locale.shortDateFormat, locale)
+  return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y' , locale)
 }
 
 DateFormat.formatRange = function(dateRange, locale) {
