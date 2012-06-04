@@ -12,7 +12,6 @@
  */
 
 DateFormat = {}
-
 DateFormat.parseFunctions = {count: 0}
 DateFormat.parseRegexes = []
 DateFormat.formatFunctions = {count: 0}
@@ -26,7 +25,7 @@ DateFormat.format = function(dateTime, format, locale) {
 }
 
 DateFormat.shortDateFormat = function(dateTime, locale) {
-  return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y' , locale)
+  return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y', locale)
 }
 
 DateFormat.formatRange = function(dateRange, locale) {
@@ -45,16 +44,13 @@ DateFormat.formatDefiningRangeDuration = function(dateRange, locale) {
   if(months > 0) return locale.monthsLabel(months)
 
   return locale.daysLabel(dateRange.days())
-},
-
-
-
+}
 
 DateFormat.parse = function(input, locale) {
   if(input == 'today') {
     return DateTime.now()
   }
-  var date = new Date(input);
+  var date = new Date(input)
   if(isNaN(date.getTime())) {
     throw Error('Could not parse date from "' + input + '"')
   }

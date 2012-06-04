@@ -12,7 +12,6 @@
  * the License.
  */
 function DateRange(date1, date2) {
-  var _hasTimes = false
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
   }
@@ -44,13 +43,13 @@ DateRange.prototype = {
     return date
   },
 
-  hours: function() { return this._hours; },
+  hours: function() { return this._hours },
 
-  minutes: function() { return this._minutes; },
+  minutes: function() { return this._minutes },
 
-  hasDate: function(date) { return date.isBetweenDates(this.start, this.end); },
+  hasDate: function(date) { return date.isBetweenDates(this.start, this.end) },
 
-  isValid: function() { return this._valid && this.end.getTime() - this.start.getTime() >= 0; },
+  isValid: function() { return this._valid && this.end.getTime() - this.start.getTime() >= 0 },
 
   days: function() {
     if(this._hasTimes) {
@@ -153,10 +152,10 @@ DateRange = $.extend(DateRange, {
       this.start = null
       this.end = null
       this.days = function() {
-        return 0;
+        return 0
       }
       this.shiftDays = $.noop
-      this.hasDate = function() { return false; }
+      this.hasDate = function() { return false }
       this.clone = function() { return DateRange.emptyRange() }
     }
 
@@ -183,7 +182,7 @@ DateRange = $.extend(DateRange, {
     }
     return oldRange
 
-    function isTooSmallSelection() { return minimumSize && oldRange.days() <= minimumSize; }
+    function isTooSmallSelection() { return minimumSize && oldRange.days() <= minimumSize }
 
     function delta(x) { return -((x + 1) % 7 + 1) }
   }
