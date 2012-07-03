@@ -239,7 +239,7 @@ describe('jquery.continuous-calendar', function() {
 
     it('mouse click on month on range calendar selects whole month', function() {
       createBigCalendar()
-      var monthName = cal().find('.month').withText('May')
+      var monthName = cal().find('.month').withText('May').last()
       mouseClick(monthName)
       expect(cal().find('.selected').size()).toEqual(31)
       var year = startFieldValue().split('/')[2]
