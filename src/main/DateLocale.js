@@ -12,7 +12,13 @@
  * the License.
  */
 
-;(function(root) {
+;(function(root, factory) {
+  if (typeof define === "function" && define.amd) {
+    define("DateLocale", [], factory)
+  } else {
+    root.DateLocale = factory()
+  }
+})(this, function() {
   var DateLocale = {}
   DateLocale.MONDAY = 1
   DateLocale.FRIDAY = 5
@@ -144,5 +150,5 @@
     else return stringOrObject || DateLocale.DEFAULT
   }
 
-  root.DateLocale = DateLocale
-})(this)
+  return DateLocale
+})

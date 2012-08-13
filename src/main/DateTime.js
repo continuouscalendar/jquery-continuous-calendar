@@ -18,7 +18,13 @@
  * @author Eero Anttila (eeroan)
  */
 
-;(function(root) {
+;(function(root, factory) {
+  if (typeof define === "function" && define.amd) {
+    define("DateTime", [], factory)
+  } else {
+    root.DateTime = factory()
+  }
+})(this, function() {
   var DateTime = function(date) {
     if(typeof date == 'string') this.date = new Date(date)
     else this.date = date || new Date()
@@ -264,5 +270,5 @@
   DateTime.y2kYear = 50
   DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 }
 
-  root.DateTime = DateTime
-})(this)
+  return DateTime
+})

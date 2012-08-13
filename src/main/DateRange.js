@@ -12,7 +12,13 @@
  * the License.
  */
 
-;(function(root, $, DateTime, DateFormat) {
+;(function(root, factory) {
+  if (typeof define === "function" && define.amd) {
+    define("DateRange", ["jquery", "DateTime", "DateFormat"], factory)
+  } else {
+    root.DateRange = factory(root.jQuery, root.DateTime, root.DateFormat)
+  }
+})(this, function($, DateTime, DateFormat) {
   function DateRange(date1, date2) {
     if(!date1 || !date2) {
       throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
@@ -186,5 +192,5 @@
     }
   })
 
-  root.DateRange = DateRange
-})(this, this.jQuery, this.DateTime, this.DateFormat)
+  return DateRange
+})

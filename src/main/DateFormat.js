@@ -11,7 +11,13 @@
  * details.
  */
 
-;(function(root, DateTime) {
+;(function(root, factory) {
+  if (typeof define === "function" && define.amd) {
+    define("DateFormat", ["DateTime"], factory)
+  } else {
+    root.DateFormat = factory(root.DateTime)
+  }
+})(this, function(DateTime) {
   var DateFormat = {}
 
   DateFormat.parseFunctions = {count: 0}
@@ -185,5 +191,5 @@
     }
   }
 
-  root.DateFormat = DateFormat
-})(this, this.DateTime)
+  return DateFormat
+})

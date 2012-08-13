@@ -12,7 +12,15 @@
  * the License.
  */
 
-;(function($, DateFormat, DateLocale, DateRange, DateTime) {
+;(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define('jquery.continuous-calendar', ['jquery', 'DateFormat', 'DateLocale', 'DateRange', 'DateTime'], function($, DateFormat, DateLocale, DateRange, DateTime) {
+      factory($, DateFormat, DateLocale, DateRange, DateTime)
+    })
+  } else {
+    factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime)
+  }
+})(this, function($, DateFormat, DateLocale, DateRange, DateTime) {
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })
     function _continuousCalendar(options) {
@@ -585,4 +593,4 @@
   $.fn.calendarRange = function() { return $(this).data('calendarRange') }
   $.fn.exists = function() { return this.length > 0 }
   $.fn.isEmpty = function() { return this.length == 0 }
-})(this.jQuery, this.DateFormat, this.DateLocale, this.DateRange, this.DateTime)
+})
