@@ -13,136 +13,136 @@
  */
 
 ;(function(root) {
-var DateLocale = {}
-DateLocale.MONDAY = 1
-DateLocale.FRIDAY = 5
-DateLocale.SUNDAY = 0
-DateLocale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
+  var DateLocale = {}
+  DateLocale.MONDAY = 1
+  DateLocale.FRIDAY = 5
+  DateLocale.SUNDAY = 0
+  DateLocale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
-DateLocale.FI = {
-  id: 'FI',
-  monthNames: [
-    'tammikuu',
-    'helmikuu',
-    'maaliskuu',
-    'huhtikuu',
-    'toukokuu',
-    'kesäkuu',
-    'heinäkuu',
-    'elokuu',
-    'syyskuu',
-    'lokakuu',
-    'marraskuu',
-    'joulukuu'],
-  dayNames: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
-  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta') },
-  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta') },
-  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää') },
-  hoursLabel: function(hours, minutes) {
-    var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
-    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia')
-  },
-  shortDateFormat: 'j.n.Y',
-  weekDateFormat: 'D j.n.Y',
-  dateTimeFormat: 'D j.n.Y k\\lo G:i',
-  firstWeekday: DateLocale.MONDAY,
-  getFirstDateOfWeek: function(dateTime) {
-    return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
-  }
-}
-
-DateLocale.EN = {
-  id: 'EN',
-  monthNames: ['January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'],
-  dayNames: ['Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'],
-  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years') },
-  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
-  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
-  hoursLabel: function(hours, minutes) {
-    var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes)
-    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
-  },
-  shortDateFormat: 'n/j/Y',
-  weekDateFormat: 'D n/j/Y',
-  dateTimeFormat: 'D n/j/Y G:i',
-  firstWeekday: DateLocale.SUNDAY,
-  getFirstDateOfWeek: function(dateTime) {
-    return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
-  }
-}
-
-DateLocale.AU = {
-  id: 'AU',
-  monthNames: ['January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'],
-  dayNames: ['Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'],
-  yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years') },
-  monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
-  daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
-  hoursLabel: function(hours, minutes) {
-    var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes)
-    return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
-  },
-  shortDateFormat: 'j/n/Y',
-  weekDateFormat: 'D j/n/Y',
-  dateTimeFormat: 'D j/n/Y G:i',
-  firstWeekday: DateLocale.SUNDAY,
-  getFirstDateOfWeek: function(dateTime) {
-    return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
-  }
-}
-DateLocale.DEFAULT = DateLocale.EN
-
-DateLocale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
-  if(firstWeekday < dateTime.getDay()) {
-    return dateTime.plusDays(firstWeekday - dateTime.getDay())
-  } else {
-    if(firstWeekday > dateTime.getDay()) {
-      return dateTime.plusDays(firstWeekday - dateTime.getDay() - 7)
-    } else {
-      return dateTime.clone()
+  DateLocale.FI = {
+    id: 'FI',
+    monthNames: [
+      'tammikuu',
+      'helmikuu',
+      'maaliskuu',
+      'huhtikuu',
+      'toukokuu',
+      'kesäkuu',
+      'heinäkuu',
+      'elokuu',
+      'syyskuu',
+      'lokakuu',
+      'marraskuu',
+      'joulukuu'],
+    dayNames: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
+    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta') },
+    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta') },
+    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää') },
+    hoursLabel: function(hours, minutes) {
+      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia')
+    },
+    shortDateFormat: 'j.n.Y',
+    weekDateFormat: 'D j.n.Y',
+    dateTimeFormat: 'D j.n.Y k\\lo G:i',
+    firstWeekday: DateLocale.MONDAY,
+    getFirstDateOfWeek: function(dateTime) {
+      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
     }
   }
-}
 
-DateLocale.fromArgument = function(stringOrObject) {
-  if(typeof stringOrObject == 'string')
-    return DateLocale[stringOrObject]
-  else return stringOrObject || DateLocale.DEFAULT
-}
+  DateLocale.EN = {
+    id: 'EN',
+    monthNames: ['January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'],
+    dayNames: ['Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday'],
+    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years') },
+    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
+    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
+    hoursLabel: function(hours, minutes) {
+      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes)
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
+    },
+    shortDateFormat: 'n/j/Y',
+    weekDateFormat: 'D n/j/Y',
+    dateTimeFormat: 'D n/j/Y G:i',
+    firstWeekday: DateLocale.SUNDAY,
+    getFirstDateOfWeek: function(dateTime) {
+      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
+    }
+  }
 
-root.DateLocale = DateLocale
+  DateLocale.AU = {
+    id: 'AU',
+    monthNames: ['January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'],
+    dayNames: ['Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday'],
+    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years') },
+    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
+    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
+    hoursLabel: function(hours, minutes) {
+      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes)
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
+    },
+    shortDateFormat: 'j/n/Y',
+    weekDateFormat: 'D j/n/Y',
+    dateTimeFormat: 'D j/n/Y G:i',
+    firstWeekday: DateLocale.SUNDAY,
+    getFirstDateOfWeek: function(dateTime) {
+      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
+    }
+  }
+  DateLocale.DEFAULT = DateLocale.EN
+
+  DateLocale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
+    if(firstWeekday < dateTime.getDay()) {
+      return dateTime.plusDays(firstWeekday - dateTime.getDay())
+    } else {
+      if(firstWeekday > dateTime.getDay()) {
+        return dateTime.plusDays(firstWeekday - dateTime.getDay() - 7)
+      } else {
+        return dateTime.clone()
+      }
+    }
+  }
+
+  DateLocale.fromArgument = function(stringOrObject) {
+    if(typeof stringOrObject == 'string')
+      return DateLocale[stringOrObject]
+    else return stringOrObject || DateLocale.DEFAULT
+  }
+
+  root.DateLocale = DateLocale
 })(this)
