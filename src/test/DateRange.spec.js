@@ -26,7 +26,7 @@ describe('DateRange', function() {
       expect(range).toHaveDate('09/11/2009')
       expect(range).toHaveDate('09/12/2009')
       expect(range).not.toHaveDate('09/13/2009')
-      expect(DateFormat.formatRange(range, Locale.FI)).toEqual('10.9.2009 - 12.9.2009')
+      expect(DateFormat.formatRange(range, DateLocale.FI)).toEqual('10.9.2009 - 12.9.2009')
     })
 
     it('range is movable', function() {
@@ -127,15 +127,15 @@ describe('DateRange', function() {
       expect(rangeWithTimes.days()).toEqual(2)
       expect(rangeWithTimes.hours()).toEqual(4)
       expect(rangeWithTimes.minutes()).toEqual(45)
-      expect(DateFormat.formatRange(rangeWithTimes, Locale.FI)).toEqual('2 päivää 4,75 tuntia')
-      expect(DateFormat.formatRange(new DateRange(range.start, range.end).withTimes('10:00', '14:45'), Locale.EN)).toEqual('2 Days 4.75 Hours')
+      expect(DateFormat.formatRange(rangeWithTimes, DateLocale.FI)).toEqual('2 päivää 4,75 tuntia')
+      expect(DateFormat.formatRange(new DateRange(range.start, range.end).withTimes('10:00', '14:45'), DateLocale.EN)).toEqual('2 Days 4.75 Hours')
       var rangeWithPmTimes = range.withTimes('17:00', '16:00')
       expect(rangeWithPmTimes.days()).toEqual(1)
       expect(rangeWithPmTimes.hours()).toEqual(23)
       expect(rangeWithPmTimes.minutes()).toEqual(0)
       range.start = range.start.plusDays(1)
-      expect(DateFormat.formatRange(range.withTimes('10:00', '11:00'), Locale.FI)).toEqual('1 päivä 1 tunti')
-      expect(DateFormat.formatRange(new DateRange(range.start, range.end).withTimes('10:00', '11:00'), Locale.EN)).toEqual('1 Day 1 Hour')
+      expect(DateFormat.formatRange(range.withTimes('10:00', '11:00'), DateLocale.FI)).toEqual('1 päivä 1 tunti')
+      expect(DateFormat.formatRange(new DateRange(range.start, range.end).withTimes('10:00', '11:00'), DateLocale.EN)).toEqual('1 Day 1 Hour')
     })
 
     it('one day range with start time after end time is not valid', function() {
@@ -182,22 +182,22 @@ describe('DateRange', function() {
     it('minutes are rounded to 2 digits', function() {
       var rangeWithTimes = range.withTimes('15:00', '16:10');
       assertHasCorrectHoursAndMinutes(rangeWithTimes, 1, 10)
-      expect(DateFormat.formatRange(rangeWithTimes, Locale.FI)).toEqual('2 päivää 1,17 tuntia')
+      expect(DateFormat.formatRange(rangeWithTimes, DateLocale.FI)).toEqual('2 päivää 1,17 tuntia')
     })
 
     it('range is displayed with the most defining unit', function() {
       range = createRange('01/01/2004', '05/01/2006')
-      expect(range).toPrintDefiningDurationOf('2 vuotta', Locale.FI)
+      expect(range).toPrintDefiningDurationOf('2 vuotta', DateLocale.FI)
       range = createRange('01/01/2004', '05/01/2005')
-      expect(range).toPrintDefiningDurationOf('1 vuosi', Locale.FI)
+      expect(range).toPrintDefiningDurationOf('1 vuosi', DateLocale.FI)
       range = createRange('01/01/2004', '05/01/2004')
-      expect(range).toPrintDefiningDurationOf('4 kuukautta', Locale.FI)
+      expect(range).toPrintDefiningDurationOf('4 kuukautta', DateLocale.FI)
       range = createRange('01/01/2004', '02/16/2004')
-      expect(range).toPrintDefiningDurationOf('1 kuukausi', Locale.FI)
+      expect(range).toPrintDefiningDurationOf('1 kuukausi', DateLocale.FI)
       range = createRange('01/01/2004', '01/31/2004')
-      expect(range).toPrintDefiningDurationOf('1 kuukausi', Locale.FI)
+      expect(range).toPrintDefiningDurationOf('1 kuukausi', DateLocale.FI)
       range = createRange('01/01/2004', '01/07/2004')
-      expect(range).toPrintDefiningDurationOf('7 päivää', Locale.FI)
+      expect(range).toPrintDefiningDurationOf('7 päivää', DateLocale.FI)
     })
   })
 

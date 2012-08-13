@@ -11,8 +11,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-;
-(function($) {
+
+;(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define('jquery.continuous-calendar', ['jquery', 'DateFormat', 'DateLocale', 'DateRange', 'DateTime'], function($, DateFormat, DateLocale, DateRange, DateTime) {
+      factory($, DateFormat, DateLocale, DateRange, DateTime)
+    })
+  } else {
+    factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime)
+  }
+})(this, function($, DateFormat, DateLocale, DateRange, DateTime) {
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })
     function _continuousCalendar(options) {
@@ -27,7 +35,7 @@
         endField: $('input.endDate', this),
         isPopup: false,
         selectToday: false,
-        locale: Locale.DEFAULT,
+        locale: DateLocale.DEFAULT,
         disableWeekends: false,
         disabledDates: null,
         minimumRange: -1,
@@ -36,7 +44,7 @@
         callback: $.noop
       }
       var params = $.extend({}, defaults, options)
-      params.locale = Locale.fromArgument(params.locale)
+      params.locale = DateLocale.fromArgument(params.locale)
       var Status = {
         CREATE_OR_RESIZE: 'create',
         MOVE: 'move',
@@ -257,7 +265,7 @@
         var tr = $('<tr>').append(yearCell())
         tr.append($('<th class="week">&nbsp;</th>'))
         $(params.locale.dayNames).each(function(index) {
-          //TODO move to Locale
+          //TODO move to DateLocale
           var weekDay = $('<th>').append(params.locale.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
           tr.append(weekDay)
         })
@@ -431,8 +439,8 @@
           var firstDay = firstDayOfWeek
           var lastDay = firstDayOfWeek.plusDays(6)
           if(params.disableWeekends) {
-            firstDay = firstDayOfWeek.withWeekday(Locale.MONDAY)
-            lastDay = firstDayOfWeek.withWeekday(Locale.FRIDAY)
+            firstDay = firstDayOfWeek.withWeekday(DateLocale.MONDAY)
+            lastDay = firstDayOfWeek.withWeekday(DateLocale.FRIDAY)
           }
           return new DateRange(firstDay, lastDay, params.locale).and(calendarRange)
         }
@@ -585,4 +593,4 @@
   $.fn.calendarRange = function() { return $(this).data('calendarRange') }
   $.fn.exists = function() { return this.length > 0 }
   $.fn.isEmpty = function() { return this.length == 0 }
-})(jQuery)
+})

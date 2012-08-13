@@ -12,7 +12,11 @@ version=$1
 rm build/*latest*
 [ "$version" != "" -a ! -f $BUILD_PREFIX-$version.js ] && rm build/*
 echo "$.continuousCalendar = {};$.continuousCalendar.version = '$version';$.continuousCalendar.released = '`date '+%Y-%m-%d'`'">$LATEST_JS
-find src/main -name *.js |xargs cat >>$LATEST_JS
+cat src/main/DateTime.js   >>$LATEST_JS
+cat src/main/DateLocale.js >>$LATEST_JS
+cat src/main/DateFormat.js >>$LATEST_JS
+cat src/main/DateRange.js  >>$LATEST_JS
+cat src/main/jquery.continuousCalendar.js >>$LATEST_JS
 echo "Compressing js..."
 java -jar yuicompressor-2.4.6.jar --type js $LATEST_JS -o $LATEST_JS_MIN
 cp src/main/jquery.continuousCalendar.css $LATEST_CSS
@@ -34,7 +38,7 @@ else
 		cp $LATEST_JS_MIN $BUILD_PREFIX-$version-min.js
 		cp $LATEST_CSS_MIN $BUILD_PREFIX-$version-min.css
 		git add -A build
-		git commit -m "Buld for version $version"  
+		git commit -m "Build for version $version"
 		git tag $version
 		git status
 		echo "Now:"
