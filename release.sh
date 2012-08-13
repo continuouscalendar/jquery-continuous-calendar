@@ -38,7 +38,7 @@ else
 		cp $LATEST_JS_MIN $BUILD_PREFIX-$version-min.js
 		cp $LATEST_CSS_MIN $BUILD_PREFIX-$version-min.css
 		git add -A build
-		git commit -m "Buld for version $version"  
+		git commit -m "Build for version $version"
 		git tag $version
 		git status
 		echo "Now:"
