@@ -1,0 +1,8 @@
+h3. 1.3.0 (under development)
+
+* Add optional "AMD":http://requirejs.org/docs/whyamd.html support
+* Backwards incompatible change: rename global @Locale@ object to @DateLocale@
+
+h3. Older releases (1.2.x series and below)
+
+* (Changes not listed)
