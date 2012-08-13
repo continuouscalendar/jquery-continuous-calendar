@@ -13,13 +13,13 @@
  */
 
 ;(function(root) {
-var Locale = {}
-Locale.MONDAY = 1
-Locale.FRIDAY = 5
-Locale.SUNDAY = 0
-Locale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
+var DateLocale = {}
+DateLocale.MONDAY = 1
+DateLocale.FRIDAY = 5
+DateLocale.SUNDAY = 0
+DateLocale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
-Locale.FI = {
+DateLocale.FI = {
   id: 'FI',
   monthNames: [
     'tammikuu',
@@ -39,19 +39,19 @@ Locale.FI = {
   monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta') },
   daysLabel: function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää') },
   hoursLabel: function(hours, minutes) {
-    var hoursAndMinutes = Locale.hoursAndMinutes(hours, minutes).replace('.', ',')
+    var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
     return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia')
   },
   shortDateFormat: 'j.n.Y',
   weekDateFormat: 'D j.n.Y',
   dateTimeFormat: 'D j.n.Y k\\lo G:i',
-  firstWeekday: Locale.MONDAY,
+  firstWeekday: DateLocale.MONDAY,
   getFirstDateOfWeek: function(dateTime) {
-    return Locale.getFirstDateOfWeek(dateTime, Locale.MONDAY)
+    return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
   }
 }
 
-Locale.EN = {
+DateLocale.EN = {
   id: 'EN',
   monthNames: ['January',
     'February',
@@ -76,19 +76,19 @@ Locale.EN = {
   monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
   daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
   hoursLabel: function(hours, minutes) {
-    var hoursAndMinutes = Locale.hoursAndMinutes(hours, minutes)
+    var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes)
     return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
   },
   shortDateFormat: 'n/j/Y',
   weekDateFormat: 'D n/j/Y',
   dateTimeFormat: 'D n/j/Y G:i',
-  firstWeekday: Locale.SUNDAY,
+  firstWeekday: DateLocale.SUNDAY,
   getFirstDateOfWeek: function(dateTime) {
-    return Locale.getFirstDateOfWeek(dateTime, Locale.SUNDAY)
+    return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
   }
 }
 
-Locale.AU = {
+DateLocale.AU = {
   id: 'AU',
   monthNames: ['January',
     'February',
@@ -113,20 +113,20 @@ Locale.AU = {
   monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
   daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
   hoursLabel: function(hours, minutes) {
-    var hoursAndMinutes = Locale.hoursAndMinutes(hours, minutes)
+    var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes)
     return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
   },
   shortDateFormat: 'j/n/Y',
   weekDateFormat: 'D j/n/Y',
   dateTimeFormat: 'D j/n/Y G:i',
-  firstWeekday: Locale.SUNDAY,
+  firstWeekday: DateLocale.SUNDAY,
   getFirstDateOfWeek: function(dateTime) {
-    return Locale.getFirstDateOfWeek(dateTime, Locale.SUNDAY)
+    return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
   }
 }
-Locale.DEFAULT = Locale.EN
+DateLocale.DEFAULT = DateLocale.EN
 
-Locale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
+DateLocale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
   if(firstWeekday < dateTime.getDay()) {
     return dateTime.plusDays(firstWeekday - dateTime.getDay())
   } else {
@@ -138,11 +138,11 @@ Locale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
   }
 }
 
-Locale.fromArgument = function(stringOrObject) {
+DateLocale.fromArgument = function(stringOrObject) {
   if(typeof stringOrObject == 'string')
-    return Locale[stringOrObject]
-  else return stringOrObject || Locale.DEFAULT
+    return DateLocale[stringOrObject]
+  else return stringOrObject || DateLocale.DEFAULT
 }
 
-root.Locale = Locale
+root.DateLocale = DateLocale
 })(this)
