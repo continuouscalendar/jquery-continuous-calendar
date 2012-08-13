@@ -31,7 +31,7 @@ describe('jquery.continuous-calendar', function() {
     })
 
     it('shows months', function() {
-      assertHasValues('.monthName', [Locale.DEFAULT.monthNames[11]].concat(Locale.DEFAULT.monthNames))
+      assertHasValues('.monthName', [DateLocale.DEFAULT.monthNames[11]].concat(DateLocale.DEFAULT.monthNames))
     })
 
     it('shows month name on first row of full week', function() {
@@ -79,7 +79,7 @@ describe('jquery.continuous-calendar', function() {
       createCalendarFields().continuousCalendar({weeksBefore: 0, weeksAfter: 0})
       expect(cal().find('.date').size()).toEqual(7)
       var weekDays = []
-      var firstDay = Locale.EN.getFirstDateOfWeek(DateTime.now())
+      var firstDay = DateLocale.EN.getFirstDateOfWeek(DateTime.now())
       for(var i = 0; i < 7; i++) {
         weekDays.push(firstDay.plusDays(i).getDate())
       }
@@ -340,7 +340,7 @@ describe('jquery.continuous-calendar', function() {
     })
 
     it('month and day names are localizable', function() {
-      createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009', locale: Locale.FI})
+      createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009', locale: DateLocale.FI})
       assertHasValues('.continuousCalendar thead th.weekDay', ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'])
       assertHasValues('.monthName', [
         'joulukuu',
@@ -359,7 +359,7 @@ describe('jquery.continuous-calendar', function() {
       mouseDownMouseUpOnDate(1)
       expect(startFieldValue()).toEqual('1.1.2009')
       expect(startLabelValue()).toEqual('to 1.1.2009')
-      Locale.DEFAULT = Locale.EN
+      DateLocale.DEFAULT = DateLocale.EN
     })
 
     it('forward drag after one day selection expands selection', function() {

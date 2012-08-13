@@ -100,7 +100,7 @@ function createWeekCalendar() {
 }
 
 function createBigCalendar() {
-  var todayText = DateFormat.format(DateTime.now(), Locale.EN.shortDateFormat)
+  var todayText = DateFormat.format(DateTime.now(), DateLocale.EN.shortDateFormat)
   createCalendarFields({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60, weeksAfter: 30})
 }
 
