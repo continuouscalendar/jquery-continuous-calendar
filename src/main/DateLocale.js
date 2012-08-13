@@ -11,7 +11,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-Locale = {}
+
+;(function(root) {
+var Locale = {}
 Locale.MONDAY = 1
 Locale.FRIDAY = 5
 Locale.SUNDAY = 0
@@ -141,3 +143,6 @@ Locale.fromArgument = function(stringOrObject) {
     return Locale[stringOrObject]
   else return stringOrObject || Locale.DEFAULT
 }
+
+root.Locale = Locale
+})(this)

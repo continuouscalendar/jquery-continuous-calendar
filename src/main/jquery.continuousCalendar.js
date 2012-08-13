@@ -11,8 +11,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-;
-(function($) {
+
+;(function($, DateFormat, Locale, DateRange, DateTime) {
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })
     function _continuousCalendar(options) {
@@ -585,4 +585,4 @@
   $.fn.calendarRange = function() { return $(this).data('calendarRange') }
   $.fn.exists = function() { return this.length > 0 }
   $.fn.isEmpty = function() { return this.length == 0 }
-})(jQuery)
+})(this.jQuery, this.DateFormat, this.Locale, this.DateRange, this.DateTime)

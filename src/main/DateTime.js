@@ -18,7 +18,8 @@
  * @author Eero Anttila (eeroan)
  */
 
-DateTime = function(date) {
+;(function(root) {
+var DateTime = function(date) {
   if(typeof date == 'string') this.date = new Date(date)
   else this.date = date || new Date()
 }
@@ -262,3 +263,6 @@ String.leftPad = function(val, size, ch) {
 DateTime.daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 DateTime.y2kYear = 50
 DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 }
+
+root.DateTime = DateTime
+})(this)

@@ -11,6 +11,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
+;(function(root, $, DateTime, DateFormat) {
 function DateRange(date1, date2) {
   if(!date1 || !date2) {
     throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)
@@ -183,3 +185,6 @@ DateRange = $.extend(DateRange, {
     function delta(x) { return -((x + 1) % 7 + 1) }
   }
 })
+
+root.DateRange = DateRange
+})(this, this.jQuery, this.DateTime, this.DateFormat)

@@ -11,7 +11,9 @@
  * details.
  */
 
-DateFormat = {}
+;(function(root, DateTime) {
+var DateFormat = {}
+
 DateFormat.parseFunctions = {count: 0}
 DateFormat.parseRegexes = []
 DateFormat.formatFunctions = {count: 0}
@@ -182,3 +184,6 @@ DateFormat.getFormatCode = function(character, locale) {
       return "'" + String.escape(character) + "' + "
   }
 }
+
+root.DateFormat = DateFormat
+})(this, this.DateTime)
