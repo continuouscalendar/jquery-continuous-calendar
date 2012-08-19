@@ -11,13 +11,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
-/*
- * @author Igor Vaynberg (ivaynberg)
- * @author Karri-Pekka Laakso (kplaakso)
- * @author Eero Anttila (eeroan)
- */
-
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
     define("DateTime", [], factory)
