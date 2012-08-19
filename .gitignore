@@ -6,3 +6,4 @@
 *.iws
 .idea/workspace.xml
 out/
+.sass-cache
