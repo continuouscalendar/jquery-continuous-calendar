@@ -54,6 +54,35 @@
     return locale.daysLabel(dateRange.days())
   }
 
+  DateFormat.getWeekOfYear = function(dateTime) {
+    // Skip to Thursday of this week
+    var now = dateTime.getDayOfYear() + (4 - dateTime.getDay())
+    // Find the first Thursday of the year
+    var jan1 = new Date(dateTime.getFullYear(), 0, 1)
+    var then = (7 - jan1.getDay() + 4)
+    document.write(then)
+    return DateFormat.leftPad(((now - then) / 7) + 1, 2, "0")
+  }
+
+  DateFormat.getGMTOffset = function(dateTime) {
+    return (dateTime.date.getTimezoneOffset() > 0 ? "-" : "+") +
+      DateFormat.leftPad(Math.floor(dateTime.getTimezoneOffset() / 60), 2, "0") +
+      DateFormat.leftPad(dateTime.getTimezoneOffset() % 60, 2, "0")
+  }
+
+  DateFormat.leftPad = function(val, size, ch) {
+    var result = new String(val)
+    if(ch == null) {
+      ch = " "
+    }
+    while(result.length < size) {
+      result = ch + result
+    }
+    return result
+  }
+
+  DateFormat.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
+
   DateFormat.parse = function(input, locale) {
     if(input == 'today') {
       return DateTime.now()
@@ -121,7 +150,7 @@
       } else {
         if(special) {
           special = false
-          code += "'" + String.escape(ch) + "' + "
+          code += "'" + DateFormat.escape(ch) + "' + "
         } else {
           code += DateFormat.getFormatCode(ch, locale)
         }
@@ -133,7 +162,7 @@
   DateFormat.getFormatCode = function(character, locale) {
     switch(character) {
       case "d":
-        return "String.leftPad(this.getDate(), 2, '0') + "
+        return "DateFormat.leftPad(this.getDate(), 2, '0') + "
       case "D":
         return "locale.dayNames[this.getDay()].substring(0, 3) + "
       case "j":
@@ -147,11 +176,11 @@
       case "z":
         return "this.getDayOfYear() + "
       case "W":
-        return "this.getWeekOfYear() + "
+        return "DateFormat.getWeekOfYear(this) + "
       case "F":
         return "locale.monthNames[this.getMonth()] + "
       case "m":
-        return "String.leftPad(this.getMonth() + 1, 2, '0') + "
+        return "DateFormat.leftPad(this.getMonth() + 1, 2, '0') + "
       case "M":
         return "locale.monthNames[this.getMonth()].substring(0, 3) + "
       case "n":
@@ -173,21 +202,21 @@
       case "G":
         return "this.getHours() + "
       case "h":
-        return "String.leftPad((this.getHours() %12) ? this.getHours() % 12 : 12, 2, '0') + "
+        return "DateFormat.leftPad((this.getHours() %12) ? this.getHours() % 12 : 12, 2, '0') + "
       case "H":
-        return "String.leftPad(this.getHours(), 2, '0') + "
+        return "DateFormat.leftPad(this.getHours(), 2, '0') + "
       case "i":
-        return "String.leftPad(this.getMinutes(), 2, '0') + "
+        return "DateFormat.leftPad(this.getMinutes(), 2, '0') + "
       case "s":
-        return "String.leftPad(this.getSeconds(), 2, '0') + "
+        return "DateFormat.leftPad(this.getSeconds(), 2, '0') + "
       case "O":
-        return "this.getGMTOffset() + "
+        return "DateFormat.getGMTOffset(this) + "
       case "T":
         return "this.getTimezone() + "
       case "Z":
         return "(this.getTimezoneOffset() * -60) + "
       default:
-        return "'" + String.escape(character) + "' + "
+        return "'" + DateFormat.escape(character) + "' + "
     }
   }
 

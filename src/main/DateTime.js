@@ -38,8 +38,6 @@
 
   DateTime.prototype.getHours = function() { return this.date.getHours() }
 
-  DateTime.prototype.getHours = function() { return this.date.getHours() }
-
   DateTime.prototype.getFullYear = function() { return this.date.getFullYear() }
 
   DateTime.prototype.getDay = function() { return this.date.getDay() }
@@ -197,12 +195,6 @@
     return this.date.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3")
   }
 
-  DateTime.prototype.getGMTOffset = function() {
-    return (this.date.getTimezoneOffset() > 0 ? "-" : "+") +
-      String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0") +
-      String.leftPad(this.getTimezoneOffset() % 60, 2, "0")
-  }
-
   DateTime.prototype.getDayOfYear = function() {
     var num = 0
     DateTime.daysInMonth[1] = this.isLeapYear() ? 29 : 28
@@ -210,16 +202,6 @@
       num += DateTime.daysInMonth[i]
     }
     return num + this.getDate() - 1
-  }
-
-  DateTime.prototype.getWeekOfYear = function() {
-    // Skip to Thursday of this week
-    var now = this.getDayOfYear() + (4 - this.getDay())
-    // Find the first Thursday of the year
-    var jan1 = new Date(this.getFullYear(), 0, 1)
-    var then = (7 - jan1.getDay() + 4)
-    document.write(then)
-    return String.leftPad(((now - then) / 7) + 1, 2, "0")
   }
 
   DateTime.prototype.isLeapYear = function() {
@@ -252,19 +234,6 @@
   DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
 
   DateTime.prototype.toString = function() { return this.date.toISOString() }
-
-  String.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
-
-  String.leftPad = function(val, size, ch) {
-    var result = new String(val)
-    if(ch == null) {
-      ch = " "
-    }
-    while(result.length < size) {
-      result = ch + result
-    }
-    return result
-  }
 
   DateTime.daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   DateTime.y2kYear = 50
