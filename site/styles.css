@@ -1,21 +1,6 @@
 /*
 Run at project root:  sass  --watch scss:css --style compact
 */
-@font-face {
-    font-family: 'HelveticaNeueLTStd45Light';
-    src: url("../fonts/helveticaneueltstd-lt-webfont.eot");
-    src: local("â˜º"), url("../fonts/helveticaneueltstd-lt-webfont.woff") format("woff"), url("../fonts/helveticaneueltstd-lt-webfont.ttf") format("truetype"), url("../fonts/helveticaneueltstd-lt-webfont.svg#webfontVvp2idrr") format("svg");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'HelveticaNeueLTStd65Medium';
-    src: url("../fonts/helveticaneueltstd-md-webfont.eot");
-    src: local("â˜º"), url("../fonts/helveticaneueltstd-md-webfont.woff") format("woff"), url("../fonts/helveticaneueltstd-md-webfont.ttf") format("truetype"), url("../fonts/helveticaneueltstd-md-webfont.svg#webfontoMoA6nSX") format("svg");
-    font-weight: normal;
-    font-style: normal;
-}
 
 html { background: #f5f5f5; }
 
