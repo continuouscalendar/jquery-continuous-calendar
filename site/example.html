@@ -97,17 +97,17 @@
 </form>
 <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" charset="UTF-8"></script>-->
 <script type="text/javascript" src="../src/lib/jquery-1.6.js"></script>
-<script type="text/javascript" src="../src/main/DateFormat.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../src/main/DateLocale.js" charset="UTF-8"></script>
-<script type="text/javascript" src="../src/main/DateRange.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../src/main/DateTime.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../src/main/DateFormat.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../src/main/DateRange.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../src/main/jquery.continuousCalendar.js" charset="UTF-8"></script>
 
 <!--<script type="text/javascript" src="../build/jquery.continuous-calendar-latest-min.js" charset="UTF-8"></script>-->
 <script type="text/javascript" language="JavaScript">
-  $("#singleDate2,#singleDate3").continuousCalendar({weeksBefore: 60, weeksAfter: 1, isPopup: true, locale: Locale.EN});
-  $("#range1").continuousCalendar({firstDate: "2/15/2007", lastDate: "9/10/2009", isPopup: true, locale: Locale.EN});
-  $("#range2").continuousCalendar({weeksBefore: 30, weeksAfter: 30, locale: Locale.EN});
+  $("#singleDate2,#singleDate3").continuousCalendar({weeksBefore: 60, weeksAfter: 1, isPopup: true, locale: DateLocale.EN});
+  $("#range1").continuousCalendar({firstDate: "2/15/2007", lastDate: "9/10/2009", isPopup: true, locale: DateLocale.EN});
+  $("#range2").continuousCalendar({weeksBefore: 30, weeksAfter: 30, locale: DateLocale.EN});
   $("#timeCalendar").continuousCalendar({weeksBefore: 30, lastDate: "today", selectToday: true});
   $("#timeCalendar").bind('calendarChange', function() {
     var container = $(this);
@@ -115,7 +115,7 @@
     var endTime = container.find('select[name=tripEndTime]').val();
     var range = container.calendarRange();
     range = range.withTimes(startTime, endTime);
-    container.find('.totalTimeOfTrip').text(DateFormat.formatRange(range, Locale.EN)).toggleClass('invalid', !range.isValid());
+    container.find('.totalTimeOfTrip').text(DateFormat.formatRange(range, DateLocale.EN)).toggleClass('invalid', !range.isValid());
   });
   $("#timeCalendar select").bind('change', function() {
     $("#timeCalendar").trigger('calendarChange');

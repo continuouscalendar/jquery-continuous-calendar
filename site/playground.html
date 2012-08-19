@@ -88,9 +88,9 @@
   </div>
   <div class="col">
     <label>Locale:</label>
-    <label class="row"><input type="radio" name="locale" value="EN" id="EN" checked="checked"/><span class="label">Locale.EN</span></label>
-    <label class="row"><input type="radio" name="locale" value="FI" id="FI"/><span class="label">Locale.FI</span></label>
-    <label class="row"><input type="radio" name="locale" value="AU" id="AU"/><span class="label">Locale.AU</span></label>
+    <label class="row"><input type="radio" name="locale" value="EN" id="EN" checked="checked"/><span class="label">DateLocale.EN</span></label>
+    <label class="row"><input type="radio" name="locale" value="FI" id="FI"/><span class="label">DateLocale.FI</span></label>
+    <label class="row"><input type="radio" name="locale" value="AU" id="AU"/><span class="label">DateLocale.AU</span></label>
   </div>
   <div>Examples of other options</div>
   <ul class="col">
@@ -125,7 +125,7 @@
         options[optionsList[i]] = value
       }
     }
-    options.locale = Locale[$('[name=locale]').filter(':checked').val()]
+    options.locale = DateLocale[$('[name=locale]').filter(':checked').val()]
     var params = JSON.stringify(options);
     containerWrapper.prepend('<textarea  class="example_params">$(selector).continuousCalendar(' + params + ')</textarea>')
     container.continuousCalendar(options)
