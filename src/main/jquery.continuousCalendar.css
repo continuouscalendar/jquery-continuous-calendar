@@ -10,36 +10,31 @@
 .continuousCalendarContainer div.label { margin-left: 7px; margin-bottom: 2px; float: left; }
 .continuousCalendarContainer div.label span.clickable { cursor: pointer; text-decoration: underline; }
 .continuousCalendarContainer .popUpContainer { width: 1px; height: 1px; position: relative; clear: both; }
-.continuousCalendarContainer td.holiday { color: #f00; }
-.continuousCalendarContainer td.holiday.disabled { color: #a66; }
-.continuousCalendarContainer td.holiday.selected { color: #fbb; }
-
-.continuousCalendar { clear: both; }
-.continuousCalendar table { table-layout: fixed; line-height: 13px; font-family: Arial, Verdana, sans-serif; font-size: 11px; color: black; background-color: white; border-collapse: collapse; border-spacing: 0; width: 201px; }
-.continuousCalendar .calendarHeader { border: 1px solid #999999; border-bottom: none; text-align: center; position: relative; width: 202px; }
-.continuousCalendar .calendarHeader a { background: url("close.gif") no-repeat 0 0; width: 14px; height: 14px; display: block; }
-.continuousCalendar .calendarHeader a span { display: none; }
-.continuousCalendar .calendarHeader .weekDay { text-align: center; padding: 2px; }
-.continuousCalendar .calendarHeader .month { text-align: center; }
-.continuousCalendar .month { width: 58px; padding-left: 2px; }
-.continuousCalendar .week { border-right: 1px solid #888888; width: 15px; font-size: 10px; }
-.continuousCalendar .calendarBody td { text-align: center; padding: 2px; }
-.continuousCalendar .calendarBody td { cursor: pointer; }
-.continuousCalendar .calendarBody td.disabled { cursor: default; }
-.continuousCalendar .calendarBody .month { text-align: left; }
-.continuousCalendar .calendarBody th { font-weight: normal; }
-.continuousCalendar table .odd { background-color: #e8e8e8; }
-.continuousCalendar td:hover { font-weight: bold; color: blue; }
-.continuousCalendar td.today { position: relative; padding: 0; }
-.continuousCalendar td.today div { border: 2px solid red; margin: 0; border-radius: 10px; position: relative; }
-.continuousCalendar td.selected { background: #88AAFF; color: white; }
-.continuousCalendar td.disabled { color: gray; }
-.continuousCalendar .weekRange .week { text-decoration: underline; cursor: pointer; }
-.continuousCalendar .freeRange .week, .continuousCalendar .freeRange .month, .continuousCalendar .freeRange .selected:hover { cursor: move; }
-.continuousCalendar .freeRange .week { text-decoration: underline; }
-.continuousCalendar .freeRange.calendarBody .month { text-decoration: underline; }
-.continuousCalendar .freeRange td { cursor: w-resize; cursor: ew-resize; }
-.continuousCalendar .freeRange td.rangeStart:hover { cursor: w-resize; cursor: ew-resize; }
-.continuousCalendar .freeRange td.rangeEnd:hover { cursor: e-resize; cursor: ew-resize; }
-
-.calendarScrollContent { overflow-y: auto; width: 218px; height: 100px; border: 1px solid #999999; position: relative; background: white; }
+.continuousCalendarContainer .continuousCalendar { clear: both; }
+.continuousCalendarContainer .continuousCalendar table { table-layout: fixed; line-height: 13px; font-family: Arial, Verdana, sans-serif; font-size: 11px; color: black; background-color: white; border-collapse: collapse; border-spacing: 0; width: 201px; }
+.continuousCalendarContainer .continuousCalendar table .month { width: 58px; padding-left: 2px; }
+.continuousCalendarContainer .continuousCalendar table .week { border-right: 1px solid #888888; width: 15px; font-size: 10px; }
+.continuousCalendarContainer .continuousCalendar table.calendarHeader { border: 1px solid #999999; border-bottom: none; text-align: center; position: relative; width: 202px; }
+.continuousCalendarContainer .continuousCalendar table.calendarHeader a { background: url("close.gif") no-repeat 0 0; width: 14px; height: 14px; display: block; }
+.continuousCalendarContainer .continuousCalendar table.calendarHeader a span { display: none; }
+.continuousCalendarContainer .continuousCalendar table.calendarHeader .weekDay { text-align: center; padding: 2px; }
+.continuousCalendarContainer .continuousCalendar table.calendarHeader .month { text-align: center; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent { overflow-y: auto; width: 218px; height: 100px; border: 1px solid #999999; position: relative; background: white; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody.weekRange .week { text-decoration: underline; cursor: pointer; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody.freeRange .selected:hover { cursor: move; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody.freeRange .week, .continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody.freeRange .month { text-decoration: underline; cursor: pointer; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody.freeRange td { cursor: w-resize; cursor: ew-resize; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody.freeRange td.rangeStart:hover { cursor: w-resize; cursor: ew-resize; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody.freeRange td.rangeEnd:hover { cursor: e-resize; cursor: ew-resize; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody th { font-weight: normal; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody th .month { text-align: left; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td { text-align: center; padding: 2px; cursor: pointer; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.disabled { cursor: default; color: gray; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.holiday { color: #f00; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.holiday.disabled { color: #a66; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.holiday.selected { color: #fbb; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td:hover { font-weight: bold; color: blue; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.today { position: relative; padding: 0; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.today div { border: 2px solid red; margin: 0; border-radius: 10px; position: relative; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.selected { background: #88AAFF; color: white; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody .odd { background-color: #e8e8e8; }

@@ -32,51 +32,49 @@
     span.clickable { cursor: pointer; text-decoration: underline; }
   }
   .popUpContainer { width: 1px; height: 1px; position: relative; clear: both; }
-  td.holiday { color: #f00;
-    &.disabled { color: #a66; }
-    &.selected { color: #fbb; }
-  }
-}
-.continuousCalendar { clear: both;
-  table { table-layout: fixed; line-height: 13px; font-family: Arial, Verdana, sans-serif; font-size: 11px; color: black; background-color: white; border-collapse: collapse; border-spacing: 0; width: 201px; }
-  .calendarHeader { border: 1px solid #999999; border-bottom: none; text-align: center; position: relative; width: 202px;
-    a { background: url("close.gif") no-repeat 0 0; width: 14px; height: 14px; display: block;
-      span { display: none; }
+  .continuousCalendar { clear: both;
+    table { table-layout: fixed; line-height: 13px; font-family: Arial, Verdana, sans-serif; font-size: 11px; color: black; background-color: white; border-collapse: collapse; border-spacing: 0; width: 201px;
+      .month { width: 58px; padding-left: 2px; }
+      .week { border-right: 1px solid #888888; width: 15px; font-size: 10px; }
     }
-    .weekDay { text-align: center; padding: 2px; }
-    .month { text-align: center; }
-  }
-  .month { width: 58px; padding-left: 2px; }
-  .week { border-right: 1px solid #888888; width: 15px; font-size: 10px; }
-  .calendarBody {
-    td { text-align: center; padding: 2px; }
-    td { cursor: pointer;
-      &.disabled { cursor: default; }
+    table.calendarHeader { border: 1px solid #999999; border-bottom: none; text-align: center; position: relative; width: 202px;
+      a { background: url("close.gif") no-repeat 0 0; width: 14px; height: 14px; display: block;
+        span { display: none; }
+      }
+      .weekDay { text-align: center; padding: 2px; }
+      .month { text-align: center; }
     }
-    .month { text-align: left; }
-    th { font-weight: normal; }
-  }
-  table .odd { background-color: #e8e8e8; }
-  td {
-    &:hover { font-weight: bold; color: blue; }
-    &.today { position: relative; padding: 0;
-      div { border: 2px solid red; margin: 0; border-radius: 10px; position: relative; }
-    }
-    &.selected { background: #88AAFF; color: white; }
-    &.disabled { color: gray; }
-  }
-  .weekRange .week { text-decoration: underline; cursor: pointer; }
-  .freeRange {
-    .week,
-    .month,
-    .selected:hover { cursor: move; }
-    .week { text-decoration: underline }
-    &.calendarBody .month { text-decoration: underline; }
-    td { cursor: w-resize; cursor: ew-resize;
-      &.rangeStart:hover { cursor: w-resize; cursor: ew-resize; }
-      &.rangeEnd:hover { cursor: e-resize; cursor: ew-resize; }
+    .calendarScrollContent { overflow-y: auto; width: 218px; height: 100px; border: 1px solid #999999; position: relative; background: white;
+      table.calendarBody {
+        &.weekRange .week { text-decoration: underline; cursor: pointer; }
+        &.freeRange {
+          .selected:hover { cursor: move; }
+          .week,
+          .month { text-decoration: underline; cursor: pointer; }
+          td { cursor: w-resize; cursor: ew-resize;
+            &.rangeStart:hover { cursor: w-resize; cursor: ew-resize; }
+            &.rangeEnd:hover { cursor: e-resize; cursor: ew-resize; }
+          }
+        }
+        th { font-weight: normal;
+          .month { text-align: left;}
+        }
+        td { text-align: center; padding: 2px; cursor: pointer;
+          &.disabled { cursor: default; color: gray;}
+          &.holiday { color: #f00;
+            &.disabled { color: #a66; }
+            &.selected { color: #fbb; }
+          }
+          &:hover { font-weight: bold; color: blue; }
+          &.today { position: relative; padding: 0;
+            div { border: 2px solid red; margin: 0; border-radius: 10px; position: relative; }
+          }
+          &.selected { background: #88AAFF; color: white; }
+        }
+        .odd { background-color: #e8e8e8; }
+      }
     }
   }
 }
-.calendarScrollContent { overflow-y: auto; width: 218px; height: 100px; border: 1px solid #999999; position: relative; background: white; }
+
 
