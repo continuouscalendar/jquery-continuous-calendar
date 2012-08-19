@@ -15,8 +15,6 @@
 .continuousCalendarContainer .continuousCalendar table .month { width: 58px; padding-left: 2px; }
 .continuousCalendarContainer .continuousCalendar table .week { border-right: 1px solid #888888; width: 15px; font-size: 10px; }
 .continuousCalendarContainer .continuousCalendar table.calendarHeader { border: 1px solid #999999; border-bottom: none; text-align: center; position: relative; width: 202px; }
-.continuousCalendarContainer .continuousCalendar table.calendarHeader a { background: url("close.gif") no-repeat 0 0; width: 14px; height: 14px; display: block; }
-.continuousCalendarContainer .continuousCalendar table.calendarHeader a span { display: none; }
 .continuousCalendarContainer .continuousCalendar table.calendarHeader .weekDay { text-align: center; padding: 2px; }
 .continuousCalendarContainer .continuousCalendar table.calendarHeader .month { text-align: center; }
 .continuousCalendarContainer .continuousCalendar .calendarScrollContent { overflow-y: auto; width: 218px; height: 100px; border: 1px solid #999999; position: relative; background: white; }

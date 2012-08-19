@@ -38,9 +38,6 @@
       .week { border-right: 1px solid #888888; width: 15px; font-size: 10px; }
     }
     table.calendarHeader { border: 1px solid #999999; border-bottom: none; text-align: center; position: relative; width: 202px;
-      a { background: url("close.gif") no-repeat 0 0; width: 14px; height: 14px; display: block;
-        span { display: none; }
-      }
       .weekDay { text-align: center; padding: 2px; }
       .month { text-align: center; }
     }

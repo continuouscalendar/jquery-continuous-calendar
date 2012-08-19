@@ -190,11 +190,6 @@
           },
           initState: $.noop,
           getContainer: function(newContainer) { return $('<div>').addClass('popUpContainer').append(newContainer); },
-          addCloseButton: function(tr) {
-            var close = $('<th><a href="#"><span>close</span></a></th>')
-            $('a', close).click(toggleCalendar)
-            tr.append(close)
-          },
           close: function(cell) { toggleCalendar.call(cell) },
           addDateLabelBehaviour: function(label) {
             label.addClass('clickable')
@@ -207,7 +202,6 @@
           getContainer: function(newContainer) {
             return newContainer
           },
-          addCloseButton: $.noop,
           close: $.noop,
           addDateLabelBehaviour: $.noop
         }
@@ -269,7 +263,6 @@
           var weekDay = $('<th>').append(params.locale.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
           tr.append(weekDay)
         })
-        calendar.addCloseButton(tr);
         return $('<thead>').append(tr)
         function yearCell() { return $('<th>').addClass('month').append(firstWeekdayOfGivenDate.getFullYear()) }
       }
