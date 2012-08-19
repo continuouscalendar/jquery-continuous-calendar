@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCalendar.released = '2012-08-15'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCalendar.released = '2012-08-19'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -12,13 +12,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
-/*
- * @author Igor Vaynberg (ivaynberg)
- * @author Karri-Pekka Laakso (kplaakso)
- * @author Eero Anttila (eeroan)
- */
-
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
     define("DateTime", [], factory)
@@ -36,8 +29,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
   DateTime.prototype.getDate = function() { return this.date.getDate() }
 
   DateTime.prototype.getMonth = function() { return this.date.getMonth() }
-
-  DateTime.prototype.getHours = function() { return this.date.getHours() }
 
   DateTime.prototype.getHours = function() { return this.date.getHours() }
 
@@ -198,12 +189,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
     return this.date.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3")
   }
 
-  DateTime.prototype.getGMTOffset = function() {
-    return (this.date.getTimezoneOffset() > 0 ? "-" : "+") +
-      String.leftPad(Math.floor(this.getTimezoneOffset() / 60), 2, "0") +
-      String.leftPad(this.getTimezoneOffset() % 60, 2, "0")
-  }
-
   DateTime.prototype.getDayOfYear = function() {
     var num = 0
     DateTime.daysInMonth[1] = this.isLeapYear() ? 29 : 28
@@ -211,16 +196,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
       num += DateTime.daysInMonth[i]
     }
     return num + this.getDate() - 1
-  }
-
-  DateTime.prototype.getWeekOfYear = function() {
-    // Skip to Thursday of this week
-    var now = this.getDayOfYear() + (4 - this.getDay())
-    // Find the first Thursday of the year
-    var jan1 = new Date(this.getFullYear(), 0, 1)
-    var then = (7 - jan1.getDay() + 4)
-    document.write(then)
-    return String.leftPad(((now - then) / 7) + 1, 2, "0")
   }
 
   DateTime.prototype.isLeapYear = function() {
@@ -253,19 +228,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
   DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
 
   DateTime.prototype.toString = function() { return this.date.toISOString() }
-
-  String.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
-
-  String.leftPad = function(val, size, ch) {
-    var result = new String(val)
-    if(ch == null) {
-      ch = " "
-    }
-    while(result.length < size) {
-      result = ch + result
-    }
-    return result
-  }
 
   DateTime.daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   DateTime.y2kYear = 50
@@ -483,6 +445,35 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
     return locale.daysLabel(dateRange.days())
   }
 
+  DateFormat.getWeekOfYear = function(dateTime) {
+    // Skip to Thursday of this week
+    var now = dateTime.getDayOfYear() + (4 - dateTime.getDay())
+    // Find the first Thursday of the year
+    var jan1 = new Date(dateTime.getFullYear(), 0, 1)
+    var then = (7 - jan1.getDay() + 4)
+    document.write(then)
+    return DateFormat.leftPad(((now - then) / 7) + 1, 2, "0")
+  }
+
+  DateFormat.getGMTOffset = function(dateTime) {
+    return (dateTime.date.getTimezoneOffset() > 0 ? "-" : "+") +
+      DateFormat.leftPad(Math.floor(dateTime.getTimezoneOffset() / 60), 2, "0") +
+      DateFormat.leftPad(dateTime.getTimezoneOffset() % 60, 2, "0")
+  }
+
+  DateFormat.leftPad = function(val, size, ch) {
+    var result = new String(val)
+    if(ch == null) {
+      ch = " "
+    }
+    while(result.length < size) {
+      result = ch + result
+    }
+    return result
+  }
+
+  DateFormat.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
+
   DateFormat.parse = function(input, locale) {
     if(input == 'today') {
       return DateTime.now()
@@ -550,7 +541,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
       } else {
         if(special) {
           special = false
-          code += "'" + String.escape(ch) + "' + "
+          code += "'" + DateFormat.escape(ch) + "' + "
         } else {
           code += DateFormat.getFormatCode(ch, locale)
         }
@@ -562,7 +553,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
   DateFormat.getFormatCode = function(character, locale) {
     switch(character) {
       case "d":
-        return "String.leftPad(this.getDate(), 2, '0') + "
+        return "DateFormat.leftPad(this.getDate(), 2, '0') + "
       case "D":
         return "locale.dayNames[this.getDay()].substring(0, 3) + "
       case "j":
@@ -576,11 +567,11 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
       case "z":
         return "this.getDayOfYear() + "
       case "W":
-        return "this.getWeekOfYear() + "
+        return "DateFormat.getWeekOfYear(this) + "
       case "F":
         return "locale.monthNames[this.getMonth()] + "
       case "m":
-        return "String.leftPad(this.getMonth() + 1, 2, '0') + "
+        return "DateFormat.leftPad(this.getMonth() + 1, 2, '0') + "
       case "M":
         return "locale.monthNames[this.getMonth()].substring(0, 3) + "
       case "n":
@@ -602,21 +593,21 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
       case "G":
         return "this.getHours() + "
       case "h":
-        return "String.leftPad((this.getHours() %12) ? this.getHours() % 12 : 12, 2, '0') + "
+        return "DateFormat.leftPad((this.getHours() %12) ? this.getHours() % 12 : 12, 2, '0') + "
       case "H":
-        return "String.leftPad(this.getHours(), 2, '0') + "
+        return "DateFormat.leftPad(this.getHours(), 2, '0') + "
       case "i":
-        return "String.leftPad(this.getMinutes(), 2, '0') + "
+        return "DateFormat.leftPad(this.getMinutes(), 2, '0') + "
       case "s":
-        return "String.leftPad(this.getSeconds(), 2, '0') + "
+        return "DateFormat.leftPad(this.getSeconds(), 2, '0') + "
       case "O":
-        return "this.getGMTOffset() + "
+        return "DateFormat.getGMTOffset(this) + "
       case "T":
         return "this.getTimezone() + "
       case "Z":
         return "(this.getTimezoneOffset() * -60) + "
       default:
-        return "'" + String.escape(character) + "' + "
+        return "'" + DateFormat.escape(character) + "' + "
     }
   }
 
@@ -1010,11 +1001,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
           },
           initState: $.noop,
           getContainer: function(newContainer) { return $('<div>').addClass('popUpContainer').append(newContainer); },
-          addCloseButton: function(tr) {
-            var close = $('<th><a href="#"><span>close</span></a></th>')
-            $('a', close).click(toggleCalendar)
-            tr.append(close)
-          },
           close: function(cell) { toggleCalendar.call(cell) },
           addDateLabelBehaviour: function(label) {
             label.addClass('clickable')
@@ -1027,7 +1013,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
           getContainer: function(newContainer) {
             return newContainer
           },
-          addCloseButton: $.noop,
           close: $.noop,
           addDateLabelBehaviour: $.noop
         }
@@ -1089,7 +1074,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '1.3.0';$.continuousCal
           var weekDay = $('<th>').append(params.locale.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
           tr.append(weekDay)
         })
-        calendar.addCloseButton(tr);
         return $('<thead>').append(tr)
         function yearCell() { return $('<th>').addClass('month').append(firstWeekdayOfGivenDate.getFullYear()) }
       }
