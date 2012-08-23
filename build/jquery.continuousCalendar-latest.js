@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCalendar.released = '2012-08-19'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.0.1';$.continuousCalendar.released = '2012-08-23'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -14,7 +14,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCal
  */
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define("DateTime", [], factory)
+    define(factory)
   } else {
     root.DateTime = factory()
   }
@@ -251,7 +251,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCal
 
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define("DateLocale", [], factory)
+    define(factory)
   } else {
     root.DateLocale = factory()
   }
@@ -277,7 +277,8 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCal
       'lokakuu',
       'marraskuu',
       'joulukuu'],
-    dayNames: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
+    dayNames: ['sunnuntai', 'maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai'],
+    shortDayNames: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
     yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta') },
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää') },
@@ -315,7 +316,8 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCal
       'Thursday',
       'Friday',
       'Saturday'],
-    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years') },
+    shortDayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
     hoursLabel: function(hours, minutes) {
@@ -352,7 +354,8 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCal
       'Thursday',
       'Friday',
       'Saturday'],
-    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years') },
+    shortDayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
     hoursLabel: function(hours, minutes) {
@@ -404,7 +407,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCal
 
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define("DateFormat", ["DateTime"], factory)
+    define(["./DateTime"], factory)
   } else {
     root.DateFormat = factory(root.DateTime)
   }
@@ -550,12 +553,12 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCal
     eval(code.substring(0, code.length - 3) + ";}")
   }
 
-  DateFormat.getFormatCode = function(character, locale) {
+  DateFormat.getFormatCode = function(character) {
     switch(character) {
       case "d":
         return "DateFormat.leftPad(this.getDate(), 2, '0') + "
       case "D":
-        return "locale.dayNames[this.getDay()].substring(0, 3) + "
+        return "locale.shortDayNames[this.getDay()] + "
       case "j":
         return "this.getDate() + "
       case "l":
@@ -629,7 +632,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCal
 
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define("DateRange", ["jquery", "DateTime", "DateFormat"], factory)
+    define(["jquery", "./DateTime", "./DateFormat"], factory)
   } else {
     root.DateRange = factory(root.jQuery, root.DateTime, root.DateFormat)
   }
@@ -825,7 +828,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.0';$.continuousCal
 
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    define('jquery.continuous-calendar', ['jquery', 'DateFormat', 'DateLocale', 'DateRange', 'DateTime'], function($, DateFormat, DateLocale, DateRange, DateTime) {
+    define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, DateFormat, DateLocale, DateRange, DateTime) {
       factory($, DateFormat, DateLocale, DateRange, DateTime)
     })
   } else {
