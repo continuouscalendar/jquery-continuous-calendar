@@ -159,7 +159,7 @@
     eval(code.substring(0, code.length - 3) + ";}")
   }
 
-  DateFormat.getFormatCode = function(character, locale) {
+  DateFormat.getFormatCode = function(character) {
     switch(character) {
       case "d":
         return "DateFormat.leftPad(this.getDate(), 2, '0') + "
