@@ -1,3 +1,8 @@
+h3. 2.0.1
+
+* Introduce dayNames and shortDayNames in DateLocale
+* Define AMD paths as relative and let require.js determine module name from name of the file
+
 h3. 2.0.0
 
 * Use SASS for styles

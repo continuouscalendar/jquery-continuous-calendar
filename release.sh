@@ -43,7 +43,8 @@ else
 		git status
 		echo "Now:"
 		echo "1. type git push --tags"
-		echo "2. make a pull request"
+		echo "2. type git push"
+		echo "3. make a pull request"
 	fi
 fi
 cd $current_dir
