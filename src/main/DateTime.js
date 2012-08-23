@@ -13,7 +13,7 @@
  */
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define("DateTime", [], factory)
+    define(factory)
   } else {
     root.DateTime = factory()
   }

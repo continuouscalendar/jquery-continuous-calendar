@@ -14,7 +14,7 @@
 
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define("DateRange", ["jquery", "DateTime", "DateFormat"], factory)
+    define(["jquery", "./DateTime", "./DateFormat"], factory)
   } else {
     root.DateRange = factory(root.jQuery, root.DateTime, root.DateFormat)
   }

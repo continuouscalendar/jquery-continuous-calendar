@@ -14,7 +14,7 @@
 
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    define('jquery.continuous-calendar', ['jquery', 'DateFormat', 'DateLocale', 'DateRange', 'DateTime'], function($, DateFormat, DateLocale, DateRange, DateTime) {
+    define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, DateFormat, DateLocale, DateRange, DateTime) {
       factory($, DateFormat, DateLocale, DateRange, DateTime)
     })
   } else {

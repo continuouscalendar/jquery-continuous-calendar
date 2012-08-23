@@ -14,7 +14,7 @@
 
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define("DateLocale", [], factory)
+    define(factory)
   } else {
     root.DateLocale = factory()
   }
