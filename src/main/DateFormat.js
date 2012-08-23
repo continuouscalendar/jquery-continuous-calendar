@@ -164,7 +164,7 @@
       case "d":
         return "DateFormat.leftPad(this.getDate(), 2, '0') + "
       case "D":
-        return "locale.dayNames[this.getDay()].substring(0, 3) + "
+        return "locale.shortDayNames[this.getDay()] + "
       case "j":
         return "this.getDate() + "
       case "l":
