@@ -29,7 +29,10 @@
     'getMonth',
     'getDate',
     'getDay',
-    'getHours'
+    'getHours',
+    'getMinutes',
+    'getSeconds',
+    'getMilliseconds'
   ], function(_index, func) {
     DateTime.prototype[func] = function() { return this.date[func]() }
   })

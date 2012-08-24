@@ -23,7 +23,10 @@ describe('DateTime', function() {
       { desc: 'month',        func: 'getMonth' },
       { desc: 'date',         func: 'getDate' },
       { desc: 'weekday',      func: 'getDay' },
-      { desc: 'hours',        func: 'getHours' }
+      { desc: 'hours',        func: 'getHours' },
+      { desc: 'minutes',      func: 'getMinutes' },
+      { desc: 'seconds',      func: 'getSeconds' },
+      { desc: 'milliseconds', func: 'getMilliseconds' }
     ], function(_index, spec) {
       it('returns ' + spec.desc, function() {
         expect(dateTime[spec.func]()).toEqual(date[spec.func]())
