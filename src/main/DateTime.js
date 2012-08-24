@@ -13,11 +13,11 @@
  */
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define(factory)
+    define(["jquery"], factory)
   } else {
-    root.DateTime = factory()
+    root.DateTime = factory(root.jQuery)
   }
-})(this, function() {
+})(this, function($) {
   var DateTime = function(date) {
     if(typeof date == 'string') this.date = new Date(date)
     else this.date = date || new Date()
