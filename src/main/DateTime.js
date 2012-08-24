@@ -23,17 +23,16 @@
     else this.date = date || new Date()
   }
 
-  DateTime.prototype.getTime = function() { return this.date.getTime() }
-
-  DateTime.prototype.getDate = function() { return this.date.getDate() }
-
-  DateTime.prototype.getMonth = function() { return this.date.getMonth() }
-
-  DateTime.prototype.getHours = function() { return this.date.getHours() }
-
-  DateTime.prototype.getFullYear = function() { return this.date.getFullYear() }
-
-  DateTime.prototype.getDay = function() { return this.date.getDay() }
+  $.each([
+    'getTime',
+    'getFullYear',
+    'getMonth',
+    'getDate',
+    'getDay',
+    'getHours'
+  ], function(_index, func) {
+    DateTime.prototype[func] = function() { return this.date[func]() }
+  })
 
   DateTime.prototype.withTime = function(h, m) {
     var dateWithTime = this.clone()
