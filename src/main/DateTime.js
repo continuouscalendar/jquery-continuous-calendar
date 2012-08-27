@@ -13,27 +13,29 @@
  */
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define(factory)
+    define(["jquery"], factory)
   } else {
-    root.DateTime = factory()
+    root.DateTime = factory(root.jQuery)
   }
-})(this, function() {
+})(this, function($) {
   var DateTime = function(date) {
     if(typeof date == 'string') this.date = new Date(date)
     else this.date = date || new Date()
   }
 
-  DateTime.prototype.getTime = function() { return this.date.getTime() }
-
-  DateTime.prototype.getDate = function() { return this.date.getDate() }
-
-  DateTime.prototype.getMonth = function() { return this.date.getMonth() }
-
-  DateTime.prototype.getHours = function() { return this.date.getHours() }
-
-  DateTime.prototype.getFullYear = function() { return this.date.getFullYear() }
-
-  DateTime.prototype.getDay = function() { return this.date.getDay() }
+  $.each([
+    'getTime',
+    'getFullYear',
+    'getMonth',
+    'getDate',
+    'getDay',
+    'getHours',
+    'getMinutes',
+    'getSeconds',
+    'getMilliseconds'
+  ], function(_index, func) {
+    DateTime.prototype[func] = function() { return this.date[func]() }
+  })
 
   DateTime.prototype.withTime = function(h, m) {
     var dateWithTime = this.clone()
