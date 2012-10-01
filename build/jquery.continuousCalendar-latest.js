@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.0.1';$.continuousCalendar.released = '2012-08-23'
+$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2012-10-01'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -14,27 +14,29 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.1';$.continuousCal
  */
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define(factory)
+    define(["jquery"], factory)
   } else {
-    root.DateTime = factory()
+    root.DateTime = factory(root.jQuery)
   }
-})(this, function() {
+})(this, function($) {
   var DateTime = function(date) {
     if(typeof date == 'string') this.date = new Date(date)
     else this.date = date || new Date()
   }
 
-  DateTime.prototype.getTime = function() { return this.date.getTime() }
-
-  DateTime.prototype.getDate = function() { return this.date.getDate() }
-
-  DateTime.prototype.getMonth = function() { return this.date.getMonth() }
-
-  DateTime.prototype.getHours = function() { return this.date.getHours() }
-
-  DateTime.prototype.getFullYear = function() { return this.date.getFullYear() }
-
-  DateTime.prototype.getDay = function() { return this.date.getDay() }
+  $.each([
+    'getTime',
+    'getFullYear',
+    'getMonth',
+    'getDate',
+    'getDay',
+    'getHours',
+    'getMinutes',
+    'getSeconds',
+    'getMilliseconds'
+  ], function(_index, func) {
+    DateTime.prototype[func] = function() { return this.date[func]() }
+  })
 
   DateTime.prototype.withTime = function(h, m) {
     var dateWithTime = this.clone()
@@ -925,11 +927,11 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.0.1';$.continuousCal
         highlightToday()
         yearTitle = $('th.month', headerTable)
         bindScrollEvent()
+        calendar.initEvents()
         if(!params.isPopup) {
           setYearLabel()
           scrollToSelection()
         }
-        calendar.initEvents()
       }
 
       function bindScrollEvent() {

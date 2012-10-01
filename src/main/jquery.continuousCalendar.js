@@ -111,11 +111,11 @@
         highlightToday()
         yearTitle = $('th.month', headerTable)
         bindScrollEvent()
+        calendar.initEvents()
         if(!params.isPopup) {
           setYearLabel()
           scrollToSelection()
         }
-        calendar.initEvents()
       }
 
       function bindScrollEvent() {
