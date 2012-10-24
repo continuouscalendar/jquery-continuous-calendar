@@ -29,7 +29,10 @@
   }
   .popUpContainer { width: 1px; height: 1px; position: relative; clear: both; }
   .continuousCalendar { clear: both;
-    @import "jquery.tinyscrollbar-1.66/_jquery.tinyscrollbar.scss";
+  @import "jquery.tinyscrollbar-1.66/_jquery.tinyscrollbar.scss";
+    .tinyscrollbar { width: 213px;
+      .viewport { width: 200px; }
+    }
     table { table-layout: fixed; line-height: 13px; font: 11px Arial, Verdana, sans-serif; color: black; background-color: white; border-collapse: collapse; border-spacing: 0; width: 201px;
       .month { width: 58px; padding-left: 2px; }
       .week { border-right: 1px solid #888888; width: 15px; font-size: 10px; }
@@ -51,10 +54,10 @@
           }
         }
         th { font-weight: normal;
-          .month { text-align: left;}
+          .month { text-align: left; }
         }
         td { text-align: center; padding: 2px; cursor: pointer;
-          &.disabled { cursor: default; color: gray;}
+          &.disabled { cursor: default; color: gray; }
           &.holiday { color: #f00;
             &.disabled { color: #a66; }
             &.selected { color: #fbb; }
@@ -70,3 +73,4 @@
     }
   }
 }
+
