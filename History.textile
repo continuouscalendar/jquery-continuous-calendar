@@ -1,3 +1,9 @@
+h3. 2.1.0
+
+* Provide script for compiling scss styles
+* Include compiling of scss files to build script 
+* Add support for custom scrollbar (jquery.tinyscrollbar)
+
 h3. 2.0.1
 
 * Introduce dayNames and shortDayNames in DateLocale
