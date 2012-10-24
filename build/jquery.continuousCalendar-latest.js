@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2012-10-24'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.1.0';$.continuousCalendar.released = '2012-10-24'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
