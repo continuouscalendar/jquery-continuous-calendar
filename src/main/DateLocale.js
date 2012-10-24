@@ -145,7 +145,7 @@
 
   DateLocale.fromArgument = function(stringOrObject) {
     if(typeof stringOrObject == 'string')
-      return DateLocale[stringOrObject]
+      return DateLocale[stringOrObject.toUpperCase()]
     else return stringOrObject || DateLocale.DEFAULT
   }
 
