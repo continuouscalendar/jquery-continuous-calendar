@@ -12,7 +12,7 @@
  * 
  */
 
-(function($){
+;(function($){
 	$.tiny = $.tiny || { };
 	
 	$.tiny.scrollbar = {
@@ -49,15 +49,20 @@
 			return oSelf;
 		}
 		this.update = function(sScroll){
-			oViewport[options.axis] = oViewport.obj[0]['offset'+ sSize];
-			oContent[options.axis] = oContent.obj[0]['scroll'+ sSize];
-			oContent.ratio = oViewport[options.axis] / oContent[options.axis];
+      var axis = options.axis;
+      oViewport[axis] = oViewport.obj[0]['offset'+ sSize];
+			oContent[axis] = oContent.obj[0]['scroll'+ sSize];
+      var content = oContent[axis];
+      var viewport = oViewport[axis];
+      oContent.ratio = viewport / content;
 			oScrollbar.obj.toggleClass('disable', oContent.ratio >= 1);
-			oTrack[options.axis] = options.size == 'auto' ? oViewport[options.axis] : options.size;
-			oThumb[options.axis] = Math.min(oTrack[options.axis], Math.max(0, ( options.sizethumb == 'auto' ? (oTrack[options.axis] * oContent.ratio) : options.sizethumb )));
-			oScrollbar.ratio = options.sizethumb == 'auto' ? (oContent[options.axis] / oTrack[options.axis]) : (oContent[options.axis] - oViewport[options.axis]) / (oTrack[options.axis] - oThumb[options.axis]);
-			iScroll = (sScroll == 'relative' && oContent.ratio <= 1) ? Math.min((oContent[options.axis] - oViewport[options.axis]), Math.max(0, iScroll)) : 0;
-			iScroll = (sScroll == 'bottom' && oContent.ratio <= 1) ? (oContent[options.axis] - oViewport[options.axis]) : isNaN(parseInt(sScroll)) ? iScroll : parseInt(sScroll);
+			oTrack[axis] = options.size == 'auto' ? viewport : options.size;
+      var track = oTrack[axis];
+      oThumb[axis] = Math.min(track, Math.max(0, ( options.sizethumb == 'auto' ? (track * oContent.ratio) : options.sizethumb )));
+      var thumb = oThumb[axis];
+      oScrollbar.ratio = options.sizethumb == 'auto' ? (content / track) : (content - viewport) / (track - thumb);
+			iScroll = (sScroll == 'relative' && oContent.ratio <= 1) ? Math.min((content - viewport), Math.max(0, iScroll)) : 0;
+			iScroll = (sScroll == 'bottom' && oContent.ratio <= 1) ? (content - viewport) : isNaN(parseInt(sScroll)) ? iScroll : parseInt(sScroll);
 			setSize();
 		};
 		function setSize(){
