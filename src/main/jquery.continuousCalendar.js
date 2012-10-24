@@ -14,7 +14,7 @@
 
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    define(['jquery','tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime) {
+    define(['jquery','jquery.tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime) {
       factory($, DateFormat, DateLocale, DateRange, DateTime)
     })
   } else {

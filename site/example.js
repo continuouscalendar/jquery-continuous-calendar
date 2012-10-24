@@ -1,7 +1,7 @@
 requirejs.config({
   paths: {
     'jquery': '../src/lib/jquery-1.8.0.min',
-    'tinyscrollbar' : '../src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'
+    'jquery.tinyscrollbar' : '../src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'
   }
 })
 require(['jquery','../src/main/jquery.continuousCalendar', '../src/main/DateFormat', '../src/main/DateLocale'], function($, _calendar, DateFormat, DateLocale) {
