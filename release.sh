@@ -9,6 +9,7 @@ cd $(dirname $0)
 echo Build nightly...
 old_version=$(git tag | tail -n1)
 version=$1
+compass compile -c config.rb
 rm build/*latest*
 [ "$version" != "" -a ! -f $BUILD_PREFIX-$version.js ] && rm build/*
 echo "$.continuousCalendar = {};$.continuousCalendar.version = '$version';$.continuousCalendar.released = '`date '+%Y-%m-%d'`'">$LATEST_JS
@@ -16,6 +17,7 @@ cat src/main/DateTime.js   >>$LATEST_JS
 cat src/main/DateLocale.js >>$LATEST_JS
 cat src/main/DateFormat.js >>$LATEST_JS
 cat src/main/DateRange.js  >>$LATEST_JS
+cat src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar.js  >>$LATEST_JS
 cat src/main/jquery.continuousCalendar.js >>$LATEST_JS
 echo "Compressing js..."
 java -jar yuicompressor-2.4.6.jar --type js $LATEST_JS -o $LATEST_JS_MIN
