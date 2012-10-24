@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="reset-min.css" type="text/css" media="screen"/>
   <link rel="stylesheet" href="styles.css" type="text/css" media="screen"/>
 
-  <link rel="stylesheet" href="../build/jquery.continuousCalendar-latest-min.css" type="text/css" media="all"/>
+  <link rel="stylesheet" href="../src/main/jquery.continuousCalendar.css" type="text/css" media="all"/>
   <style type="text/css" media="all">
     body { font-family: "Arial", serif; font-size: 90%; }
     h1 { font-size: 120%; }
@@ -36,8 +36,7 @@
     .row input[type=text] { display: block; float: left; margin-right: 5px; }
     .row input[type=checkbox], .row input[type=radio] { float: left; }
     #create { margin-top: 10px; }
-    .calendarScrollContent { height: 200px; }
-    .continuousCalendarContainer { }
+    /*.calendarScrollContent { height: 200px; }*/
     .hint { font-size: 80%; color: #666; }
     .example_params { width: 100%; height: 50px; font-size: 10px; display: block; margin: 4px 0; }
     .containerWrapper { float: left; margin: 5px; width: 240px; }
@@ -85,6 +84,7 @@
     <label class="row"><input type="checkbox" value="" id="disableWeekends"/><span class="label">disableWeekends</span></label>
     <label class="row"><input type="checkbox" value="" checked="checked" id="isRange"/><span class="label">isRange</span></label>
     <label class="row"><input type="checkbox" value="" id="selectWeek"/><span class="label">selectWeek</span></label>
+    <label class="row"><input type="checkbox" value="" id="customScroll"/><span class="label">customScroll</span></label>
   </div>
   <div class="col">
     <label>Locale:</label>
@@ -104,6 +104,7 @@
 
 <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" charset="UTF-8"></script>-->
 <script type="text/javascript" src="../src/lib/jquery-1.6.js"></script>
+<script type="text/javascript" src="../src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../build/jquery.continuousCalendar-latest.js" charset="UTF-8"></script>
 <script type="text/javascript">
   counter = 0
@@ -117,7 +118,7 @@
       container.append('<input type="hidden" class="startDate" value="' + $('#selectionStart').val() + '" /><input type="hidden" class="endDate" value="' + $('#selectionEnd').val() + '"/>')
     }
     $('body').append(containerWrapper)
-    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates', 'fadeOutDuration' ]
+    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates', 'fadeOutDuration', 'customScroll' ]
     var options = {}
     for(var i = 0; i < optionsList.length; i++) {
       var value = valueOf(optionsList[i]);
