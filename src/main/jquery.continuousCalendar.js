@@ -14,7 +14,7 @@
 
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, DateFormat, DateLocale, DateRange, DateTime) {
+    define(['jquery','tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime) {
       factory($, DateFormat, DateLocale, DateRange, DateTime)
     })
   } else {
@@ -41,7 +41,8 @@
         minimumRange: -1,
         selectWeek: false,
         fadeOutDuration: 0,
-        callback: $.noop
+        callback: $.noop,
+        customScroll : false
       }
       var params = $.extend({}, defaults, options)
       params.locale = DateLocale.fromArgument(params.locale)
@@ -76,7 +77,8 @@
         scrollContent,
         beforeFirstOpening = true,
         bodyTable,
-        calendar
+        calendar,
+        customScrollContainer
 
       createCalendar()
 
@@ -98,13 +100,29 @@
         calendar.showInitialSelection()
         calendar.performTrigger()
       }
+      function initScrollBar() {
+        if(params.customScroll) {
+          customScrollContainer = $('.tinyscrollbar', container);
+          customScrollContainer.tinyscrollbar()
+        }
+      }
 
       function initCalendarTable() {
         if(scrollContent) return
         var headerTable = $('<table>').addClass('calendarHeader').append(headerRow())
-        bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
-        scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
-        calendarContainer.append(headerTable).append(scrollContent)
+        if(params.customScroll) {
+          bodyTable = $('<table>').addClass('calendarBody').addClass('overview').append(calendarBody())
+          scrollContent = $('<div>').addClass('calendarScrollContent').addClass('viewport').append(bodyTable)
+          calendarContainer.append(headerTable)
+            .append(
+            $('<div class="tinyscrollbar"></div>')
+              .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
+              .append(scrollContent))
+        } else {
+          bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
+          scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
+          calendarContainer.append(headerTable).append(scrollContent)
+        }
         dateCells = $('td.date', container).get()
         calendar.initState()
         calendar.addRangeLengthLabel()
@@ -241,9 +259,17 @@
       }
 
       function scrollToSelection() {
-        var selectionStartOrToday = $('.selected, .today', scrollContent).get(0)
-        if(selectionStartOrToday) {
-          scrollContent.scrollTop(selectionStartOrToday.offsetTop - (scrollContent.height() - selectionStartOrToday.offsetHeight) / 2)
+          var selectionStartOrToday = $('.selected, .today', scrollContent).get(0)
+          if(selectionStartOrToday) {
+            var position = selectionStartOrToday.offsetTop - (scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
+            if(params.customScroll) {
+              var totalHeight = bodyTable.height()
+              var maxScroll = totalHeight - scrollContent.height()
+              var validPosition = position > maxScroll ? maxScroll : position
+              customScrollContainer.tinyscrollbar_update(validPosition > 0 ? validPosition : 0)
+            } else {
+              scrollContent.scrollTop(position)
+          }
         }
       }
 
@@ -268,6 +294,7 @@
       }
 
       function calculateCellHeightAndSetScroll() {
+        initScrollBar()
         calculateCellHeight()
         scrollToSelection()
       }
@@ -282,6 +309,7 @@
         } else {
           calendarContainer.show()
           if(beforeFirstOpening) {
+            initScrollBar()
             calculateCellHeight()
             setYearLabel()
             beforeFirstOpening = false

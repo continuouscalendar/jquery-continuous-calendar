@@ -254,7 +254,7 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
 <script type="text/javascript" src="build/jquery.continuousCalendar-latest.js" charset="UTF-8"></script>
 
 <script type="text/javascript" language="JavaScript">
-  $("#timeCalendar").continuousCalendar({weeksBefore: 30, lastDate: "today", selectToday: true});
+  $("#timeCalendar").continuousCalendar({weeksBefore: 30, lastDate: "today", selectToday: true, customScroll:true});
   $("#timeCalendar").bind('calendarChange', function() {
     var container = $(this);
     var startTime = container.find('select[name=tripStartTime]').val();
