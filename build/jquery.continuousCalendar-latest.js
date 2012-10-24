@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.2.0';$.continuousCalendar.released = '2012-10-24'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCalendar.released = '2012-10-24'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -968,7 +968,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.0';$.continuousCal
 
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
-    define(['jquery','tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime) {
+    define(['jquery','jquery.tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime) {
       factory($, DateFormat, DateLocale, DateRange, DateTime)
     })
   } else {
