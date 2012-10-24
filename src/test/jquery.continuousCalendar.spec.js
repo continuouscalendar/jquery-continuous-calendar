@@ -238,14 +238,14 @@ describe('jquery.continuous-calendar', function() {
     })
 
     it('mouse click on month on range calendar selects whole month', function() {
-      createBigCalendar()
-      var monthName = cal().find('.month').withText('May').last()
+      createCalendarFields({startDate: '', endDate: '' }).continuousCalendar({firstDate: '1/1/2009', lastDate: '3/1/2009'})
+      var monthName = cal().find('.month').withText('February').last()
       mouseClick(monthName)
-      expect(cal().find('.selected').size()).toEqual(31)
+      expect(cal().find('.selected').size()).toEqual(28)
       var year = startFieldValue().split('/')[2]
-      expect(startFieldValue()).toEqual('5/1/' + year)
-      expect(endFieldValue()).toEqual('5/31/' + year)
-      expect(cal().find('.rangeLengthLabel')).toHaveText('31 Days')
+      expect(startFieldValue()).toEqual('2/1/2009')
+      expect(endFieldValue()).toEqual('2/28/2009')
+      expect(cal().find('.rangeLengthLabel')).toHaveText('28 Days')
     })
 
     it('mouse click on month in single date calendar does nothing', function() {
