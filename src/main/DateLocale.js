@@ -27,19 +27,7 @@
 
   DateLocale.FI = {
     id: 'FI',
-    monthNames: [
-      'tammikuu',
-      'helmikuu',
-      'maaliskuu',
-      'huhtikuu',
-      'toukokuu',
-      'kesäkuu',
-      'heinäkuu',
-      'elokuu',
-      'syyskuu',
-      'lokakuu',
-      'marraskuu',
-      'joulukuu'],
+    monthNames: ['tammikuu', 'helmikuu', 'maaliskuu', 'huhtikuu', 'toukokuu', 'kesäkuu', 'heinäkuu', 'elokuu', 'syyskuu', 'lokakuu', 'marraskuu', 'joulukuu'],
     dayNames: ['sunnuntai', 'maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai'],
     shortDayNames: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
     yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta') },
@@ -60,25 +48,8 @@
 
   DateLocale.EN = {
     id: 'EN',
-    monthNames: ['January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'],
-    dayNames: ['Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday'],
+    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     shortDayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
@@ -98,25 +69,8 @@
 
   DateLocale.AU = {
     id: 'AU',
-    monthNames: ['January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'],
-    dayNames: ['Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday'],
+    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     shortDayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
@@ -131,6 +85,48 @@
     firstWeekday: DateLocale.SUNDAY,
     getFirstDateOfWeek: function(dateTime) {
       return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
+    }
+  }
+
+  DateLocale.ET = {
+    id: 'ET',
+    monthNames: [ 'Jaanuar', 'Veebruar', 'Märts', 'Aprill', 'Mai', 'Juuni', 'Juuli', 'August', 'September', 'Oktoober', 'November', 'Detsember'],
+    dayNames: ['Pühapäev', 'Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev'],
+    shortDayNames: ['P', 'E', 'T', 'K', 'N', 'R', 'L'],
+    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Aasta' : 'Aastat') },
+    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Kuu' : 'Kuud') },
+    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Päev' : 'Päeva') },
+    hoursLabel: function(hours, minutes) {
+      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Tund' : 'Tundi')
+    },
+    shortDateFormat: 'j.n.Y',
+    weekDateFormat: 'D j.n.Y',
+    dateTimeFormat: 'D j.n.Y k\\lo G:i',
+    firstWeekday: DateLocale.MONDAY,
+    getFirstDateOfWeek: function(dateTime) {
+      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
+    }
+  }
+
+  DateLocale.RU = {
+    id: 'RU',
+    monthNames: [ 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+    dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+    shortDayNames: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Год' : 'Года') },
+    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Месяц' : 'Месяца') },
+    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'День' : 'Дня') },
+    hoursLabel: function(hours, minutes) {
+      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Минута' : 'Минуты')
+    },
+    shortDateFormat: 'j.n.Y',
+    weekDateFormat: 'D j.n.Y',
+    dateTimeFormat: 'D j.n.Y k\\lo G:i',
+    firstWeekday: DateLocale.MONDAY,
+    getFirstDateOfWeek: function(dateTime) {
+      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
     }
   }
   DateLocale.DEFAULT = DateLocale.EN
@@ -149,7 +145,7 @@
 
   DateLocale.fromArgument = function(stringOrObject) {
     if(typeof stringOrObject == 'string')
-      return DateLocale[stringOrObject]
+      return DateLocale[stringOrObject.toUpperCase()]
     else return stringOrObject || DateLocale.DEFAULT
   }
 
