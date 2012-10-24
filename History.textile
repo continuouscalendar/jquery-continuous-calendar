@@ -1,3 +1,12 @@
+h3. 2.2.1
+
+* Allow overriding bg image path for custom scrollbar
+
+h3. 2.2.0
+
+* Add support for Russian and Estonian translations
+* Allow setting locale as case insensitive string
+
 h3. 2.1.0
 
 * Provide script for compiling scss styles
