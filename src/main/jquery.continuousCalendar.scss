@@ -30,7 +30,7 @@
   .popUpContainer { width: 1px; height: 1px; position: relative; clear: both; }
   .continuousCalendar { clear: both;
     @import "jquery.tinyscrollbar-1.66/_jquery.tinyscrollbar.scss";
-    table { table-layout: fixed; line-height: 13px; font-family: Arial, Verdana, sans-serif; font-size: 11px; color: black; background-color: white; border-collapse: collapse; border-spacing: 0; width: 201px;
+    table { table-layout: fixed; line-height: 13px; font: 11px Arial, Verdana, sans-serif; color: black; background-color: white; border-collapse: collapse; border-spacing: 0; width: 201px;
       .month { width: 58px; padding-left: 2px; }
       .week { border-right: 1px solid #888888; width: 15px; font-size: 10px; }
     }
@@ -38,8 +38,7 @@
       .weekDay { text-align: center; padding: 2px; }
       .month { text-align: center; }
     }
-    .calendarScrollContent {
-      overflow-y: auto; width: 218px; height: 100px; border: 1px solid #999999; position: relative; background: white;
+    .calendarScrollContent { overflow-y: auto; width: 218px; height: 100px; border: 1px solid #999999; position: relative; background: white;
       table.calendarBody {
         &.weekRange .week { text-decoration: underline; cursor: pointer; }
         &.freeRange {
@@ -71,5 +70,3 @@
     }
   }
 }
-
-
