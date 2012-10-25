@@ -1,3 +1,4 @@
+!http://reaktor.github.com/jquery-continuous-calendar/site/calendar.png!
 
 "Homepage":http://reaktor.github.com/jquery-continuous-calendar/
 
