@@ -62,7 +62,7 @@
       var thumb = oThumb[axis];
       oScrollbar.ratio = options.sizethumb == 'auto' ? (content / track) : (content - viewport) / (track - thumb);
 			iScroll = (sScroll == 'relative' && oContent.ratio <= 1) ? Math.min((content - viewport), Math.max(0, iScroll)) : 0;
-			iScroll = (sScroll == 'bottom' && oContent.ratio <= 1) ? (content - viewport) : isNaN(parseInt(sScroll)) ? iScroll : parseInt(sScroll);
+			iScroll = (sScroll == 'bottom' && oContent.ratio <= 1) ? (content - viewport) : isNaN(parseInt(sScroll, 10)) ? iScroll : parseInt(sScroll, 10);
 			setSize();
 		};
 		function setSize(){
@@ -91,7 +91,7 @@
 		};
 		function start(oEvent){
 			iMouse.start = sAxis ? oEvent.pageX : oEvent.pageY;
-			var oThumbDir = parseInt(oThumb.obj.css(sDirection));
+			var oThumbDir = parseInt(oThumb.obj.css(sDirection), 10);
 			iPosition.start = oThumbDir == 'auto' ? 0 : oThumbDir;
 			$(document).bind('mousemove', drag);
 			document.ontouchmove = function(oEvent){

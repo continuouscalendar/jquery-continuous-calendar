@@ -34,12 +34,12 @@
   DateRange.prototype = {
     _setDaysHoursAndMinutes: function() {
       if(this._hasTimes) {
-        var ms = parseInt((this.end.getTime() - this.start.getTime()))
-        this._days = parseInt(ms / DateTime.DAY)
+        var ms = parseInt((this.end.getTime() - this.start.getTime()), 10)
+        this._days = parseInt(ms / DateTime.DAY, 10)
         ms = ms - (this._days * DateTime.DAY)
-        this._hours = parseInt(ms / DateTime.HOUR)
+        this._hours = parseInt(ms / DateTime.HOUR, 10)
         ms = ms - (this._hours * DateTime.HOUR)
-        this._minutes = parseInt(ms / DateTime.MINUTE)
+        this._minutes = parseInt(ms / DateTime.MINUTE, 10)
       }
     },
 

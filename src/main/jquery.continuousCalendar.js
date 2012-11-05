@@ -276,7 +276,7 @@
       function setYearLabel() {
         var scrollContent = $('.calendarScrollContent', container).get(0)
         var table = $('table', scrollContent).get(0)
-        var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight)
+        var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight, 10)
         var date = getElemDate(table.rows[rowNumber].cells[2])
         yearTitle.text(date.getFullYear())
       }
@@ -299,7 +299,7 @@
         scrollToSelection()
       }
 
-      function calculateCellHeight() { averageCellHeight = parseInt(bodyTable.height() / $('tr', bodyTable).size()) }
+      function calculateCellHeight() { averageCellHeight = parseInt(bodyTable.height() / $('tr', bodyTable).size(), 10) }
 
       function toggleCalendar() {
         initCalendarTable()
