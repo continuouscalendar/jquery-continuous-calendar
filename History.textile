@@ -1,3 +1,9 @@
+h3. 2.2.2
+
+* Overload constructor with y,m,d,h,m arguments
+* Bug fix: fix DateTime.withTime by resetting allways seconds
+* Bug fix: Update year title when using custom scroll
+
 h3. 2.2.1
 
 * Allow overriding bg image path for custom scrollbar
