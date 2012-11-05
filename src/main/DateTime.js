@@ -18,9 +18,16 @@
     root.DateTime = factory(root.jQuery)
   }
 })(this, function($) {
-  var DateTime = function(date) {
-    if(typeof date == 'string') this.date = new Date(date)
-    else this.date = date || new Date()
+  var DateTime = function(year, month, date, hours, minutes) {
+    if(typeof year == 'string') {
+      this.date = new Date(year)
+    } else if(typeof year == 'object') {
+      this.date = year;
+    } else if(typeof year == 'number') {
+      this.date = new Date(year, month - 1, date, hours, minutes, 0, 0)
+    } else {
+      this.date = new Date()
+    }
   }
 
   $.each([
