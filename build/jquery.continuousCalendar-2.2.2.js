@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCalendar.released = '2012-10-24'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.2.2';$.continuousCalendar.released = '2012-11-05'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -19,9 +19,16 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCal
     root.DateTime = factory(root.jQuery)
   }
 })(this, function($) {
-  var DateTime = function(date) {
-    if(typeof date == 'string') this.date = new Date(date)
-    else this.date = date || new Date()
+  var DateTime = function(year, month, date, hours, minutes) {
+    if(typeof year == 'string') {
+      this.date = new Date(year)
+    } else if(typeof year == 'object') {
+      this.date = year;
+    } else if(typeof year == 'number') {
+      this.date = new Date(year, month - 1, date, hours, minutes, 0, 0)
+    } else {
+      this.date = new Date()
+    }
   }
 
   $.each([
@@ -39,9 +46,15 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCal
   })
 
   DateTime.prototype.withTime = function(h, m) {
+    if(typeof h == 'string') {
+      var hoursAndMinutes = h.split(':')
+      h = hoursAndMinutes[0]
+      m = hoursAndMinutes[1]
+    }
     var dateWithTime = this.clone()
     dateWithTime.date.setHours(h)
     dateWithTime.date.setMinutes(m)
+    dateWithTime.date.setSeconds(0)
     dateWithTime.date.setMilliseconds(0)
     return dateWithTime
   }
@@ -650,12 +663,12 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCal
   DateRange.prototype = {
     _setDaysHoursAndMinutes: function() {
       if(this._hasTimes) {
-        var ms = parseInt((this.end.getTime() - this.start.getTime()))
-        this._days = parseInt(ms / DateTime.DAY)
+        var ms = parseInt((this.end.getTime() - this.start.getTime()), 10)
+        this._days = parseInt(ms / DateTime.DAY, 10)
         ms = ms - (this._days * DateTime.DAY)
-        this._hours = parseInt(ms / DateTime.HOUR)
+        this._hours = parseInt(ms / DateTime.HOUR, 10)
         ms = ms - (this._hours * DateTime.HOUR)
-        this._minutes = parseInt(ms / DateTime.MINUTE)
+        this._minutes = parseInt(ms / DateTime.MINUTE, 10)
       }
     },
 
@@ -874,7 +887,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCal
       var thumb = oThumb[axis];
       oScrollbar.ratio = options.sizethumb == 'auto' ? (content / track) : (content - viewport) / (track - thumb);
 			iScroll = (sScroll == 'relative' && oContent.ratio <= 1) ? Math.min((content - viewport), Math.max(0, iScroll)) : 0;
-			iScroll = (sScroll == 'bottom' && oContent.ratio <= 1) ? (content - viewport) : isNaN(parseInt(sScroll)) ? iScroll : parseInt(sScroll);
+			iScroll = (sScroll == 'bottom' && oContent.ratio <= 1) ? (content - viewport) : isNaN(parseInt(sScroll, 10)) ? iScroll : parseInt(sScroll, 10);
 			setSize();
 		};
 		function setSize(){
@@ -903,7 +916,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCal
 		};
 		function start(oEvent){
 			iMouse.start = sAxis ? oEvent.pageX : oEvent.pageY;
-			var oThumbDir = parseInt(oThumb.obj.css(sDirection));
+			var oThumbDir = parseInt(oThumb.obj.css(sDirection), 10);
 			iPosition.start = oThumbDir == 'auto' ? 0 : oThumbDir;
 			$(document).bind('mousemove', drag);
 			document.ontouchmove = function(oEvent){
@@ -940,6 +953,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCal
 			return false;
 		};
 		function drag(oEvent){
+      oWrapper.trigger('scroll')
 			if(!(oContent.ratio >= 1)){
 				iPosition.now = Math.min((oTrack[options.axis] - oThumb[options.axis]), Math.max(0, (iPosition.start + ((sAxis ? oEvent.pageX : oEvent.pageY) - iMouse.start))));
 				iScroll = iPosition.now * oScrollbar.ratio;
@@ -1091,17 +1105,21 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCal
       }
 
       function bindScrollEvent() {
-        var didScroll = false
-        scrollContent.scroll(function() {
-          didScroll = true
-        })
+        if(params.customScroll) {
+          customScrollContainer.bind('scroll', setYearLabel)
+        } else {
+          var didScroll = false
+          scrollContent.scroll(function() {
+            didScroll = true
+          })
 
-        setInterval(function() {
-          if(didScroll) {
-            didScroll = false
-            setYearLabel()
-          }
-        }, 250)
+          setInterval(function() {
+            if(didScroll) {
+              didScroll = false
+              setYearLabel()
+            }
+          }, 250)
+        }
       }
 
       function parseDisabledDates(dates) {
@@ -1213,16 +1231,16 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCal
       }
 
       function scrollToSelection() {
-          var selectionStartOrToday = $('.selected, .today', scrollContent).get(0)
-          if(selectionStartOrToday) {
-            var position = selectionStartOrToday.offsetTop - (scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
-            if(params.customScroll) {
-              var totalHeight = bodyTable.height()
-              var maxScroll = totalHeight - scrollContent.height()
-              var validPosition = position > maxScroll ? maxScroll : position
-              customScrollContainer.tinyscrollbar_update(validPosition > 0 ? validPosition : 0)
-            } else {
-              scrollContent.scrollTop(position)
+        var selectionStartOrToday = $('.selected, .today', scrollContent).get(0)
+        if(selectionStartOrToday) {
+          var position = selectionStartOrToday.offsetTop - (scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
+          if(params.customScroll) {
+            var totalHeight = bodyTable.height()
+            var maxScroll = totalHeight - scrollContent.height()
+            var validPosition = position > maxScroll ? maxScroll : position
+            customScrollContainer.tinyscrollbar_update(validPosition > 0 ? validPosition : 0)
+          } else {
+            scrollContent.scrollTop(position)
           }
         }
       }
@@ -1230,7 +1248,8 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCal
       function setYearLabel() {
         var scrollContent = $('.calendarScrollContent', container).get(0)
         var table = $('table', scrollContent).get(0)
-        var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight)
+        var scrollTop = params.customScroll ? -$('.overview', calendarContainer).position().top : scrollContent.scrollTop
+        var rowNumber = parseInt(scrollTop / averageCellHeight, 10)
         var date = getElemDate(table.rows[rowNumber].cells[2])
         yearTitle.text(date.getFullYear())
       }
@@ -1253,7 +1272,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.1';$.continuousCal
         scrollToSelection()
       }
 
-      function calculateCellHeight() { averageCellHeight = parseInt(bodyTable.height() / $('tr', bodyTable).size()) }
+      function calculateCellHeight() { averageCellHeight = parseInt(bodyTable.height() / $('tr', bodyTable).size(), 10) }
 
       function toggleCalendar() {
         initCalendarTable()
