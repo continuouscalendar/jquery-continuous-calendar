@@ -10,6 +10,7 @@
 
 "Latest revision as ZIP file":http://github.com/reaktor/jquery-continuous-calendar/zipball/master
 
+"Change log":https://github.com/reaktor/jquery-continuous-calendar/blob/master/History.textile
 
 h1. Features
 
