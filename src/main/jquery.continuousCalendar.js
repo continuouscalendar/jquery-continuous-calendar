@@ -137,17 +137,21 @@
       }
 
       function bindScrollEvent() {
-        var didScroll = false
-        scrollContent.scroll(function() {
-          didScroll = true
-        })
+        if(params.customScroll) {
+          customScrollContainer.bind('scroll', setYearLabel)
+        } else {
+          var didScroll = false
+          scrollContent.scroll(function() {
+            didScroll = true
+          })
 
-        setInterval(function() {
-          if(didScroll) {
-            didScroll = false
-            setYearLabel()
-          }
-        }, 250)
+          setInterval(function() {
+            if(didScroll) {
+              didScroll = false
+              setYearLabel()
+            }
+          }, 250)
+        }
       }
 
       function parseDisabledDates(dates) {
@@ -259,16 +263,16 @@
       }
 
       function scrollToSelection() {
-          var selectionStartOrToday = $('.selected, .today', scrollContent).get(0)
-          if(selectionStartOrToday) {
-            var position = selectionStartOrToday.offsetTop - (scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
-            if(params.customScroll) {
-              var totalHeight = bodyTable.height()
-              var maxScroll = totalHeight - scrollContent.height()
-              var validPosition = position > maxScroll ? maxScroll : position
-              customScrollContainer.tinyscrollbar_update(validPosition > 0 ? validPosition : 0)
-            } else {
-              scrollContent.scrollTop(position)
+        var selectionStartOrToday = $('.selected, .today', scrollContent).get(0)
+        if(selectionStartOrToday) {
+          var position = selectionStartOrToday.offsetTop - (scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
+          if(params.customScroll) {
+            var totalHeight = bodyTable.height()
+            var maxScroll = totalHeight - scrollContent.height()
+            var validPosition = position > maxScroll ? maxScroll : position
+            customScrollContainer.tinyscrollbar_update(validPosition > 0 ? validPosition : 0)
+          } else {
+            scrollContent.scrollTop(position)
           }
         }
       }
@@ -276,7 +280,8 @@
       function setYearLabel() {
         var scrollContent = $('.calendarScrollContent', container).get(0)
         var table = $('table', scrollContent).get(0)
-        var rowNumber = parseInt(scrollContent.scrollTop / averageCellHeight, 10)
+        var scrollTop = params.customScroll ? -$('.overview', calendarContainer).position().top : scrollContent.scrollTop
+        var rowNumber = parseInt(scrollTop / averageCellHeight, 10)
         var date = getElemDate(table.rows[rowNumber].cells[2])
         yearTitle.text(date.getFullYear())
       }

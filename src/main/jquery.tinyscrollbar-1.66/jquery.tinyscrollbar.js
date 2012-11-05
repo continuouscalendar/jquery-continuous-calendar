@@ -128,6 +128,7 @@
 			return false;
 		};
 		function drag(oEvent){
+      oWrapper.trigger('scroll')
 			if(!(oContent.ratio >= 1)){
 				iPosition.now = Math.min((oTrack[options.axis] - oThumb[options.axis]), Math.max(0, (iPosition.start + ((sAxis ? oEvent.pageX : oEvent.pageY) - iMouse.start))));
 				iScroll = iPosition.now * oScrollbar.ratio;
