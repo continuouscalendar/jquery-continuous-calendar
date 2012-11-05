@@ -38,9 +38,15 @@
   })
 
   DateTime.prototype.withTime = function(h, m) {
+    if(typeof h == 'string') {
+      var hoursAndMinutes = h.split(':')
+      h = hoursAndMinutes[0]
+      m = hoursAndMinutes[1]
+    }
     var dateWithTime = this.clone()
     dateWithTime.date.setHours(h)
     dateWithTime.date.setMinutes(m)
+    dateWithTime.date.setSeconds(0)
     dateWithTime.date.setMilliseconds(0)
     return dateWithTime
   }
