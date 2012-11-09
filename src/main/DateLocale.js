@@ -92,7 +92,7 @@
     id: 'ET',
     monthNames: [ 'Jaanuar', 'Veebruar', 'Märts', 'Aprill', 'Mai', 'Juuni', 'Juuli', 'August', 'September', 'Oktoober', 'November', 'Detsember'],
     dayNames: ['Pühapäev', 'Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev'],
-    shortDayNames: ['P', 'E', 'T', 'K', 'N', 'R', 'L'],
+    shortDayNames: ['Pü', 'Es', 'Te', 'Ko', 'Ne', 'Re', 'La'],
     yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Aasta' : 'Aastat') },
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Kuu' : 'Kuud') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Päev' : 'Päeva') },
