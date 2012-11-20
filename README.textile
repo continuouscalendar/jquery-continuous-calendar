@@ -66,6 +66,68 @@ h2. Insert in body
 </script>
 </pre>
 
+h1. AMD support
+
+Directory layout:
+
+<pre>
+- index.html
+- scripts/
+  |- jquery-1.8.2.js
+  |- jquery.continuous-calendar/
+  |  |- DateFormat.js
+  |  |- DateLocale.js
+  |  |- DateRange.js
+  |  |- DateTime.js
+  |  |- _jquery.continuousCalendar.scss
+  |  |- jquery.continuousCalendar.js
+  |  `- jquery.tinyscrollbar-1.66/
+  |     |- _jquery.tinyscrollbar.scss
+  |     |- bg-scrollbar-thumb-y.png
+  |     |- bg-scrollbar-track-y.png
+  |     |- bg-scrollbar-trackend-y.png
+  |     `- jquery.tinyscrollbar.js
+  |- main.js
+  `- require-2.1.1.js
+</pre>
+
+<em>index.html</em>
+
+<pre>
+<!DOCTYPE html>
+<html>
+  <head>
+    <script data-main="scripts/main" src="scripts/require-2.1.1.js"></script>
+  </head>
+  <body>
+    <div id="dateRange1">
+      <input type="hidden" class="startDate" name="range_start">
+      <input type="hidden" class="endDate" name="range_end">
+    </div>
+  </body>
+</html>
+</pre>
+
+<em>main.js</em>
+
+<pre>
+require.config({
+  paths: {
+    'jquery':               'jquery-1.8.2',
+    'jquery.tinyscrollbar': 'jquery.continuous-calendar/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'
+  },
+  shim: {
+    'jquery.tinyscrollbar': [ 'jquery' ]
+  }
+})
+
+require(['jquery', 'jquery.continuous-calendar/jquery.continuousCalendar'], function($) {
+  $(function() {
+    $("#dateRange1").continuousCalendar();
+  })
+})
+</pre>
+
 h1. Instructions for contributors
 
 * make a fork
