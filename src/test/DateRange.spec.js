@@ -201,6 +201,14 @@ describe('DateRange', function() {
     })
   })
 
+  describe('hasDisabledDate', function() {
+    it('returns true when a any of the given dates are inside the range', function() {
+      range = createRange('11/15/2012', '11/23/2012')
+      var disabledDates = {'Tue Nov 20 2012 00:00:00 GMT+0200 (EET)': true}
+      expect(range.hasDisabledDate(disabledDates)).toBe(true)
+    })
+  })
+
   function assertHasCorrectHoursAndMinutes(range, hours, minutes) {
     expect(range).toBeValidRange()
     expect(range.hours()).toEqual(hours)

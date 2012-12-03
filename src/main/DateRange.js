@@ -147,6 +147,15 @@
         return this.shiftDays(distanceToOuterRangeEnd)
       }
       return this
+    },
+
+    hasDisabledDate: function(disabledDates) {
+      for(var disabledDate in disabledDates) {
+        if(this.hasDate(new DateTime(disabledDate))) {
+          return true
+        }
+      }
+      return false
     }
   }
 
