@@ -170,6 +170,7 @@
         this.shiftDays = $.noop
         this.hasDate = function() { return false }
         this.clone = function() { return DateRange.emptyRange() }
+        this.hasDisabledDate = function() { return false }
       }
 
       return new NullDateRange()
