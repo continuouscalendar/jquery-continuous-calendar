@@ -67,6 +67,7 @@
             div { border: 2px solid red; margin: 0; border-radius: 10px; position: relative; }
           }
           &.selected { background: #88AAFF; color: white; }
+          &.invalidSelection { background: red; }
         }
         .odd { background-color: #e8e8e8; }
       }
