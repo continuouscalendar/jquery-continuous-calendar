@@ -117,6 +117,12 @@ describe('DateRange', function() {
       var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
       expect(newRange.days()).toEqual(0)
     })
+
+    it('does not expand an empty range', function() {
+      var oldRange = DateRange.emptyRange()
+      var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
+      expect(newRange.days()).toEqual(0)
+    })
   })
 
   describe('date range with time behavior', function() {
