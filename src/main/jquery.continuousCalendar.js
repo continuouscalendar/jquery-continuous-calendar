@@ -102,7 +102,7 @@
       }
       function initScrollBar() {
         if(params.customScroll) {
-          customScrollContainer = $('.tinyscrollbar', container);
+          customScrollContainer = $('.tinyscrollbar', container)
           customScrollContainer.tinyscrollbar()
         }
       }
@@ -138,6 +138,7 @@
 
       function bindScrollEvent() {
         if(params.customScroll) {
+          if(!customScrollContainer) initScrollBar()
           customScrollContainer.bind('scroll', setYearLabel)
         } else {
           var didScroll = false
