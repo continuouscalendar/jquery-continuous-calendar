@@ -52,7 +52,7 @@ input { margin: 3px; }
 .wide { margin: 20px; }
 #timeCalendar .continuousCalendar { float: left; }
 #timeCalendar .dateLabels div { clear: both; margin: 1em; }
-#timeCalendar .dateLabels div strong { float: left; display: block; width: 5em; }
+#timeCalendar .dateLabels div label { float: left; display: block; width: 5em;  font-weight: bold;}
 #timeCalendar .dateLabels div span { float: left; display: block; width: 9em; }
 
 #singleDate2 { z-index: 4; }

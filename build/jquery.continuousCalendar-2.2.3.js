@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.2.2';$.continuousCalendar.released = '2012-11-05'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.2.3';$.continuousCalendar.released = '2012-12-11'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -344,7 +344,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.2';$.continuousCal
     id: 'ET',
     monthNames: [ 'Jaanuar', 'Veebruar', 'Märts', 'Aprill', 'Mai', 'Juuni', 'Juuli', 'August', 'September', 'Oktoober', 'November', 'Detsember'],
     dayNames: ['Pühapäev', 'Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev'],
-    shortDayNames: ['P', 'E', 'T', 'K', 'N', 'R', 'L'],
+    shortDayNames: ['Pü', 'Es', 'Te', 'Ko', 'Ne', 'Re', 'La'],
     yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Aasta' : 'Aastat') },
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Kuu' : 'Kuud') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Päev' : 'Päeva') },
@@ -1070,7 +1070,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.2';$.continuousCal
       }
       function initScrollBar() {
         if(params.customScroll) {
-          customScrollContainer = $('.tinyscrollbar', container);
+          customScrollContainer = $('.tinyscrollbar', container)
           customScrollContainer.tinyscrollbar()
         }
       }
@@ -1106,6 +1106,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.2';$.continuousCal
 
       function bindScrollEvent() {
         if(params.customScroll) {
+          if(!customScrollContainer) initScrollBar()
           customScrollContainer.bind('scroll', setYearLabel)
         } else {
           var didScroll = false

@@ -1,3 +1,7 @@
+h3. 2.2.3
+
+* Fix issues when using custom scroll bar with popup version
+
 h3. 2.2.2
 
 * Overload constructor with y,m,d,h,m arguments

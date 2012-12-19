@@ -14,8 +14,6 @@
   <link rel="stylesheet" type="text/css" href="site/styles.css"/>
   <link rel="stylesheet" href="build/jquery.continuousCalendar-latest-min.css" type="text/css" media="all"/>
   <!--<link rel="stylesheet" href="src/main/jquery.continuousCalendar.css" type="text/css" media="all"/>-->
-  <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
-  <script src="http://shjs.sourceforge.net/sh_main.min.js"></script>
   <meta content="Jquery continuous calendar. A JavaScript Calendar component and date picker for selecting dates and date ranges." name="description"/>
 </head>
 
@@ -63,17 +61,17 @@
     <div class="continuousCalendar"></div>
     <div class="dateLabels">
       <div>
-        <strong>Starts</strong>
+        <label for="starts">Starts</label>
         <span class="startDateLabel"></span>
-        <select name="tripStartTime"></select>
+        <select id="starts" name="tripStartTime"></select>
       </div>
       <div>
-        <strong>Ends</strong>
+        <label for="ends">Ends</label>
         <span class="endDateLabel"></span>
-        <select name="tripEndTime"></select>
+        <select id="ends" name="tripEndTime"></select>
       </div>
       <div>
-        <strong>Duration</strong>
+        <label>Duration</label>
         <span class="totalTimeOfTrip"></span>
       </div>
     </div>
@@ -194,8 +192,8 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
     <dt>selectToday <span class="default">false</span> <span class="type">Boolean</span></dt>
     <dd>True, of current date is to be chosen, even if input field is empty.</dd>
 
-    <dt>locale <span class="default">Locale.EN</span> <span class="type">Object</span></dt>
-    <dd>Specifies locale for rendering calendar and parsing input fields. Currently Locale.EN and DATE_LOCALE_FI are found in global namespace.</dd>
+    <dt>locale <span class="default">DateLocale.EN</span> <span class="type">Object</span></dt>
+    <dd>Specifies locale for rendering calendar and parsing input fields.</dd>
 
     <dt>disableWeekends <span class="default">false</span> <span class="type">Boolean</span></dt>
     <dd>True if weekends are disabled.</dd>
@@ -261,7 +259,7 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
     var endTime = container.find('select[name=tripEndTime]').val();
     var range = container.calendarRange();
     range = range.withTimes(startTime, endTime);
-    container.find('.totalTimeOfTrip').text(DateFormat.formatRange(range, Locale.EN)).toggleClass('invalid', !range.isValid());
+    container.find('.totalTimeOfTrip').text(DateFormat.formatRange(range, DateLocale.EN)).toggleClass('invalid', !range.isValid());
   });
   $("#timeCalendar select").bind('change', function() {
     $("#timeCalendar").trigger('calendarChange');
