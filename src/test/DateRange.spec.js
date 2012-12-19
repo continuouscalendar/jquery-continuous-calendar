@@ -117,6 +117,12 @@ describe('DateRange', function() {
       var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
       expect(newRange.days()).toEqual(0)
     })
+
+    it('does not expand an empty range', function() {
+      var oldRange = DateRange.emptyRange()
+      var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
+      expect(newRange.days()).toEqual(0)
+    })
   })
 
   describe('date range with time behavior', function() {
@@ -198,6 +204,14 @@ describe('DateRange', function() {
       expect(range).toPrintDefiningDurationOf('1 kuukausi', DateLocale.FI)
       range = createRange('01/01/2004', '01/07/2004')
       expect(range).toPrintDefiningDurationOf('7 päivää', DateLocale.FI)
+    })
+  })
+
+  describe('hasDisabledDate', function() {
+    it('returns true when a any of the given dates are inside the range', function() {
+      range = createRange('11/15/2012', '11/23/2012')
+      var disabledDates = {'Tue Nov 20 2012 00:00:00 GMT+0200 (EET)': true}
+      expect(range.hasDisabledDate(disabledDates)).toBe(true)
     })
   })
 

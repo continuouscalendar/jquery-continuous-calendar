@@ -147,6 +147,15 @@
         return this.shiftDays(distanceToOuterRangeEnd)
       }
       return this
+    },
+
+    hasDisabledDate: function(disabledDates) {
+      for(var disabledDate in disabledDates) {
+        if(this.hasDate(new DateTime(disabledDate))) {
+          return true
+        }
+      }
+      return false
     }
   }
 
@@ -161,6 +170,10 @@
         this.shiftDays = $.noop
         this.hasDate = function() { return false }
         this.clone = function() { return DateRange.emptyRange() }
+        this.hasDisabledDate = function() { return false }
+        this.expandDaysTo = function() { return this }
+        this.hasEndsOnWeekend = function() { return false }
+        this.isPermittedRange = function() { return true }
       }
 
       return new NullDateRange()

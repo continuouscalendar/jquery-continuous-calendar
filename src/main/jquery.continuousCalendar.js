@@ -503,6 +503,9 @@
 
       function mouseUp() {
         status = Status.NONE
+        if(selection.hasDisabledDate(params.disabledDates)) {
+          selection = DateRange.emptyRange()
+        }
         drawSelection()
         afterSelection()
       }
@@ -514,7 +517,7 @@
       }
 
       function drawSelectionBetweenDates(range) {
-        $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd')
+        $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd').removeClass('invalidSelection')
         //iterateAndToggleCells(oldSelection.start, oldSelection.end)
         iterateAndToggleCells(range)
         oldSelection = range.clone()
@@ -526,6 +529,9 @@
         var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd', params.locale)]
         for(var i = startIndex; i <= endIndex; i++) {
           setDateCellStyle(i, range.start, range.end)
+        }
+        if(range.hasDisabledDate(params.disabledDates)) {
+          $("td.selected", container).addClass('invalidSelection')
         }
       }
 
@@ -610,7 +616,12 @@
 
       function setEndField(value) { params.endField.val(value) }
 
-      function formatDate(date) { return DateFormat.shortDateFormat(date, params.locale) }
+      function formatDate(date) {
+        if(date) {
+          return DateFormat.shortDateFormat(date, params.locale)
+        }
+        return ''
+      }
 
       function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
 
