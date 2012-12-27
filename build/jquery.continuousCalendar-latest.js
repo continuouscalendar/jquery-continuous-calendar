@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.2.3';$.continuousCalendar.released = '2012-12-11'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCalendar.released = '2012-12-27'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -44,6 +44,38 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.3';$.continuousCal
   ], function(_index, func) {
     DateTime.prototype[func] = function() { return this.date[func]() }
   })
+
+  DateTime.fromIsoDate = function(isoDateTime) {
+    var date = parseDate(isoDateTime.split('T')[0])
+    return new DateTime(date.year, date.month, date.day, 0, 0)
+  }
+
+  DateTime.fromIsoDateTime = function(isoDateTime) {
+    var dateAndTime = isoDateTime.split('T')
+    var time = parseTime(dateAndTime.length == 2 &&  dateAndTime[1])
+    var date = parseDate(dateAndTime[0])
+    return new DateTime(date.year, date.month, date.day, time.hours, time.minutes)
+  }
+
+  function parseDate(str) {
+    var dateComponents = str.split('-')
+    return {year: parseInt(dateComponents[0], 10),
+      month:      parseInt(dateComponents[1]),
+      day:        parseInt(dateComponents[2])
+    }
+  }
+
+  function parseTime(str) {
+    if (str) {
+      var timeComponents = str.split(':')
+      return {
+        hours:   parseInt(timeComponents[0], 10),
+        minutes: parseInt(timeComponents[1], 10)
+      }
+    } else {
+      return { hours: 0, minutes: 0 }
+    }
+  }
 
   DateTime.prototype.withTime = function(h, m) {
     if(typeof h == 'string') {
@@ -372,6 +404,27 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.3';$.continuousCal
     hoursLabel: function(hours, minutes) {
       var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Минута' : 'Минуты')
+    },
+    shortDateFormat: 'j.n.Y',
+    weekDateFormat: 'D j.n.Y',
+    dateTimeFormat: 'D j.n.Y k\\lo G:i',
+    firstWeekday: DateLocale.MONDAY,
+    getFirstDateOfWeek: function(dateTime) {
+      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
+    }
+  }
+
+  DateLocale.SV = {
+    id: 'SV',
+    monthNames: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
+    dayNames: ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'],
+    shortDayNames: ['Sö', 'Må', 'Ti', 'On', 'To', 'Fr', 'Lö'],
+    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'År' : 'År') },
+    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Månad' : 'Månader') },
+    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Dag' : 'Dagar') },
+    hoursLabel: function(hours, minutes) {
+      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Minut' : 'Minuter')
     },
     shortDateFormat: 'j.n.Y',
     weekDateFormat: 'D j.n.Y',
