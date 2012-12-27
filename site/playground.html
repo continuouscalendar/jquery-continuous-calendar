@@ -105,52 +105,6 @@
   <button id="create">Create</button>
 </fieldset>
 
-<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" charset="UTF-8"></script>-->
-<script type="text/javascript" src="../src/lib/jquery-1.6.js"></script>
-<script type="text/javascript" src="../build/jquery.continuousCalendar-latest.js" charset="UTF-8"></script>
-<script type="text/javascript">
-  counter = 0
-  $('#create').click(create)
-
-  var disabledDates = $([DateTime.now(), DateTime.now(), DateTime.now()])
-          .map(function(i, el) { return DateFormat.format(el.plusDays(i + 3), 'n/j/Y') })
-          .toArray()
-          .join(' ')
-  $('#disabledDates').val(disabledDates)
-  var selection = $([DateTime.now().plusDays(10), DateTime.now().plusDays(18)])
-          .map(function(i, el) { return DateFormat.format(el, 'n/j/Y') })
-          .toArray()
-  $('#selectionStart').val(selection[0])
-  $('#selectionEnd').val(selection[1])
-
-  create()
-
-  function create() {
-    var containerClass = 'container' + counter
-    var container = $('<div>').addClass(containerClass)
-    var containerWrapper = $('<div class="containerWrapper">').append(container)
-    if(valueOf('isRange')) {
-      container.append('<input type="hidden" class="startDate" value="' + $('#selectionStart').val() + '" /><input type="hidden" class="endDate" value="' + $('#selectionEnd').val() + '"/>')
-    }
-    $('body').append(containerWrapper)
-    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates', 'fadeOutDuration', 'customScroll' ]
-    var options = {}
-    for(var i = 0; i < optionsList.length; i++) {
-      var value = valueOf(optionsList[i])
-      if(value) {
-        options[optionsList[i]] = value
-      }
-    }
-    options.locale = DateLocale[$('[name=locale]').filter(':checked').val()]
-    var params = JSON.stringify(options)
-    containerWrapper.prepend('<textarea  class="example_params">$(selector).continuousCalendar(' + params + ')</textarea>')
-    container.continuousCalendar(options)
-    function valueOf(id) {
-      var elem = $('#' + id)
-      return elem.attr('type') == 'checkbox' ? elem.filter(':checked').length > 0 : elem.val()
-    }
-    return false
-  }
-</script>
+<script type="text/javascript" data-main="playground" src="../src/lib/require-2.1.2.js" charset="UTF-8"></script>
 </body>
 </html>
