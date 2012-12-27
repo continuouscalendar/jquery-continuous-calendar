@@ -66,4 +66,24 @@ describe('DateTime', function() {
       expect(dateTime.withTime('11:30').toString()).toEqual(new DateTime(2010, 3, 3, 11, 30).toString())
     })
   })
+
+  describe('fromIsoDate', function() {
+    it('creates dateTime correctly from ISO date', function() {
+      assertDates(DateTime.fromIsoDate('2012-1-20'), new DateTime(2012, 1, 20, 0, 0))
+      assertDates(DateTime.fromIsoDate('2012-1-20T13:35'), new DateTime(2012, 1, 20, 0, 0))
+    })
+  })
+
+  describe('fromIsoDateTime', function() {
+    it('creates dateTime correctly from ISO date time', function() {
+      assertDates(DateTime.fromIsoDateTime('2012-1-20T13:35'), new DateTime(2012, 1, 20, 13, 35))
+    })
+  })
+  function assertDates(actual, expected) {
+    expect(actual.getFullYear()).toEqual(expected.getFullYear())
+    expect(actual.getMonth()).toEqual(expected.getMonth())
+    expect(actual.getDate()).toEqual(expected.getDate())
+    expect(actual.getHours()).toEqual(expected.getHours())
+    expect(actual.getMinutes()).toEqual(expected.getMinutes())
+  }
 })

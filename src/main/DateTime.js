@@ -44,6 +44,38 @@
     DateTime.prototype[func] = function() { return this.date[func]() }
   })
 
+  DateTime.fromIsoDate = function(isoDateTime) {
+    var date = parseDate(isoDateTime.split('T')[0])
+    return new DateTime(date.year, date.month, date.day, 0, 0)
+  }
+
+  DateTime.fromIsoDateTime = function(isoDateTime) {
+    var dateAndTime = isoDateTime.split('T')
+    var time = parseTime(dateAndTime.length == 2 &&  dateAndTime[1])
+    var date = parseDate(dateAndTime[0])
+    return new DateTime(date.year, date.month, date.day, time.hours, time.minutes)
+  }
+
+  function parseDate(str) {
+    var dateComponents = str.split('-')
+    return {year: parseInt(dateComponents[0], 10),
+      month:      parseInt(dateComponents[1]),
+      day:        parseInt(dateComponents[2])
+    }
+  }
+
+  function parseTime(str) {
+    if (str) {
+      var timeComponents = str.split(':')
+      return {
+        hours:   parseInt(timeComponents[0], 10),
+        minutes: parseInt(timeComponents[1], 10)
+      }
+    } else {
+      return { hours: 0, minutes: 0 }
+    }
+  }
+
   DateTime.prototype.withTime = function(h, m) {
     if(typeof h == 'string') {
       var hoursAndMinutes = h.split(':')
