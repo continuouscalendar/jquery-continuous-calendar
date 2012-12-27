@@ -1,3 +1,8 @@
+h3. 2.2.4
+
+* Add DateTime.fromIsoDate and DateTime.fromIsoDateTime
+* Add support for swedish
+
 h3. 2.2.3
 
 * Fix issues when using custom scroll bar with popup version
