@@ -46,37 +46,31 @@ function createCalendarFields(params) {
 
 function mouseClick(selector) {
   var targetElement = (typeof selector == 'object') ? selector : cal().find(selector)
-  mouseEvent('mousedown', targetElement)
-  mouseEvent('mouseup', targetElement)
-}
-
-function mouseEvent(eventType, elements, options) {
-  var event = $.extend({target: elements.get(0)}, options)
-  cal().find('.calendarBody').callEvent(eventType, event)
+  targetElement.mousedown().mouseup()
 }
 
 function clickDateWithShift(date) {
-  var options = {shiftKey: true}
-  mouseDownOnDay(date, options)
-  mouseUpOnDay(date, options)
+  elemByDate(date)
+    .trigger({type: 'mousedown', shiftKey: true})
+    .mouseover()
+    .mouseup()
 }
 
 function mouseDownMouseUpOnDate(date) {
-  mouseDownOnDay(date)
-  mouseUpOnDay(date)
+  elemByDate(date).mousedown().mouseover().mouseup()
 }
 
 function dragDates(enter, exit) {
-  mouseDownOnDay(enter)
-  mouseUpOnDay(exit)
+  elemByDate(enter).mousedown()
+  elemByDate(exit).mouseover().mouseup()
 }
 
 function dragDatesSlowly(enter, exit) {
-  mouseDownOnDay(enter)
+  elemByDate(enter).mousedown()
   for(var day = enter; day < exit; day++) {
-    mouseMoveOnDay(day)
+    elemByDate(day).mouseover()
   }
-  mouseUpOnDay(exit)
+  elemByDate(exit).mouseover().mouseup()
 }
 
 function createCalendarWithOneWeek() {
@@ -120,31 +114,14 @@ function createPopupWeekCalendar() {
   createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '5/1/2011', lastDate: '5/31/2011', isPopup: true, selectWeek: true})
 }
 
-function clickOnDate(date) {
-  var elem = cal().find('.date div').withText(date).length === 0 ?
-    cal().find('.date').withText(date) :
-    cal().find('.date div').withText(date);
-  elem.click()
+function elemByDate(date) {
+  return elemFromContainerByDate(cal(), date)
 }
 
-function mouseEventOnDay(eventType, date, options) {
-  var elem = cal().find('.date div').withText(date).length === 0 ?
-    cal().find('.date').withText(date) :
-    cal().find('.date div').withText(date);
-  mouseEvent(eventType, elem, options);
-}
-
-function mouseDownOnDay(date) {
-  mouseEventOnDay('mousedown', date, arguments[1]);
-}
-
-function mouseMoveOnDay(date) {
-  mouseEventOnDay('mouseover', date);
-}
-
-function mouseUpOnDay(date, options) {
-  mouseEventOnDay('mouseover', date, options)
-  mouseEventOnDay('mouseup', date, options)
+function elemFromContainerByDate(container, date) {
+  var dateCell = container.find('.date');
+  var divContent = dateCell.find('div').withText(date);
+  return divContent.length === 0 ? dateCell.withText(date) : divContent;
 }
 
 function calendarId(delta) {
@@ -196,7 +173,7 @@ $.fn.callEvent = function(eventType, eventObj) {
 $.fn.withText = function(text) {
   return this.filter(function() {
     return $(this).text() == text.toString()
-  })
+  }).first()
 }
 
 var custom_matchers = {
@@ -206,13 +183,6 @@ var custom_matchers = {
       this.actual = $('<div></div>').append(this.actual.clone()).html();
     }
     return result
-  },
-  toBeBetween: function(start, end) {
-    var value = this.actual
-    return value >= start && value <= end
-  },
-  toEndWith: function(end_string) {
-    return this.actual.lastIndexOf(end_string) == this.actual.length - end_string.length
   },
   toHaveDate: function(date_str) {
     return this.actual.hasDate(new DateTime(date_str))

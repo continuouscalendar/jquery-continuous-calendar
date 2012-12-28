@@ -89,17 +89,17 @@ describe('jquery.continuous-calendar', function() {
 
     it('disabled date is not selectable', function() {
       createCalendarFields().continuousCalendar({firstDate: '4/15/2009', lastDate: '5/9/2009', disableWeekends: true, disabledDates: '4/22/2009 4/29/2009'})
-      clickOnDate(15)
+      elemByDate(15).click()
       keepsSameDate()
-      clickOnDate(13)
+      elemByDate(13).click()
       keepsSameDate()
-      clickOnDate(18)
+      elemByDate(18).click()
       keepsSameDate()
-      clickOnDate(19)
+      elemByDate(19).click()
       keepsSameDate()
-      clickOnDate(22)
+      elemByDate(22).click()
       keepsSameDate()
-      clickOnDate(29)
+      elemByDate(29).click()
       keepsSameDate()
 
       function keepsSameDate() {
@@ -187,10 +187,8 @@ describe('jquery.continuous-calendar', function() {
 
     it('mouse click and drag highlights range and updates fields', function() {
       createRangeCalendarWithFiveWeeks()
-      startTimer()
       dragDatesSlowly(15, 29)
-      var duration = stopTimer()
-      expect(cal().find('.selected').size()).toEqual(15, '(' + duration + ' ms)')
+      expect(cal().find('.selected').size()).toEqual(15)
       expect(startFieldValue()).toEqual('4/15/2009')
       expect(endFieldValue()).toEqual('4/29/2009')
       expect(cal().find('.rangeLengthLabel')).toHaveText('15 Days')
@@ -222,8 +220,7 @@ describe('jquery.continuous-calendar', function() {
       })
 
       it('mouse click on current date selects current date', function() {
-        mouseDownOnDay(today.getDate())
-        mouseUpOnDay(today.getDate())
+        elemByDate(today.getDate()).mousedown().mouseover().mouseup()
         expect(startFieldValue()).toEqual(todayStr)
         expect(endFieldValue()).toEqual(todayStr)
         expect(cal().find('.rangeLengthLabel')).toHaveText('1 Day')
@@ -312,7 +309,7 @@ describe('jquery.continuous-calendar', function() {
       cal().bind('calendarChange', function() {
         bindCalled++
       })
-      clickOnDate(28)
+      elemByDate(28).click()
       expect(bindCalled).toEqual(1, 'bind')
       expect(calendarCallBack).toEqual(2)
     })
