@@ -25,7 +25,7 @@ require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFor
 
   function create() {
     var containerClass = 'container' + counter
-    var container = $('<div>').addClass(containerClass)
+    var container = $('<div>').addClass(containerClass).addClass($('[name=theme]:checked').val())
     var containerWrapper = $('<div class="containerWrapper">').append(container)
     if(valueOf('isRange')) {
       container.append('<input type="hidden" class="startDate" value="' + $('#selectionStart').val() + '" /><input type="hidden" class="endDate" value="' + $('#selectionEnd').val() + '"/>')
@@ -39,7 +39,7 @@ require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFor
         options[optionsList[i]] = value
       }
     }
-    options.locale = DateLocale[$('[name=locale]').filter(':checked').val()]
+    options.locale = DateLocale[$('[name=locale]:checked').val()]
     var params = JSON.stringify(options)
     containerWrapper.prepend('<textarea  class="example_params">$(selector).continuousCalendar(' + params + ')</textarea>')
     container.continuousCalendar(options)
