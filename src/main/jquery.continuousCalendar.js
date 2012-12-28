@@ -478,24 +478,23 @@
           return
         }
         var date = getElemDate(event.target)
-          ;
-        ({
-          move: function() {
-            var deltaDays = mouseDownDate.distanceInDays(date)
-            var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
-            if(isPermittedRange(movedSelection)) {
-              mouseDownDate = date
-              selection = movedSelection
-            }
-          },
-          create: function() {
-            var newSelection = new DateRange(mouseDownDate, date, params.locale)
-            if(isEnabled(event.target) && isPermittedRange(newSelection)) {
-              selection = newSelection
+          var actions = {
+            move: function() {
+              var deltaDays = mouseDownDate.distanceInDays(date)
+              var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
+              if(isPermittedRange(movedSelection)) {
+                mouseDownDate = date
+                selection = movedSelection
+              }
+            },
+            create: function() {
+              var newSelection = new DateRange(mouseDownDate, date, params.locale)
+              if(isEnabled(event.target) && isPermittedRange(newSelection)) {
+                selection = newSelection
+              }
             }
           }
-
-        })[status]()
+        actions[status]()
         drawSelection()
       }
 
@@ -571,7 +570,7 @@
         }
       }
 
-      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null; }
+      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null }
 
       function disableTextSelection(elem) {
         if($.browser.mozilla) {//Firefox

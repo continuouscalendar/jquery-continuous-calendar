@@ -487,7 +487,7 @@ describe('jquery.continuous-calendar', function() {
     beforeEach(createCalendarContainer)
 
     it('when using single date calendar', function() {
-      var _this;
+      var _this
       var _arguments
       var container = createCalendarFields({startDate: '4/29/2009'})
       container.bind('calendarChange', function() {

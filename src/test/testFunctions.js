@@ -17,8 +17,8 @@ function createCalendarContainer() {
   testIndex++
   var container = $('<div>').addClass('testCalendarContainer')
   var containerWrapper = $('<div>').addClass('containerWrapper')
-  var suite_description = jasmine.currentEnv_.currentSpec.suite.description;
-  var description = jasmine.currentEnv_.currentSpec.description;
+  var suite_description = jasmine.currentEnv_.currentSpec.suite.description
+  var description = jasmine.currentEnv_.currentSpec.description
   var index = $('<div></div>').append('<strong>' + suite_description + '</strong><br>' + description).addClass('testLabel')
   container.attr('id', calendarId())
   containerWrapper.append(index)
@@ -103,24 +103,24 @@ function createPopupWeekCalendar() {
 function elemByDate(date) { return elemFromContainerByDate(cal(), date) }
 
 function elemFromContainerByDate(container, date) {
-  var dateCell = container.find('.date');
-  var divContent = dateCell.find('div').withText(date);
-  return divContent.length === 0 ? dateCell.withText(date) : divContent;
+  var dateCell = container.find('.date')
+  var divContent = dateCell.find('div').withText(date)
+  return divContent.length === 0 ? dateCell.withText(date) : divContent
 }
 
-function calendarId(delta) { return 'continuousCalendar' + (testIndex - (delta || 0)); }
+function calendarId(delta) { return 'continuousCalendar' + (testIndex - (delta || 0)) }
 
-function startFieldValue() { return cal().find('input.startDate').val(); }
+function startFieldValue() { return cal().find('input.startDate').val() }
 
-function startLabelValue() { return cal().find('span.startDateLabel').text(); }
+function startLabelValue() { return cal().find('span.startDateLabel').text() }
 
-function endFieldValue() { return cal().find('input.endDate').val(); }
+function endFieldValue() { return cal().find('input.endDate').val() }
 
-function click(selector) { $(selector).click(); }
+function click(selector) { $(selector).click() }
 
 function value(selector) {
   var elem = $(selector)
-  return elem.is('input') ? elem.val() : elem.text();
+  return elem.is('input') ? elem.val() : elem.text()
 }
 
 function assertHasValues(selector, expectedArray) {
@@ -136,7 +136,7 @@ $.fn.callEvent = function(eventType, eventObj) {
       eventFunctions[i].handler.call($(this), eventObj)
     }
   })
-};
+}
 
 $.fn.withText = function(text) {
   return this.filter(function() { return $(this).text() == text.toString() }).first()
@@ -144,9 +144,9 @@ $.fn.withText = function(text) {
 
 var custom_matchers = {
   toHaveLength: function(length) {
-    var result = $(this.actual).length == length;
+    var result = $(this.actual).length == length
     if(this.actual instanceof jQuery) {
-      this.actual = $('<div></div>').append(this.actual.clone()).html();
+      this.actual = $('<div></div>').append(this.actual.clone()).html()
     }
     return result
   },
@@ -154,6 +154,6 @@ var custom_matchers = {
   toBeInside: function(range) { return this.actual.isInside(range) },
   toBeValidRange: function() { return this.actual.isValid() },
   toPrintDefiningDurationOf: function(duration_str, locale) { return DateFormat.formatDefiningRangeDuration(this.actual, locale) == duration_str }
-};
+}
 
 beforeEach(function() { this.addMatchers(custom_matchers) })
