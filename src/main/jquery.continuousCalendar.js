@@ -406,9 +406,9 @@
 
       function mouseDown(event) {
         var elem = event.target
-
-        if(isInstantSelection(event)) {
-          selection = instantSelection(event)
+        var hasShiftKeyPressed = event.shiftKey
+        if(isInstantSelection(elem, hasShiftKeyPressed)) {
+          selection = instantSelection(elem, hasShiftKeyPressed)
           return
         }
 
@@ -434,16 +434,15 @@
 
         function enabledCell(elem) { return isDateCell(elem) && isEnabled(elem) }
 
-        function isInstantSelection(event) {
+        function isInstantSelection(elem, hasShiftKeyPressed) {
           if(params.selectWeek) {
-            return enabledCell(event.target) || isWeekCell(event.target)
+            return enabledCell(elem) || isWeekCell(elem)
           } else {
-            return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey
+            return isWeekCell(elem) || isMonthCell(elem) || hasShiftKeyPressed
           }
         }
 
-        function instantSelection(event) {
-          var elem = event.target
+        function instantSelection(elem, hasShiftKeyPressed) {
           if((params.selectWeek && enabledCell(elem)) || isWeekCell(elem)) {
             status = Status.NONE
             var firstDayOfWeek = getElemDate($(elem).parent().children('.date').get(0))
@@ -452,7 +451,7 @@
             status = Status.NONE
             var dayInMonth = getElemDate($(elem).siblings('.date').get(0))
             return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth(), params.locale)
-          } else if(event.shiftKey) {
+          } else if(hasShiftKeyPressed) {
             if(selection.days() > 0 && enabledCell(elem)) {
               status = Status.NONE
               selection = selection.expandTo(getElemDate(elem))
