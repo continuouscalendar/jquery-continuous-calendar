@@ -508,16 +508,5 @@ describe('jquery.continuous-calendar', function() {
       $(window).scrollTop(9999999)
     })
   })
-
-  function startTimer() {
-    timerStart = new Date().getTime()
-  }
-
-  function stopTimer() {
-    if(typeof timerStart == undefined) {
-      return -1
-    }
-    return new Date().getTime() - timerStart
-  }
 })
 

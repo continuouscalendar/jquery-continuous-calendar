@@ -26,9 +26,7 @@ function createCalendarContainer() {
   $('#calendars').append(containerWrapper)
 }
 
-function cal(delta) {
-  return $('#' + calendarId(delta))
-}
+function cal(delta) { return $('#' + calendarId(delta)) }
 
 function createCalendarFields(params) {
   var container = $('#' + calendarId())
@@ -56,9 +54,7 @@ function clickDateWithShift(date) {
     .mouseup()
 }
 
-function mouseDownMouseUpOnDate(date) {
-  elemByDate(date).mousedown().mouseover().mouseup()
-}
+function mouseDownMouseUpOnDate(date) { elemByDate(date).mousedown().mouseover().mouseup() }
 
 function dragDates(enter, exit) {
   elemByDate(enter).mousedown()
@@ -73,13 +69,9 @@ function dragDatesSlowly(enter, exit) {
   elemByDate(exit).mouseover().mouseup()
 }
 
-function createCalendarWithOneWeek() {
-  createCalendarFields({startDate: '4/30/2008'}).continuousCalendar({weeksBefore: 0, weeksAfter: 0})
-}
+function createCalendarWithOneWeek() { createCalendarFields({startDate: '4/30/2008'}).continuousCalendar({weeksBefore: 0, weeksAfter: 0}) }
 
-function createCalendarWithNoRange(start, end) {
-  createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: start, lastDate: end})
-}
+function createCalendarWithNoRange(start, end) { createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: start, lastDate: end}) }
 
 function createRangeCalendarWithFiveWeeks() {
   createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009'})
@@ -98,25 +90,17 @@ function createBigCalendar() {
   createCalendarFields({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60, weeksAfter: 30})
 }
 
-function createBigCalendarForSingleDate() {
-  createCalendarFields({startDate: ''}).continuousCalendar({weeksBefore: 20, weeksAfter: 20})
-}
+function createBigCalendarForSingleDate() { createCalendarFields({startDate: ''}).continuousCalendar({weeksBefore: 20, weeksAfter: 20}) }
 
-function createCalendarFromJanuary() {
-  createCalendarFields({startDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009'})
-}
+function createCalendarFromJanuary() { createCalendarFields({startDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009'}) }
 
-function createPopupCalendar() {
-  createCalendarFields({startDate: '4/29/2009'}).continuousCalendar({isPopup: true})
-}
+function createPopupCalendar() { createCalendarFields({startDate: '4/29/2009'}).continuousCalendar({isPopup: true}) }
 
 function createPopupWeekCalendar() {
   createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '5/1/2011', lastDate: '5/31/2011', isPopup: true, selectWeek: true})
 }
 
-function elemByDate(date) {
-  return elemFromContainerByDate(cal(), date)
-}
+function elemByDate(date) { return elemFromContainerByDate(cal(), date) }
 
 function elemFromContainerByDate(container, date) {
   var dateCell = container.find('.date');
@@ -124,41 +108,25 @@ function elemFromContainerByDate(container, date) {
   return divContent.length === 0 ? dateCell.withText(date) : divContent;
 }
 
-function calendarId(delta) {
-  return 'continuousCalendar' + (testIndex - (delta || 0));
-}
+function calendarId(delta) { return 'continuousCalendar' + (testIndex - (delta || 0)); }
 
-function startFieldValue() {
-  return cal().find('input.startDate').val();
-}
+function startFieldValue() { return cal().find('input.startDate').val(); }
 
-function startLabelValue() {
-  return cal().find('span.startDateLabel').text();
-}
+function startLabelValue() { return cal().find('span.startDateLabel').text(); }
 
-function endFieldValue() {
-  return cal().find('input.endDate').val();
-}
+function endFieldValue() { return cal().find('input.endDate').val(); }
 
-function click(selector) {
-  $(selector).click();
-}
+function click(selector) { $(selector).click(); }
 
 function value(selector) {
   var elem = $(selector)
-  if(elem.is('input')) {
-    return elem.val()
-  } else {
-    return elem.text()
-  }
+  return elem.is('input') ? elem.val() : elem.text();
 }
 
 function assertHasValues(selector, expectedArray) {
   expect($.map(cal().find(selector), function(elem) {
     return $(elem).text()
-  })).toEqual($.map(expectedArray, function(i) {
-    return i.toString()
-  }))
+  })).toEqual($.map(expectedArray, function(i) { return i.toString() }))
 }
 
 $.fn.callEvent = function(eventType, eventObj) {
@@ -171,9 +139,7 @@ $.fn.callEvent = function(eventType, eventObj) {
 };
 
 $.fn.withText = function(text) {
-  return this.filter(function() {
-    return $(this).text() == text.toString()
-  }).first()
+  return this.filter(function() { return $(this).text() == text.toString() }).first()
 }
 
 var custom_matchers = {
@@ -184,20 +150,10 @@ var custom_matchers = {
     }
     return result
   },
-  toHaveDate: function(date_str) {
-    return this.actual.hasDate(new DateTime(date_str))
-  },
-  toBeInside: function(range) {
-    return this.actual.isInside(range)
-  },
-  toBeValidRange: function() {
-    return this.actual.isValid()
-  },
-  toPrintDefiningDurationOf: function(duration_str, locale) {
-    return DateFormat.formatDefiningRangeDuration(this.actual, locale) == duration_str
-  }
+  toHaveDate: function(date_str) { return this.actual.hasDate(new DateTime(date_str)) },
+  toBeInside: function(range) { return this.actual.isInside(range) },
+  toBeValidRange: function() { return this.actual.isValid() },
+  toPrintDefiningDurationOf: function(duration_str, locale) { return DateFormat.formatDefiningRangeDuration(this.actual, locale) == duration_str }
 };
 
-beforeEach(function() {
-  this.addMatchers(custom_matchers)
-})
+beforeEach(function() { this.addMatchers(custom_matchers) })
