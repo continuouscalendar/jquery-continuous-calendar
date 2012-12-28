@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCalendar.released = '2012-12-27'
+$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2012-12-28'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -1427,9 +1427,9 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
 
       function mouseDown(event) {
         var elem = event.target
-
-        if(isInstantSelection(event)) {
-          selection = instantSelection(event)
+        var hasShiftKeyPressed = event.shiftKey
+        if(isInstantSelection(elem, hasShiftKeyPressed)) {
+          selection = instantSelection(elem, hasShiftKeyPressed)
           return
         }
 
@@ -1455,16 +1455,15 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
 
         function enabledCell(elem) { return isDateCell(elem) && isEnabled(elem) }
 
-        function isInstantSelection(event) {
+        function isInstantSelection(elem, hasShiftKeyPressed) {
           if(params.selectWeek) {
-            return enabledCell(event.target) || isWeekCell(event.target)
+            return enabledCell(elem) || isWeekCell(elem)
           } else {
-            return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey
+            return isWeekCell(elem) || isMonthCell(elem) || hasShiftKeyPressed
           }
         }
 
-        function instantSelection(event) {
-          var elem = event.target
+        function instantSelection(elem, hasShiftKeyPressed) {
           if((params.selectWeek && enabledCell(elem)) || isWeekCell(elem)) {
             status = Status.NONE
             var firstDayOfWeek = getElemDate($(elem).parent().children('.date').get(0))
@@ -1473,7 +1472,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
             status = Status.NONE
             var dayInMonth = getElemDate($(elem).siblings('.date').get(0))
             return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth(), params.locale)
-          } else if(event.shiftKey) {
+          } else if(hasShiftKeyPressed) {
             if(selection.days() > 0 && enabledCell(elem)) {
               status = Status.NONE
               selection = selection.expandTo(getElemDate(elem))
@@ -1499,24 +1498,23 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
           return
         }
         var date = getElemDate(event.target)
-          ;
-        ({
-          move: function() {
-            var deltaDays = mouseDownDate.distanceInDays(date)
-            var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
-            if(isPermittedRange(movedSelection)) {
-              mouseDownDate = date
-              selection = movedSelection
-            }
-          },
-          create: function() {
-            var newSelection = new DateRange(mouseDownDate, date, params.locale)
-            if(isEnabled(event.target) && isPermittedRange(newSelection)) {
-              selection = newSelection
+          var actions = {
+            move: function() {
+              var deltaDays = mouseDownDate.distanceInDays(date)
+              var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
+              if(isPermittedRange(movedSelection)) {
+                mouseDownDate = date
+                selection = movedSelection
+              }
+            },
+            create: function() {
+              var newSelection = new DateRange(mouseDownDate, date, params.locale)
+              if(isEnabled(event.target) && isPermittedRange(newSelection)) {
+                selection = newSelection
+              }
             }
           }
-
-        })[status]()
+        actions[status]()
         drawSelection()
       }
 
@@ -1592,7 +1590,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
         }
       }
 
-      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null; }
+      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null }
 
       function disableTextSelection(elem) {
         if($.browser.mozilla) {//Firefox
