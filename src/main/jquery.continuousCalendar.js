@@ -501,8 +501,20 @@
 
       function mouseUp() {
         status = Status.NONE
+        if(rangeHasDisabledDate()) {
+          selection = DateRange.emptyRange()
+        }
         drawSelection()
         afterSelection()
+      }
+
+      function rangeHasDisabledDate() {
+        for(var disabledDate in params.disabledDates) {
+          if(selection.hasDate(new DateTime(disabledDate))) {
+            return true
+          }
+        }
+        return false
       }
 
       function drawSelection() {
@@ -512,7 +524,7 @@
       }
 
       function drawSelectionBetweenDates(range) {
-        $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd')
+        $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd').removeClass('invalidSelection')
         //iterateAndToggleCells(oldSelection.start, oldSelection.end)
         iterateAndToggleCells(range)
         oldSelection = range.clone()
@@ -524,6 +536,9 @@
         var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd', params.locale)]
         for(var i = startIndex; i <= endIndex; i++) {
           setDateCellStyle(i, range.start, range.end)
+        }
+        if(rangeHasDisabledDate()) {
+          $('td.selected', container).addClass('invalidSelection')
         }
       }
 
@@ -546,6 +561,11 @@
       }
 
       function afterSelection() {
+        if(rangeHasDisabledDate()) {
+          selection = DateRange.emptyRange()
+          // Flash invalidSelection styled cells when selection is expanded to minimum length
+          setTimeout(function(){ drawSelectionBetweenDates(selection) }, 200)
+        }
         var formattedStart = formatDate(selection.start)
         var formattedEnd = formatDate(selection.end)
         container.data('calendarRange', selection)
@@ -608,7 +628,7 @@
 
       function setEndField(value) { params.endField.val(value) }
 
-      function formatDate(date) { return DateFormat.shortDateFormat(date, params.locale) }
+      function formatDate(date) { return date ? DateFormat.shortDateFormat(date, params.locale) : '' }
 
       function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
 
