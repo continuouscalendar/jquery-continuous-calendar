@@ -161,6 +161,9 @@
         this.shiftDays = $.noop
         this.hasDate = function() { return false }
         this.clone = function() { return DateRange.emptyRange() }
+        this.expandDaysTo = function() { return this }
+        this.hasEndsOnWeekend = function() { return false }
+        this.isPermittedRange = function() { return true }
       }
 
       return new NullDateRange()
