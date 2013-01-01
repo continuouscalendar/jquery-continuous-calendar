@@ -59,8 +59,8 @@
   function parseDate(str) {
     var dateComponents = str.split('-')
     return {year: parseInt(dateComponents[0], 10),
-      month:      parseInt(dateComponents[1]),
-      day:        parseInt(dateComponents[2])
+      month:      parseInt(dateComponents[1], 10),
+      day:        parseInt(dateComponents[2], 10)
     }
   }
 
