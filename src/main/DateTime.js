@@ -30,6 +30,10 @@
     }
   }
 
+  DateTime.MONDAY = 1
+  DateTime.FRIDAY = 5
+  DateTime.SUNDAY = 0
+
   $.each([
     'getTime',
     'getFullYear',
@@ -274,6 +278,19 @@
   DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
 
   DateTime.prototype.toString = function() { return this.date.toISOString() }
+
+  DateTime.prototype.getFirstDateOfWeek = function(locale) {
+    var firstWeekday = locale ? locale.firstWeekday : DateTime.MONDAY
+    if(firstWeekday < this.getDay()) {
+      return this.plusDays(firstWeekday - this.getDay())
+    } else {
+      if(firstWeekday > this.getDay()) {
+        return this.plusDays(firstWeekday - this.getDay() - 7)
+      } else {
+        return this.clone()
+      }
+    }
+  }
 
   DateTime.daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   DateTime.y2kYear = 50

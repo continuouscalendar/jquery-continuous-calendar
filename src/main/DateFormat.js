@@ -24,6 +24,8 @@
   DateFormat.parseRegexes = []
   DateFormat.formatFunctions = {count: 0}
 
+  DateFormat.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
+
   DateFormat.format = function(dateTime, format, locale) {
     if(DateFormat.formatFunctions[format] == null) {
       DateFormat.createNewFormat(dateTime, format, locale)

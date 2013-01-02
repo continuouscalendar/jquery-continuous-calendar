@@ -14,16 +14,12 @@
 
 ;(function(root, factory) {
   if (typeof define === "function" && define.amd) {
-    define(factory)
+    define(["./DateTime", "./DateFormat"], factory)
   } else {
-    root.DateLocale = factory()
+    root.DateLocale = factory(root.DateTime, root.DateFormat)
   }
-})(this, function() {
+})(this, function(DateTime, DateFormat) {
   var DateLocale = {}
-  DateLocale.MONDAY = 1
-  DateLocale.FRIDAY = 5
-  DateLocale.SUNDAY = 0
-  DateLocale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
   DateLocale.FI = {
     id: 'FI',
@@ -34,16 +30,13 @@
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia')
     },
     shortDateFormat: 'j.n.Y',
     weekDateFormat: 'D j.n.Y',
     dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateLocale.MONDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
-    }
+    firstWeekday: DateTime.MONDAY
   }
 
   DateLocale.EN = {
@@ -55,16 +48,13 @@
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes)
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes)
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
     },
     shortDateFormat: 'n/j/Y',
     weekDateFormat: 'D n/j/Y',
     dateTimeFormat: 'D n/j/Y G:i',
-    firstWeekday: DateLocale.SUNDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
-    }
+    firstWeekday: DateTime.SUNDAY
   }
 
   DateLocale.AU = {
@@ -76,16 +66,13 @@
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes)
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes)
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
     },
     shortDateFormat: 'j/n/Y',
     weekDateFormat: 'D j/n/Y',
     dateTimeFormat: 'D j/n/Y G:i',
-    firstWeekday: DateLocale.SUNDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
-    }
+    firstWeekday: DateTime.SUNDAY
   }
 
   DateLocale.ET = {
@@ -97,16 +84,13 @@
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Kuu' : 'Kuud') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Päev' : 'Päeva') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Tund' : 'Tundi')
     },
     shortDateFormat: 'j.n.Y',
     weekDateFormat: 'D j.n.Y',
     dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateLocale.MONDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
-    }
+    firstWeekday: DateTime.MONDAY
   }
 
   DateLocale.RU = {
@@ -118,16 +102,13 @@
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Месяц' : 'Месяца') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'День' : 'Дня') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Минута' : 'Минуты')
     },
     shortDateFormat: 'j.n.Y',
     weekDateFormat: 'D j.n.Y',
     dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateLocale.MONDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
-    }
+    firstWeekday: DateTime.MONDAY
   }
 
   DateLocale.SV = {
@@ -139,30 +120,16 @@
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Månad' : 'Månader') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Dag' : 'Dagar') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Minut' : 'Minuter')
     },
     shortDateFormat: 'j.n.Y',
     weekDateFormat: 'D j.n.Y',
     dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateLocale.MONDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
-    }
+    firstWeekday: DateTime.MONDAY
   }
-  DateLocale.DEFAULT = DateLocale.EN
 
-  DateLocale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
-    if(firstWeekday < dateTime.getDay()) {
-      return dateTime.plusDays(firstWeekday - dateTime.getDay())
-    } else {
-      if(firstWeekday > dateTime.getDay()) {
-        return dateTime.plusDays(firstWeekday - dateTime.getDay() - 7)
-      } else {
-        return dateTime.clone()
-      }
-    }
-  }
+  DateLocale.DEFAULT = DateLocale.EN
 
   DateLocale.fromArgument = function(stringOrObject) {
     if(typeof stringOrObject == 'string')
