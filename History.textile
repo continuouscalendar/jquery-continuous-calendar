@@ -1,3 +1,9 @@
+h3. 2.3.0
+
+* Move hoursAndMinutes() from DateLocale to DateFormat
+* Move weekday constants from DateLocale to DateTime
+* Move getFirstDateOfWeek() from DateLocale to DateTime
+
 h3. 2.2.5
 
 * Take disabled dates into account also when selecting ranges
