@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCalendar.released = '2012-12-31'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCalendar.released = '2013-01-02'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -13,7 +13,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
  * the License.
  */
 ;(function(root, factory) {
-  if (typeof define === "function" && define.amd) {
+  if(typeof define === "function" && define.amd) {
     define(["jquery"], factory)
   } else {
     root.DateTime = factory(root.jQuery)
@@ -30,6 +30,10 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
       this.date = new Date()
     }
   }
+
+  DateTime.MONDAY = 1
+  DateTime.FRIDAY = 5
+  DateTime.SUNDAY = 0
 
   $.each([
     'getTime',
@@ -52,7 +56,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
 
   DateTime.fromIsoDateTime = function(isoDateTime) {
     var dateAndTime = isoDateTime.split('T')
-    var time = parseTime(dateAndTime.length == 2 &&  dateAndTime[1])
+    var time = parseTime(dateAndTime.length == 2 && dateAndTime[1])
     var date = parseDate(dateAndTime[0])
     return new DateTime(date.year, date.month, date.day, time.hours, time.minutes)
   }
@@ -60,16 +64,16 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
   function parseDate(str) {
     var dateComponents = str.split('-')
     return {year: parseInt(dateComponents[0], 10),
-      month:      parseInt(dateComponents[1]),
-      day:        parseInt(dateComponents[2])
+      month: parseInt(dateComponents[1], 10),
+      day: parseInt(dateComponents[2], 10)
     }
   }
 
   function parseTime(str) {
-    if (str) {
+    if(str) {
       var timeComponents = str.split(':')
       return {
-        hours:   parseInt(timeComponents[0], 10),
+        hours: parseInt(timeComponents[0], 10),
         minutes: parseInt(timeComponents[1], 10)
       }
     } else {
@@ -276,6 +280,19 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
 
   DateTime.prototype.toString = function() { return this.date.toISOString() }
 
+  DateTime.prototype.getFirstDateOfWeek = function(locale) {
+    var firstWeekday = locale ? locale.firstWeekday : DateTime.MONDAY
+    if(firstWeekday < this.getDay()) {
+      return this.plusDays(firstWeekday - this.getDay())
+    } else {
+      if(firstWeekday > this.getDay()) {
+        return this.plusDays(firstWeekday - this.getDay() - 7)
+      } else {
+        return this.clone()
+      }
+    }
+  }
+
   DateTime.daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   DateTime.y2kYear = 50
   DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 }
@@ -297,17 +314,13 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
  */
 
 ;(function(root, factory) {
-  if (typeof define === "function" && define.amd) {
-    define(factory)
+  if(typeof define === "function" && define.amd) {
+    define(["./DateTime", "./DateFormat"], factory)
   } else {
-    root.DateLocale = factory()
+    root.DateLocale = factory(root.DateTime, root.DateFormat)
   }
-})(this, function() {
+})(this, function(DateTime, DateFormat) {
   var DateLocale = {}
-  DateLocale.MONDAY = 1
-  DateLocale.FRIDAY = 5
-  DateLocale.SUNDAY = 0
-  DateLocale.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
   DateLocale.FI = {
     id: 'FI',
@@ -318,16 +331,13 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia')
     },
     shortDateFormat: 'j.n.Y',
     weekDateFormat: 'D j.n.Y',
     dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateLocale.MONDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
-    }
+    firstWeekday: DateTime.MONDAY
   }
 
   DateLocale.EN = {
@@ -339,16 +349,13 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes)
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes)
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
     },
     shortDateFormat: 'n/j/Y',
     weekDateFormat: 'D n/j/Y',
     dateTimeFormat: 'D n/j/Y G:i',
-    firstWeekday: DateLocale.SUNDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
-    }
+    firstWeekday: DateTime.SUNDAY
   }
 
   DateLocale.AU = {
@@ -360,16 +367,13 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes)
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes)
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
     },
     shortDateFormat: 'j/n/Y',
     weekDateFormat: 'D j/n/Y',
     dateTimeFormat: 'D j/n/Y G:i',
-    firstWeekday: DateLocale.SUNDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.SUNDAY)
-    }
+    firstWeekday: DateTime.SUNDAY
   }
 
   DateLocale.ET = {
@@ -381,16 +385,13 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Kuu' : 'Kuud') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Päev' : 'Päeva') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Tund' : 'Tundi')
     },
     shortDateFormat: 'j.n.Y',
     weekDateFormat: 'D j.n.Y',
     dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateLocale.MONDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
-    }
+    firstWeekday: DateTime.MONDAY
   }
 
   DateLocale.RU = {
@@ -402,16 +403,13 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Месяц' : 'Месяца') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'День' : 'Дня') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Минута' : 'Минуты')
     },
     shortDateFormat: 'j.n.Y',
     weekDateFormat: 'D j.n.Y',
     dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateLocale.MONDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
-    }
+    firstWeekday: DateTime.MONDAY
   }
 
   DateLocale.SV = {
@@ -423,30 +421,16 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
     monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Månad' : 'Månader') },
     daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Dag' : 'Dagar') },
     hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateLocale.hoursAndMinutes(hours, minutes).replace('.', ',')
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Minut' : 'Minuter')
     },
     shortDateFormat: 'j.n.Y',
     weekDateFormat: 'D j.n.Y',
     dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateLocale.MONDAY,
-    getFirstDateOfWeek: function(dateTime) {
-      return DateLocale.getFirstDateOfWeek(dateTime, DateLocale.MONDAY)
-    }
+    firstWeekday: DateTime.MONDAY
   }
-  DateLocale.DEFAULT = DateLocale.EN
 
-  DateLocale.getFirstDateOfWeek = function(dateTime, firstWeekday) {
-    if(firstWeekday < dateTime.getDay()) {
-      return dateTime.plusDays(firstWeekday - dateTime.getDay())
-    } else {
-      if(firstWeekday > dateTime.getDay()) {
-        return dateTime.plusDays(firstWeekday - dateTime.getDay() - 7)
-      } else {
-        return dateTime.clone()
-      }
-    }
-  }
+  DateLocale.DEFAULT = DateLocale.EN
 
   DateLocale.fromArgument = function(stringOrObject) {
     if(typeof stringOrObject == 'string')
@@ -470,7 +454,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
  */
 
 ;(function(root, factory) {
-  if (typeof define === "function" && define.amd) {
+  if(typeof define === "function" && define.amd) {
     define(["./DateTime"], factory)
   } else {
     root.DateFormat = factory(root.DateTime)
@@ -481,6 +465,8 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
   DateFormat.parseFunctions = {count: 0}
   DateFormat.parseRegexes = []
   DateFormat.formatFunctions = {count: 0}
+
+  DateFormat.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
   DateFormat.format = function(dateTime, format, locale) {
     if(DateFormat.formatFunctions[format] == null) {
@@ -695,7 +681,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
  */
 
 ;(function(root, factory) {
-  if (typeof define === "function" && define.amd) {
+  if(typeof define === "function" && define.amd) {
     define(["jquery", "./DateTime", "./DateFormat"], factory)
   } else {
     root.DateRange = factory(root.jQuery, root.DateTime, root.DateFormat)
@@ -1036,9 +1022,10 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
  * the License.
  */
 
-;(function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define(['jquery','jquery.tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime) {
+;
+(function(root, factory) {
+  if(typeof define === 'function' && define.amd) {
+    define(['jquery', 'jquery.tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime) {
       factory($, DateFormat, DateLocale, DateRange, DateTime)
     })
   } else {
@@ -1066,7 +1053,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
         selectWeek: false,
         fadeOutDuration: 0,
         callback: $.noop,
-        customScroll : false
+        customScroll: false
       }
       var params = $.extend({}, defaults, options)
       params.locale = DateLocale.fromArgument(params.locale)
@@ -1086,7 +1073,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = params.locale.getFirstDateOfWeek(startDate || today)
+      var firstWeekdayOfGivenDate = (startDate || today).getFirstDateOfWeek(params.locale)
       var container = this,
         dateCells = [],
         dateCellDates = [],
@@ -1124,6 +1111,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
         calendar.showInitialSelection()
         calendar.performTrigger()
       }
+
       function initScrollBar() {
         if(params.customScroll) {
           customScrollContainer = $('.tinyscrollbar', container)
@@ -1139,9 +1127,9 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
           scrollContent = $('<div>').addClass('calendarScrollContent').addClass('viewport').append(bodyTable)
           calendarContainer.append(headerTable)
             .append(
-            $('<div class="tinyscrollbar"></div>')
-              .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
-              .append(scrollContent))
+              $('<div class="tinyscrollbar"></div>')
+                .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
+                .append(scrollContent))
         } else {
           bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
           scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
@@ -1352,7 +1340,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
       }
 
       function calendarBody() {
-        var firstWeekDay = params.locale.getFirstDateOfWeek(calendarRange.start)
+        var firstWeekDay = calendarRange.start.getFirstDateOfWeek(params.locale)
         var isFirst = true;
         var rows = []
         while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
@@ -1489,8 +1477,8 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
           var firstDay = firstDayOfWeek
           var lastDay = firstDayOfWeek.plusDays(6)
           if(params.disableWeekends) {
-            firstDay = firstDayOfWeek.withWeekday(DateLocale.MONDAY)
-            lastDay = firstDayOfWeek.withWeekday(DateLocale.FRIDAY)
+            firstDay = firstDayOfWeek.withWeekday(DateTime.MONDAY)
+            lastDay = firstDayOfWeek.withWeekday(DateTime.FRIDAY)
           }
           return new DateRange(firstDay, lastDay, params.locale).and(calendarRange)
         }
@@ -1501,22 +1489,22 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
           return
         }
         var date = getElemDate(event.target)
-          var actions = {
-            move: function() {
-              var deltaDays = mouseDownDate.distanceInDays(date)
-              var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
-              if(isPermittedRange(movedSelection)) {
-                mouseDownDate = date
-                selection = movedSelection
-              }
-            },
-            create: function() {
-              var newSelection = new DateRange(mouseDownDate, date, params.locale)
-              if(isEnabled(event.target) && isPermittedRange(newSelection)) {
-                selection = newSelection
-              }
+        var actions = {
+          move: function() {
+            var deltaDays = mouseDownDate.distanceInDays(date)
+            var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
+            if(isPermittedRange(movedSelection)) {
+              mouseDownDate = date
+              selection = movedSelection
+            }
+          },
+          create: function() {
+            var newSelection = new DateRange(mouseDownDate, date, params.locale)
+            if(isEnabled(event.target) && isPermittedRange(newSelection)) {
+              selection = newSelection
             }
           }
+        }
         actions[status]()
         drawSelection()
       }
@@ -1525,9 +1513,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
 
       function mouseUp() {
         status = Status.NONE
-        if(rangeHasDisabledDate()) {
-          selection = DateRange.emptyRange()
-        }
+        if(rangeHasDisabledDate()) selection = DateRange.emptyRange()
         drawSelection()
         afterSelection()
       }
@@ -1556,39 +1542,28 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
 
       function iterateAndToggleCells(range) {
         if(range.days() == 0) return
-        var startIndex = dateCellMap[DateFormat.format(range.start, 'Ymd', params.locale)]
-        var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd', params.locale)]
+        var startIndex = index(range.start)
+        var endIndex = index(range.end)
         for(var i = startIndex; i <= endIndex; i++) {
-          setDateCellStyle(i, range.start, range.end)
+          getDateCell(i).get(0).className = dateCellStyle(dateCellDates[i], range.start, range.end).join(' ')
         }
-        if(rangeHasDisabledDate()) {
-          $('td.selected', container).addClass('invalidSelection')
-        }
+        if(rangeHasDisabledDate()) $('td.selected', container).addClass('invalidSelection')
+        function index(date) { return dateCellMap[DateFormat.format(date, 'Ymd', params.locale)] }
       }
 
-      function setDateCellStyle(i, start, end) {
-        var date = dateCellDates[i]
-        var elem = getDateCell(i).get(0)
+      function dateCellStyle(date, start, end) {
         var styleClass = [dateStyles(date)]
-        if(date.equalsOnlyDate(end)) {
-          styleClass.push('selected rangeEnd')
-        } else {
-          if(date.equalsOnlyDate(start)) {
-            styleClass.push('selected rangeStart')
-          } else {
-            if(date.isBetweenDates(start, end)) {
-              styleClass.push('selected')
-            }
-          }
-        }
-        elem.className = styleClass.join(' ')
+        if(date.equalsOnlyDate(end)) return styleClass.concat('selected rangeEnd')
+        if(date.equalsOnlyDate(start)) return styleClass.concat('selected rangeStart')
+        if(date.isBetweenDates(start, end)) return styleClass.concat('selected')
+        return styleClass
       }
 
       function afterSelection() {
         if(rangeHasDisabledDate()) {
           selection = DateRange.emptyRange()
           // Flash invalidSelection styled cells when selection is expanded to minimum length
-          setTimeout(function(){ drawSelectionBetweenDates(selection) }, 200)
+          setTimeout(function() { drawSelectionBetweenDates(selection) }, 200)
         }
         var formattedStart = formatDate(selection.start)
         var formattedEnd = formatDate(selection.end)
@@ -1596,9 +1571,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCal
         setStartField(formattedStart)
         setEndField(formattedEnd)
         setRangeLabels()
-        if(params.selectWeek) {
-          calendar.close($('td.selected', container).first())
-        }
+        if(params.selectWeek) calendar.close($('td.selected', container).first())
         executeCallback(selection)
       }
 
