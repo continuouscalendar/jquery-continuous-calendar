@@ -12,7 +12,7 @@
  */
 
 ;(function(root, factory) {
-  if (typeof define === "function" && define.amd) {
+  if(typeof define === "function" && define.amd) {
     define(["./DateTime"], factory)
   } else {
     root.DateFormat = factory(root.DateTime)

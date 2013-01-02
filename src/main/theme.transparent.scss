@@ -1,5 +1,5 @@
 .continuousCalendarContainer.transparent { font: 12px Arial, Helvetica;
-  .label {}
+  .label { }
   .continuousCalendar {
     .tinyscrollbar { width: 251px; }
     table.calendarHeader { border: none; width: 240px; background: none;
@@ -15,7 +15,7 @@
             &:hover { background: #ffffff; }
           }
           &:hover { font-weight: normal; background: #e6e6e6; }
-          &.selected { background: #009EE0; color: #ffffff;}
+          &.selected { background: #009EE0; color: #ffffff; }
         }
         th { color: #4B4B4B; font-size: 11px; border: none; background: none;
           &.odd { background: none; }

@@ -12,7 +12,7 @@
  * the License.
  */
 ;(function(root, factory) {
-  if (typeof define === "function" && define.amd) {
+  if(typeof define === "function" && define.amd) {
     define(["jquery"], factory)
   } else {
     root.DateTime = factory(root.jQuery)
@@ -55,7 +55,7 @@
 
   DateTime.fromIsoDateTime = function(isoDateTime) {
     var dateAndTime = isoDateTime.split('T')
-    var time = parseTime(dateAndTime.length == 2 &&  dateAndTime[1])
+    var time = parseTime(dateAndTime.length == 2 && dateAndTime[1])
     var date = parseDate(dateAndTime[0])
     return new DateTime(date.year, date.month, date.day, time.hours, time.minutes)
   }
@@ -63,16 +63,16 @@
   function parseDate(str) {
     var dateComponents = str.split('-')
     return {year: parseInt(dateComponents[0], 10),
-      month:      parseInt(dateComponents[1], 10),
-      day:        parseInt(dateComponents[2], 10)
+      month: parseInt(dateComponents[1], 10),
+      day: parseInt(dateComponents[2], 10)
     }
   }
 
   function parseTime(str) {
-    if (str) {
+    if(str) {
       var timeComponents = str.split(':')
       return {
-        hours:   parseInt(timeComponents[0], 10),
+        hours: parseInt(timeComponents[0], 10),
         minutes: parseInt(timeComponents[1], 10)
       }
     } else {

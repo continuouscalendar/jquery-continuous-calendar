@@ -29,7 +29,7 @@
   }
   .popUpContainer { width: 1px; height: 1px; position: relative; clear: both; }
   .continuousCalendar { clear: both;
-  @import "jquery.tinyscrollbar-1.66/_jquery.tinyscrollbar.scss";
+    @import "jquery.tinyscrollbar-1.66/_jquery.tinyscrollbar.scss";
     .tinyscrollbar { width: 213px;
       .viewport { width: 200px; }
     }

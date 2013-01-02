@@ -12,9 +12,10 @@
  * the License.
  */
 
-;(function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define(['jquery','jquery.tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime) {
+;
+(function(root, factory) {
+  if(typeof define === 'function' && define.amd) {
+    define(['jquery', 'jquery.tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime) {
       factory($, DateFormat, DateLocale, DateRange, DateTime)
     })
   } else {
@@ -42,7 +43,7 @@
         selectWeek: false,
         fadeOutDuration: 0,
         callback: $.noop,
-        customScroll : false
+        customScroll: false
       }
       var params = $.extend({}, defaults, options)
       params.locale = DateLocale.fromArgument(params.locale)
@@ -100,6 +101,7 @@
         calendar.showInitialSelection()
         calendar.performTrigger()
       }
+
       function initScrollBar() {
         if(params.customScroll) {
           customScrollContainer = $('.tinyscrollbar', container)
@@ -115,9 +117,9 @@
           scrollContent = $('<div>').addClass('calendarScrollContent').addClass('viewport').append(bodyTable)
           calendarContainer.append(headerTable)
             .append(
-            $('<div class="tinyscrollbar"></div>')
-              .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
-              .append(scrollContent))
+              $('<div class="tinyscrollbar"></div>')
+                .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
+                .append(scrollContent))
         } else {
           bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
           scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
@@ -477,22 +479,22 @@
           return
         }
         var date = getElemDate(event.target)
-          var actions = {
-            move: function() {
-              var deltaDays = mouseDownDate.distanceInDays(date)
-              var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
-              if(isPermittedRange(movedSelection)) {
-                mouseDownDate = date
-                selection = movedSelection
-              }
-            },
-            create: function() {
-              var newSelection = new DateRange(mouseDownDate, date, params.locale)
-              if(isEnabled(event.target) && isPermittedRange(newSelection)) {
-                selection = newSelection
-              }
+        var actions = {
+          move: function() {
+            var deltaDays = mouseDownDate.distanceInDays(date)
+            var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
+            if(isPermittedRange(movedSelection)) {
+              mouseDownDate = date
+              selection = movedSelection
+            }
+          },
+          create: function() {
+            var newSelection = new DateRange(mouseDownDate, date, params.locale)
+            if(isEnabled(event.target) && isPermittedRange(newSelection)) {
+              selection = newSelection
             }
           }
+        }
         actions[status]()
         drawSelection()
       }
@@ -551,7 +553,7 @@
         if(rangeHasDisabledDate()) {
           selection = DateRange.emptyRange()
           // Flash invalidSelection styled cells when selection is expanded to minimum length
-          setTimeout(function(){ drawSelectionBetweenDates(selection) }, 200)
+          setTimeout(function() { drawSelectionBetweenDates(selection) }, 200)
         }
         var formattedStart = formatDate(selection.start)
         var formattedEnd = formatDate(selection.end)
