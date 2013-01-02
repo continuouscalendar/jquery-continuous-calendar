@@ -15,94 +15,103 @@
  -->
 <html>
 <head>
-  <title>Continuous Calendar playground</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <link rel="stylesheet" href="reset-min.css" type="text/css" media="screen"/>
-  <link rel="stylesheet" href="styles.css" type="text/css" media="screen"/>
+    <title>Continuous Calendar playground</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="reset-min.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="styles.css" type="text/css" media="screen"/>
 
-  <link rel="stylesheet" href="../src/main/jquery.continuousCalendar.css" type="text/css" media="all"/>
-  <style type="text/css" media="all">
-    body { font-family: "Arial", serif; font-size: 90%; }
-    h1 { font-size: 120%; }
-    h2 { font-size: 100%; }
-    ul { margin: 0 }
-    fieldset { border: none }
-    fieldset .col { float: left; margin-right: 50px; }
-    fieldset .row { clear: both; overflow: hidden; margin-bottom: 5px; display: block; }
-    .row .date { width: 80px; }
-    .row .dates { width: 200px; }
-    .row .number { width: 30px; }
-    .row .label { display: block; width: 190px; float: left; }
-    .row input[type=text] { display: block; float: left; margin-right: 5px; }
-    .row input[type=checkbox], .row input[type=radio] { float: left; }
-    #create { margin-top: 10px; }
-    /*.calendarScrollContent { height: 200px; }*/
-    .hint { font-size: 80%; color: #666; }
-    .example_params { width: 100%; height: 50px; font-size: 10px; display: block; margin: 4px 0; }
-    .containerWrapper { float: left; margin: 5px; width: 240px; }
-  </style>
-  <style type="text/css" media="print">
-    fieldset { display: none; }
-  </style>
+    <link rel="stylesheet" href="../src/main/jquery.continuousCalendar.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="../src/main/theme.transparent.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="../src/main/theme.rounded.css" type="text/css" media="all"/>
+    <style type="text/css" media="all">
+        body { font-family: "Arial", serif; font-size: 90%; }
+        h1 { font-size: 120%; }
+        h2 { font-size: 100%; }
+        ul { margin: 0 }
+        fieldset { border: none }
+        fieldset .col { float: left; margin-right: 50px; }
+        fieldset .row { clear: both; overflow: hidden; margin-bottom: 5px; display: block; }
+        .row .date { width: 80px; }
+        .row .dates { width: 200px; }
+        .row .number { width: 30px; }
+        .row .label { display: block; width: 190px; float: left; }
+        .row input[type=text] { display: block; float: left; margin-right: 5px; }
+        .row input[type=checkbox], .row input[type=radio] { float: left; }
+        #create { margin-top: 10px; }
+            /*.calendarScrollContent { height: 200px; }*/
+        .hint { font-size: 80%; color: #666; }
+        .example_params { width: 100%; height: 50px; font-size: 10px; display: block; margin: 4px 0; }
+        .containerWrapper { float: left; margin: 5px; width: 290px; }
+    </style>
+    <style type="text/css" media="print">
+        fieldset { display: none; }
+    </style>
 </head>
-<body>
+<body id="playground">
 <ul class="navi section">
-  <li><a class="first" href="../index.html">Home</a></li>
-  <li><span>Playground</span></li>
-  <li><a href="../src/test/jquery.continuousCalendar.spec.html">Jasmine tests</a></li>
-  <li><a href="https://github.com/reaktor/jquery-continuous-calendar">Project in Github</a></li>
-  <li><a href="http://github.com/reaktor/jquery-continuous-calendar/zipball/master">Download ZIP</a></li>
+    <li><a class="first" href="../index.html">Home</a></li>
+    <li><span>Playground</span></li>
+    <li><a href="../src/test/jquery.continuousCalendar.spec.html">Jasmine tests</a></li>
+    <li><a href="https://github.com/reaktor/jquery-continuous-calendar">Project in Github</a></li>
+    <li><a href="http://github.com/reaktor/jquery-continuous-calendar/zipball/master">Download ZIP</a></li>
 </ul>
 <h1>Try it out yourself!</h1>
 <fieldset class="section wide">
-  <div class="col">
-    <div class="row">
-      <div class="label"><label for="weeksBefore">weeksBefore</label> /
-        <label for="firstDate">firstDate</label></div>
-      <input type="text" id="weeksBefore" class="number"/>
-      <input type="text" id="firstDate" class="date" value="today"/>
+    <div class="col">
+        <div class="row">
+            <div class="label"><label for="weeksBefore">weeksBefore</label> /
+                <label for="firstDate">firstDate</label></div>
+            <input type="text" id="weeksBefore" class="number"/>
+            <input type="text" id="firstDate" class="date" value="today"/>
+        </div>
+        <div class="row">
+            <div class="label">
+                <label for="weeksAfter">weeksAfter</label> /
+                <label for="lastDate">lastDate</label></div>
+            <input type="text" id="weeksAfter" class="number" value="52"/>
+            <input type="text" id="lastDate" class="date"/>
+        </div>
+        <div class="row">
+            <div class="label">
+                <label for="selectionStart">selectionStart</label> /
+                <label for="selectionEnd">selectionEnd</label></div>
+            <input type="text" id="selectionStart" class="date" value=""/>
+            <input type="text" id="selectionEnd" class="date" value=""/>
+        </div>
+        <label class="row"><span class="label">minimumRange</span><input type="text" id="minimumRange" value="-1" class="number"/></label>
+        <label class="row"><span class="label">disabledDates</span><input type="text" id="disabledDates" class="dates"/></label>
+        <label class="row"><span class="label">fadeOutDuration</span><input type="text" id="fadeOutDuration" value="0" class="number"/></label>
+        <label class="row"><input type="checkbox" value="" id="isPopup"/><span class="label">isPopup</span></label>
+        <label class="row"><input type="checkbox" value="" id="selectToday"/><span class="label">selectToday</span></label>
+        <label class="row"><input type="checkbox" value="" id="disableWeekends"/><span class="label">disableWeekends</span></label>
+        <label class="row"><input type="checkbox" value="" checked="checked" id="isRange"/><span class="label">isRange</span></label>
+        <label class="row"><input type="checkbox" value="" id="selectWeek"/><span class="label">selectWeek</span></label>
+        <label class="row"><input type="checkbox" value="" id="customScroll"/><span class="label">customScroll</span></label>
     </div>
-    <div class="row">
-      <div class="label">
-        <label for="weeksAfter">weeksAfter</label> /
-        <label for="lastDate">lastDate</label></div>
-      <input type="text" id="weeksAfter" class="number" value="52"/>
-      <input type="text" id="lastDate" class="date"/>
+    <div class="col">
+        <label>Locale:</label>
+        <label class="row"><input type="radio" name="locale" value="EN" id="EN" checked="checked"/><span class="label">DateLocale.EN</span></label>
+        <label class="row"><input type="radio" name="locale" value="FI" id="FI"/><span class="label">DateLocale.FI</span></label>
+        <label class="row"><input type="radio" name="locale" value="AU" id="AU"/><span class="label">DateLocale.AU</span></label>
+        <label class="row"><input type="radio" name="locale" value="ET" id="ET"/><span class="label">DateLocale.ET</span></label>
+        <label class="row"><input type="radio" name="locale" value="RU" id="RU"/><span class="label">DateLocale.RU</span></label>
+        <label class="row"><input type="radio" name="locale" value="SV" id="SV"/><span class="label">DateLocale.SV</span></label>
     </div>
-    <div class="row">
-      <div class="label">
-        <label for="selectionStart">selectionStart</label> /
-        <label for="selectionEnd">selectionEnd</label></div>
-      <input type="text" id="selectionStart" class="date" value=""/>
-      <input type="text" id="selectionEnd" class="date" value=""/>
+
+    <div class="col">
+        <label>Theme:</label>
+        <label class="row"><input type="radio" name="theme" value="" id="theme_default" checked="checked"/><span class="label">Default</span></label>
+        <label class="row"><input type="radio" name="theme" value="transparent" id="theme_transparent" /><span class="label">Transparent</span></label>
+        <label class="row"><input type="radio" name="theme" value="rounded" id="theme_rounded" /><span class="label">Rounded</span></label>
     </div>
-    <label class="row"><span class="label">minimumRange</span><input type="text" id="minimumRange" value="-1" class="number"/></label>
-    <label class="row"><span class="label">disabledDates</span><input type="text" id="disabledDates" class="dates"/></label>
-    <label class="row"><span class="label">fadeOutDuration</span><input type="text" id="fadeOutDuration" value="0" class="number"/></label>
-    <label class="row"><input type="checkbox" value="" id="isPopup"/><span class="label">isPopup</span></label>
-    <label class="row"><input type="checkbox" value="" id="selectToday"/><span class="label">selectToday</span></label>
-    <label class="row"><input type="checkbox" value="" id="disableWeekends"/><span class="label">disableWeekends</span></label>
-    <label class="row"><input type="checkbox" value="" checked="checked" id="isRange"/><span class="label">isRange</span></label>
-    <label class="row"><input type="checkbox" value="" id="selectWeek"/><span class="label">selectWeek</span></label>
-    <label class="row"><input type="checkbox" value="" id="customScroll"/><span class="label">customScroll</span></label>
-  </div>
-  <div class="col">
-    <label>Locale:</label>
-    <label class="row"><input type="radio" name="locale" value="EN" id="EN" checked="checked"/><span class="label">DateLocale.EN</span></label>
-    <label class="row"><input type="radio" name="locale" value="FI" id="FI"/><span class="label">DateLocale.FI</span></label>
-    <label class="row"><input type="radio" name="locale" value="AU" id="AU"/><span class="label">DateLocale.AU</span></label>
-    <label class="row"><input type="radio" name="locale" value="ET" id="ET"/><span class="label">DateLocale.ET</span></label>
-    <label class="row"><input type="radio" name="locale" value="RU" id="RU"/><span class="label">DateLocale.RU</span></label>
-    <label class="row"><input type="radio" name="locale" value="SV" id="SV"/><span class="label">DateLocale.SV</span></label>
-  </div>
-  <div>Examples of other options</div>
-  <ul class="col">
-    <li><strong>startField</strong>: $('input.startDate', this)</li>
-    <li><strong>endField</strong>: $('input.endDate', this)</li>
-    <li><strong>callback</strong>: function() {}</li>
-  </ul>
-  <div style="clear:both;"></div>
-  <button id="create">Create</button>
+    <div>Examples of other options</div>
+    <ul class="col">
+        <li><strong>startField</strong>: $('input.startDate', this)</li>
+        <li><strong>endField</strong>: $('input.endDate', this)</li>
+        <li><strong>callback</strong>: function() {}</li>
+    </ul>
+    <div style="clear:both;"></div>
+    <button id="create">Create</button>
 </fieldset>
 
 <script type="text/javascript" data-main="playground" src="../src/lib/require-2.1.2.js" charset="UTF-8"></script>
