@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCalendar.released = '2012-12-27'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCalendar.released = '2012-12-31'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -843,6 +843,9 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
         this.shiftDays = $.noop
         this.hasDate = function() { return false }
         this.clone = function() { return DateRange.emptyRange() }
+        this.expandDaysTo = function() { return this }
+        this.hasEndsOnWeekend = function() { return false }
+        this.isPermittedRange = function() { return true }
       }
 
       return new NullDateRange()
@@ -1427,9 +1430,9 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
 
       function mouseDown(event) {
         var elem = event.target
-
-        if(isInstantSelection(event)) {
-          selection = instantSelection(event)
+        var hasShiftKeyPressed = event.shiftKey
+        if(isInstantSelection(elem, hasShiftKeyPressed)) {
+          selection = instantSelection(elem, hasShiftKeyPressed)
           return
         }
 
@@ -1455,16 +1458,15 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
 
         function enabledCell(elem) { return isDateCell(elem) && isEnabled(elem) }
 
-        function isInstantSelection(event) {
+        function isInstantSelection(elem, hasShiftKeyPressed) {
           if(params.selectWeek) {
-            return enabledCell(event.target) || isWeekCell(event.target)
+            return enabledCell(elem) || isWeekCell(elem)
           } else {
-            return isWeekCell(event.target) || isMonthCell(event.target) || event.shiftKey
+            return isWeekCell(elem) || isMonthCell(elem) || hasShiftKeyPressed
           }
         }
 
-        function instantSelection(event) {
-          var elem = event.target
+        function instantSelection(elem, hasShiftKeyPressed) {
           if((params.selectWeek && enabledCell(elem)) || isWeekCell(elem)) {
             status = Status.NONE
             var firstDayOfWeek = getElemDate($(elem).parent().children('.date').get(0))
@@ -1473,7 +1475,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
             status = Status.NONE
             var dayInMonth = getElemDate($(elem).siblings('.date').get(0))
             return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth(), params.locale)
-          } else if(event.shiftKey) {
+          } else if(hasShiftKeyPressed) {
             if(selection.days() > 0 && enabledCell(elem)) {
               status = Status.NONE
               selection = selection.expandTo(getElemDate(elem))
@@ -1499,24 +1501,23 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
           return
         }
         var date = getElemDate(event.target)
-          ;
-        ({
-          move: function() {
-            var deltaDays = mouseDownDate.distanceInDays(date)
-            var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
-            if(isPermittedRange(movedSelection)) {
-              mouseDownDate = date
-              selection = movedSelection
-            }
-          },
-          create: function() {
-            var newSelection = new DateRange(mouseDownDate, date, params.locale)
-            if(isEnabled(event.target) && isPermittedRange(newSelection)) {
-              selection = newSelection
+          var actions = {
+            move: function() {
+              var deltaDays = mouseDownDate.distanceInDays(date)
+              var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
+              if(isPermittedRange(movedSelection)) {
+                mouseDownDate = date
+                selection = movedSelection
+              }
+            },
+            create: function() {
+              var newSelection = new DateRange(mouseDownDate, date, params.locale)
+              if(isEnabled(event.target) && isPermittedRange(newSelection)) {
+                selection = newSelection
+              }
             }
           }
-
-        })[status]()
+        actions[status]()
         drawSelection()
       }
 
@@ -1524,8 +1525,20 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
 
       function mouseUp() {
         status = Status.NONE
+        if(rangeHasDisabledDate()) {
+          selection = DateRange.emptyRange()
+        }
         drawSelection()
         afterSelection()
+      }
+
+      function rangeHasDisabledDate() {
+        for(var disabledDate in params.disabledDates) {
+          if(selection.hasDate(new DateTime(disabledDate))) {
+            return true
+          }
+        }
+        return false
       }
 
       function drawSelection() {
@@ -1535,7 +1548,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
       }
 
       function drawSelectionBetweenDates(range) {
-        $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd')
+        $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd').removeClass('invalidSelection')
         //iterateAndToggleCells(oldSelection.start, oldSelection.end)
         iterateAndToggleCells(range)
         oldSelection = range.clone()
@@ -1547,6 +1560,9 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
         var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd', params.locale)]
         for(var i = startIndex; i <= endIndex; i++) {
           setDateCellStyle(i, range.start, range.end)
+        }
+        if(rangeHasDisabledDate()) {
+          $('td.selected', container).addClass('invalidSelection')
         }
       }
 
@@ -1569,6 +1585,11 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
       }
 
       function afterSelection() {
+        if(rangeHasDisabledDate()) {
+          selection = DateRange.emptyRange()
+          // Flash invalidSelection styled cells when selection is expanded to minimum length
+          setTimeout(function(){ drawSelectionBetweenDates(selection) }, 200)
+        }
         var formattedStart = formatDate(selection.start)
         var formattedEnd = formatDate(selection.end)
         container.data('calendarRange', selection)
@@ -1592,7 +1613,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
         }
       }
 
-      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null; }
+      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null }
 
       function disableTextSelection(elem) {
         if($.browser.mozilla) {//Firefox
@@ -1631,7 +1652,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.2.4';$.continuousCal
 
       function setEndField(value) { params.endField.val(value) }
 
-      function formatDate(date) { return DateFormat.shortDateFormat(date, params.locale) }
+      function formatDate(date) { return date ? DateFormat.shortDateFormat(date, params.locale) : '' }
 
       function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
 

@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2012-12-28'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.2.5';$.continuousCalendar.released = '2012-12-31'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -843,6 +843,9 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
         this.shiftDays = $.noop
         this.hasDate = function() { return false }
         this.clone = function() { return DateRange.emptyRange() }
+        this.expandDaysTo = function() { return this }
+        this.hasEndsOnWeekend = function() { return false }
+        this.isPermittedRange = function() { return true }
       }
 
       return new NullDateRange()
@@ -1522,8 +1525,20 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
 
       function mouseUp() {
         status = Status.NONE
+        if(rangeHasDisabledDate()) {
+          selection = DateRange.emptyRange()
+        }
         drawSelection()
         afterSelection()
+      }
+
+      function rangeHasDisabledDate() {
+        for(var disabledDate in params.disabledDates) {
+          if(selection.hasDate(new DateTime(disabledDate))) {
+            return true
+          }
+        }
+        return false
       }
 
       function drawSelection() {
@@ -1533,7 +1548,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
       }
 
       function drawSelectionBetweenDates(range) {
-        $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd')
+        $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd').removeClass('invalidSelection')
         //iterateAndToggleCells(oldSelection.start, oldSelection.end)
         iterateAndToggleCells(range)
         oldSelection = range.clone()
@@ -1545,6 +1560,9 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
         var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd', params.locale)]
         for(var i = startIndex; i <= endIndex; i++) {
           setDateCellStyle(i, range.start, range.end)
+        }
+        if(rangeHasDisabledDate()) {
+          $('td.selected', container).addClass('invalidSelection')
         }
       }
 
@@ -1567,6 +1585,11 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
       }
 
       function afterSelection() {
+        if(rangeHasDisabledDate()) {
+          selection = DateRange.emptyRange()
+          // Flash invalidSelection styled cells when selection is expanded to minimum length
+          setTimeout(function(){ drawSelectionBetweenDates(selection) }, 200)
+        }
         var formattedStart = formatDate(selection.start)
         var formattedEnd = formatDate(selection.end)
         container.data('calendarRange', selection)
@@ -1629,7 +1652,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
 
       function setEndField(value) { params.endField.val(value) }
 
-      function formatDate(date) { return DateFormat.shortDateFormat(date, params.locale) }
+      function formatDate(date) { return date ? DateFormat.shortDateFormat(date, params.locale) : '' }
 
       function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
 

@@ -43,4 +43,5 @@
 .continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.today { position: relative; padding: 0; }
 .continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.today div { border: 2px solid red; margin: 0; border-radius: 10px; position: relative; }
 .continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.selected { background: #88AAFF; color: white; }
+.continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody td.invalidSelection { background: red; }
 .continuousCalendarContainer .continuousCalendar .calendarScrollContent table.calendarBody .odd { background-color: #e8e8e8; }
