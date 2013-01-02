@@ -501,9 +501,7 @@
 
       function mouseUp() {
         status = Status.NONE
-        if(rangeHasDisabledDate()) {
-          selection = DateRange.emptyRange()
-        }
+        if(rangeHasDisabledDate()) selection = DateRange.emptyRange()
         drawSelection()
         afterSelection()
       }
@@ -532,32 +530,21 @@
 
       function iterateAndToggleCells(range) {
         if(range.days() == 0) return
-        var startIndex = dateCellMap[DateFormat.format(range.start, 'Ymd', params.locale)]
-        var endIndex = dateCellMap[DateFormat.format(range.end, 'Ymd', params.locale)]
+        var startIndex = index(range.start)
+        var endIndex = index(range.end)
         for(var i = startIndex; i <= endIndex; i++) {
-          setDateCellStyle(i, range.start, range.end)
+          getDateCell(i).get(0).className = dateCellStyle(dateCellDates[i], range.start, range.end).join(' ')
         }
-        if(rangeHasDisabledDate()) {
-          $('td.selected', container).addClass('invalidSelection')
-        }
+        if(rangeHasDisabledDate()) $('td.selected', container).addClass('invalidSelection')
+        function index(date) { return dateCellMap[DateFormat.format(date, 'Ymd', params.locale)] }
       }
 
-      function setDateCellStyle(i, start, end) {
-        var date = dateCellDates[i]
-        var elem = getDateCell(i).get(0)
+      function dateCellStyle(date, start, end) {
         var styleClass = [dateStyles(date)]
-        if(date.equalsOnlyDate(end)) {
-          styleClass.push('selected rangeEnd')
-        } else {
-          if(date.equalsOnlyDate(start)) {
-            styleClass.push('selected rangeStart')
-          } else {
-            if(date.isBetweenDates(start, end)) {
-              styleClass.push('selected')
-            }
-          }
-        }
-        elem.className = styleClass.join(' ')
+        if(date.equalsOnlyDate(end)) return styleClass.concat('selected rangeEnd')
+        if(date.equalsOnlyDate(start)) return styleClass.concat('selected rangeStart')
+        if(date.isBetweenDates(start, end)) return styleClass.concat('selected')
+        return styleClass
       }
 
       function afterSelection() {
@@ -572,9 +559,7 @@
         setStartField(formattedStart)
         setEndField(formattedEnd)
         setRangeLabels()
-        if(params.selectWeek) {
-          calendar.close($('td.selected', container).first())
-        }
+        if(params.selectWeek) calendar.close($('td.selected', container).first())
         executeCallback(selection)
       }
 
