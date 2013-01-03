@@ -48,11 +48,21 @@
     DateTime.prototype[func] = function() { return this.date[func]() }
   })
 
+  /**
+   * Returns date from ISO date ignoring time information
+   * @param isoDateTime String YYYY-MM-DDTHH-MM
+   * @return {DateTime}
+   */
   DateTime.fromIsoDate = function(isoDateTime) {
     var date = parseDate(isoDateTime.split('T')[0])
     return new DateTime(date.year, date.month, date.day, 0, 0)
   }
 
+  /**
+   * Returns date with time from ISO date
+   * @param isoDateTime String YYYY-MM-DDTHH-MM
+   * @return {DateTime}
+   */
   DateTime.fromIsoDateTime = function(isoDateTime) {
     var dateAndTime = isoDateTime.split('T')
     var time = parseTime(dateAndTime.length == 2 && dateAndTime[1])
