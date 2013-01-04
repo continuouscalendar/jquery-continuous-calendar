@@ -11,7 +11,8 @@
  * details.
  */
 
-;(function(root, factory) {
+;
+(function(root, factory) {
   if(typeof define === "function" && define.amd) {
     define(["./DateTime"], factory)
   } else {
@@ -19,7 +20,6 @@
   }
 })(this, function(DateTime) {
   var DateFormat = {}
-
   DateFormat.parseFunctions = {count: 0}
   DateFormat.parseRegexes = []
   DateFormat.formatFunctions = {count: 0}
@@ -34,9 +34,7 @@
     return dateTime[func]()
   }
 
-  DateFormat.shortDateFormat = function(dateTime, locale) {
-    return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y', locale)
-  }
+  DateFormat.shortDateFormat = function(dateTime, locale) { return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y', locale) }
 
   DateFormat.formatRange = function(dateRange, locale) {
     if(dateRange._hasTimes) {
@@ -49,10 +47,8 @@
   DateFormat.formatDefiningRangeDuration = function(dateRange, locale) {
     var years = parseInt(dateRange.days() / 360, 10)
     if(years > 0) return locale.yearsLabel(years)
-
     var months = parseInt(dateRange.days() / 30, 10)
     if(months > 0) return locale.monthsLabel(months)
-
     return locale.daysLabel(dateRange.days())
   }
 
@@ -73,7 +69,7 @@
   }
 
   DateFormat.leftPad = function(val, size, ch) {
-    var result = new String(val)
+    var result = String(val)
     if(ch == null) {
       ch = " "
     }
@@ -221,6 +217,5 @@
         return "'" + DateFormat.escape(character) + "' + "
     }
   }
-
   return DateFormat
 })

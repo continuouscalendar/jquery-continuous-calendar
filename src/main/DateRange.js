@@ -43,9 +43,7 @@
       }
     },
 
-    _dateWithTime: function(dateWithoutTime, parsedTime) {
-      return dateWithoutTime.withTime(parsedTime[0], parsedTime[1])
-    },
+    _dateWithTime: function(dateWithoutTime, parsedTime) { return dateWithoutTime.withTime(parsedTime[0], parsedTime[1]) },
 
     hours: function() { return this._hours },
 
@@ -55,26 +53,15 @@
 
     isValid: function() { return this._valid && this.end.getTime() - this.start.getTime() >= 0 },
 
-    days: function() {
-      if(this._hasTimes) {
-        return this._days
-      } else {
-        return Math.round(this.start.distanceInDays(this.end) + 1)
-      }
-    },
+    days: function() { return this._hasTimes ? this._days : Math.round(this.start.distanceInDays(this.end) + 1); },
 
     shiftDays: function(days) { return new DateRange(this.start.plusDays(days), this.end.plusDays(days)) },
 
     expandTo: function(date) {
       var newStart = this.start.clone()
       var newEnd = this.end.clone()
-      if(date.compareTo(this.start) < 0) {
-        newStart = date
-      } else {
-        if(date.compareTo(this.end) > 0) {
-          newEnd = date
-        }
-      }
+      if(date.compareTo(this.start) < 0) newStart = date
+      else if(date.compareTo(this.end) > 0) newEnd = date
       return new DateRange(newStart, newEnd)
     },
 
@@ -87,11 +74,7 @@
     and: function(that) {
       var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start
       var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end
-      if(latestStart.compareTo(earliestEnd) < 0) {
-        return new DateRange(latestStart, earliestEnd)
-      } else {
-        return DateRange.emptyRange()
-      }
+      return latestStart.compareTo(earliestEnd) < 0 ? new DateRange(latestStart, earliestEnd) : DateRange.emptyRange()
     },
 
     isInside: function(outer) { return this.start.compareTo(outer.start) >= 0 && this.end.compareTo(outer.end) <= 0 },
@@ -194,6 +177,5 @@
       function delta(x) { return -((x + 1) % 7 + 1) }
     }
   })
-
   return DateRange
 })

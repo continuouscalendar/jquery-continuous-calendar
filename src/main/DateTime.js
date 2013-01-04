@@ -11,7 +11,8 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-;(function(root, factory) {
+;
+(function(root, factory) {
   if(typeof define === "function" && define.amd) {
     define(["jquery"], factory)
   } else {
@@ -19,15 +20,10 @@
   }
 })(this, function($) {
   var DateTime = function(year, month, date, hours, minutes) {
-    if(typeof year == 'string') {
-      this.date = new Date(year)
-    } else if(typeof year == 'object') {
-      this.date = year;
-    } else if(typeof year == 'number') {
-      this.date = new Date(year, month - 1, date, hours, minutes, 0, 0)
-    } else {
-      this.date = new Date()
-    }
+    if(typeof year == 'string') this.date = new Date(year)
+    else if(typeof year == 'object') this.date = year
+    else if(typeof year == 'number') this.date = new Date(year, month - 1, date, hours, minutes, 0, 0)
+    else this.date = new Date()
   }
 
   DateTime.MONDAY = 1
@@ -72,7 +68,8 @@
 
   function parseDate(str) {
     var dateComponents = str.split('-')
-    return {year: parseInt(dateComponents[0], 10),
+    return {
+      year: parseInt(dateComponents[0], 10),
       month: parseInt(dateComponents[1], 10),
       day: parseInt(dateComponents[2], 10)
     }
@@ -189,16 +186,10 @@
     if(weekNumberingSystem == "US") {
       return Math.ceil((this.getDayInYear() + firstDay) / 7)
     }
-
     var THU = 4
     var weekday = this.getDay()
-    if(weekday == 0) {
-      weekday = 7
-    }
-    if(firstDay == 0) {
-      firstDay = 7
-    }
-
+    if(weekday == 0) weekday = 7
+    if(firstDay == 0) firstDay = 7
     // If Dec 29 falls on Mon, Dec 30 on Mon or Tue, Dec 31 on Mon - Wed, it's on the first week of next year
     if(this.getMonth() == 11 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
       return 1
@@ -207,13 +198,9 @@
     if(this.getMonth() == 0 && this.getDate() < 4 && weekday > THU) {
       return new DateTime(new Date(this.getFullYear() - 1, 11, 31)).getWeekInYear('ISO')
     }
-
     var week = Math.ceil((this.getDayInYear() + firstDay - 1) / 7)
-
     // If first days of this year are on last year's last week, the above gives one week too much
-    if(firstDay > THU) {
-      week--
-    }
+    if(firstDay > THU) week--
     return week
   }
 
@@ -291,15 +278,9 @@
 
   DateTime.prototype.getFirstDateOfWeek = function(locale) {
     var firstWeekday = locale ? locale.firstWeekday : DateTime.MONDAY
-    if(firstWeekday < this.getDay()) {
-      return this.plusDays(firstWeekday - this.getDay())
-    } else {
-      if(firstWeekday > this.getDay()) {
-        return this.plusDays(firstWeekday - this.getDay() - 7)
-      } else {
-        return this.clone()
-      }
-    }
+    if(firstWeekday < this.getDay()) return this.plusDays(firstWeekday - this.getDay())
+    else if(firstWeekday > this.getDay()) return this.plusDays(firstWeekday - this.getDay() - 7)
+    else return this.clone()
   }
 
   DateTime.daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
