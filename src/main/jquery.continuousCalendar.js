@@ -25,8 +25,6 @@
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })
     function _continuousCalendar(options) {
-      $(this).addClass('continuousCalendarContainer').append('&nbsp;') //IE fix for popup version
-
       var defaults = {
         weeksBefore    : 26,
         weeksAfter     : 26,
@@ -43,7 +41,8 @@
         selectWeek     : false,
         fadeOutDuration: 0,
         callback       : $.noop,
-        customScroll   : false
+        customScroll   : false,
+        theme          : ''
       }
       var params = $.extend({}, defaults, options)
       params.locale = DateLocale.fromArgument(params.locale)
@@ -64,23 +63,25 @@
         setEndField(formattedToday)
       }
       var firstWeekdayOfGivenDate = (startDate || today).getFirstDateOfWeek(params.locale)
-      var container = this,
-        dateCells = [],
-        dateCellDates = [],
-        dateCellMap = {},
-        mouseDownDate = null, averageCellHeight,
-        yearTitle,
-        selection,
-        oldSelection,
-        calendarRange,
-        status = Status.NONE,
-        calendarContainer,
-        scrollContent,
-        beforeFirstOpening = true,
-        bodyTable,
-        calendar,
-        customScrollContainer
+      var container = this
+      var dateCells = []
+      var dateCellDates = []
+      var dateCellMap = {}
+      var mouseDownDate = null
+      var averageCellHeight
+      var yearTitle
+      var selection
+      var oldSelection
+      var calendarRange
+      var status = Status.NONE
+      var calendarContainer
+      var scrollContent
+      var beforeFirstOpening = true
+      var bodyTable
+      var calendar
+      var customScrollContainer
 
+      $(this).addClass('continuousCalendarContainer').addClass(params.theme).append('&nbsp;') //IE fix for popup version
       createCalendar()
 
       function createCalendar() {

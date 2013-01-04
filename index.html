@@ -13,6 +13,7 @@
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css"/>
   <link rel="stylesheet" type="text/css" href="site/styles.css"/>
   <link rel="stylesheet" href="build/jquery.continuousCalendar-latest-min.css" type="text/css" media="all"/>
+  <link rel="stylesheet" href="src/main/theme.rounded.css" type="text/css" media="all"/>
   <!--<link rel="stylesheet" href="src/main/jquery.continuousCalendar.css" type="text/css" media="all"/>-->
   <meta content="Jquery continuous calendar. A JavaScript Calendar component and date picker for selecting dates and date ranges." name="description"/>
 </head>
@@ -252,7 +253,7 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
 <script type="text/javascript" src="build/jquery.continuousCalendar-latest.js" charset="UTF-8"></script>
 
 <script type="text/javascript" language="JavaScript">
-  $("#timeCalendar").continuousCalendar({weeksBefore: 30, lastDate: "today", selectToday: true, customScroll:true});
+  $("#timeCalendar").continuousCalendar({weeksBefore: 30, lastDate: "today", selectToday: true, theme:'rounded'});
   $("#timeCalendar").bind('calendarChange', function() {
     var container = $(this);
     var startTime = container.find('select[name=tripStartTime]').val();
@@ -269,7 +270,7 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
       $(this).append($("<option>").text(i + ":00")).append($("<option>").text(i + ":30"));
     }
   });
-  $('#date-picker').continuousCalendar({isPopup: true, firstDate: 'today'});
+  $('#date-picker').continuousCalendar({isPopup: true, firstDate: 'today', customScroll: true});
 </script>
 <script type="text/javascript">
 
