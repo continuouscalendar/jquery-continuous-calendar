@@ -28,29 +28,29 @@
       $(this).addClass('continuousCalendarContainer').append('&nbsp;') //IE fix for popup version
 
       var defaults = {
-        weeksBefore: 26,
-        weeksAfter: 26,
-        firstDate: null,
-        lastDate: null,
-        startField: $('input.startDate', this),
-        endField: $('input.endDate', this),
-        isPopup: false,
-        selectToday: false,
-        locale: DateLocale.DEFAULT,
+        weeksBefore    : 26,
+        weeksAfter     : 26,
+        firstDate      : null,
+        lastDate       : null,
+        startField     : $('input.startDate', this),
+        endField       : $('input.endDate', this),
+        isPopup        : false,
+        selectToday    : false,
+        locale         : DateLocale.DEFAULT,
         disableWeekends: false,
-        disabledDates: null,
-        minimumRange: -1,
-        selectWeek: false,
+        disabledDates  : null,
+        minimumRange   : -1,
+        selectWeek     : false,
         fadeOutDuration: 0,
-        callback: $.noop,
-        customScroll: false
+        callback       : $.noop,
+        customScroll   : false
       }
       var params = $.extend({}, defaults, options)
       params.locale = DateLocale.fromArgument(params.locale)
       var Status = {
         CREATE_OR_RESIZE: 'create',
-        MOVE: 'move',
-        NONE: 'none'
+        MOVE            : 'move',
+        NONE            : 'none'
       }
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
@@ -166,18 +166,18 @@
       function dateBehaviour(isRange) {
         var rangeVersion = {
           showInitialSelection: setRangeLabels,
-          initEvents: function() {
+          initEvents          : function() {
             initRangeCalendarEvents(container, bodyTable)
             drawSelection()
           },
-          addRangeLengthLabel: function() {
+          addRangeLengthLabel : function() {
             if($('.rangeLengthLabel', container).isEmpty()) {
               var rangeLengthContainer = $('<div class="label"><span class="rangeLengthLabel"></span></div>')
               $('.continuousCalendar', container).append(rangeLengthContainer)
             }
           },
-          addEndDateLabel: function(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') },
-          performTrigger: function() {
+          addEndDateLabel     : function(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') },
+          performTrigger      : function() {
             container.data('calendarRange', selection)
             executeCallback(selection)
           }
@@ -188,16 +188,16 @@
               setDateLabel(DateFormat.format(DateFormat.parse(params.startField.val()), params.locale.weekDateFormat, params.locale))
             }
           },
-          initEvents: function() {
+          initEvents          : function() {
             initSingleDateCalendarEvents()
             var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd', params.locale)
             if(selectedDateKey in dateCellMap) {
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
           },
-          addRangeLengthLabel: $.noop,
-          addEndDateLabel: $.noop,
-          performTrigger: function() {
+          addRangeLengthLabel : $.noop,
+          addEndDateLabel     : $.noop,
+          performTrigger      : function() {
             container.data('calendarRange', startDate)
             executeCallback(startDate)
           }
@@ -207,27 +207,27 @@
 
       function popUpBehaviour(isPopup) {
         var popUpVersion = {
-          initUI: function() {
+          initUI               : function() {
             calendarContainer.addClass('popup').hide()
             var icon = $('<a href="#" class="calendarIcon">' + today.getDate() + '</a>').click(toggleCalendar)
             container.prepend('<div></div>')
             container.prepend(icon)
           },
-          initState: $.noop,
-          getContainer: function(newContainer) { return $('<div>').addClass('popUpContainer').append(newContainer); },
-          close: function(cell) { toggleCalendar.call(cell) },
+          initState            : $.noop,
+          getContainer         : function(newContainer) { return $('<div>').addClass('popUpContainer').append(newContainer); },
+          close                : function(cell) { toggleCalendar.call(cell) },
           addDateLabelBehaviour: function(label) {
             label.addClass('clickable')
             label.click(toggleCalendar)
           }
         }
         var inlineVersion = {
-          initUI: initCalendarTable,
-          initState: calculateCellHeightAndSetScroll,
-          getContainer: function(newContainer) {
+          initUI               : initCalendarTable,
+          initState            : calculateCellHeightAndSetScroll,
+          getContainer         : function(newContainer) {
             return newContainer
           },
-          close: $.noop,
+          close                : $.noop,
           addDateLabelBehaviour: $.noop
         }
         return isPopup ? popUpVersion : inlineVersion
@@ -480,7 +480,7 @@
         }
         var date = getElemDate(event.target)
         var actions = {
-          move: function() {
+          move  : function() {
             var deltaDays = mouseDownDate.distanceInDays(date)
             var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
             if(isPermittedRange(movedSelection)) {

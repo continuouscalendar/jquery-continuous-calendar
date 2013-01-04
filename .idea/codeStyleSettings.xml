@@ -29,6 +29,7 @@
         </CssCodeStyleSettings>
         <JSCodeStyleSettings>
           <option name="USE_SEMICOLON_AFTER_STATEMENT" value="false" />
+          <option name="ALIGN_OBJECT_PROPERTIES" value="2" />
           <option name="SPACE_BEFORE_FUNCTION_LEFT_PARENTH" value="false" />
         </JSCodeStyleSettings>
         <XML>
@@ -39,11 +40,6 @@
           <option name="CONTINUATION_INDENT_SIZE" value="4" />
           <option name="TAB_SIZE" value="2" />
           <option name="USE_RELATIVE_INDENTS" value="true" />
-        </ADDITIONAL_INDENT_OPTIONS>
-        <ADDITIONAL_INDENT_OPTIONS fileType="scala">
-          <option name="INDENT_SIZE" value="2" />
-          <option name="CONTINUATION_INDENT_SIZE" value="2" />
-          <option name="TAB_SIZE" value="2" />
         </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="sql">
           <option name="INDENT_SIZE" value="2" />
@@ -75,6 +71,12 @@
             <option name="CONTINUATION_INDENT_SIZE" value="2" />
             <option name="TAB_SIZE" value="2" />
           </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="Scala">
+          <option name="SPACE_BEFORE_IF_PARENTHESES" value="false" />
+          <option name="SPACE_BEFORE_WHILE_PARENTHESES" value="false" />
+          <option name="SPACE_BEFORE_FOR_PARENTHESES" value="false" />
+          <option name="PARENT_SETTINGS_INSTALLED" value="true" />
         </codeStyleSettings>
         <codeStyleSettings language="XML">
           <indentOptions>

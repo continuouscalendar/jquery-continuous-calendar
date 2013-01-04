@@ -93,20 +93,20 @@
   }
 
   DateFormat.patterns = {
-    ISO8601LongPattern: "Y-m-d H:i:s",
-    ISO8601ShortPattern: "Y-m-d",
-    ShortDatePattern: "n/j/Y",
-    FiShortDatePattern: "j.n.Y",
-    FiWeekdayDatePattern: "D j.n.Y",
-    FiWeekdayDateTimePattern: "D j.n.Y k\\lo G:i",
-    LongDatePattern: "l, F d, Y",
-    FullDateTimePattern: "l, F d, Y g:i:s A",
-    MonthDayPattern: "F d",
-    ShortTimePattern: "g:i A",
-    LongTimePattern: "g:i:s A",
-    SortableDateTimePattern: "Y-m-d\\TH:i:s",
+    ISO8601LongPattern              : "Y-m-d H:i:s",
+    ISO8601ShortPattern             : "Y-m-d",
+    ShortDatePattern                : "n/j/Y",
+    FiShortDatePattern              : "j.n.Y",
+    FiWeekdayDatePattern            : "D j.n.Y",
+    FiWeekdayDateTimePattern        : "D j.n.Y k\\lo G:i",
+    LongDatePattern                 : "l, F d, Y",
+    FullDateTimePattern             : "l, F d, Y g:i:s A",
+    MonthDayPattern                 : "F d",
+    ShortTimePattern                : "g:i A",
+    LongTimePattern                 : "g:i:s A",
+    SortableDateTimePattern         : "Y-m-d\\TH:i:s",
     UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
-    YearMonthPattern: "F, Y"
+    YearMonthPattern                : "F, Y"
   }
 
   DateFormat.parseTime = function(timeStr) {

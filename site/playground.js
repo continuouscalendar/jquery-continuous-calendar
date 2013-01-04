@@ -1,6 +1,6 @@
 requirejs.config({
   paths: {
-    'jquery': '../src/lib/jquery-1.8.0.min',
+    'jquery'              : '../src/lib/jquery-1.8.0.min',
     'jquery.tinyscrollbar': '../src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'
   }
 })
@@ -47,6 +47,7 @@ require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFor
       var elem = $('#' + id)
       return elem.attr('type') == 'checkbox' ? elem.filter(':checked').length > 0 : elem.val()
     }
+
     return false
   }
 })
