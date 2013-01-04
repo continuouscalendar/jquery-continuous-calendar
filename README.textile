@@ -49,7 +49,7 @@ h2. Insert in head
 </style>
 
 <!-- required JavaScript files -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script type="text/javascript" src="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuous-calendar-latest.js"></script>
 </pre>
 

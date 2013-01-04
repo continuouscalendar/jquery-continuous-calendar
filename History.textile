@@ -1,3 +1,8 @@
+h3. 2.4.0
+
+* Add support for themes with elem.continuousCalendar({theme: 'transparent|rounded'})
+* Fix order of dependencies in build script
+
 h3. 2.3.0
 
 * Move hoursAndMinutes() from DateLocale to DateFormat

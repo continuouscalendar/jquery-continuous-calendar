@@ -99,12 +99,14 @@
   <li>Support for different date formats</li>
   <li>Support for specifying holidays or disabled days</li>
   <li>Support for setting minimum range</li>
+  <li>Support for custom scrollbar</li>
+  <li>Three different themes</li>
 </ul>
 
 <h1 id="supported_browsers">Supported browsers</h1>
 
 <ul class="section">
-  <li>IE6 →</li>
+  <li>IE7 →</li>
   <li>FireFox</li>
   <li>Chrome</li>
   <li>Opera</li>
@@ -214,6 +216,10 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
     <dt>callback <span class="default">$.noop</span> <span class="type">Function</span></dt>
     <dd>Function called in init and after date selection. DateRange or Date is passed as argument and this points to calendar container.</dd>
 
+    <dt>theme <span class="default">''</span> <span class="type">String</span></dt>
+    <dd>Theme to be used. Currently available alternative themes are rounded and transparent. Don't forget to include the required css for the theme.</dd>
+
+   
   </dl>
 </div>
 <h1 id="instructions_for_contributors">Instructions for contributors</h1>
@@ -223,8 +229,7 @@ href="http://reaktor.github.com/jquery-continuous-calendar/build/jquery.continuo
   <li>code</li>
   <li>run tests: <strong>jquery.continuousCalendar.spec.html</strong></li>
   <li>Update documentation to index.html</li>
-  <li>run release.sh (see <strong>git tag</strong> for previous versions)</li>
-  <li>push --tags</li>
+  <li>Update release notes to History.textile</li>
   <li>make pull request</li>
 </ul>
 <h1 id="license">License</h1>
