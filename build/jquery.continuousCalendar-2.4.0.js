@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCalendar.released = '2013-01-02'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.4.0';$.continuousCalendar.released = '2013-01-04'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -12,7 +12,8 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-;(function(root, factory) {
+;
+(function(root, factory) {
   if(typeof define === "function" && define.amd) {
     define(["jquery"], factory)
   } else {
@@ -20,15 +21,10 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
   }
 })(this, function($) {
   var DateTime = function(year, month, date, hours, minutes) {
-    if(typeof year == 'string') {
-      this.date = new Date(year)
-    } else if(typeof year == 'object') {
-      this.date = year;
-    } else if(typeof year == 'number') {
-      this.date = new Date(year, month - 1, date, hours, minutes, 0, 0)
-    } else {
-      this.date = new Date()
-    }
+    if(typeof year == 'string') this.date = new Date(year)
+    else if(typeof year == 'object') this.date = year
+    else if(typeof year == 'number') this.date = new Date(year, month - 1, date, hours, minutes, 0, 0)
+    else this.date = new Date()
   }
 
   DateTime.MONDAY = 1
@@ -49,11 +45,21 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
     DateTime.prototype[func] = function() { return this.date[func]() }
   })
 
+  /**
+   * Returns date from ISO date ignoring time information
+   * @param isoDateTime String YYYY-MM-DDTHH-MM
+   * @return {DateTime}
+   */
   DateTime.fromIsoDate = function(isoDateTime) {
     var date = parseDate(isoDateTime.split('T')[0])
     return new DateTime(date.year, date.month, date.day, 0, 0)
   }
 
+  /**
+   * Returns date with time from ISO date
+   * @param isoDateTime String YYYY-MM-DDTHH-MM
+   * @return {DateTime}
+   */
   DateTime.fromIsoDateTime = function(isoDateTime) {
     var dateAndTime = isoDateTime.split('T')
     var time = parseTime(dateAndTime.length == 2 && dateAndTime[1])
@@ -63,9 +69,10 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
 
   function parseDate(str) {
     var dateComponents = str.split('-')
-    return {year: parseInt(dateComponents[0], 10),
+    return {
+      year : parseInt(dateComponents[0], 10),
       month: parseInt(dateComponents[1], 10),
-      day: parseInt(dateComponents[2], 10)
+      day  : parseInt(dateComponents[2], 10)
     }
   }
 
@@ -73,7 +80,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
     if(str) {
       var timeComponents = str.split(':')
       return {
-        hours: parseInt(timeComponents[0], 10),
+        hours  : parseInt(timeComponents[0], 10),
         minutes: parseInt(timeComponents[1], 10)
       }
     } else {
@@ -180,16 +187,10 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
     if(weekNumberingSystem == "US") {
       return Math.ceil((this.getDayInYear() + firstDay) / 7)
     }
-
     var THU = 4
     var weekday = this.getDay()
-    if(weekday == 0) {
-      weekday = 7
-    }
-    if(firstDay == 0) {
-      firstDay = 7
-    }
-
+    if(weekday == 0) weekday = 7
+    if(firstDay == 0) firstDay = 7
     // If Dec 29 falls on Mon, Dec 30 on Mon or Tue, Dec 31 on Mon - Wed, it's on the first week of next year
     if(this.getMonth() == 11 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
       return 1
@@ -198,13 +199,9 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
     if(this.getMonth() == 0 && this.getDate() < 4 && weekday > THU) {
       return new DateTime(new Date(this.getFullYear() - 1, 11, 31)).getWeekInYear('ISO')
     }
-
     var week = Math.ceil((this.getDayInYear() + firstDay - 1) / 7)
-
     // If first days of this year are on last year's last week, the above gives one week too much
-    if(firstDay > THU) {
-      week--
-    }
+    if(firstDay > THU) week--
     return week
   }
 
@@ -282,15 +279,9 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
 
   DateTime.prototype.getFirstDateOfWeek = function(locale) {
     var firstWeekday = locale ? locale.firstWeekday : DateTime.MONDAY
-    if(firstWeekday < this.getDay()) {
-      return this.plusDays(firstWeekday - this.getDay())
-    } else {
-      if(firstWeekday > this.getDay()) {
-        return this.plusDays(firstWeekday - this.getDay() - 7)
-      } else {
-        return this.clone()
-      }
-    }
+    if(firstWeekday < this.getDay()) return this.plusDays(firstWeekday - this.getDay())
+    else if(firstWeekday > this.getDay()) return this.plusDays(firstWeekday - this.getDay() - 7)
+    else return this.clone()
   }
 
   DateTime.daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -298,147 +289,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
   DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 }
 
   return DateTime
-})
-/* ==============================================================================
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
-
-;(function(root, factory) {
-  if(typeof define === "function" && define.amd) {
-    define(["./DateTime", "./DateFormat"], factory)
-  } else {
-    root.DateLocale = factory(root.DateTime, root.DateFormat)
-  }
-})(this, function(DateTime, DateFormat) {
-  var DateLocale = {}
-
-  DateLocale.FI = {
-    id: 'FI',
-    monthNames: ['tammikuu', 'helmikuu', 'maaliskuu', 'huhtikuu', 'toukokuu', 'kesäkuu', 'heinäkuu', 'elokuu', 'syyskuu', 'lokakuu', 'marraskuu', 'joulukuu'],
-    dayNames: ['sunnuntai', 'maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai'],
-    shortDayNames: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
-    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta') },
-    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta') },
-    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää') },
-    hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
-      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia')
-    },
-    shortDateFormat: 'j.n.Y',
-    weekDateFormat: 'D j.n.Y',
-    dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateTime.MONDAY
-  }
-
-  DateLocale.EN = {
-    id: 'EN',
-    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    shortDayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
-    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
-    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
-    hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes)
-      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
-    },
-    shortDateFormat: 'n/j/Y',
-    weekDateFormat: 'D n/j/Y',
-    dateTimeFormat: 'D n/j/Y G:i',
-    firstWeekday: DateTime.SUNDAY
-  }
-
-  DateLocale.AU = {
-    id: 'AU',
-    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    shortDayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
-    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
-    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
-    hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes)
-      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
-    },
-    shortDateFormat: 'j/n/Y',
-    weekDateFormat: 'D j/n/Y',
-    dateTimeFormat: 'D j/n/Y G:i',
-    firstWeekday: DateTime.SUNDAY
-  }
-
-  DateLocale.ET = {
-    id: 'ET',
-    monthNames: [ 'Jaanuar', 'Veebruar', 'Märts', 'Aprill', 'Mai', 'Juuni', 'Juuli', 'August', 'September', 'Oktoober', 'November', 'Detsember'],
-    dayNames: ['Pühapäev', 'Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev'],
-    shortDayNames: ['Pü', 'Es', 'Te', 'Ko', 'Ne', 'Re', 'La'],
-    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Aasta' : 'Aastat') },
-    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Kuu' : 'Kuud') },
-    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Päev' : 'Päeva') },
-    hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
-      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Tund' : 'Tundi')
-    },
-    shortDateFormat: 'j.n.Y',
-    weekDateFormat: 'D j.n.Y',
-    dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateTime.MONDAY
-  }
-
-  DateLocale.RU = {
-    id: 'RU',
-    monthNames: [ 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-    dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-    shortDayNames: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'Год' : 'Года') },
-    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Месяц' : 'Месяца') },
-    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'День' : 'Дня') },
-    hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
-      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Минута' : 'Минуты')
-    },
-    shortDateFormat: 'j.n.Y',
-    weekDateFormat: 'D j.n.Y',
-    dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateTime.MONDAY
-  }
-
-  DateLocale.SV = {
-    id: 'SV',
-    monthNames: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
-    dayNames: ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'],
-    shortDayNames: ['Sö', 'Må', 'Ti', 'On', 'To', 'Fr', 'Lö'],
-    yearsLabel: function(years) { return years + ' ' + (years == '1' ? 'År' : 'År') },
-    monthsLabel: function(months) { return months + ' ' + (months == '1' ? 'Månad' : 'Månader') },
-    daysLabel: function(days) { return days + ' ' + (days == '1' ? 'Dag' : 'Dagar') },
-    hoursLabel: function(hours, minutes) {
-      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
-      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Minut' : 'Minuter')
-    },
-    shortDateFormat: 'j.n.Y',
-    weekDateFormat: 'D j.n.Y',
-    dateTimeFormat: 'D j.n.Y k\\lo G:i',
-    firstWeekday: DateTime.MONDAY
-  }
-
-  DateLocale.DEFAULT = DateLocale.EN
-
-  DateLocale.fromArgument = function(stringOrObject) {
-    if(typeof stringOrObject == 'string')
-      return DateLocale[stringOrObject.toUpperCase()]
-    else return stringOrObject || DateLocale.DEFAULT
-  }
-
-  return DateLocale
 })
 /*
  * Copyright (C) 2004 Baron Schwartz <baron at sequent dot org>
@@ -453,7 +303,8 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
  * details.
  */
 
-;(function(root, factory) {
+;
+(function(root, factory) {
   if(typeof define === "function" && define.amd) {
     define(["./DateTime"], factory)
   } else {
@@ -461,7 +312,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
   }
 })(this, function(DateTime) {
   var DateFormat = {}
-
   DateFormat.parseFunctions = {count: 0}
   DateFormat.parseRegexes = []
   DateFormat.formatFunctions = {count: 0}
@@ -476,9 +326,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
     return dateTime[func]()
   }
 
-  DateFormat.shortDateFormat = function(dateTime, locale) {
-    return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y', locale)
-  }
+  DateFormat.shortDateFormat = function(dateTime, locale) { return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y', locale) }
 
   DateFormat.formatRange = function(dateRange, locale) {
     if(dateRange._hasTimes) {
@@ -491,10 +339,8 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
   DateFormat.formatDefiningRangeDuration = function(dateRange, locale) {
     var years = parseInt(dateRange.days() / 360, 10)
     if(years > 0) return locale.yearsLabel(years)
-
     var months = parseInt(dateRange.days() / 30, 10)
     if(months > 0) return locale.monthsLabel(months)
-
     return locale.daysLabel(dateRange.days())
   }
 
@@ -515,7 +361,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
   }
 
   DateFormat.leftPad = function(val, size, ch) {
-    var result = new String(val)
+    var result = String(val)
     if(ch == null) {
       ch = " "
     }
@@ -539,20 +385,20 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
   }
 
   DateFormat.patterns = {
-    ISO8601LongPattern: "Y-m-d H:i:s",
-    ISO8601ShortPattern: "Y-m-d",
-    ShortDatePattern: "n/j/Y",
-    FiShortDatePattern: "j.n.Y",
-    FiWeekdayDatePattern: "D j.n.Y",
-    FiWeekdayDateTimePattern: "D j.n.Y k\\lo G:i",
-    LongDatePattern: "l, F d, Y",
-    FullDateTimePattern: "l, F d, Y g:i:s A",
-    MonthDayPattern: "F d",
-    ShortTimePattern: "g:i A",
-    LongTimePattern: "g:i:s A",
-    SortableDateTimePattern: "Y-m-d\\TH:i:s",
+    ISO8601LongPattern              : "Y-m-d H:i:s",
+    ISO8601ShortPattern             : "Y-m-d",
+    ShortDatePattern                : "n/j/Y",
+    FiShortDatePattern              : "j.n.Y",
+    FiWeekdayDatePattern            : "D j.n.Y",
+    FiWeekdayDateTimePattern        : "D j.n.Y k\\lo G:i",
+    LongDatePattern                 : "l, F d, Y",
+    FullDateTimePattern             : "l, F d, Y g:i:s A",
+    MonthDayPattern                 : "F d",
+    ShortTimePattern                : "g:i A",
+    LongTimePattern                 : "g:i:s A",
+    SortableDateTimePattern         : "Y-m-d\\TH:i:s",
     UniversalSortableDateTimePattern: "Y-m-d H:i:sO",
-    YearMonthPattern: "F, Y"
+    YearMonthPattern                : "F, Y"
   }
 
   DateFormat.parseTime = function(timeStr) {
@@ -663,7 +509,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
         return "'" + DateFormat.escape(character) + "' + "
     }
   }
-
   return DateFormat
 })
 /* ==============================================================================
@@ -680,7 +525,150 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
  * the License.
  */
 
-;(function(root, factory) {
+;
+(function(root, factory) {
+  if(typeof define === "function" && define.amd) {
+    define(["./DateTime", "./DateFormat"], factory)
+  } else {
+    root.DateLocale = factory(root.DateTime, root.DateFormat)
+  }
+})(this, function(DateTime, DateFormat) {
+  var DateLocale = {}
+
+  DateLocale.FI = {
+    id             : 'FI',
+    monthNames     : ['tammikuu', 'helmikuu', 'maaliskuu', 'huhtikuu', 'toukokuu', 'kesäkuu', 'heinäkuu', 'elokuu', 'syyskuu', 'lokakuu', 'marraskuu', 'joulukuu'],
+    dayNames       : ['sunnuntai', 'maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai'],
+    shortDayNames  : ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
+    yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'vuosi' : 'vuotta') },
+    monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'kuukausi' : 'kuukautta') },
+    daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'päivä' : 'päivää') },
+    hoursLabel     : function(hours, minutes) {
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'tunti' : 'tuntia')
+    },
+    shortDateFormat: 'j.n.Y',
+    weekDateFormat : 'D j.n.Y',
+    dateTimeFormat : 'D j.n.Y k\\lo G:i',
+    firstWeekday   : DateTime.MONDAY
+  }
+
+  DateLocale.EN = {
+    id             : 'EN',
+    monthNames     : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    dayNames       : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    shortDayNames  : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
+    monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
+    daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
+    hoursLabel     : function(hours, minutes) {
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes)
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
+    },
+    shortDateFormat: 'n/j/Y',
+    weekDateFormat : 'D n/j/Y',
+    dateTimeFormat : 'D n/j/Y G:i',
+    firstWeekday   : DateTime.SUNDAY
+  }
+
+  DateLocale.AU = {
+    id             : 'AU',
+    monthNames     : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    dayNames       : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    shortDayNames  : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
+    monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
+    daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
+    hoursLabel     : function(hours, minutes) {
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes)
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Hour' : 'Hours')
+    },
+    shortDateFormat: 'j/n/Y',
+    weekDateFormat : 'D j/n/Y',
+    dateTimeFormat : 'D j/n/Y G:i',
+    firstWeekday   : DateTime.SUNDAY
+  }
+
+  DateLocale.ET = {
+    id             : 'ET',
+    monthNames     : [ 'Jaanuar', 'Veebruar', 'Märts', 'Aprill', 'Mai', 'Juuni', 'Juuli', 'August', 'September', 'Oktoober', 'November', 'Detsember'],
+    dayNames       : ['Pühapäev', 'Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev'],
+    shortDayNames  : ['Pü', 'Es', 'Te', 'Ko', 'Ne', 'Re', 'La'],
+    yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'Aasta' : 'Aastat') },
+    monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Kuu' : 'Kuud') },
+    daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'Päev' : 'Päeva') },
+    hoursLabel     : function(hours, minutes) {
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Tund' : 'Tundi')
+    },
+    shortDateFormat: 'j.n.Y',
+    weekDateFormat : 'D j.n.Y',
+    dateTimeFormat : 'D j.n.Y k\\lo G:i',
+    firstWeekday   : DateTime.MONDAY
+  }
+
+  DateLocale.RU = {
+    id             : 'RU',
+    monthNames     : [ 'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+    dayNames       : ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+    shortDayNames  : ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+    yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'Год' : 'Года') },
+    monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Месяц' : 'Месяца') },
+    daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'День' : 'Дня') },
+    hoursLabel     : function(hours, minutes) {
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Минута' : 'Минуты')
+    },
+    shortDateFormat: 'j.n.Y',
+    weekDateFormat : 'D j.n.Y',
+    dateTimeFormat : 'D j.n.Y k\\lo G:i',
+    firstWeekday   : DateTime.MONDAY
+  }
+
+  DateLocale.SV = {
+    id             : 'SV',
+    monthNames     : ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
+    dayNames       : ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'],
+    shortDayNames  : ['Sö', 'Må', 'Ti', 'On', 'To', 'Fr', 'Lö'],
+    yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'År' : 'År') },
+    monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Månad' : 'Månader') },
+    daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'Dag' : 'Dagar') },
+    hoursLabel     : function(hours, minutes) {
+      var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
+      return hoursAndMinutes + ' ' + (hoursAndMinutes == '1' ? 'Minut' : 'Minuter')
+    },
+    shortDateFormat: 'j.n.Y',
+    weekDateFormat : 'D j.n.Y',
+    dateTimeFormat : 'D j.n.Y k\\lo G:i',
+    firstWeekday   : DateTime.MONDAY
+  }
+
+  DateLocale.DEFAULT = DateLocale.EN
+
+  DateLocale.fromArgument = function(stringOrObject) {
+    if(typeof stringOrObject == 'string')
+      return DateLocale[stringOrObject.toUpperCase()]
+    else return stringOrObject || DateLocale.DEFAULT
+  }
+
+  return DateLocale
+})
+/* ==============================================================================
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+;
+(function(root, factory) {
   if(typeof define === "function" && define.amd) {
     define(["jquery", "./DateTime", "./DateFormat"], factory)
   } else {
@@ -711,9 +699,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
       }
     },
 
-    _dateWithTime: function(dateWithoutTime, parsedTime) {
-      return dateWithoutTime.withTime(parsedTime[0], parsedTime[1])
-    },
+    _dateWithTime: function(dateWithoutTime, parsedTime) { return dateWithoutTime.withTime(parsedTime[0], parsedTime[1]) },
 
     hours: function() { return this._hours },
 
@@ -723,26 +709,15 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
 
     isValid: function() { return this._valid && this.end.getTime() - this.start.getTime() >= 0 },
 
-    days: function() {
-      if(this._hasTimes) {
-        return this._days
-      } else {
-        return Math.round(this.start.distanceInDays(this.end) + 1)
-      }
-    },
+    days: function() { return this._hasTimes ? this._days : Math.round(this.start.distanceInDays(this.end) + 1); },
 
     shiftDays: function(days) { return new DateRange(this.start.plusDays(days), this.end.plusDays(days)) },
 
     expandTo: function(date) {
       var newStart = this.start.clone()
       var newEnd = this.end.clone()
-      if(date.compareTo(this.start) < 0) {
-        newStart = date
-      } else {
-        if(date.compareTo(this.end) > 0) {
-          newEnd = date
-        }
-      }
+      if(date.compareTo(this.start) < 0) newStart = date
+      else if(date.compareTo(this.end) > 0) newEnd = date
       return new DateRange(newStart, newEnd)
     },
 
@@ -755,11 +730,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
     and: function(that) {
       var latestStart = this.start.compareTo(that.start) > 0 ? this.start : that.start
       var earliestEnd = this.end.compareTo(that.end) > 0 ? that.end : this.end
-      if(latestStart.compareTo(earliestEnd) < 0) {
-        return new DateRange(latestStart, earliestEnd)
-      } else {
-        return DateRange.emptyRange()
-      }
+      return latestStart.compareTo(earliestEnd) < 0 ? new DateRange(latestStart, earliestEnd) : DateRange.emptyRange()
     },
 
     isInside: function(outer) { return this.start.compareTo(outer.start) >= 0 && this.end.compareTo(outer.end) <= 0 },
@@ -862,7 +833,6 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
       function delta(x) { return -((x + 1) % 7 + 1) }
     }
   })
-
   return DateRange
 })
 /*!
@@ -1035,32 +1005,31 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })
     function _continuousCalendar(options) {
-      $(this).addClass('continuousCalendarContainer').append('&nbsp;') //IE fix for popup version
-
       var defaults = {
-        weeksBefore: 26,
-        weeksAfter: 26,
-        firstDate: null,
-        lastDate: null,
-        startField: $('input.startDate', this),
-        endField: $('input.endDate', this),
-        isPopup: false,
-        selectToday: false,
-        locale: DateLocale.DEFAULT,
+        weeksBefore    : 26,
+        weeksAfter     : 26,
+        firstDate      : null,
+        lastDate       : null,
+        startField     : $('input.startDate', this),
+        endField       : $('input.endDate', this),
+        isPopup        : false,
+        selectToday    : false,
+        locale         : DateLocale.DEFAULT,
         disableWeekends: false,
-        disabledDates: null,
-        minimumRange: -1,
-        selectWeek: false,
+        disabledDates  : null,
+        minimumRange   : -1,
+        selectWeek     : false,
         fadeOutDuration: 0,
-        callback: $.noop,
-        customScroll: false
+        callback       : $.noop,
+        customScroll   : false,
+        theme          : ''
       }
       var params = $.extend({}, defaults, options)
       params.locale = DateLocale.fromArgument(params.locale)
       var Status = {
         CREATE_OR_RESIZE: 'create',
-        MOVE: 'move',
-        NONE: 'none'
+        MOVE            : 'move',
+        NONE            : 'none'
       }
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
@@ -1074,23 +1043,25 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
         setEndField(formattedToday)
       }
       var firstWeekdayOfGivenDate = (startDate || today).getFirstDateOfWeek(params.locale)
-      var container = this,
-        dateCells = [],
-        dateCellDates = [],
-        dateCellMap = {},
-        mouseDownDate = null, averageCellHeight,
-        yearTitle,
-        selection,
-        oldSelection,
-        calendarRange,
-        status = Status.NONE,
-        calendarContainer,
-        scrollContent,
-        beforeFirstOpening = true,
-        bodyTable,
-        calendar,
-        customScrollContainer
+      var container = this
+      var dateCells = []
+      var dateCellDates = []
+      var dateCellMap = {}
+      var mouseDownDate = null
+      var averageCellHeight
+      var yearTitle
+      var selection
+      var oldSelection
+      var calendarRange
+      var status = Status.NONE
+      var calendarContainer
+      var scrollContent
+      var beforeFirstOpening = true
+      var bodyTable
+      var calendar
+      var customScrollContainer
 
+      $(this).addClass('continuousCalendarContainer').addClass(params.theme).append('&nbsp;') //IE fix for popup version
       createCalendar()
 
       function createCalendar() {
@@ -1176,18 +1147,18 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
       function dateBehaviour(isRange) {
         var rangeVersion = {
           showInitialSelection: setRangeLabels,
-          initEvents: function() {
+          initEvents          : function() {
             initRangeCalendarEvents(container, bodyTable)
             drawSelection()
           },
-          addRangeLengthLabel: function() {
+          addRangeLengthLabel : function() {
             if($('.rangeLengthLabel', container).isEmpty()) {
               var rangeLengthContainer = $('<div class="label"><span class="rangeLengthLabel"></span></div>')
               $('.continuousCalendar', container).append(rangeLengthContainer)
             }
           },
-          addEndDateLabel: function(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') },
-          performTrigger: function() {
+          addEndDateLabel     : function(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') },
+          performTrigger      : function() {
             container.data('calendarRange', selection)
             executeCallback(selection)
           }
@@ -1198,16 +1169,16 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
               setDateLabel(DateFormat.format(DateFormat.parse(params.startField.val()), params.locale.weekDateFormat, params.locale))
             }
           },
-          initEvents: function() {
+          initEvents          : function() {
             initSingleDateCalendarEvents()
             var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd', params.locale)
             if(selectedDateKey in dateCellMap) {
               getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
             }
           },
-          addRangeLengthLabel: $.noop,
-          addEndDateLabel: $.noop,
-          performTrigger: function() {
+          addRangeLengthLabel : $.noop,
+          addEndDateLabel     : $.noop,
+          performTrigger      : function() {
             container.data('calendarRange', startDate)
             executeCallback(startDate)
           }
@@ -1217,27 +1188,27 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
 
       function popUpBehaviour(isPopup) {
         var popUpVersion = {
-          initUI: function() {
+          initUI               : function() {
             calendarContainer.addClass('popup').hide()
             var icon = $('<a href="#" class="calendarIcon">' + today.getDate() + '</a>').click(toggleCalendar)
             container.prepend('<div></div>')
             container.prepend(icon)
           },
-          initState: $.noop,
-          getContainer: function(newContainer) { return $('<div>').addClass('popUpContainer').append(newContainer); },
-          close: function(cell) { toggleCalendar.call(cell) },
+          initState            : $.noop,
+          getContainer         : function(newContainer) { return $('<div>').addClass('popUpContainer').append(newContainer); },
+          close                : function(cell) { toggleCalendar.call(cell) },
           addDateLabelBehaviour: function(label) {
             label.addClass('clickable')
             label.click(toggleCalendar)
           }
         }
         var inlineVersion = {
-          initUI: initCalendarTable,
-          initState: calculateCellHeightAndSetScroll,
-          getContainer: function(newContainer) {
+          initUI               : initCalendarTable,
+          initState            : calculateCellHeightAndSetScroll,
+          getContainer         : function(newContainer) {
             return newContainer
           },
-          close: $.noop,
+          close                : $.noop,
           addDateLabelBehaviour: $.noop
         }
         return isPopup ? popUpVersion : inlineVersion
@@ -1490,7 +1461,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.3.0';$.continuousCal
         }
         var date = getElemDate(event.target)
         var actions = {
-          move: function() {
+          move  : function() {
             var deltaDays = mouseDownDate.distanceInDays(date)
             var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
             if(isPermittedRange(movedSelection)) {
