@@ -6,6 +6,10 @@
     factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime, root.CalendarBody, RangeEvents)
   }
 })(this, function($, DateFormat, DateLocale, DateRange, DateTime, CalendarBody, RangeEvents) {
+  $.continuousCalendar = {
+    version: typeof VERSION != 'undefined' ? VERSION : 'nightly',
+    released: typeof RELEASED != 'undefined' ? RELEASED : 'nightly'
+  }
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })
     function _continuousCalendar(options) {
