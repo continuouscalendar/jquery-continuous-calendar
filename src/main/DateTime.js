@@ -26,9 +26,13 @@
     else this.date = new Date()
   }
 
-  DateTime.MONDAY = 1
-  DateTime.FRIDAY = 5
   DateTime.SUNDAY = 0
+  DateTime.MONDAY = 1
+  DateTime.TUESDAY = 2
+  DateTime.WENDESDAY = 3
+  DateTime.THURSDAY = 4
+  DateTime.FRIDAY = 5
+  DateTime.SATURDAY = 6
 
   $.each([
     'getTime',

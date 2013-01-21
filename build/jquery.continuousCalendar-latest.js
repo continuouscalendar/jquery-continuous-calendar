@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.4.0';$.continuousCalendar.released = '2013-01-04'
+$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2013-01-21'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -27,9 +27,13 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.0';$.continuousCal
     else this.date = new Date()
   }
 
-  DateTime.MONDAY = 1
-  DateTime.FRIDAY = 5
   DateTime.SUNDAY = 0
+  DateTime.MONDAY = 1
+  DateTime.TUESDAY = 2
+  DateTime.WENDESDAY = 3
+  DateTime.THURSDAY = 4
+  DateTime.FRIDAY = 5
+  DateTime.SATURDAY = 6
 
   $.each([
     'getTime',
