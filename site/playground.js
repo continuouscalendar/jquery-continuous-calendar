@@ -10,6 +10,13 @@ require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFor
   counter = 0
   $('#create').click(create)
 
+  var locales = $.grep($.map(DateLocale, function(obj, key) {return key}), function(code) {return code.length == 2})
+  $('.locales')
+    .append($.map(locales, radioChoice).join('\n'))
+    .find('input:first').click()
+
+  function radioChoice(l) { return '<label class="row"><input type="radio" name="locale" value="' + l + '" id="' + l + '" /><span class="label">DateLocale.' + l + '</span></label>' }
+
   var disabledDates = $([DateTime.now(), DateTime.now(), DateTime.now()])
     .map(function(i, el) { return DateFormat.format(el.plusDays(i + 3), 'n/j/Y') })
     .toArray()
