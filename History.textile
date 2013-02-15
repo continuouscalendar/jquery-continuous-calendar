@@ -1,3 +1,8 @@
+h3. 2.4.1
+
+* Add constants for all weekdays in DateTime
+* Add support for jquery 1.9.0+
+
 h3. 2.4.0
 
 * Add support for themes with elem.continuousCalendar({theme: 'transparent|rounded'})

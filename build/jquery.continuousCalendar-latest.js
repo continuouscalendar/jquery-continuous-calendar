@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2013-01-21'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.4.1';$.continuousCalendar.released = '2013-02-15'
 /* ==============================================================================
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -1564,19 +1564,12 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
       function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null }
 
       function disableTextSelection(elem) {
-        if($.browser.mozilla) {//Firefox
-          $(elem).css('MozUserSelect', 'none')
-        } else {
-          if($.browser.msie) {//IE
-            $(elem).bind('selectstart', function() {
-              return false
-            })
-          } else {//Opera, etc.
-            $(elem).mousedown(function() {
-              return false
-            })
-          }
-        }
+        //Firefox
+        $(elem).css('MozUserSelect', 'none')
+        //IE
+        $(elem).bind('selectstart', function() { return false })
+        //Opera, etc.
+        $(elem).mousedown(function() { return false })
       }
 
       function executeCallback(selection) {
