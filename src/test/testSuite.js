@@ -1,6 +1,6 @@
 requirejs.config({
   paths: {
-    'jquery'              : '../lib/jquery-1.8.0.min',
+    'jquery'              : '../lib/jquery-1.9.1.min',
     'jquery.tinyscrollbar': '../../src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar',
     'jasmine'             : '../lib/jasmine',
     'jasmine-html'        : '../lib/jasmine-html',

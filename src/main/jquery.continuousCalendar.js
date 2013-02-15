@@ -580,19 +580,12 @@
       function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null }
 
       function disableTextSelection(elem) {
-        if($.browser.mozilla) {//Firefox
-          $(elem).css('MozUserSelect', 'none')
-        } else {
-          if($.browser.msie) {//IE
-            $(elem).bind('selectstart', function() {
-              return false
-            })
-          } else {//Opera, etc.
-            $(elem).mousedown(function() {
-              return false
-            })
-          }
-        }
+        //Firefox
+        $(elem).css('MozUserSelect', 'none')
+        //IE
+        $(elem).bind('selectstart', function() { return false })
+        //Opera, etc.
+        $(elem).mousedown(function() { return false })
       }
 
       function executeCallback(selection) {
