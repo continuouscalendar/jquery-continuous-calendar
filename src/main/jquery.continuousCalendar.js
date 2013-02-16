@@ -104,8 +104,7 @@
 
       function initScrollBar() {
         if(params.customScroll) {
-          customScrollContainer = $('.tinyscrollbar', container)
-          customScrollContainer.tinyscrollbar()
+          customScrollContainer = $('.tinyscrollbar', container).tinyscrollbar()
         }
       }
 
@@ -199,6 +198,29 @@
           }
         }
         return isRange ? rangeVersion : singleDateVersion
+
+        function initSingleDateCalendarEvents() {
+          $('.date', container).bind('click', function() {
+            var dateCell = $(this)
+            if(dateCell.hasClass('disabled')) return
+            $('td.selected', container).removeClass('selected')
+            dateCell.addClass('selected')
+            var selectedDate = getElemDate(dateCell.get(0));
+            params.startField.val(DateFormat.shortDateFormat(selectedDate, params.locale))
+            setDateLabel(DateFormat.format(selectedDate, params.locale.weekDateFormat, params.locale))
+            calendar.close(this)
+            executeCallback(selectedDate)
+          })
+        }
+
+        function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
+
+        function initRangeCalendarEvents(container, bodyTable) {
+          $('span.rangeLengthLabel', container).text(params.locale.daysLabel(selection.days()))
+          bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
+          bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
+          disableTextSelection(bodyTable.get(0))
+        }
       }
 
       function popUpBehaviour(isPopup) {
@@ -245,13 +267,6 @@
         calendar.addEndDateLabel(dateLabelContainer)
         container.prepend(dateLabelContainer)
         calendar.addDateLabelBehaviour(dateLabelContainer.children())
-      }
-
-      function initRangeCalendarEvents(container, bodyTable) {
-        $('span.rangeLengthLabel', container).text(params.locale.daysLabel(selection.days()))
-        bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
-        bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
-        disableTextSelection(bodyTable.get(0))
       }
 
       function scrollToSelection() {
@@ -304,20 +319,6 @@
 
         }
         return false
-      }
-
-      function initSingleDateCalendarEvents() {
-        $('.date', container).bind('click', function() {
-          var dateCell = $(this)
-          if(dateCell.hasClass('disabled')) return
-          $('td.selected', container).removeClass('selected')
-          dateCell.addClass('selected')
-          var selectedDate = getElemDate(dateCell.get(0));
-          params.startField.val(DateFormat.shortDateFormat(selectedDate, params.locale))
-          setDateLabel(DateFormat.format(selectedDate, params.locale.weekDateFormat, params.locale))
-          calendar.close(this)
-          executeCallback(selectedDate)
-        })
       }
 
       function startNewRange() { selection = new DateRange(mouseDownDate, mouseDownDate, params.locale) }
@@ -523,8 +524,6 @@
       function setEndField(value) { params.endField.val(value) }
 
       function formatDate(date) { return date ? DateFormat.shortDateFormat(date, params.locale) : '' }
-
-      function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
 
       function isRange() { return params.endField && params.endField.length > 0 }
     }
