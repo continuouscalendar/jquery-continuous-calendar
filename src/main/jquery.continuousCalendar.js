@@ -15,13 +15,14 @@
 ;
 (function(root, factory) {
   if(typeof define === 'function' && define.amd) {
-    define(['jquery', 'jquery.tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime'], function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime) {
-      factory($, DateFormat, DateLocale, DateRange, DateTime)
-    })
+    define(['jquery', 'jquery.tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime', './CalendarBody'],
+      function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime, CalendarBody) {
+        factory($, DateFormat, DateLocale, DateRange, DateTime, CalendarBody)
+      })
   } else {
-    factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime)
+    factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime, root.CalendarBody)
   }
-})(this, function($, DateFormat, DateLocale, DateRange, DateTime) {
+})(this, function($, DateFormat, DateLocale, DateRange, DateTime, CalendarBody) {
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })
     function _continuousCalendar(options) {
@@ -62,7 +63,6 @@
         setStartField(formattedToday)
         setEndField(formattedToday)
       }
-      var firstWeekdayOfGivenDate = (startDate || today).getFirstDateOfWeek(params.locale)
       var container = this
       var dateCells = []
       var dateCellDates = []
@@ -80,6 +80,8 @@
       var bodyTable
       var calendar
       var customScrollContainer
+      var dateStyles
+      var getDateCell
 
       $(this).addClass('continuousCalendarContainer').addClass(params.theme).append('&nbsp;') //IE fix for popup version
       createCalendar()
@@ -88,11 +90,8 @@
         calendar = $.extend(popUpBehaviour(params.isPopup), dateBehaviour(isRange()))
         selection = startDate && endDate ? new DateRange(startDate, endDate, params.locale) : DateRange.emptyRange(params.locale);
         oldSelection = selection.clone()
-        var rangeStart = params.firstDate ? DateFormat.parse(params.firstDate, params.locale) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
-        var rangeEnd = params.lastDate ? DateFormat.parse(params.lastDate, params.locale) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
         params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
-        calendarRange = new DateRange(rangeStart, rangeEnd, params.locale)
         calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.click(function(e) { e.stopPropagation() })
         if($('.startDateLabel', container).isEmpty()) {
@@ -112,31 +111,27 @@
 
       function initCalendarTable() {
         if(scrollContent) return
-        var headerTable = $('<table>').addClass('calendarHeader').append(headerRow())
-        if(params.customScroll) {
-          bodyTable = $('<table>').addClass('calendarBody').addClass('overview').append(calendarBody())
-          scrollContent = $('<div>').addClass('calendarScrollContent').addClass('viewport').append(bodyTable)
-          calendarContainer.append(headerTable)
-            .append(
-              $('<div class="tinyscrollbar"></div>')
-                .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
-                .append(scrollContent))
-        } else {
-          bodyTable = $('<table>').addClass('calendarBody').append(calendarBody())
-          scrollContent = $('<div>').addClass('calendarScrollContent').append(bodyTable)
-          calendarContainer.append(headerTable).append(scrollContent)
-        }
-        dateCells = $('td.date', container).get()
-        calendar.initState()
-        calendar.addRangeLengthLabel()
-        highlightToday()
-        yearTitle = $('th.month', headerTable)
+        var containers = CalendarBody(calendarContainer, params, startDate)
+        bodyTable = containers.bodyTable
+        scrollContent = containers.scrollContent
+        dateCells = containers.dateCells
+        yearTitle = containers.yearTitle
+        dateCellMap = containers.dateCellMap
+        dateCellDates = containers.dateCellDates
+        dateStyles = containers.dateStyles
+        calendarRange = containers.calendarRange
+        getDateCell = containers.getDateCell
         bindScrollEvent()
-        calendar.initEvents()
+
+        calendar.initState()
         if(!params.isPopup) {
           setYearLabel()
+        }
+        if(!params.isPopup) {
           scrollToSelection()
         }
+        calendar.addRangeLengthLabel()
+        calendar.initEvents()
       }
 
       function bindScrollEvent() {
@@ -234,13 +229,6 @@
         return isPopup ? popUpVersion : inlineVersion
       }
 
-      function highlightToday() {
-        var todayKey = DateFormat.format(today, 'Ymd', params.locale)
-        if(todayKey in dateCellMap) {
-          getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
-        }
-      }
-
       function getCalendarContainerOrCreateOne() {
         var existingContainer = $('.continuousCalendar', container)
         if(existingContainer.exists()) {
@@ -290,18 +278,6 @@
         yearTitle.text(date.getFullYear())
       }
 
-      function headerRow() {
-        var tr = $('<tr>').append(yearCell())
-        tr.append($('<th class="week">&nbsp;</th>'))
-        $(params.locale.dayNames).each(function(index) {
-          //TODO move to DateLocale
-          var weekDay = $('<th>').append(params.locale.dayNames[(index + params.locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
-          tr.append(weekDay)
-        })
-        return $('<thead>').append(tr)
-        function yearCell() { return $('<th>').addClass('month').append(firstWeekdayOfGivenDate.getFullYear()) }
-      }
-
       function calculateCellHeightAndSetScroll() {
         initScrollBar()
         calculateCellHeight()
@@ -329,67 +305,6 @@
         }
         return false
       }
-
-      function calendarBody() {
-        var firstWeekDay = calendarRange.start.getFirstDateOfWeek(params.locale)
-        var isFirst = true;
-        var rows = []
-        while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
-          calendarRow(rows, firstWeekDay.clone(), isFirst)
-          isFirst = false
-          firstWeekDay = firstWeekDay.plusDays(7)
-        }
-        return '<tbody>' + rows.join('') + '</tbody>'
-      }
-
-      function calendarRow(rows, firstDayOfWeek, isFirst) {
-        rows.push('<tr>')
-        rows.push(monthCell(firstDayOfWeek, isFirst))
-        rows.push(weekCell(firstDayOfWeek))
-        for(var i = 0; i < 7; i++) {
-          var date = firstDayOfWeek.plusDays(i)
-          rows.push(dateCell(date))
-        }
-        rows.push('</tr>')
-      }
-
-      function dateCell(date) {
-        var dateCell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '">' + date.getDate() + '</td>'
-        dateCellMap[DateFormat.format(date, 'Ymd', params.locale)] = dateCellDates.length
-        dateCellDates.push(date)
-        return dateCell
-      }
-
-      function monthCell(firstDayOfWeek, isFirst) {
-        var th = '<th class="month ' + backgroundBy(firstDayOfWeek)
-        if(isFirst || firstDayOfWeek.getDate() <= 7) {
-          th += ' monthName">'
-          th += params.locale.monthNames[firstDayOfWeek.getMonth()]
-        } else {
-          th += '">'
-          if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 0) {
-            th += firstDayOfWeek.getFullYear()
-          }
-        }
-        return th + '</th>'
-      }
-
-      function weekCell(firstDayOfWeek) { return '<th class="week ' + backgroundBy(firstDayOfWeek) + '">' + firstDayOfWeek.getWeekInYear('ISO') + '</th>' }
-
-      function dateStyles(date) { return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)].sort().join(' ')) }
-
-      function backgroundBy(date) { return date.isOddMonth() ? 'odd' : '' }
-
-      function disabledOrNot(date) {
-        var disabledWeekendDay = params.disableWeekends && date.isWeekend()
-        var disabledDay = params.disabledDates[date.getOnlyDate().date]
-        var outOfBounds = !calendarRange.hasDate(date)
-        return outOfBounds || disabledWeekendDay || disabledDay ? 'disabled' : ''
-      }
-
-      function todayStyle(date) { return date.isToday() ? 'today' : '' }
-
-      function holidayStyle(date) { return date.getDay() == 0 ? 'holiday' : '' }
 
       function initSingleDateCalendarEvents() {
         $('.date', container).bind('click', function() {
@@ -602,8 +517,6 @@
       function isEnabled(elem) { return !$(elem).hasClass('disabled') }
 
       function getElemDate(elem) { return dateCellDates[$(elem).closest('[date-cell-index]').attr('date-cell-index')] }
-
-      function getDateCell(index) { return $(dateCells[index]) }
 
       function setStartField(value) { params.startField.val(value) }
 
