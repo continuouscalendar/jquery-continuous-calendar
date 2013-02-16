@@ -50,24 +50,17 @@
         setEndField(formattedToday)
       }
       var container = this
-      var dateCells = []
-      var dateCellDates = []
-      var dateCellMap = {}
       var mouseDownDate = null
       var averageCellHeight
-      var yearTitle
       var selection
       var oldSelection
-      var calendarRange
       var status = Status.NONE
       var calendarContainer
-      var scrollContent
       var beforeFirstOpening = true
-      var bodyTable
       var calendar
       var customScrollContainer
-      var dateStyles
-      var getDateCell
+      var calendarBody = null
+      var calendarRange
 
       $(this).addClass('continuousCalendarContainer').addClass(params.theme).append('&nbsp;') //IE fix for popup version
       createCalendar()
@@ -95,28 +88,26 @@
       }
 
       function initCalendarTable() {
-        if(scrollContent) return
-        var containers = CalendarBody(calendarContainer, params, startDate)
-        bodyTable = containers.bodyTable
-        scrollContent = containers.scrollContent
-        dateCells = containers.dateCells
-        yearTitle = containers.yearTitle
-        dateCellMap = containers.dateCellMap
-        dateCellDates = containers.dateCellDates
-        dateStyles = containers.dateStyles
-        calendarRange = containers.calendarRange
-        getDateCell = containers.getDateCell
+        if(calendarBody) return
+
+        calendarRange = determineRangeToRenderFormParams(params)
+        calendarBody = CalendarBody(calendarContainer, calendarRange, params.locale, params.customScroll, params.disableWeekends, params.disabledDates)
         bindScrollEvent()
 
         calendar.initState()
-        if(!params.isPopup) {
-          setYearLabel()
-        }
-        if(!params.isPopup) {
-          scrollToSelection()
-        }
         calendar.addRangeLengthLabel()
         calendar.initEvents()
+      }
+
+      function determineRangeToRenderFormParams(params) {
+        var locale = params.locale
+        var firstWeekdayOfGivenDate = (startDate || DateTime.now()).getFirstDateOfWeek(locale)
+        var firstDate = params.firstDate
+        var lastDate = params.lastDate
+        var rangeStart = firstDate ? DateFormat.parse(firstDate, locale) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
+        var rangeEnd = lastDate ? DateFormat.parse(lastDate, locale) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
+
+        return  new DateRange(rangeStart, rangeEnd)
       }
 
       function bindScrollEvent() {
@@ -125,7 +116,7 @@
           customScrollContainer.bind('scroll', setYearLabel)
         } else {
           var didScroll = false
-          scrollContent.scroll(function() {
+          calendarBody.scrollContent.scroll(function() {
             didScroll = true
           })
 
@@ -148,7 +139,7 @@
         var rangeVersion = {
           showInitialSelection: setRangeLabels,
           initEvents          : function() {
-            initRangeCalendarEvents(container, bodyTable)
+            initRangeCalendarEvents(container, calendarBody.bodyTable)
             drawSelection()
           },
           addRangeLengthLabel : function() {
@@ -172,8 +163,8 @@
           initEvents          : function() {
             initSingleDateCalendarEvents()
             var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd', params.locale)
-            if(selectedDateKey in dateCellMap) {
-              getDateCell(dateCellMap[selectedDateKey]).addClass('selected')
+            if(selectedDateKey in calendarBody.dateCellMap) {
+              calendarBody.getDateCell(calendarBody.dateCellMap[selectedDateKey]).addClass('selected')
             }
           },
           addRangeLengthLabel : $.noop,
@@ -256,16 +247,16 @@
       }
 
       function scrollToSelection() {
-        var selectionStartOrToday = $('.selected, .today', scrollContent).get(0)
+        var selectionStartOrToday = $('.selected, .today', calendarBody.scrollContent).get(0)
         if(selectionStartOrToday) {
-          var position = selectionStartOrToday.offsetTop - (scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
+          var position = selectionStartOrToday.offsetTop - (calendarBody.scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
           if(params.customScroll) {
-            var totalHeight = bodyTable.height()
-            var maxScroll = totalHeight - scrollContent.height()
+            var totalHeight = calendarBody.bodyTable.height()
+            var maxScroll = totalHeight - calendarBody.scrollContent.height()
             var validPosition = position > maxScroll ? maxScroll : position
             customScrollContainer.tinyscrollbar_update(validPosition > 0 ? validPosition : 0)
           } else {
-            scrollContent.scrollTop(position)
+            calendarBody.scrollContent.scrollTop(position)
           }
         }
       }
@@ -276,16 +267,17 @@
         var scrollTop = params.customScroll ? -$('.overview', calendarContainer).position().top : scrollContent.scrollTop
         var rowNumber = parseInt(scrollTop / averageCellHeight, 10)
         var date = getElemDate(table.rows[rowNumber].cells[2])
-        yearTitle.text(date.getFullYear())
+        calendarBody.yearTitle.text(date.getFullYear())
       }
 
       function calculateCellHeightAndSetScroll() {
         initScrollBar()
         calculateCellHeight()
+        setYearLabel()
         scrollToSelection()
       }
 
-      function calculateCellHeight() { averageCellHeight = parseInt(bodyTable.height() / $('tr', bodyTable).size(), 10) }
+      function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.height() / $('tr', calendarBody.bodyTable).size(), 10) }
 
       function toggleCalendar() {
         initCalendarTable()
@@ -437,14 +429,14 @@
         var startIndex = index(range.start)
         var endIndex = index(range.end)
         for(var i = startIndex; i <= endIndex; i++) {
-          getDateCell(i).get(0).className = dateCellStyle(dateCellDates[i], range.start, range.end).join(' ')
+          calendarBody.getDateCell(i).get(0).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
         }
         if(rangeHasDisabledDate()) $('td.selected', container).addClass('invalidSelection')
-        function index(date) { return dateCellMap[DateFormat.format(date, 'Ymd', params.locale)] }
+        function index(date) { return calendarBody.dateCellMap[DateFormat.format(date, 'Ymd', params.locale)] }
       }
 
       function dateCellStyle(date, start, end) {
-        var styleClass = [dateStyles(date)]
+        var styleClass = [calendarBody.dateStyles(date)]
         if(date.equalsOnlyDate(end)) return styleClass.concat('selected rangeEnd')
         if(date.equalsOnlyDate(start)) return styleClass.concat('selected rangeStart')
         if(date.isBetweenDates(start, end)) return styleClass.concat('selected')
@@ -502,7 +494,7 @@
 
       function isEnabled(elem) { return !$(elem).hasClass('disabled') }
 
-      function getElemDate(elem) { return dateCellDates[$(elem).closest('[date-cell-index]').attr('date-cell-index')] }
+      function getElemDate(elem) { return calendarBody.dateCellDates[$(elem).closest('[date-cell-index]').attr('date-cell-index')] }
 
       function setStartField(value) { params.startField.val(value) }
 
