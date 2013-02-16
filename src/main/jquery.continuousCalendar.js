@@ -21,7 +21,7 @@
         endField       : $('input.endDate', this),
         isPopup        : false,
         selectToday    : false,
-        locale         : DateLocale.DEFAULT,
+        locale         : DateLocale.EN,
         disableWeekends: false,
         disabledDates  : null,
         minimumRange   : -1,

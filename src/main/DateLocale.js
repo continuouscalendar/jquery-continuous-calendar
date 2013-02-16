@@ -116,12 +116,10 @@
     firstWeekday   : DateTime.MONDAY
   }
 
-  DateLocale.DEFAULT = DateLocale.EN
-
   DateLocale.fromArgument = function(stringOrObject) {
     if(typeof stringOrObject == 'string')
       return DateLocale[stringOrObject.toUpperCase()]
-    else return stringOrObject || DateLocale.DEFAULT
+    else return stringOrObject
   }
 
   return DateLocale

@@ -25,7 +25,7 @@ define(function(require) {
       })
 
       it('shows months', function() {
-        assertHasValues('.monthName', [DateLocale.DEFAULT.monthNames[11]].concat(DateLocale.DEFAULT.monthNames))
+        assertHasValues('.monthName', [DateLocale.EN.monthNames[11]].concat(DateLocale.EN.monthNames))
       })
 
       it('shows month name on first row of full week', function() {
@@ -359,7 +359,6 @@ define(function(require) {
         mouseDownMouseUpOnDate(1)
         expect(startFieldValue()).toEqual('1.1.2009')
         expect(startLabelValue()).toEqual('to 1.1.2009')
-        DateLocale.DEFAULT = DateLocale.EN
       })
 
       it('forward drag after one day selection expands selection', function() {
