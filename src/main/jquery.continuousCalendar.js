@@ -73,19 +73,13 @@
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
         calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.click(function(e) { e.stopPropagation() })
-        if($('.startDateLabel', container).isEmpty()) {
-          addDateLabels(container, calendar)
-        }
+        if($('.startDateLabel', container).isEmpty()) addDateLabels(container, calendar)
         calendar.initUI()
         calendar.showInitialSelection()
         calendar.performTrigger()
       }
 
-      function initScrollBar() {
-        if(params.customScroll) {
-          customScrollContainer = $('.tinyscrollbar', container).tinyscrollbar()
-        }
-      }
+      function initScrollBar() { if(params.customScroll) customScrollContainer = $('.tinyscrollbar', container).tinyscrollbar() }
 
       function initCalendarTable() {
         if(calendarBody) return
@@ -156,9 +150,8 @@
         }
         var singleDateVersion = {
           showInitialSelection: function() {
-            if(params.startField.val()) {
+            if(params.startField.val())
               setDateLabel(DateFormat.format(DateFormat.parse(params.startField.val()), params.locale.weekDateFormat, params.locale))
-            }
           },
           initEvents          : function() {
             initSingleDateCalendarEvents()
@@ -325,18 +318,14 @@
           return
         }
 
-        if(enabledCell(elem)) {
-          startNewRange()
-        }
+        if(enabledCell(elem)) startNewRange()
 
         function enabledCell(elem) { return isDateCell(elem) && isEnabled(elem) }
 
         function isInstantSelection(elem, hasShiftKeyPressed) {
-          if(params.selectWeek) {
-            return enabledCell(elem) || isWeekCell(elem)
-          } else {
-            return isWeekCell(elem) || isMonthCell(elem) || hasShiftKeyPressed
-          }
+          if(params.selectWeek) return enabledCell(elem) || isWeekCell(elem)
+          else return isWeekCell(elem) || isMonthCell(elem) || hasShiftKeyPressed
+
         }
 
         function instantSelection(elem, hasShiftKeyPressed) {
@@ -370,9 +359,7 @@
       }
 
       function mouseMove(event) {
-        if(status == Status.NONE) {
-          return
-        }
+        if(status == Status.NONE) return
         var date = getElemDate(event.target)
         var actions = {
           move  : function() {
@@ -385,9 +372,7 @@
           },
           create: function() {
             var newSelection = new DateRange(mouseDownDate, date, params.locale)
-            if(isEnabled(event.target) && isPermittedRange(newSelection)) {
-              selection = newSelection
-            }
+            if(isEnabled(event.target) && isPermittedRange(newSelection)) selection = newSelection
           }
         }
         actions[status]()
@@ -405,9 +390,7 @@
 
       function rangeHasDisabledDate() {
         for(var disabledDate in params.disabledDates) {
-          if(selection.hasDate(new DateTime(disabledDate))) {
-            return true
-          }
+          if(selection.hasDate(new DateTime(disabledDate))) return true
         }
         return false
       }
@@ -428,9 +411,8 @@
         if(range.days() == 0) return
         var startIndex = index(range.start)
         var endIndex = index(range.end)
-        for(var i = startIndex; i <= endIndex; i++) {
+        for(var i = startIndex; i <= endIndex; i++)
           calendarBody.getDateCell(i).get(0).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
-        }
         if(rangeHasDisabledDate()) $('td.selected', container).addClass('invalidSelection')
         function index(date) { return calendarBody.dateCellMap[DateFormat.format(date, 'Ymd', params.locale)] }
       }
