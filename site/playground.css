@@ -1,0 +1,22 @@
+body { font-family: "Arial", serif; font-size: 90%;}
+h1 { font-size: 120%; }
+h2 { font-size: 100%; }
+ul { margin: 0 }
+fieldset { border: none }
+fieldset .col { float: left; margin-right: 50px; }
+fieldset .row { clear: both; overflow: hidden; margin-bottom: 5px; display: block; }
+.row .date { width: 80px; }
+.row .dates { width: 200px; }
+.row .number { width: 30px; }
+.row .label { display: block; width: 190px; float: left; }
+.row input[type=text] { display: block; float: left; margin-right: 5px; }
+.row input[type=checkbox], .row input[type=radio] { float: left; }
+#create { margin-top: 10px; }
+/*.calendarScrollContent { height: 200px; }*/
+.hint { font-size: 80%; color: #666; }
+.example_params { width: 100%; height: 50px; font-size: 10px; display: block; margin: 4px 0; }
+.containerWrapper { float: left; margin: 5px; width: 290px; }
+
+@media print {
+    fieldset { display: none; }
+}
