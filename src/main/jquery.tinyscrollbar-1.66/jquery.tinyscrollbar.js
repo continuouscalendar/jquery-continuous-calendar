@@ -109,7 +109,8 @@
 		};		
 		function wheel(oEvent){
 			if(!(oContent.ratio >= 1)){
-				var oEvent = oEvent || window.event;
+        oWrapper.trigger('scroll')
+        var oEvent = oEvent || window.event;
 				var iDelta = oEvent.wheelDelta ? oEvent.wheelDelta/120 : -oEvent.detail/3;
 				iScroll -= iDelta * options.wheel;
 				iScroll = Math.min((oContent[options.axis] - oViewport[options.axis]), Math.max(0, iScroll));
