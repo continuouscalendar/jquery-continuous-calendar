@@ -53,15 +53,18 @@
       var customScrollContainer
       var calendarBody = {}
       var calendarRange
+      var disabledDatesList
+      var disabledDatesObject
 
       $(this).addClass('continuousCalendarContainer').addClass(params.theme).append('&nbsp;') //IE fix for popup version
       createCalendar()
 
       function createCalendar() {
+        disabledDatesList = params.disabledDates ? params.disabledDates.split(' ') : []
+        disabledDatesObject = params.disabledDates ? parseDisabledDates(disabledDatesList) : {}
         calendarRange = determineRangeToRenderFormParams(params)
         popupBehavior = popUpBehaviour(params.isPopup)
         dateBehavior = dateBehaviour(isRange())
-        params.disabledDates = params.disabledDates ? parseDisabledDates(params.disabledDates) : {}
         params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
         calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.click(function(e) { e.stopPropagation() })
@@ -76,7 +79,7 @@
       function initCalendarTable() {
         if(calendarBody.scrollContent) return
 
-        calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale, params.customScroll, params.disableWeekends, params.disabledDates))
+        calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale, params.customScroll, params.disableWeekends, disabledDatesObject))
         bindScrollEvent()
 
         popupBehavior.initState()
@@ -115,7 +118,7 @@
 
       function parseDisabledDates(dates) {
         var dateMap = {}
-        $.each(dates.split(' '), function(index, date) { dateMap[DateFormat.parse(date).date] = true })
+        $.each(dates, function(index, date) { dateMap[DateFormat.parse(date).date] = true })
         return dateMap
       }
 
@@ -138,7 +141,7 @@
             executeCallback(startDate)
           }
         }
-        return isRange ? RangeEvents(container, calendarBody, executeCallback, locale, params, getElemDate, calendarRange, setStartField, setEndField, popupBehavior, formatDate, startDate, endDate) : singleDateVersion
+        return isRange ? RangeEvents(container, calendarBody, executeCallback, locale, params, getElemDate, calendarRange, setStartField, setEndField, popupBehavior, formatDate, startDate, endDate, disabledDatesList) : singleDateVersion
 
         function initSingleDateCalendarEvents() {
           $('.date', container).bind('click', function() {

@@ -6,7 +6,7 @@
     root.CalendarBody = factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime)
   }
 })(this, function($, DateFormat, DateLocale, DateRange, DateTime) {
-  return function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDates) {
+  return function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
     var dateCellMap = {}
     var dateCellDates = []
 
@@ -110,7 +110,7 @@
 
     function disabledOrNot(date) {
       var disabledWeekendDay = disableWeekends && date.isWeekend()
-      var disabledDay = disabledDates[date.getOnlyDate().date]
+      var disabledDay = disabledDatesObject[date.getOnlyDate().date]
       var outOfBounds = !calendarRange.hasDate(date)
       return outOfBounds || disabledWeekendDay || disabledDay ? 'disabled' : ''
     }

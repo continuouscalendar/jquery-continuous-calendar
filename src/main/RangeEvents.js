@@ -6,7 +6,7 @@
     root.RangeEvents = factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime)
   }
 })(this, function($, DateFormat, DateLocale, DateRange, DateTime) {
-  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendarRange, setStartField, setEndField, calendar, formatDate, startDate, endDate) {
+  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendarRange, setStartField, setEndField, calendar, formatDate, startDate, endDate, disabledDatesList) {
     var mouseDownDate = null
     var selection
     var oldSelection
@@ -153,8 +153,8 @@
     }
 
     function rangeHasDisabledDate() {
-      for(var disabledDate in params.disabledDates) {
-        if(selection.hasDate(new DateTime(disabledDate))) return true
+      for(var i = 0; i < disabledDatesList.length; i++) {
+        if(selection.hasDate(new DateTime(disabledDatesList[i]))) return true
       }
       return false
     }
