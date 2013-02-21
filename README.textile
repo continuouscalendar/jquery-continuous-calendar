@@ -12,6 +12,8 @@
 
 "Change log":https://github.com/reaktor/jquery-continuous-calendar/blob/master/History.textile
 
+"wicket-continuous-calendar":https://code.google.com/p/wicket-continuous-calendar/
+
 h1. Features
 
 * Date dragging
@@ -22,14 +24,22 @@ h1. Features
 * Allow disabling of dates
 * Month select
 * Week select
-* Popup support
+* Popup support (with current day in calndar icon)
 * Support for different date formats
 * Support for specifying holidays or disabled days
 * Support for setting minimum range
 
+h1. Supported languages
+
+* English
+* Finnish
+* Estonian
+* Swedish
+* Russian
+
 h1. Supported browsers
 
-* IE6 ->
+* IE7 ->
 * FireFox
 * Chrome
 * Opera
@@ -132,7 +142,7 @@ h1. Instructions for contributors
 
 * make a fork
 * code
-* run tests (*jquery.continuous-calendar-test.html* and *dateRange-test.html*)
+* run tests (src/test/*.html)
 * run release.sh <version> (see *git tag* for previous versions)
 * push --tags
 * make pull request
