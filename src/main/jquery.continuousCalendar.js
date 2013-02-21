@@ -172,7 +172,7 @@
             container.prepend(icon)
           },
           initState            : $.noop,
-          getContainer         : function(newContainer) { return $('<div>').addClass('popUpContainer').append(newContainer); },
+          getContainer         : function(newContainer) { return $('<div class="popUpContainer">').append(newContainer); },
           close                : function(cell) { toggleCalendar.call(cell) },
           addDateLabelBehaviour: function(label) {
             label.addClass('clickable')
@@ -196,7 +196,7 @@
         if(existingContainer.exists()) {
           return existingContainer
         } else {
-          var newContainer = $('<div>').addClass('continuousCalendar')
+          var newContainer = $('<div class="continuousCalendar">')
           container.append(popupBehavior.getContainer(newContainer))
           return newContainer
         }
