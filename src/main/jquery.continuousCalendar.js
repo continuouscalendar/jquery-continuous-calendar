@@ -225,7 +225,7 @@
       }
 
       function setYearLabel() {
-        var scrollContent = $('.calendarScrollContent', container).get(0)
+        var scrollContent = calendarBody.scrollContent.get(0)
         var table = $('table', scrollContent).get(0)
         var scrollTop = params.customScroll ? -$('.overview', calendarContainer).position().top : scrollContent.scrollTop
         var rowNumber = parseInt(scrollTop / averageCellHeight, 10)
