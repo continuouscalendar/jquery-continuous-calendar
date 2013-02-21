@@ -79,7 +79,8 @@
       function initCalendarTable() {
         if(calendarBody.scrollContent) return
 
-        calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale, params.customScroll, params.disableWeekends, disabledDatesObject))
+        calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
+          params.customScroll, params.disableWeekends, disabledDatesObject))
         bindScrollEvent()
 
         popupBehavior.initState()
@@ -141,7 +142,8 @@
             executeCallback(startDate)
           }
         }
-        return isRange ? RangeEvents(container, calendarBody, executeCallback, locale, params, getElemDate, calendarRange, setStartField, setEndField, popupBehavior, formatDate, startDate, endDate, disabledDatesList) : singleDateVersion
+        return isRange ? RangeEvents(container, calendarBody, executeCallback, locale, params, getElemDate,
+          calendarRange, setStartField, setEndField, popupBehavior, formatDate, startDate, endDate, disabledDatesList) : singleDateVersion
 
         function initSingleDateCalendarEvents() {
           $('.date', container).bind('click', function() {
