@@ -18,6 +18,8 @@ cat src/main/DateFormat.js >>$LATEST_JS
 cat src/main/DateLocale.js >>$LATEST_JS
 cat src/main/DateRange.js  >>$LATEST_JS
 cat src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar.js  >>$LATEST_JS
+cat src/main/CalendarBody.js  >>$LATEST_JS
+cat src/main/RangeEvents.js  >>$LATEST_JS
 cat src/main/jquery.continuousCalendar.js >>$LATEST_JS
 echo "Compressing js..."
 java -jar yuicompressor-2.4.6.jar --type js $LATEST_JS -o $LATEST_JS_MIN
