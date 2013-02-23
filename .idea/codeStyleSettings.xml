@@ -41,9 +41,6 @@
           <option name="TAB_SIZE" value="2" />
           <option name="USE_RELATIVE_INDENTS" value="true" />
         </ADDITIONAL_INDENT_OPTIONS>
-        <ADDITIONAL_INDENT_OPTIONS fileType="sql">
-          <option name="INDENT_SIZE" value="2" />
-        </ADDITIONAL_INDENT_OPTIONS>
         <codeStyleSettings language="JAVA">
           <option name="SPACE_BEFORE_IF_PARENTHESES" value="false" />
           <option name="SPACE_BEFORE_WHILE_PARENTHESES" value="false" />
@@ -70,6 +67,12 @@
             <option name="INDENT_SIZE" value="2" />
             <option name="CONTINUATION_INDENT_SIZE" value="2" />
             <option name="TAB_SIZE" value="2" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="SQL">
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="8" />
+            <option name="TAB_SIZE" value="4" />
           </indentOptions>
         </codeStyleSettings>
         <codeStyleSettings language="Scala">
