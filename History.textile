@@ -1,3 +1,10 @@
+h3. 2.4.2
+
+* Move calendar rendering to separate module
+* Move range behavior to separate module
+* Remove DateLocale.DEFAULT
+* Update custom scroll styles for all themes
+
 h3. 2.4.1
 
 * Add constants for all weekdays in DateTime
