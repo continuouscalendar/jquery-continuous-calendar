@@ -1,7 +1,9 @@
 .continuousCalendarContainer.transparent { font: 12px Arial, Helvetica;
   .label { }
   .continuousCalendar {
-    .tinyscrollbar { width: 251px; }
+    .tinyscrollbar { width: 251px;
+      .viewport { width: 240px; }
+    }
     table.calendarHeader { border: none; width: 240px; background: none;
       th { color: #4B4B4B; font-weight: bold; border: none; background: none; }
     }

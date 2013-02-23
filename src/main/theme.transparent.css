@@ -1,5 +1,6 @@
 .continuousCalendarContainer.transparent { font: 12px Arial, Helvetica; }
 .continuousCalendarContainer.transparent .continuousCalendar .tinyscrollbar { width: 251px; }
+.continuousCalendarContainer.transparent .continuousCalendar .tinyscrollbar .viewport { width: 240px; }
 .continuousCalendarContainer.transparent .continuousCalendar table.calendarHeader { border: none; width: 240px; background: none; }
 .continuousCalendarContainer.transparent .continuousCalendar table.calendarHeader th { color: #4B4B4B; font-weight: bold; border: none; background: none; }
 .continuousCalendarContainer.transparent .continuousCalendar .calendarScrollContent { border: none; background: none; width: 255px; }

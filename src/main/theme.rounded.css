@@ -1,3 +1,5 @@
+.continuousCalendarContainer.rounded .continuousCalendar .tinyscrollbar { width: 285px; }
+.continuousCalendarContainer.rounded .continuousCalendar .tinyscrollbar .viewport { width: 272px; }
 .continuousCalendarContainer.rounded .continuousCalendar th, .continuousCalendarContainer.rounded .continuousCalendar td { padding: 0; margin: 0; vertical-align: middle; }
 .continuousCalendarContainer.rounded .continuousCalendar table.calendarHeader { font-size: 14px; border: none; width: 274px; }
 .continuousCalendarContainer.rounded .continuousCalendar table.calendarHeader thead th { color: #FFF; border: none; background: #787878; background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #787878), color-stop(100%, #3c3c3c)); background-image: -webkit-linear-gradient(#787878, #3c3c3c); background-image: -moz-linear-gradient(#787878, #3c3c3c); background-image: -o-linear-gradient(#787878, #3c3c3c); background-image: linear-gradient(#787878, #3c3c3c); *zoom: 1; filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FF787878', endColorstr='#FF3C3C3C'); }

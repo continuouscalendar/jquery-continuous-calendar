@@ -1,6 +1,9 @@
 @import "compass/css3/images";
 .continuousCalendarContainer.rounded {
   .continuousCalendar {
+    .tinyscrollbar { width: 285px;
+      .viewport { width: 272px; }
+    }
     th,
     td { padding: 0; margin: 0; vertical-align: middle; }
     table.calendarHeader { font-size: 14px; border: none; width: 274px;
