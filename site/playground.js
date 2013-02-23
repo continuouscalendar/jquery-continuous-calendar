@@ -4,7 +4,13 @@ requirejs.config({
     'jquery.tinyscrollbar': '../src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'
   }
 })
-require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFormat', '../src/main/DateLocale', '../src/main/DateTime'], function($, _calendar, DateFormat, DateLocale, DateTime) {
+
+define(function(require) {
+  require('../src/main/jquery.continuousCalendar')
+  var $ = require('jquery')
+  var DateFormat = require('../src/main/DateFormat')
+  var DateLocale = require('../src/main/DateLocale')
+  var DateTime = require('../src/main/DateTime')
   jQuery = $
 
   counter = 0
@@ -61,3 +67,4 @@ require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFor
     return false
   }
 })
+
