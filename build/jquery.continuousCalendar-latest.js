@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCalendar.released = '2013-02-23'
+$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2013-03-05'
 ;
 (function(root, factory) {
   if(typeof define === "function" && define.amd) {
@@ -1275,10 +1275,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
 });
 (function(root, factory) {
   if(typeof define === 'function' && define.amd) {
-    define(['jquery', 'jquery.tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime', './CalendarBody', './RangeEvents'],
-      function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime, CalendarBody, RangeEvents) {
-        factory($, DateFormat, DateLocale, DateRange, DateTime, CalendarBody, RangeEvents)
-      })
+    define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime', './CalendarBody', './RangeEvents', 'jquery.tinyscrollbar'], factory)
   } else {
     factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime, root.CalendarBody, RangeEvents)
   }
@@ -1360,6 +1357,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
         popupBehavior.initState()
         dateBehavior.addRangeLengthLabel()
         dateBehavior.initEvents()
+        scrollToSelection()
       }
 
       function determineRangeToRenderFormParams(params) {
@@ -1455,7 +1453,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
         }
         var inlineVersion = {
           initUI               : initCalendarTable,
-          initState            : calculateCellHeightAndSetScroll,
+          initState            : calculateCellHeightAndInitScroll,
           getContainer         : function(newContainer) {
             return newContainer
           },
@@ -1484,7 +1482,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
       }
 
       function scrollToSelection() {
-        var selectionStartOrToday = $('.selected, .today', calendarBody.scrollContent).get(0)
+        var selectionStartOrToday = $('.selected', calendarBody.scrollContent).get(0) || $('.today', calendarBody.scrollContent).get(0)
         if(selectionStartOrToday) {
           var position = selectionStartOrToday.offsetTop - (calendarBody.scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
           if(params.customScroll) {
@@ -1507,11 +1505,10 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
         calendarBody.yearTitle.text(date.getFullYear())
       }
 
-      function calculateCellHeightAndSetScroll() {
+      function calculateCellHeightAndInitScroll() {
         initScrollBar()
         calculateCellHeight()
         setYearLabel()
-        scrollToSelection()
       }
 
       function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.height() / $('tr', calendarBody.bodyTable).size(), 10) }

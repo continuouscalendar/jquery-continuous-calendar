@@ -83,6 +83,7 @@
         popupBehavior.initState()
         dateBehavior.addRangeLengthLabel()
         dateBehavior.initEvents()
+        scrollToSelection()
       }
 
       function determineRangeToRenderFormParams(params) {
@@ -178,7 +179,7 @@
         }
         var inlineVersion = {
           initUI               : initCalendarTable,
-          initState            : calculateCellHeightAndSetScroll,
+          initState            : calculateCellHeightAndInitScroll,
           getContainer         : function(newContainer) {
             return newContainer
           },
@@ -207,7 +208,7 @@
       }
 
       function scrollToSelection() {
-        var selectionStartOrToday = $('.selected, .today', calendarBody.scrollContent).get(0)
+        var selectionStartOrToday = $('.selected', calendarBody.scrollContent).get(0) || $('.today', calendarBody.scrollContent).get(0)
         if(selectionStartOrToday) {
           var position = selectionStartOrToday.offsetTop - (calendarBody.scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
           if(params.customScroll) {
@@ -230,11 +231,10 @@
         calendarBody.yearTitle.text(date.getFullYear())
       }
 
-      function calculateCellHeightAndSetScroll() {
+      function calculateCellHeightAndInitScroll() {
         initScrollBar()
         calculateCellHeight()
         setYearLabel()
-        scrollToSelection()
       }
 
       function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.height() / $('tr', calendarBody.bodyTable).size(), 10) }

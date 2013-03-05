@@ -1,3 +1,7 @@
+h3. Nightly
+
+* Bugfix: Scroll viewport to selected date 
+
 h3. 2.4.2
 
 * Move calendar rendering to separate module
