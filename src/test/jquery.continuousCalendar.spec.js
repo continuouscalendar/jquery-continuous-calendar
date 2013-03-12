@@ -155,7 +155,7 @@ define(function(require) {
         cal().find('.date:eq(1)').click()
         expect(cal().find('.selected')).toHaveText('28')
         expect(startFieldValue()).toEqual('4/28/2008')
-        expect(startLabelValue()).toEqual('Mon 4/28/2008')
+        expect(startLabelValue()).toEqual('Mo 4/28/2008')
       })
 
       it('week number click selects whole week', function() {
@@ -264,7 +264,7 @@ define(function(require) {
         dragDates(28, 29)
         assertHasValues('.selected', [27, 28, 29, 30, 1, 2, 3])
         expect(startFieldValue()).toEqual('4/27/2009')
-        expect(startLabelValue()).toEqual('Mon 4/27/2009')
+        expect(startLabelValue()).toEqual('Mo 4/27/2009')
         expect(endFieldValue()).toEqual('5/3/2009')
       })
 
@@ -388,7 +388,7 @@ define(function(require) {
       it('', function() {
         createPopupCalendar()
         expect(cal().find('.continuousCalendar')).not.toBeVisible()
-        expect(startLabelValue()).toEqual('Wed 4/29/2009', 'Initially selected date is shown correctly')
+        expect(startLabelValue()).toEqual('We 4/29/2009', 'Initially selected date is shown correctly')
         cal().find('.calendarIcon').click()
         expect(cal().find('.continuousCalendar')).toBeVisible()
         //TODO fix this
@@ -402,7 +402,7 @@ define(function(require) {
         cal().find('.date:first').click()
         expect(cal().find('.continuousCalendar')).not.toBeVisible()
         expect(previous.find('.continuousCalendar')).toBeVisible()
-        expect(startLabelValue()).toEqual('Sun 10/26/2008')
+        expect(startLabelValue()).toEqual('Su 10/26/2008')
         expect(startFieldValue()).toEqual('10/26/2008')
       })
     })

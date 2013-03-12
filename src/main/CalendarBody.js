@@ -44,7 +44,7 @@
       var tr = $('<tr><th class="month"></th><th class="week">&nbsp;</th>')
       $(locale.dayNames).each(function(index) {
         //TODO move to DateLocale
-        var weekDay = $('<th>').append(locale.dayNames[(index + locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
+        var weekDay = $('<th>').append(locale.shortDayNames[(index + locale.firstWeekday) % 7]).addClass('weekDay')
         tr.append(weekDay)
       })
       return $('<thead>').append(tr)
