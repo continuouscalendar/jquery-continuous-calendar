@@ -1,5 +1,7 @@
 h3. Nightly
 
+* Update shortWeekday locales for estonian, english and australian and make calendar to use that instead of subtracting 2 letters from long weekday name
+* Force vertical alignment of text in continuous calendar 
 * Bugfix: Scroll viewport to selected date 
 
 h3. 2.4.2
