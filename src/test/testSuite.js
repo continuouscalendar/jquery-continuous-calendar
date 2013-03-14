@@ -20,7 +20,11 @@ require([ 'jasmine', 'jasmine-html', 'jasmine-jquery'], function(jasmine) {
     'DateTime.spec'
   ], function() {
     var env = jasmine.getEnv()
-    env.addReporter(new jasmine.TrivialReporter())
+    var trivialReporter = new jasmine.TrivialReporter()
+    env.specFilter = function(spec) {
+      return trivialReporter.specFilter(spec)
+    }
+    env.addReporter(trivialReporter)
     env.execute()
   })
 })
