@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCalendar.released = '2013-02-23'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.4.3';$.continuousCalendar.released = '2013-04-09'
 ;
 (function(root, factory) {
   if(typeof define === "function" && define.amd) {
@@ -519,7 +519,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
       id             : 'EN',
       monthNames     : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       dayNames       : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-      shortDayNames  : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      shortDayNames  : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
       yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
       monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
       daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
@@ -536,7 +536,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
       id             : 'AU',
       monthNames     : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       dayNames       : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-      shortDayNames  : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      shortDayNames  : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
       yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
       monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
       daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
@@ -553,7 +553,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
       id             : 'ET',
       monthNames     : [ 'Jaanuar', 'Veebruar', 'Märts', 'Aprill', 'Mai', 'Juuni', 'Juuli', 'August', 'September', 'Oktoober', 'November', 'Detsember'],
       dayNames       : ['Pühapäev', 'Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev'],
-      shortDayNames  : ['Pü', 'Es', 'Te', 'Ko', 'Ne', 'Re', 'La'],
+      shortDayNames  : ['P', 'E', 'T', 'K', 'N', 'R', 'L'],
       yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'Aasta' : 'Aastat') },
       monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Kuu' : 'Kuud') },
       daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'Päev' : 'Päeva') },
@@ -967,7 +967,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
       var tr = $('<tr><th class="month"></th><th class="week">&nbsp;</th>')
       $(locale.dayNames).each(function(index) {
         //TODO move to DateLocale
-        var weekDay = $('<th>').append(locale.dayNames[(index + locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
+        var weekDay = $('<th>').append(locale.shortDayNames[(index + locale.firstWeekday) % 7]).addClass('weekDay')
         tr.append(weekDay)
       })
       return $('<thead>').append(tr)
@@ -1275,10 +1275,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
 });
 (function(root, factory) {
   if(typeof define === 'function' && define.amd) {
-    define(['jquery', 'jquery.tinyscrollbar', './DateFormat', './DateLocale', './DateRange', './DateTime', './CalendarBody', './RangeEvents'],
-      function($, _tinyscrollbar, DateFormat, DateLocale, DateRange, DateTime, CalendarBody, RangeEvents) {
-        factory($, DateFormat, DateLocale, DateRange, DateTime, CalendarBody, RangeEvents)
-      })
+    define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime', './CalendarBody', './RangeEvents', 'jquery.tinyscrollbar'], factory)
   } else {
     factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime, root.CalendarBody, RangeEvents)
   }
@@ -1360,6 +1357,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
         popupBehavior.initState()
         dateBehavior.addRangeLengthLabel()
         dateBehavior.initEvents()
+        scrollToSelection()
       }
 
       function determineRangeToRenderFormParams(params) {
@@ -1455,7 +1453,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
         }
         var inlineVersion = {
           initUI               : initCalendarTable,
-          initState            : calculateCellHeightAndSetScroll,
+          initState            : calculateCellHeightAndInitScroll,
           getContainer         : function(newContainer) {
             return newContainer
           },
@@ -1484,7 +1482,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
       }
 
       function scrollToSelection() {
-        var selectionStartOrToday = $('.selected, .today', calendarBody.scrollContent).get(0)
+        var selectionStartOrToday = $('.selected', calendarBody.scrollContent).get(0) || $('.today', calendarBody.scrollContent).get(0)
         if(selectionStartOrToday) {
           var position = selectionStartOrToday.offsetTop - (calendarBody.scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
           if(params.customScroll) {
@@ -1507,11 +1505,10 @@ $.continuousCalendar = {};$.continuousCalendar.version = '2.4.2';$.continuousCal
         calendarBody.yearTitle.text(date.getFullYear())
       }
 
-      function calculateCellHeightAndSetScroll() {
+      function calculateCellHeightAndInitScroll() {
         initScrollBar()
         calculateCellHeight()
         setYearLabel()
-        scrollToSelection()
       }
 
       function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.height() / $('tr', calendarBody.bodyTable).size(), 10) }

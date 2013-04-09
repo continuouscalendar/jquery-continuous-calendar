@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar.released = '2013-03-05'
+$.continuousCalendar = {};$.continuousCalendar.version = '2.4.3';$.continuousCalendar.released = '2013-04-09'
 ;
 (function(root, factory) {
   if(typeof define === "function" && define.amd) {
@@ -519,7 +519,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
       id             : 'EN',
       monthNames     : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       dayNames       : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-      shortDayNames  : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      shortDayNames  : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
       yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
       monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
       daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
@@ -536,7 +536,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
       id             : 'AU',
       monthNames     : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       dayNames       : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-      shortDayNames  : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      shortDayNames  : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
       yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'Year' : 'Years'); },
       monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Months' : 'Months') },
       daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'Day' : 'Days') },
@@ -553,7 +553,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
       id             : 'ET',
       monthNames     : [ 'Jaanuar', 'Veebruar', 'Märts', 'Aprill', 'Mai', 'Juuni', 'Juuli', 'August', 'September', 'Oktoober', 'November', 'Detsember'],
       dayNames       : ['Pühapäev', 'Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev'],
-      shortDayNames  : ['Pü', 'Es', 'Te', 'Ko', 'Ne', 'Re', 'La'],
+      shortDayNames  : ['P', 'E', 'T', 'K', 'N', 'R', 'L'],
       yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'Aasta' : 'Aastat') },
       monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Kuu' : 'Kuud') },
       daysLabel      : function(days) { return days + ' ' + (days == '1' ? 'Päev' : 'Päeva') },
@@ -967,7 +967,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '';$.continuousCalendar
       var tr = $('<tr><th class="month"></th><th class="week">&nbsp;</th>')
       $(locale.dayNames).each(function(index) {
         //TODO move to DateLocale
-        var weekDay = $('<th>').append(locale.dayNames[(index + locale.firstWeekday) % 7].substr(0, 2)).addClass('weekDay')
+        var weekDay = $('<th>').append(locale.shortDayNames[(index + locale.firstWeekday) % 7]).addClass('weekDay')
         tr.append(weekDay)
       })
       return $('<thead>').append(tr)
