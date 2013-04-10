@@ -14,6 +14,9 @@ define(function(require) {
     toHaveDate               : function(date_str) { return this.actual.hasDate(new DateTime(date_str)) },
     toBeInside               : function(range) { return this.actual.isInside(range) },
     toBeValidRange           : function() { return this.actual.isValid() },
-    toPrintDefiningDurationOf: function(duration_str, locale) { return DateFormat.formatDefiningRangeDuration(this.actual, locale) == duration_str }
+    toPrintDefiningDurationOf: function(duration_str, locale) { return DateFormat.formatDefiningRangeDuration(this.actual, locale) == duration_str },
+    toCompareWith: function(expected) {
+      return this.actual.compareTo(expected) === 0
+    }
   }
 })
