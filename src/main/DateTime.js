@@ -6,11 +6,25 @@
     root.DateTime = factory(root.jQuery)
   }
 })(this, function($) {
-  var DateTime = function(year, month, date, hours, minutes) {
-    if(typeof year == 'string') this.date = new Date(year)
-    else if(typeof year == 'object') this.date = year
-    else if(typeof year == 'number') this.date = new Date(year, month - 1, date, hours, minutes, 0, 0)
-    else this.date = new Date()
+  var DateTime = function(year, month, date, hours, minutes, seconds) {
+    if(arguments.length == 0) this.date = new Date()
+    else if(year instanceof Date) this.date = new Date(year.getTime())
+    else if(typeof year == 'string') this.date = new Date(year)
+    else if(typeof year == 'number') this.date = createSafeDate(year, month - 1, date, hours, minutes, seconds)
+    else throw Error('None of supported parameters was used for constructor: ' + Array.prototype.slice.call(arguments).join(', '))
+
+    function createSafeDate(year, month, date, hours, minutes, seconds) {
+      seconds = seconds || 0
+      var newDate = new Date(year, month, date, hours, minutes, seconds || 0, 0)
+      if(newDate.toString() == 'Invalid Date' ||
+        month != newDate.getMonth() ||
+        year != newDate.getFullYear() ||
+        date != newDate.getDate() ||
+        hours != newDate.getHours() ||
+        minutes != newDate.getMinutes() ||
+        seconds != newDate.getSeconds()) throw Error('Invalid Date: ' + year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds)
+      return  newDate
+    }
   }
 
   DateTime.SUNDAY = 0
@@ -58,12 +72,14 @@
 
   /**
    * Returns date from ISO date ignoring time information
-   * @param isoDateTime String YYYY-MM-DDTHH-MM
+   * @param isoDate String YYYY-MM-DDTHH-MM
    * @return {DateTime}
    */
-  DateTime.fromIsoDate = function(isoDateTime) {
-    var date = parseDate(isoDateTime.split('T')[0])
-    return new DateTime(date.year, date.month, date.day, 0, 0)
+  DateTime.fromIsoDate = function(isoDate) {
+    var optionalTimePattern = /^\d{4}-[01]\d-[0-3]\d(T[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z?))?$/
+    if(!optionalTimePattern.test(isoDate)) throw Error(isoDate + ' is not valid ISO Date (YYYY-MM-DD or YYYY-MM-DDTHH:MM)')
+    var date = parseDate(isoDate.split('T')[0])
+    return DateTime.fromDate(date.year, date.month, date.day)
   }
 
   /**
@@ -72,6 +88,9 @@
    * @return {DateTime}
    */
   DateTime.fromIsoDateTime = function(isoDateTime) {
+    var fullPatternTest = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z?)/
+    if(!fullPatternTest.test(isoDateTime)) throw Error(isoDateTime + ' is not valid ISO Date (YYYY-MM-DDTHH:MM)')
+
     var dateAndTime = isoDateTime.split('T')
     var time = parseTime(dateAndTime.length == 2 && dateAndTime[1])
     var date = parseDate(dateAndTime[0])
@@ -135,11 +154,10 @@
   }
 
   DateTime.getDaysInMonth = function(year, month) {
-    if(((0 == (year % 4)) && ( (0 != (year % 100)) || (0 == (year % 400)))) && month == 1) {
-      return 29
-    } else {
-      return DateTime.DAYS_IN_MONTH[month]
-    }
+    if(month > 12 || month < 1)
+      throw new Error('Month must be between 1-12')
+    var yearAndMonth = year * 12 + month
+    return DateTime.fromDate(Math.floor(yearAndMonth / 12), yearAndMonth % 12 + 1, 1).minusDays(1).getDate()
   }
 
   DateTime.getDayInYear = function(year, month, day) {
@@ -238,7 +256,10 @@
     return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getFullYear() == date.getFullYear()
   }
 
-  DateTime.prototype.isBetweenDates = function(start, end) { return this.compareTo(start) >= 0 && this.compareTo(end) <= 0 }
+  DateTime.prototype.isBetweenDates = function(start, end) {
+    if(start.getTime() > end.getTime()) throw Error("start date can't be after end date")
+    return this.compareTo(start) >= 0 && this.compareTo(end) <= 0
+  }
 
   DateTime.prototype.firstDateOfMonth = function() { return DateTime.fromDate(this.getFullYear(), this.getMonth(), 1) }
 
