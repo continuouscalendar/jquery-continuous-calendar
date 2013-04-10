@@ -149,13 +149,13 @@
       case "z":
         return "this.getDayInYear() + "
       case "F":
-        return "locale.monthNames[this.getMonth()] + "
+        return "locale.monthNames[this.getMonth()-1] + "
       case "m":
-        return "DateFormat.leftPad(this.getMonth() + 1, 2, '0') + "
+        return "DateFormat.leftPad(this.getMonth(), 2, '0') + "
       case "M":
-        return "locale.monthNames[this.getMonth()].substring(0, 3) + "
+        return "locale.monthNames[this.getMonth()-1].substring(0, 3) + "
       case "n":
-        return "(this.getMonth() + 1) + "
+        return "(this.getMonth()) + "
       case "t":
         return "this.getDaysInMonth() + "
       case "Y":

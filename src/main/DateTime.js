@@ -24,7 +24,6 @@
   $.each([
     'getTime',
     'getFullYear',
-    'getMonth',
     'getDate',
     'getDay',
     'getHours',
@@ -41,6 +40,10 @@
 
   DateTime.fromDate = function(year, month, day) {
     return DateTime.fromDateTime(year, month, day, 0, 0)
+  }
+
+  DateTime.prototype.getMonth = function() {
+    return this.date.getMonth() + 1
   }
 
   /**
@@ -193,11 +196,11 @@
     if(weekday == 0) weekday = 7
     if(firstDay == 0) firstDay = 7
     // If Dec 29 falls on Mon, Dec 30 on Mon or Tue, Dec 31 on Mon - Wed, it's on the first week of next year
-    if(this.getMonth() == 11 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
+    if(this.getMonth() == 12 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
       return 1
     }
     // If Jan 1-3 falls on Fri, Sat or Sun, it's on the last week of the previous year
-    if(this.getMonth() == 0 && this.getDate() < 4 && weekday > THU) {
+    if(this.getMonth() == 1 && this.getDate() < 4 && weekday > THU) {
       return new DateTime(new Date(this.getFullYear() - 1, 11, 31)).getWeekInYear('ISO')
     }
     var week = Math.ceil((this.getDayInYear() + firstDay - 1) / 7)
@@ -209,7 +212,7 @@
   //TODO refactor
   DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime())) }
 
-  DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 != 0 }
+  DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 == 0 }
 
   DateTime.prototype.equalsOnlyDate = function(date) {
     if(!date) {
@@ -220,9 +223,9 @@
 
   DateTime.prototype.isBetweenDates = function(start, end) { return this.compareTo(start) >= 0 && this.compareTo(end) <= 0 }
 
-  DateTime.prototype.firstDateOfMonth = function() { return new DateTime((this.getMonth() + 1) + "/1/" + this.getFullYear()) }
+  DateTime.prototype.firstDateOfMonth = function() { return DateTime.fromDate(this.getFullYear(), this.getMonth(), 1) }
 
-  DateTime.prototype.lastDateOfMonth = function() { return new DateTime((this.getMonth() + 1) + "/" + this.getDaysInMonth() + "/" + this.getFullYear()) }
+  DateTime.prototype.lastDateOfMonth = function() { return DateTime.fromDate(this.getFullYear(), this.getMonth(), this.getDaysInMonth()) }
 
   DateTime.prototype.distanceInDays = function(date) {
     var first = parseInt(this.getTime() / DateTime.DAY, 10)
@@ -232,7 +235,7 @@
 
   DateTime.prototype.withWeekday = function(weekday) { return this.plusDays(weekday - this.getDay()) }
 
-  DateTime.prototype.getOnlyDate = function() { return new DateTime(new Date(this.getFullYear(), this.getMonth(), this.getDate())) }
+  DateTime.prototype.getOnlyDate = function() { return DateTime.fromDate(this.getFullYear(), this.getMonth(), this.getDate()) }
 
   DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
 
