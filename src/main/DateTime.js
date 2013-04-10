@@ -94,7 +94,7 @@
     var dateAndTime = isoDateTime.split('T')
     var time = parseTime(dateAndTime.length == 2 && dateAndTime[1])
     var date = parseDate(dateAndTime[0])
-    return new DateTime(date.year, date.month, date.day, time.hours, time.minutes)
+    return new DateTime(date.year, date.month, date.day, time.hours, time.minutes, time.seconds)
   }
 
   function parseDate(str) {
@@ -139,7 +139,6 @@
     return dateWithTime
   }
 
-  DateTime.DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   DateTime.SECOND = 1000
   DateTime.MINUTE = 60 * DateTime.SECOND
   DateTime.HOUR = 60 * DateTime.MINUTE
@@ -161,12 +160,7 @@
   }
 
   DateTime.getDayInYear = function(year, month, day) {
-    var days = 0
-    for(var i = 0; i < month; i++) {
-      days += DateTime.getDaysInMonth(year, i)
-    }
-    days += day
-    return days
+    return DateTime.fromDate(year, 1, 1).distanceInDays(DateTime.fromDate(year, month, day)) + 1
   }
 
   DateTime.prototype.getDaysInMonth = function() { return DateTime.getDaysInMonth(this.getFullYear(), this.getMonth()) }
@@ -243,8 +237,8 @@
     return week
   }
 
-  //TODO refactor
-  DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime())) }
+  DateTime.prototype.clone = function() { return new DateTime(this.date) }
+
   DateTime.fromMillis = function(ms) { return new DateTime(new Date(ms)) }
 
   DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 == 0 }
@@ -277,7 +271,7 @@
 
   DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
 
-  DateTime.prototype.toString = function() { return this.date.toISOString() }
+  DateTime.prototype.toString = function() { return this.toISOString() }
 
   DateTime.prototype.getFirstDateOfWeek = function(locale) {
     var firstWeekday = locale ? locale.firstWeekday : DateTime.MONDAY
