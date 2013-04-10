@@ -35,6 +35,14 @@
     DateTime.prototype[func] = function() { return this.date[func]() }
   })
 
+  DateTime.fromDateTime = function(year, month, day, hours, minutes) {
+    return new DateTime(year, month, day, hours, minutes)
+  }
+
+  DateTime.fromDate = function(year, month, day) {
+    return DateTime.fromDateTime(year, month, day, 0, 0)
+  }
+
   /**
    * Returns date from ISO date ignoring time information
    * @param isoDateTime String YYYY-MM-DDTHH-MM
