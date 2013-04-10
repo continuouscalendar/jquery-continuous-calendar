@@ -60,9 +60,9 @@
   function parseDate(str) {
     var dateComponents = str.split('-')
     return {
-      year : parseInt(dateComponents[0], 10),
-      month: parseInt(dateComponents[1], 10),
-      day  : parseInt(dateComponents[2], 10)
+      year : +dateComponents[0],
+      month: +dateComponents[1],
+      day  : +dateComponents[2]
     }
   }
 
@@ -70,8 +70,9 @@
     if(str) {
       var timeComponents = str.split(':')
       return {
-        hours  : parseInt(timeComponents[0], 10),
-        minutes: parseInt(timeComponents[1], 10)
+        hours  : +timeComponents[0],
+        minutes: +timeComponents[1],
+        seconds: +timeComponents[2] || 0
       }
     } else {
       return { hours: 0, minutes: 0 }

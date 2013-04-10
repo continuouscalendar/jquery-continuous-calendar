@@ -62,7 +62,7 @@
         calendarRange = determineRangeToRenderFormParams(params)
         popupBehavior = popUpBehaviour(params.isPopup)
         dateBehavior = dateBehaviour(isRange())
-        params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
+        params.fadeOutDuration = +params.fadeOutDuration
         calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.click(function(e) { e.stopPropagation() })
         if($('.startDateLabel', container).isEmpty()) addDateLabels(container, popupBehavior, dateBehavior)
