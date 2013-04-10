@@ -42,6 +42,16 @@
     return DateTime.fromDateTime(year, month, day, 0, 0)
   }
 
+  DateTime.fromDateObject = function(date) {
+    return DateTime.fromMillis(date.getTime())
+  }
+
+  DateTime.prototype.toISOString = function() {
+    return $.map([this.getFullYear(), (this.getMonth()), this.getDate()], withTwoDigitsAtLeast).join('-') + 'T' +
+      $.map([this.getHours(), this.getMinutes(), this.getSeconds()], withTwoDigitsAtLeast).join(':')
+    function withTwoDigitsAtLeast(value) { return value < 10 ? '0' + value : '' + value}
+  }
+
   DateTime.prototype.getMonth = function() {
     return this.date.getMonth() + 1
   }
@@ -88,6 +98,12 @@
     } else {
       return { hours: 0, minutes: 0 }
     }
+  }
+
+  DateTime.prototype.withResetMS = function() {
+    var newDate = this.clone()
+    newDate.date.setMilliseconds(0)
+    return newDate
   }
 
   DateTime.prototype.withTime = function(h, m) {
@@ -211,6 +227,7 @@
 
   //TODO refactor
   DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime())) }
+  DateTime.fromMillis = function(ms) { return new DateTime(new Date(ms)) }
 
   DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 == 0 }
 
