@@ -79,7 +79,7 @@ define(function(require) {
       })
 
       it('range longer than outer range cannot be moved', function() {
-        var range1 = new DateRange(outerRange.start.plusDays(-1), outerRange.end.plusDays(1))
+        var range1 = new DateRange(outerRange.start.minusDays(1), outerRange.end.plusDays(1))
         var range2 = range1.shiftInside(outerRange)
         expect(range2.days()).toEqual(0)
       })

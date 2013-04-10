@@ -200,7 +200,7 @@ define(function(require) {
       describe('when current date is start or end of selection', function() {
         var today = DateTime.now()
         var todayStr = DateFormat.shortDateFormat(today)
-        var weekAgo = today.plusDays(-7)
+        var weekAgo = today.minusDays(7)
         var weekAgoStr = DateFormat.shortDateFormat(weekAgo)
         var weekAhead = today.plusDays(7)
         var weekAheadStr = DateFormat.shortDateFormat(weekAhead)

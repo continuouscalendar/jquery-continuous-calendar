@@ -148,6 +148,9 @@
     return newDateTime
   }
 
+  DateTime.prototype.minusDays = function(days) {
+    return this.plusDays(-days)
+  }
 
   DateTime.prototype.compareTo = function(date) {
     if(!date) {
