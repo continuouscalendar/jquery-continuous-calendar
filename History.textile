@@ -1,3 +1,29 @@
+h3. Nightly
+
+* Remove duplicate or unused methods from DateTime:
+** getDaysInMonth (duplicate)
+** getWeekOfYear (duplicate)
+** getDayOfYear (use getDayInYear)
+** isLeapYear
+** getSuffix
+** stripped
+** getTimezone
+* Add new methods to DateTime:
+** fromDate(year, month, day)
+** fromMillis(ms)
+** fromDateObject(date)
+** withResetMS
+** toISOString
+** minusDays
+* Add more validation logic to following DateTime methods:
+** fromIsoDate
+** fromIsoDateTime
+** getDaysInMonth
+** isBetweenDates
+* Provide milliseconds for DateTime constructor and make it stricter
+* Fix spelling of DateTime.WEDNESDAY constant
+* Make dateTime.toString() return local instead of UTC times
+
 h3. 2.4.3
 
 * Update shortWeekday locales for estonian, english and australian and make calendar to use that instead of subtracting 2 letters from long weekday name
