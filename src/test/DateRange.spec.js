@@ -3,9 +3,6 @@ define(function(require) {
   var DateRange = require('../main/DateRange')
   var DateFormat = require('../main/DateFormat')
   var DateLocale = require('../main/DateLocale')
-  var matchers = require('./matchers')
-
-  beforeEach(function() { this.addMatchers(matchers) })
 
   describe('DateRange', function() {
     var range

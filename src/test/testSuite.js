@@ -13,7 +13,7 @@ requirejs.config({
   }
 })
 
-require([ 'jasmine', 'jasmine-html', 'jasmine-jquery'], function(jasmine) {
+require(['matchers', 'jasmine', 'jasmine-html', 'jasmine-jquery'], function(matchers, jasmine) {
   require([
     'jquery.continuousCalendar.spec',
     'DateRange.spec',
@@ -24,7 +24,11 @@ require([ 'jasmine', 'jasmine-html', 'jasmine-jquery'], function(jasmine) {
     env.specFilter = function(spec) {
       return trivialReporter.specFilter(spec)
     }
+
+    beforeEach(function() { this.addMatchers(matchers) })
+
     env.addReporter(trivialReporter)
     env.execute()
   })
 })
+

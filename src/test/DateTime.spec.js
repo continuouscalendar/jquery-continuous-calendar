@@ -1,5 +1,8 @@
 define(function(require) {
   var DateTime = require('../main/DateTime')
+  var util = require('TestUtils')
+  var __ = util.__
+  var sequence = util.sequence
 
   describe('DateTime', function() {
     var date = new Date(2010, 2, 3, 12, 45, 30)
