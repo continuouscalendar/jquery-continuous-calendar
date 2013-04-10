@@ -39,16 +39,6 @@
     return locale.daysLabel(dateRange.days())
   }
 
-  DateFormat.getWeekOfYear = function(dateTime) {
-    // Skip to Thursday of this week
-    var now = dateTime.getDayOfYear() + (4 - dateTime.getDay())
-    // Find the first Thursday of the year
-    var jan1 = new Date(dateTime.getFullYear(), 0, 1)
-    var then = (7 - jan1.getDay() + 4)
-    document.write(then)
-    return DateFormat.leftPad(((now - then) / 7) + 1, 2, "0")
-  }
-
   DateFormat.getGMTOffset = function(dateTime) {
     return (dateTime.date.getTimezoneOffset() > 0 ? "-" : "+") +
       DateFormat.leftPad(Math.floor(dateTime.getTimezoneOffset() / 60), 2, "0") +
@@ -154,14 +144,10 @@
         return "this.getDate() + "
       case "l":
         return "locale.dayNames[this.getDay()] + "
-      case "S":
-        return "this.getSuffix() + "
       case "w":
         return "this.getDay() + "
       case "z":
-        return "this.getDayOfYear() + "
-      case "W":
-        return "DateFormat.getWeekOfYear(this) + "
+        return "this.getDayInYear() + "
       case "F":
         return "locale.monthNames[this.getMonth()] + "
       case "m":
@@ -172,8 +158,6 @@
         return "(this.getMonth() + 1) + "
       case "t":
         return "this.getDaysInMonth() + "
-      case "L":
-        return "(this.isLeapYear() ? 1 : 0) + "
       case "Y":
         return "this.getFullYear() + "
       case "y":
@@ -196,8 +180,6 @@
         return "DateFormat.leftPad(this.getSeconds(), 2, '0') + "
       case "O":
         return "DateFormat.getGMTOffset(this) + "
-      case "T":
-        return "this.getTimezone() + "
       case "Z":
         return "(this.getTimezoneOffset() * -60) + "
       default:

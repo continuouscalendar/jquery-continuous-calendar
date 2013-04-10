@@ -148,7 +148,6 @@
     return newDateTime
   }
 
-  DateTime.prototype.stripped = function() { return new Date(parseInt(this.getTime() / DateTime.DAY, 10)) }
 
   DateTime.prototype.compareTo = function(date) {
     if(!date) {
@@ -223,46 +222,6 @@
   DateTime.prototype.withWeekday = function(weekday) { return this.plusDays(weekday - this.getDay()) }
 
   DateTime.prototype.getOnlyDate = function() { return new DateTime(new Date(this.getFullYear(), this.getMonth(), this.getDate())) }
-
-  DateTime.prototype.getTimezone = function() {
-    return this.date.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3")
-  }
-
-  DateTime.prototype.getDayOfYear = function() {
-    var num = 0
-    DateTime.daysInMonth[1] = this.isLeapYear() ? 29 : 28
-    for(var i = 0; i < this.getMonth(); ++i) {
-      num += DateTime.daysInMonth[i]
-    }
-    return num + this.getDate() - 1
-  }
-
-  DateTime.prototype.isLeapYear = function() {
-    var year = this.getFullYear()
-    return ((year & 3) == 0 && (year % 100 || (year % 400 == 0 && year)))
-  }
-
-  DateTime.prototype.getDaysInMonth = function() {
-    DateTime.daysInMonth[1] = this.isLeapYear() ? 29 : 28
-    return DateTime.daysInMonth[this.getMonth()]
-  }
-
-  DateTime.prototype.getSuffix = function() {
-    switch(this.getDate()) {
-      case 1:
-      case 21:
-      case 31:
-        return "st"
-      case 2:
-      case 22:
-        return "nd"
-      case 3:
-      case 23:
-        return "rd"
-      default:
-        return "th"
-    }
-  }
 
   DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
 
