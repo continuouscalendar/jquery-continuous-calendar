@@ -62,7 +62,7 @@
         calendarRange = determineRangeToRenderFormParams(params)
         popupBehavior = popUpBehaviour(params.isPopup)
         dateBehavior = dateBehaviour(isRange())
-        params.fadeOutDuration = parseInt(params.fadeOutDuration, 10)
+        params.fadeOutDuration = +params.fadeOutDuration
         calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.click(function(e) { e.stopPropagation() })
         if($('.startDateLabel', container).isEmpty()) addDateLabels(container, popupBehavior, dateBehavior)
@@ -90,7 +90,7 @@
         var firstWeekdayOfGivenDate = (startDate || DateTime.now()).getFirstDateOfWeek(locale)
         var firstDate = params.firstDate
         var lastDate = params.lastDate
-        var rangeStart = firstDate ? DateFormat.parse(firstDate, locale) : firstWeekdayOfGivenDate.plusDays(-(params.weeksBefore * 7))
+        var rangeStart = firstDate ? DateFormat.parse(firstDate, locale) : firstWeekdayOfGivenDate.minusDays(params.weeksBefore * 7)
         var rangeEnd = lastDate ? DateFormat.parse(lastDate, locale) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
 
         return  new DateRange(rangeStart, rangeEnd)

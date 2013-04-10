@@ -6,17 +6,31 @@
     root.DateTime = factory(root.jQuery)
   }
 })(this, function($) {
-  var DateTime = function(year, month, date, hours, minutes) {
-    if(typeof year == 'string') this.date = new Date(year)
-    else if(typeof year == 'object') this.date = year
-    else if(typeof year == 'number') this.date = new Date(year, month - 1, date, hours, minutes, 0, 0)
-    else this.date = new Date()
+  var DateTime = function(year, month, date, hours, minutes, seconds) {
+    if(arguments.length == 0) this.date = new Date()
+    else if(year instanceof Date) this.date = new Date(year.getTime())
+    else if(typeof year == 'string') this.date = new Date(year)
+    else if(typeof year == 'number') this.date = createSafeDate(year, month - 1, date, hours, minutes, seconds)
+    else throw Error('None of supported parameters was used for constructor: ' + Array.prototype.slice.call(arguments).join(', '))
+
+    function createSafeDate(year, month, date, hours, minutes, seconds) {
+      seconds = seconds || 0
+      var newDate = new Date(year, month, date, hours, minutes, seconds || 0, 0)
+      if(newDate.toString() == 'Invalid Date' ||
+        month != newDate.getMonth() ||
+        year != newDate.getFullYear() ||
+        date != newDate.getDate() ||
+        hours != newDate.getHours() ||
+        minutes != newDate.getMinutes() ||
+        seconds != newDate.getSeconds()) throw Error('Invalid Date: ' + year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds)
+      return  newDate
+    }
   }
 
   DateTime.SUNDAY = 0
   DateTime.MONDAY = 1
   DateTime.TUESDAY = 2
-  DateTime.WENDESDAY = 3
+  DateTime.WEDNESDAY = 3
   DateTime.THURSDAY = 4
   DateTime.FRIDAY = 5
   DateTime.SATURDAY = 6
@@ -24,7 +38,6 @@
   $.each([
     'getTime',
     'getFullYear',
-    'getMonth',
     'getDate',
     'getDay',
     'getHours',
@@ -35,14 +48,38 @@
     DateTime.prototype[func] = function() { return this.date[func]() }
   })
 
+  DateTime.fromDateTime = function(year, month, day, hours, minutes) {
+    return new DateTime(year, month, day, hours, minutes)
+  }
+
+  DateTime.fromDate = function(year, month, day) {
+    return DateTime.fromDateTime(year, month, day, 0, 0)
+  }
+
+  DateTime.fromDateObject = function(date) {
+    return DateTime.fromMillis(date.getTime())
+  }
+
+  DateTime.prototype.toISOString = function() {
+    return $.map([this.getFullYear(), (this.getMonth()), this.getDate()], withTwoDigitsAtLeast).join('-') + 'T' +
+      $.map([this.getHours(), this.getMinutes(), this.getSeconds()], withTwoDigitsAtLeast).join(':')
+    function withTwoDigitsAtLeast(value) { return value < 10 ? '0' + value : '' + value}
+  }
+
+  DateTime.prototype.getMonth = function() {
+    return this.date.getMonth() + 1
+  }
+
   /**
    * Returns date from ISO date ignoring time information
-   * @param isoDateTime String YYYY-MM-DDTHH-MM
+   * @param isoDate String YYYY-MM-DDTHH-MM
    * @return {DateTime}
    */
-  DateTime.fromIsoDate = function(isoDateTime) {
-    var date = parseDate(isoDateTime.split('T')[0])
-    return new DateTime(date.year, date.month, date.day, 0, 0)
+  DateTime.fromIsoDate = function(isoDate) {
+    var optionalTimePattern = /^\d{4}-[01]\d-[0-3]\d(T[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z?))?$/
+    if(!optionalTimePattern.test(isoDate)) throw Error(isoDate + ' is not valid ISO Date (YYYY-MM-DD or YYYY-MM-DDTHH:MM)')
+    var date = parseDate(isoDate.split('T')[0])
+    return DateTime.fromDate(date.year, date.month, date.day)
   }
 
   /**
@@ -51,18 +88,21 @@
    * @return {DateTime}
    */
   DateTime.fromIsoDateTime = function(isoDateTime) {
+    var fullPatternTest = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z?)/
+    if(!fullPatternTest.test(isoDateTime)) throw Error(isoDateTime + ' is not valid ISO Date (YYYY-MM-DDTHH:MM)')
+
     var dateAndTime = isoDateTime.split('T')
     var time = parseTime(dateAndTime.length == 2 && dateAndTime[1])
     var date = parseDate(dateAndTime[0])
-    return new DateTime(date.year, date.month, date.day, time.hours, time.minutes)
+    return new DateTime(date.year, date.month, date.day, time.hours, time.minutes, time.seconds)
   }
 
   function parseDate(str) {
     var dateComponents = str.split('-')
     return {
-      year : parseInt(dateComponents[0], 10),
-      month: parseInt(dateComponents[1], 10),
-      day  : parseInt(dateComponents[2], 10)
+      year : +dateComponents[0],
+      month: +dateComponents[1],
+      day  : +dateComponents[2]
     }
   }
 
@@ -70,12 +110,19 @@
     if(str) {
       var timeComponents = str.split(':')
       return {
-        hours  : parseInt(timeComponents[0], 10),
-        minutes: parseInt(timeComponents[1], 10)
+        hours  : +timeComponents[0],
+        minutes: +timeComponents[1],
+        seconds: +timeComponents[2] || 0
       }
     } else {
       return { hours: 0, minutes: 0 }
     }
+  }
+
+  DateTime.prototype.withResetMS = function() {
+    var newDate = this.clone()
+    newDate.date.setMilliseconds(0)
+    return newDate
   }
 
   DateTime.prototype.withTime = function(h, m) {
@@ -92,7 +139,6 @@
     return dateWithTime
   }
 
-  DateTime.DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   DateTime.SECOND = 1000
   DateTime.MINUTE = 60 * DateTime.SECOND
   DateTime.HOUR = 60 * DateTime.MINUTE
@@ -107,20 +153,14 @@
   }
 
   DateTime.getDaysInMonth = function(year, month) {
-    if(((0 == (year % 4)) && ( (0 != (year % 100)) || (0 == (year % 400)))) && month == 1) {
-      return 29
-    } else {
-      return DateTime.DAYS_IN_MONTH[month]
-    }
+    if(month > 12 || month < 1)
+      throw new Error('Month must be between 1-12')
+    var yearAndMonth = year * 12 + month
+    return DateTime.fromDate(Math.floor(yearAndMonth / 12), yearAndMonth % 12 + 1, 1).minusDays(1).getDate()
   }
 
   DateTime.getDayInYear = function(year, month, day) {
-    var days = 0
-    for(var i = 0; i < month; i++) {
-      days += DateTime.getDaysInMonth(year, i)
-    }
-    days += day
-    return days
+    return DateTime.fromDate(year, 1, 1).distanceInDays(DateTime.fromDate(year, month, day)) + 1
   }
 
   DateTime.prototype.getDaysInMonth = function() { return DateTime.getDaysInMonth(this.getFullYear(), this.getMonth()) }
@@ -147,7 +187,9 @@
     return newDateTime
   }
 
-  DateTime.prototype.stripped = function() { return new Date(parseInt(this.getTime() / DateTime.DAY, 10)) }
+  DateTime.prototype.minusDays = function(days) {
+    return this.plusDays(-days)
+  }
 
   DateTime.prototype.compareTo = function(date) {
     if(!date) {
@@ -182,11 +224,11 @@
     if(weekday == 0) weekday = 7
     if(firstDay == 0) firstDay = 7
     // If Dec 29 falls on Mon, Dec 30 on Mon or Tue, Dec 31 on Mon - Wed, it's on the first week of next year
-    if(this.getMonth() == 11 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
+    if(this.getMonth() == 12 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
       return 1
     }
     // If Jan 1-3 falls on Fri, Sat or Sun, it's on the last week of the previous year
-    if(this.getMonth() == 0 && this.getDate() < 4 && weekday > THU) {
+    if(this.getMonth() == 1 && this.getDate() < 4 && weekday > THU) {
       return new DateTime(new Date(this.getFullYear() - 1, 11, 31)).getWeekInYear('ISO')
     }
     var week = Math.ceil((this.getDayInYear() + firstDay - 1) / 7)
@@ -195,10 +237,11 @@
     return week
   }
 
-  //TODO refactor
-  DateTime.prototype.clone = function() { return new DateTime(new Date(this.getTime())) }
+  DateTime.prototype.clone = function() { return new DateTime(this.date) }
 
-  DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 != 0 }
+  DateTime.fromMillis = function(ms) { return new DateTime(new Date(ms)) }
+
+  DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 == 0 }
 
   DateTime.prototype.equalsOnlyDate = function(date) {
     if(!date) {
@@ -207,11 +250,14 @@
     return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getFullYear() == date.getFullYear()
   }
 
-  DateTime.prototype.isBetweenDates = function(start, end) { return this.compareTo(start) >= 0 && this.compareTo(end) <= 0 }
+  DateTime.prototype.isBetweenDates = function(start, end) {
+    if(start.getTime() > end.getTime()) throw Error("start date can't be after end date")
+    return this.compareTo(start) >= 0 && this.compareTo(end) <= 0
+  }
 
-  DateTime.prototype.firstDateOfMonth = function() { return new DateTime((this.getMonth() + 1) + "/1/" + this.getFullYear()) }
+  DateTime.prototype.firstDateOfMonth = function() { return DateTime.fromDate(this.getFullYear(), this.getMonth(), 1) }
 
-  DateTime.prototype.lastDateOfMonth = function() { return new DateTime((this.getMonth() + 1) + "/" + this.getDaysInMonth() + "/" + this.getFullYear()) }
+  DateTime.prototype.lastDateOfMonth = function() { return DateTime.fromDate(this.getFullYear(), this.getMonth(), this.getDaysInMonth()) }
 
   DateTime.prototype.distanceInDays = function(date) {
     var first = parseInt(this.getTime() / DateTime.DAY, 10)
@@ -221,51 +267,11 @@
 
   DateTime.prototype.withWeekday = function(weekday) { return this.plusDays(weekday - this.getDay()) }
 
-  DateTime.prototype.getOnlyDate = function() { return new DateTime(new Date(this.getFullYear(), this.getMonth(), this.getDate())) }
-
-  DateTime.prototype.getTimezone = function() {
-    return this.date.toString().replace(/^.*? ([A-Z]{3}) [0-9]{4}.*$/, "$1").replace(/^.*?\(([A-Z])[a-z]+ ([A-Z])[a-z]+ ([A-Z])[a-z]+\)$/, "$1$2$3")
-  }
-
-  DateTime.prototype.getDayOfYear = function() {
-    var num = 0
-    DateTime.daysInMonth[1] = this.isLeapYear() ? 29 : 28
-    for(var i = 0; i < this.getMonth(); ++i) {
-      num += DateTime.daysInMonth[i]
-    }
-    return num + this.getDate() - 1
-  }
-
-  DateTime.prototype.isLeapYear = function() {
-    var year = this.getFullYear()
-    return ((year & 3) == 0 && (year % 100 || (year % 400 == 0 && year)))
-  }
-
-  DateTime.prototype.getDaysInMonth = function() {
-    DateTime.daysInMonth[1] = this.isLeapYear() ? 29 : 28
-    return DateTime.daysInMonth[this.getMonth()]
-  }
-
-  DateTime.prototype.getSuffix = function() {
-    switch(this.getDate()) {
-      case 1:
-      case 21:
-      case 31:
-        return "st"
-      case 2:
-      case 22:
-        return "nd"
-      case 3:
-      case 23:
-        return "rd"
-      default:
-        return "th"
-    }
-  }
+  DateTime.prototype.getOnlyDate = function() { return DateTime.fromDate(this.getFullYear(), this.getMonth(), this.getDate()) }
 
   DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
 
-  DateTime.prototype.toString = function() { return this.date.toISOString() }
+  DateTime.prototype.toString = function() { return this.toISOString() }
 
   DateTime.prototype.getFirstDateOfWeek = function(locale) {
     var firstWeekday = locale ? locale.firstWeekday : DateTime.MONDAY

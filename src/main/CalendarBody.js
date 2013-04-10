@@ -91,10 +91,10 @@
         var th = '<th class="month ' + backgroundBy(firstDayOfWeek)
         if(isFirst || firstDayOfWeek.getDate() <= 7) {
           th += ' monthName">'
-          th += locale.monthNames[firstDayOfWeek.getMonth()]
+          th += locale.monthNames[firstDayOfWeek.getMonth()-1]
         } else {
           th += '">'
-          if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 0) {
+          if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 1) {
             th += firstDayOfWeek.getFullYear()
           }
         }
