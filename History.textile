@@ -1,5 +1,9 @@
 h3. Nightly
 
+-
+
+h3. 3.0.0
+
 * Remove duplicate or unused methods from DateTime:
 ** getDaysInMonth (duplicate)
 ** getWeekOfYear (duplicate)
