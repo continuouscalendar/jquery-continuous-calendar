@@ -1,6 +1,6 @@
 .tinyscrollbar {
-  $tinyscrollbarImgRoot: "jquery.tinyscrollbar-1.66" ! default;
-  $scrollbarWidth: 11px ! default;
+  $tinyscrollbarImgRoot: "jquery.tinyscrollbar-1.66" !default;
+  $scrollbarWidth: 11px !default;
   .viewport { overflow: hidden; position: relative; }
   .overview { list-style: none; position: absolute; left: 0; top: 0; padding: 0; margin: 0; }
   .scrollbar { background: transparent url(#{$tinyscrollbarImgRoot}/bg-scrollbar-track-y.png) no-repeat 0 0; position: relative; background-position: 0 0; float: right; width: $scrollbarWidth; }
