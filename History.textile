@@ -2,6 +2,11 @@ h3. Nightly
 
 -
 
+h3. 3.0.1
+
+* Fix syntax error in tinyscrollbar style file
+* Update dateTimeFormat for Estonian langueage, it shoud use kl instead of klo
+
 h3. 3.0.0
 
 * Remove duplicate or unused methods from DateTime:

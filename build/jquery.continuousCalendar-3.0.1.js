@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '3.0.0';$.continuousCalendar.released = '2013-04-11'
+$.continuousCalendar = {};$.continuousCalendar.version = '3.0.1';$.continuousCalendar.released = '2013-04-12'
 ;
 (function(root, factory) {
   if(typeof define === "function" && define.amd) {
@@ -551,7 +551,7 @@ $.continuousCalendar = {};$.continuousCalendar.version = '3.0.0';$.continuousCal
       },
       shortDateFormat: 'j.n.Y',
       weekDateFormat : 'D j.n.Y',
-      dateTimeFormat : 'D j.n.Y k\\lo G:i',
+      dateTimeFormat : 'D j.n.Y k\\l G:i',
       firstWeekday   : DateTime.MONDAY
     },
     RU: {
