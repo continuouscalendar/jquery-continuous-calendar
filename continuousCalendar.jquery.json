@@ -3,10 +3,18 @@
   "title"       : "jQuery Continuous Calendar",
   "description" : "Date picker and range selector with scrollable months instead of paged",
   "keywords"    : [
-    "color",
-    "animation"
+    "tags",
+    "ui",
+    "input",
+    "calendar",
+    "date",
+    "datepicker",
+    "dateinput",
+    "dates",
+    "form",
+    "i18n"
   ],
-  "version"     : "3.0.2",
+  "version"     : "3.0.3",
   "author"      : {
     "name": "Eero Anttila",
     "url" : "http://eeroanttila.wordpress.com/about/"
@@ -27,7 +35,7 @@
   "bugs"        : "https://github.com/reaktor/jquery-continuous-calendar/issues",
   "homepage"    : "http://reaktor.github.com/jquery-continuous-calendar/",
   "docs"        : "http://reaktor.github.com/jquery-continuous-calendar/#api_documentation",
-  "download"    : "https://github.com/reaktor/jquery-continuous-calendar/archive/3.0.2.zip",
+  "download"    : "https://github.com/reaktor/jquery-continuous-calendar/archive/3.0.3.zip",
   "dependencies": {
     "jquery": ">=1.5"
   }
