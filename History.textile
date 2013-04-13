@@ -1,5 +1,7 @@
 h3. Nightly
 
+h3. 3.0.2
+
 * Modify tinyscrollbar plugin: Stop options leaking as global variable, trigger scroll event also from wheel event 
 
 h3. 3.0.1
