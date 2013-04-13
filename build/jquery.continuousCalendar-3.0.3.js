@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '3.0.2';$.continuousCalendar.released = '2013-04-13'
+$.continuousCalendar = {};$.continuousCalendar.version = '3.0.3';$.continuousCalendar.released = '2013-04-13'
 ;
 (function(root, factory) {
   if(typeof define === "function" && define.amd) {
