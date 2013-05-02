@@ -26,6 +26,9 @@ java -jar yuicompressor-2.4.6.jar --type js $LATEST_JS -o $LATEST_JS_MIN
 cp src/main/jquery.continuousCalendar.css $LATEST_CSS
 echo "Compressing css..."
 java -jar yuicompressor-2.4.6.jar --type css $LATEST_CSS -o $LATEST_CSS_MIN
+#TODO create js documentation
+#/usr/local/share/npm/lib/node_modules/doxx/bin/doxx --source ./src/main --target ./docs
+
 if [ "$version" = "" ]
 then
 	echo "Version information not found. Type ./release.sh <version>" 
