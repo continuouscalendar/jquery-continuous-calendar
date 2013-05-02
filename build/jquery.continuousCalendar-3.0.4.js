@@ -1,4 +1,4 @@
-$.continuousCalendar = {};$.continuousCalendar.version = '3.0.3';$.continuousCalendar.released = '2013-04-13'
+$.continuousCalendar = {};$.continuousCalendar.version = '3.0.4';$.continuousCalendar.released = '2013-05-02'
 ;
 (function(root, factory) {
   if(typeof define === "function" && define.amd) {
@@ -15,8 +15,10 @@ $.continuousCalendar = {};$.continuousCalendar.version = '3.0.3';$.continuousCal
     else throw Error('None of supported parameters was used for constructor: ' + Array.prototype.slice.call(arguments).join(', '))
 
     function createSafeDate(year, month, date, hours, minutes, seconds) {
+      hours = hours || 0
+      minutes = minutes || 0
       seconds = seconds || 0
-      var newDate = new Date(year, month, date, hours, minutes, seconds || 0, 0)
+      var newDate = new Date(year, month, date, hours, minutes, seconds, 0)
       if(newDate.toString() == 'Invalid Date' ||
         month != newDate.getMonth() ||
         year != newDate.getFullYear() ||
