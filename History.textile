@@ -1,5 +1,15 @@
 h3. Nightly
 
+-
+
+h3. 3.0.4
+
+* Set hour, minutes and seconds to 0 when not specified for DateTime constructor
+
+h3. 3.0.3
+
+* Update manifest file for jquery plugins site indexing
+
 h3. 3.0.2
 
 * Modify tinyscrollbar plugin: Stop options leaking as global variable, trigger scroll event also from wheel event 

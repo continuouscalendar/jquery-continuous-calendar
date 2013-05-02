@@ -14,8 +14,10 @@
     else throw Error('None of supported parameters was used for constructor: ' + Array.prototype.slice.call(arguments).join(', '))
 
     function createSafeDate(year, month, date, hours, minutes, seconds) {
+      hours = hours || 0
+      minutes = minutes || 0
       seconds = seconds || 0
-      var newDate = new Date(year, month, date, hours, minutes, seconds || 0, 0)
+      var newDate = new Date(year, month, date, hours, minutes, seconds, 0)
       if(newDate.toString() == 'Invalid Date' ||
         month != newDate.getMonth() ||
         year != newDate.getFullYear() ||
