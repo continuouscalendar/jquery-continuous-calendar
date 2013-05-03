@@ -20,7 +20,7 @@ define(function(require) {
         var currentDate = new Date()
         currentDate.setMilliseconds(0)
         it('with empty arguments', function() {
-          expect(new DateTime().withResetMS().getTime()).toEqual(currentDate.getTime())
+          expect(new DateTime().withResetMS().getTime()).toEqualRoughly(currentDate.getTime(), 1000)
         })
 
         it('with string', function() {
@@ -154,8 +154,8 @@ define(function(require) {
 
         describe('withTime', function() {
           it('should update only time and reset seconds and milliseconds', function() {
-            expect(dateTimeWithMS.withTime(10, 30).toString()).toEqual(new DateTime(2010, 3, 3, 10, 30).toString())
-            expect(dateTimeWithMS.withTime('11:30').toString()).toEqual(new DateTime(2010, 3, 3, 11, 30).toString())
+            expect(dateTimeWithMS.withTime(10, 30)).toCompareWith(new DateTime(2010, 3, 3, 10, 30))
+            expect(dateTimeWithMS.withTime('11:30')).toCompareWith(new DateTime(2010, 3, 3, 11, 30))
           })
         })
 

@@ -17,6 +17,7 @@ define(function(require) {
     toPrintDefiningDurationOf: function(duration_str, locale) { return DateFormat.formatDefiningRangeDuration(this.actual, locale) == duration_str },
     toCompareWith: function(expected) {
       return this.actual.compareTo(expected) === 0
-    }
+    },
+    toEqualRoughly: function(expected, tolerance) { return this.actual <= expected + tolerance && this.actual >= expected - tolerance }
   }
 })
