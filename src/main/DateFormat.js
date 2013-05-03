@@ -58,7 +58,7 @@
 
   DateFormat.escape = function(string) { return string.replace(/('|\\)/g, "\\$1") }
 
-  DateFormat.parse = function(input, locale) {
+  DateFormat.parse = function(input) {
     if(input == 'today') {
       return DateTime.now()
     }
@@ -66,7 +66,7 @@
     if(isNaN(date.getTime())) {
       throw Error('Could not parse date from "' + input + '"')
     }
-    return new DateTime(date, locale)
+    return new DateTime(date)
   }
 
   DateFormat.patterns = {
