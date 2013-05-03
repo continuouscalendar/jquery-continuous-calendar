@@ -1,6 +1,6 @@
 h3. Nightly
 
--
+* Improve DateTime constructor
 
 h3. 3.0.4
 
