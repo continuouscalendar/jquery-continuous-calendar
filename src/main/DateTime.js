@@ -10,21 +10,21 @@
     if(arguments.length == 0) this.date = new Date()
     else if(year instanceof Date) this.date = new Date(year.getTime())
     else if(typeof year == 'string') this.date = new Date(year)
-    else if(typeof year == 'number') this.date = createSafeDate(year, month - 1, date, hours, minutes, seconds)
+    else if(typeof year == 'number') this.date = createSafeDate(+year, +month, +date, +hours, +minutes, +seconds)
     else throw Error('None of supported parameters was used for constructor: ' + Array.prototype.slice.call(arguments).join(', '))
 
     function createSafeDate(year, month, date, hours, minutes, seconds) {
       hours = hours || 0
       minutes = minutes || 0
       seconds = seconds || 0
-      var newDate = new Date(year, month, date, hours, minutes, seconds, 0)
+      var newDate = new Date(year, month -1, date, hours, minutes, seconds, 0)
       if(newDate.toString() == 'Invalid Date' ||
-        month != newDate.getMonth() ||
+        month != newDate.getMonth() + 1 ||
         year != newDate.getFullYear() ||
         date != newDate.getDate() ||
         hours != newDate.getHours() ||
         minutes != newDate.getMinutes() ||
-        seconds != newDate.getSeconds()) throw Error('Invalid Date: ' + year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds)
+        seconds != newDate.getSeconds()) throw Error('Invalid Date: ' + year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds)
       return  newDate
     }
   }

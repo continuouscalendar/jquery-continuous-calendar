@@ -32,7 +32,7 @@ define(function(require) {
         })
 
         it('throws errors on invalid values', function() {
-          expect(function() {new DateTime(2012, 12, 29, 11, 45, 60)}).toThrow('Invalid Date: 2012/11/29 11:45:60')
+          expect(function() {new DateTime(2012, 12, 29, 11, 45, 60)}).toThrow('Invalid Date: 2012-12-29 11:45:60')
         })
       })
 
@@ -88,8 +88,8 @@ define(function(require) {
           })
 
           it('throws errors on invalid values', function() {
-            expect(fromDateTime.wrap(2010, 1, 1, 25, 0)).toThrow('Invalid Date: 2010/0/1 25:0:0')
-            expect(fromDateTime.wrap(2010, 1, 1, 23, 60)).toThrow('Invalid Date: 2010/0/1 23:60:0')
+            expect(fromDateTime.wrap(2010, 1, 1, 25, 0)).toThrow('Invalid Date: 2010-1-1 25:0:0')
+            expect(fromDateTime.wrap(2010, 1, 1, 23, 60)).toThrow('Invalid Date: 2010-1-1 23:60:0')
           })
         })
 
@@ -99,10 +99,10 @@ define(function(require) {
           })
 
           it('throws errors on invalid values', function() {
-            expect(fromDate.wrap(2010, 'lol', 3)).toThrow('Invalid Date: 2010/NaN/3 0:0:0')
-            expect(fromDate.wrap(2010, 14, 3)).toThrow('Invalid Date: 2010/13/3 0:0:0')
-            expect(fromDate.wrap(2010, 0, 3)).toThrow('Invalid Date: 2010/-1/3 0:0:0')
-            expect(fromDate.wrap(2010, 4, 32)).toThrow('Invalid Date: 2010/3/32 0:0:0')
+            expect(fromDate.wrap(2010, 'lol', 3)).toThrow('Invalid Date: 2010-NaN-3 0:0:0')
+            expect(fromDate.wrap(2010, 14, 3)).toThrow('Invalid Date: 2010-14-3 0:0:0')
+            expect(fromDate.wrap(2010, 0, 3)).toThrow('Invalid Date: 2010-0-3 0:0:0')
+            expect(fromDate.wrap(2010, 4, 32)).toThrow('Invalid Date: 2010-4-32 0:0:0')
           })
         })
         describe('fromDateObject', function() {
