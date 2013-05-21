@@ -1,11 +1,5 @@
-;
-(function(root, factory) {
-  if(typeof define === 'function' && define.amd) {
-    define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime'], factory)
-  } else {
-    root.CalendarBody = factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime)
-  }
-})(this, function($, DateFormat, DateLocale, DateRange, DateTime) {
+define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime'],
+  function($, DateFormat, DateLocale, DateRange, DateTime) {
   return function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
     var dateCellMap = {}
     var dateCellDates = []

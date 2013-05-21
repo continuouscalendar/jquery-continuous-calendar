@@ -1,11 +1,4 @@
-;
-(function(root, factory) {
-  if(typeof define === "function" && define.amd) {
-    define(["jquery", "./DateTime", "./DateFormat"], factory)
-  } else {
-    root.DateRange = factory(root.jQuery, root.DateTime, root.DateFormat)
-  }
-})(this, function($, DateTime, DateFormat) {
+define(["jquery", "./DateTime", "./DateFormat"], function($, DateTime, DateFormat) {
   function DateRange(date1, date2) {
     if(!date1 || !date2) {
       throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)

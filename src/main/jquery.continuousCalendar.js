@@ -1,11 +1,5 @@
-;
-(function(root, factory) {
-  if(typeof define === 'function' && define.amd) {
-    define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime', './CalendarBody', './RangeEvents', 'jquery.tinyscrollbar'], factory)
-  } else {
-    factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime, root.CalendarBody, RangeEvents)
-  }
-})(this, function($, DateFormat, DateLocale, DateRange, DateTime, CalendarBody, RangeEvents) {
+define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime', './CalendarBody', './RangeEvents', 'jquery.tinyscrollbar'],
+ function($, DateFormat, DateLocale, DateRange, DateTime, CalendarBody, RangeEvents) {
   $.continuousCalendar = {
     version: typeof VERSION != 'undefined' ? VERSION : 'nightly',
     released: typeof RELEASED != 'undefined' ? RELEASED : 'nightly'

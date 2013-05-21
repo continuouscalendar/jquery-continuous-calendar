@@ -1,11 +1,4 @@
-;
-(function(root, factory) {
-  if(typeof define === "function" && define.amd) {
-    define(["jquery"], factory)
-  } else {
-    root.DateTime = factory(root.jQuery)
-  }
-})(this, function($) {
+define(["jquery"], function($) {
   var DateTime = function(year, month, date, hours, minutes, seconds) {
     if(arguments.length == 0) this.date = new Date()
     else if(year instanceof Date) this.date = new Date(year.getTime())
