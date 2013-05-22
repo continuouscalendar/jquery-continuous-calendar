@@ -1,5 +1,10 @@
-define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime'],
-  function($, DateFormat, DateLocale, DateRange, DateTime) {
+define(function(require) {
+  var $ = require('jquery')
+  var DateFormat = require('./DateFormat')
+  var DateLocale = require('./DateLocale')
+  var DateRange = require('./DateRange')
+  var DateTime = require('./DateTime')
+
   return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendarRange, setStartField, setEndField, calendar, formatDate, startDate, endDate, disabledDatesList) {
     var mouseDownDate = null
     var selection

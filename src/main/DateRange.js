@@ -1,4 +1,8 @@
-define(["jquery", "./DateTime", "./DateFormat"], function($, DateTime, DateFormat) {
+define(function(require) {
+  var $ = require('jquery')
+  var DateTime = require('./DateTime')
+  var DateFormat = require('./DateFormat')
+
   function DateRange(date1, date2) {
     if(!date1 || !date2) {
       throw('two dates must be specified, date1=' + date1 + ', date2=' + date2)

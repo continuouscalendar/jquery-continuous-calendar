@@ -1,4 +1,7 @@
-define(["./DateTime", "./DateFormat"], function(DateTime, DateFormat) {
+define(function(require) {
+  var DateTime = require('./DateTime')
+  var DateFormat = require('./DateFormat')
+
   var DateLocale = {
     FI: {
       id             : 'FI',

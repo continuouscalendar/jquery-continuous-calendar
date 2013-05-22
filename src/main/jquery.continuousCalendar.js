@@ -1,5 +1,13 @@
-define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime', './CalendarBody', './RangeEvents', 'jquery.tinyscrollbar'],
- function($, DateFormat, DateLocale, DateRange, DateTime, CalendarBody, RangeEvents) {
+define(function(require) {
+  var $ = require('jquery')
+  var DateFormat = require('./DateFormat')
+  var DateLocale = require('./DateLocale')
+  var DateRange = require('./DateRange')
+  var DateTime = require('./DateTime')
+  var CalendarBody = require('./CalendarBody')
+  var RangeEvents = require('./RangeEvents')
+  require('jquery.tinyscrollbar')
+
   $.continuousCalendar = {
     version: typeof VERSION != 'undefined' ? VERSION : 'nightly',
     released: typeof RELEASED != 'undefined' ? RELEASED : 'nightly'

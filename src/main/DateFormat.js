@@ -1,4 +1,6 @@
-define(["./DateTime"],  function(DateTime) {
+define(function(require) {
+  var DateTime = require('./DateTime')
+
   var DateFormat = {}
   DateFormat.parseFunctions = {count: 0}
   DateFormat.parseRegexes = []

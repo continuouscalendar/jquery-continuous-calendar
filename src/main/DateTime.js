@@ -1,4 +1,6 @@
-define(["jquery"], function($) {
+define(function(require) {
+  var $ = require('jquery')
+
   var DateTime = function(year, month, date, hours, minutes, seconds) {
     if(arguments.length == 0) this.date = new Date()
     else if(year instanceof Date) this.date = new Date(year.getTime())
