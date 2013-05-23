@@ -4,7 +4,7 @@
   name    : '../lib/almond',
   include: ['jquery.continuousCalendar'],
   insertRequire: ['jquery.continuousCalendar'],
-  out     : '../../build/jquery.continuousCalendar-latest.js',
+  out     : '../../build/jquery.continuousCalendar-latest-min.js',
   urlArgs : undefined,
   paths   : {
     jquery                : 'jqueryStub',
