@@ -11,7 +11,7 @@
     'jquery.tinyscrollbar': 'jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'
   },
   wrap:{
-    startFile:'wrapStart.js',
-    endFile:'wrapEnd.js'
+    startFile:'wrapStart.frag',
+    endFile:'wrapEnd.frag'
   }
 })
