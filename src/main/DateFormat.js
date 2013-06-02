@@ -1,11 +1,6 @@
-;
-(function(root, factory) {
-  if(typeof define === "function" && define.amd) {
-    define(["./DateTime"], factory)
-  } else {
-    root.DateFormat = factory(root.DateTime)
-  }
-})(this, function(DateTime) {
+define(function(require) {
+  var DateTime = require('./DateTime')
+
   var DateFormat = {}
   DateFormat.parseFunctions = {count: 0}
   DateFormat.parseRegexes = []

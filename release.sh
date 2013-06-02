@@ -1,8 +1,6 @@
 #!/bin/bash
 BUILD_PREFIX=build/jquery.continuousCalendar
-LATEST_JS=$BUILD_PREFIX-latest.js
 LATEST_JS_MIN=$BUILD_PREFIX-latest-min.js
-LATEST_CSS=$BUILD_PREFIX-latest.css
 LATEST_CSS_MIN=$BUILD_PREFIX-latest-min.css
 current_dir=$(pwd)
 cd $(dirname $0)
@@ -12,26 +10,16 @@ version=$1
 compass compile -c config.rb
 rm build/*latest*
 [ "$version" != "" -a ! -f $BUILD_PREFIX-$version.js ] && rm build/*
-echo "$.continuousCalendar = {};$.continuousCalendar.version = '$version';$.continuousCalendar.released = '`date '+%Y-%m-%d'`'">$LATEST_JS
-cat src/main/DateTime.js   >>$LATEST_JS
-cat src/main/DateFormat.js >>$LATEST_JS
-cat src/main/DateLocale.js >>$LATEST_JS
-cat src/main/DateRange.js  >>$LATEST_JS
-cat src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar.js  >>$LATEST_JS
-cat src/main/CalendarBody.js  >>$LATEST_JS
-cat src/main/RangeEvents.js  >>$LATEST_JS
-cat src/main/jquery.continuousCalendar.js >>$LATEST_JS
 echo "Compressing js..."
-java -jar yuicompressor-2.4.6.jar --type js $LATEST_JS -o $LATEST_JS_MIN
-cp src/main/jquery.continuousCalendar.css $LATEST_CSS
+bundle() { node src/lib/r-2.1.2.js -o src/main/build.js uglify.defines.VERSION=string,$version uglify.defines.RELEASED=string,`date '+%Y-%m-%d'` $*; }
+bundle out=$LATEST_JS_MIN
 echo "Compressing css..."
-java -jar yuicompressor-2.4.6.jar --type css $LATEST_CSS -o $LATEST_CSS_MIN
+java -jar yuicompressor-2.4.6.jar --type css src/main/jquery.continuousCalendar.css -o $LATEST_CSS_MIN
 #TODO create js documentation
 #/usr/local/share/npm/lib/node_modules/doxx/bin/doxx --source ./src/main --target ./docs
-
 if [ "$version" = "" ]
 then
-	echo "Version information not found. Type ./release.sh <version>" 
+	echo "Version information not found. Type ./release.sh <version>"
 	echo "Previous version was $old_version"
 else
 	if [ -f $BUILD_PREFIX-$version.js ]
@@ -40,11 +28,11 @@ else
 		echo "Previous version was $old_version"
 	else
 		echo "Creating version $version"
-		cp $LATEST_JS $BUILD_PREFIX-$version.js
-		cp $LATEST_CSS $BUILD_PREFIX-$version.css
 		cp $LATEST_JS_MIN $BUILD_PREFIX-$version-min.js
 		cp $LATEST_CSS_MIN $BUILD_PREFIX-$version-min.css
+		sed  -i '' -E "s/(\"version\".*:.*\").*(\".*)/\1$version\2/g" continuousCalendar.jquery.json
 		git add -A build
+		git add continuousCalendar.jquery.json
 		git commit -m "Build for version $version"
 		git tag $version
 		git status
@@ -55,4 +43,3 @@ else
 	fi
 fi
 cd $current_dir
-

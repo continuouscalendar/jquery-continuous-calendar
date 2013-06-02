@@ -1,11 +1,10 @@
-;
-(function(root, factory) {
-  if(typeof define === 'function' && define.amd) {
-    define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime'], factory)
-  } else {
-    root.RangeEvents = factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime)
-  }
-})(this, function($, DateFormat, DateLocale, DateRange, DateTime) {
+define(function(require) {
+  var $ = require('jquery')
+  var DateFormat = require('./DateFormat')
+  var DateLocale = require('./DateLocale')
+  var DateRange = require('./DateRange')
+  var DateTime = require('./DateTime')
+
   return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendarRange, setStartField, setEndField, calendar, formatDate, startDate, endDate, disabledDatesList) {
     var mouseDownDate = null
     var selection

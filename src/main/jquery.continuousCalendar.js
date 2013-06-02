@@ -1,11 +1,17 @@
-;
-(function(root, factory) {
-  if(typeof define === 'function' && define.amd) {
-    define(['jquery', './DateFormat', './DateLocale', './DateRange', './DateTime', './CalendarBody', './RangeEvents', 'jquery.tinyscrollbar'], factory)
-  } else {
-    factory(root.jQuery, root.DateFormat, root.DateLocale, root.DateRange, root.DateTime, root.CalendarBody, RangeEvents)
+define(function(require) {
+  var $ = require('jquery')
+  var DateFormat = require('./DateFormat')
+  var DateLocale = require('./DateLocale')
+  var DateRange = require('./DateRange')
+  var DateTime = require('./DateTime')
+  var CalendarBody = require('./CalendarBody')
+  var RangeEvents = require('./RangeEvents')
+  require('jquery.tinyscrollbar')
+
+  $.continuousCalendar = {
+    version: typeof VERSION != 'undefined' ? VERSION : 'nightly',
+    released: typeof RELEASED != 'undefined' ? RELEASED : 'nightly'
   }
-})(this, function($, DateFormat, DateLocale, DateRange, DateTime, CalendarBody, RangeEvents) {
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })
     function _continuousCalendar(options) {

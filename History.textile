@@ -1,6 +1,13 @@
 h3. Nightly
 
+-
+
+h3. 4.0.0
+
 * Improve DateTime constructor
+* Support non-AMD usage only by using bundles
+* Stop providing non-minified version of js and css bundle
+* Include almond.js in bundle 
 
 h3. 3.0.4
 

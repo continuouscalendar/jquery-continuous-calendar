@@ -22431,7 +22431,7 @@ define('build', function (require) {
             prop = ary[i].substring(0, separatorIndex);
 
             //Convert to array if necessary
-            if (getOwn(needArray, prop)) {
+            if (value.indexOf(",")>=0) {
                 value = value.split(",");
             }
 

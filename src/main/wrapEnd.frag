@@ -1,0 +1,8 @@
+require('jquery.continuousCalendar')
+window.DateFormat = require('DateFormat')
+window.DateLocale = require('DateLocale')
+window.DateTime = require('DateTime')
+window.DateRange = require('DateRange')
+window.CalendarBody = require('CalendarBody')
+window.RangeEvents = require('RangeEvents')
+})(window)

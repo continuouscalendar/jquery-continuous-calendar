@@ -1,11 +1,7 @@
-;
-(function(root, factory) {
-  if(typeof define === "function" && define.amd) {
-    define(["./DateTime", "./DateFormat"], factory)
-  } else {
-    root.DateLocale = factory(root.DateTime, root.DateFormat)
-  }
-})(this, function(DateTime, DateFormat) {
+define(function(require) {
+  var DateTime = require('./DateTime')
+  var DateFormat = require('./DateFormat')
+
   var DateLocale = {
     FI: {
       id             : 'FI',
