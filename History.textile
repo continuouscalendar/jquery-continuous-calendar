@@ -1,6 +1,7 @@
 h3. Nightly
 
--
+* Extract single date behavior to separate module
+* Extract translations to separate modules
 
 h3. 4.0.0
 
