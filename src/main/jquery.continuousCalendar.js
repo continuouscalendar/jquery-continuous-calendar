@@ -129,9 +129,9 @@ define(function(require) {
       }
 
       function dateBehaviour(isRange) {
-        return isRange ? RangeEvents(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, endDate,
-          calendarRange, setStartField, setEndField, formatDate, disabledDatesList) :
-          SingleDateEvents(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate)
+        var basicParams = [container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate]
+        var rangeParams = [endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList]
+        return isRange ? RangeEvents.apply(null, basicParams.concat(rangeParams)) : SingleDateEvents.apply(null, basicParams)
       }
 
       function popUpBehaviour(isPopup) {
