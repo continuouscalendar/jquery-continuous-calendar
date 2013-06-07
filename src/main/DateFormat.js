@@ -130,56 +130,32 @@ define(function(require) {
   }
 
   DateFormat.getFormatCode = function(character) {
-    switch(character) {
-      case "d":
-        return "DateFormat.leftPad(this.getDate(), 2, '0') + "
-      case "D":
-        return "locale.shortDayNames[this.getDay()] + "
-      case "j":
-        return "this.getDate() + "
-      case "l":
-        return "locale.dayNames[this.getDay()] + "
-      case "w":
-        return "this.getDay() + "
-      case "z":
-        return "this.getDayInYear() + "
-      case "F":
-        return "locale.monthNames[this.getMonth()-1] + "
-      case "m":
-        return "DateFormat.leftPad(this.getMonth(), 2, '0') + "
-      case "M":
-        return "locale.monthNames[this.getMonth()-1].substring(0, 3) + "
-      case "n":
-        return "(this.getMonth()) + "
-      case "t":
-        return "this.getDaysInMonth() + "
-      case "Y":
-        return "this.getFullYear() + "
-      case "y":
-        return "('' + this.getFullYear()).substring(2, 4) + "
-      case "a":
-        return "(this.getHours() < 12 ? 'am' : 'pm') + "
-      case "A":
-        return "(this.getHours() < 12 ? 'AM' : 'PM') + "
-      case "g":
-        return "((this.getHours() %12) ? this.getHours() % 12 : 12) + "
-      case "G":
-        return "this.getHours() + "
-      case "h":
-        return "DateFormat.leftPad((this.getHours() %12) ? this.getHours() % 12 : 12, 2, '0') + "
-      case "H":
-        return "DateFormat.leftPad(this.getHours(), 2, '0') + "
-      case "i":
-        return "DateFormat.leftPad(this.getMinutes(), 2, '0') + "
-      case "s":
-        return "DateFormat.leftPad(this.getSeconds(), 2, '0') + "
-      case "O":
-        return "DateFormat.getGMTOffset(this) + "
-      case "Z":
-        return "(this.getTimezoneOffset() * -60) + "
-      default:
-        return "'" + DateFormat.escape(character) + "' + "
+    var codes = {
+      d: "DateFormat.leftPad(this.getDate(), 2, '0') + ",
+      D: "locale.shortDayNames[this.getDay()] + ",
+      j: "this.getDate() + ",
+      l: "locale.dayNames[this.getDay()] + ",
+      w: "this.getDay() + ",
+      z: "this.getDayInYear() + ",
+      F: "locale.monthNames[this.getMonth()-1] + ",
+      m: "DateFormat.leftPad(this.getMonth(), 2, '0') + ",
+      M: "locale.monthNames[this.getMonth()-1].substring(0, 3) + ",
+      n: "(this.getMonth()) + ",
+      t: "this.getDaysInMonth() + ",
+      Y: "this.getFullYear() + ",
+      y: "('' + this.getFullYear()).substring(2, 4) + ",
+      a: "(this.getHours() < 12 ? 'am' : 'pm') + ",
+      A: "(this.getHours() < 12 ? 'AM' : 'PM') + ",
+      g: "((this.getHours() %12) ? this.getHours() % 12 : 12) + ",
+      G: "this.getHours() + ",
+      h: "DateFormat.leftPad((this.getHours() %12) ? this.getHours() % 12 : 12, 2, '0') + ",
+      H: "DateFormat.leftPad(this.getHours(), 2, '0') + ",
+      i: "DateFormat.leftPad(this.getMinutes(), 2, '0') + ",
+      s: "DateFormat.leftPad(this.getSeconds(), 2, '0') + ",
+      O: "DateFormat.getGMTOffset(this) + ",
+      Z: "(this.getTimezoneOffset() * -60) + "
     }
+    return character in codes ? codes[character] : "'" + DateFormat.escape(character) + "' + "
   }
   return DateFormat
 })
