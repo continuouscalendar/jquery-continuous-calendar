@@ -5,7 +5,7 @@ define(function(require) {
   var DateRange = require('./DateRange')
   var DateTime = require('./DateTime')
 
-  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendarRange, setStartField, setEndField, calendar, formatDate, startDate, endDate, disabledDatesList) {
+  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList) {
     var mouseDownDate = null
     var selection
     var oldSelection
