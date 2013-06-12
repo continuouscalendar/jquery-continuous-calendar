@@ -45,7 +45,7 @@ define(function(require) {
       executeCallback(selection)
     }
 
-    function setInitialSelection() { selection = startDate && endDate ? new DateRange(startDate, endDate, locale) : DateRange.emptyRange(locale) }
+    function setInitialSelection() { selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange() }
 
     function initRangeCalendarEvents(container, bodyTable) {
       $('span.rangeLengthLabel', container).text(locale.daysLabel(selection.days()))
