@@ -1,6 +1,4 @@
 define(function(require) {
-  var DateTime = require('./DateTime')
-  var DateFormat = require('./DateFormat')
   var FI = require('./locale/FI')
   var EN = require('./locale/EN')
   var AU = require('./locale/AU')

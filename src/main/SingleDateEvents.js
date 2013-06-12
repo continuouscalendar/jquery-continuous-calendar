@@ -1,4 +1,5 @@
 define(function(require) {
+  var $ = require('jquery')
   var DateFormat = require('./DateFormat')
 
   return function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate) {
@@ -36,6 +37,5 @@ define(function(require) {
     }
 
     function setDateLabel(val) { $('span.startDateLabel', container).text(val) }
-
   }
 })

@@ -1,7 +1,6 @@
 define(function(require) {
   var $ = require('jquery')
   var DateFormat = require('./DateFormat')
-  var DateLocale = require('./DateLocale')
   var DateRange = require('./DateRange')
   var DateTime = require('./DateTime')
 
