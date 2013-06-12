@@ -1,6 +1,6 @@
 define(function(require) {
   var DateTime = require('../main/DateTime')
-  var util = require('./TestUtils')
+  var util = require('./testUtils')
   var __ = util.__
   var sequence = util.sequence
 
