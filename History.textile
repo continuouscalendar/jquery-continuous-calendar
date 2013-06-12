@@ -2,6 +2,10 @@ h3. Nightly
 
 -
 
+h3. 4.1.1
+
+* Fix dependency issues
+
 h3. 4.1.0 
 
 * Extract single date behavior to separate module
