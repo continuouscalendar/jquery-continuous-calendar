@@ -95,12 +95,12 @@ define(function(require) {
 
       function determineRangeToRenderFormParams(params) {
         var firstWeekdayOfGivenDate = (startDate || DateTime.now()).getFirstDateOfWeek(locale)
-        var firstDate = params.firstDate
-        var lastDate = params.lastDate
-        var rangeStart = firstDate ? DateFormat.parse(firstDate, locale) : firstWeekdayOfGivenDate.minusDays(params.weeksBefore * 7)
-        var rangeEnd = lastDate ? DateFormat.parse(lastDate, locale) : firstWeekdayOfGivenDate.plusDays(params.weeksAfter * 7 + 6)
+        var rangeStart = dateOrWeek(params.firstDate, -params.weeksBefore * 7)
+        var rangeEnd = dateOrWeek(params.lastDate, params.weeksAfter * 7 + 6)
 
         return  new DateRange(rangeStart, rangeEnd)
+
+        function dateOrWeek(date, week) { return date ? DateFormat.parse(date, locale) : firstWeekdayOfGivenDate.plusDays(week)}
       }
 
       function bindScrollEvent() {
@@ -150,6 +150,27 @@ define(function(require) {
             label.click(toggleCalendar)
           }
         }
+
+        function toggleCalendar() {
+          initCalendarTable()
+          if(calendarContainer.is(':visible')) {
+            calendarContainer.fadeOut(params.fadeOutDuration)
+            $(document).unbind('click.continuousCalendar')
+          } else {
+            calendarContainer.show()
+            if(beforeFirstOpening) {
+              initScrollBar()
+              calculateCellHeight()
+              setYearLabel()
+              beforeFirstOpening = false
+            }
+            scrollToSelection()
+            $(document).bind('click.continuousCalendar', toggleCalendar)
+
+          }
+          return false
+        }
+
         var inlineVersion = {
           initUI               : initCalendarTable,
           initState            : calculateCellHeightAndInitScroll,
@@ -211,26 +232,6 @@ define(function(require) {
       }
 
       function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.height() / $('tr', calendarBody.bodyTable).size(), 10) }
-
-      function toggleCalendar() {
-        initCalendarTable()
-        if(calendarContainer.is(':visible')) {
-          calendarContainer.fadeOut(params.fadeOutDuration)
-          $(document).unbind('click.continuousCalendar')
-        } else {
-          calendarContainer.show()
-          if(beforeFirstOpening) {
-            initScrollBar()
-            calculateCellHeight()
-            setYearLabel()
-            beforeFirstOpening = false
-          }
-          scrollToSelection()
-          $(document).bind('click.continuousCalendar', toggleCalendar)
-
-        }
-        return false
-      }
 
       function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null }
 
