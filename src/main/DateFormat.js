@@ -108,9 +108,9 @@ define(function(require) {
   }
 
   DateFormat.createNewFormat = function(dateTime, format, locale) {
-    var funcName = "format" + DateFormat.formatFunctions.count++
+    var funcName = 'format' + DateFormat.formatFunctions.count++
     DateFormat.formatFunctions[format] = funcName
-    var code = "DateTime.prototype." + funcName + " = function(){return "
+    var code = 'DateTime.prototype.' + funcName + ' = function(){return '
     var special = false
     var ch = ''
     for(var i = 0; i < format.length; ++i) {
@@ -126,13 +126,13 @@ define(function(require) {
         }
       }
     }
-    eval(code.substring(0, code.length - 3) + ";}")
+    eval(code.substring(0, code.length - 3) + ';}')
   }
 
   DateFormat.getFormatCode = function(character) {
     var codes = {
       d: "DateFormat.leftPad(this.getDate(), 2, '0') + ",
-      D: "locale.shortDayNames[this.getDay()] + ",
+      D: 'locale.shortDayNames[this.getDay()] + ',
       j: "this.getDate() + ",
       l: "locale.dayNames[this.getDay()] + ",
       w: "this.getDay() + ",

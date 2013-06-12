@@ -204,12 +204,12 @@ define(function(require) {
   DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.now()) }
 
   DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
-    if(weekNumberingSystem != "US" && weekNumberingSystem != "ISO") {
-      throw("Week numbering system must be either US or ISO, was " + weekNumberingSystem)
+    if(weekNumberingSystem != 'US' && weekNumberingSystem != 'ISO') {
+      throw('Week numbering system must be either US or ISO, was ' + weekNumberingSystem)
     }
 
     var firstDay = new Date(this.getFullYear(), 0, 1).getDay()
-    if(weekNumberingSystem == "US") {
+    if(weekNumberingSystem == 'US') {
       return Math.ceil((this.getDayInYear() + firstDay) / 7)
     }
     var THU = 4
