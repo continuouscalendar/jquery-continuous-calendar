@@ -1,6 +1,6 @@
 h3. Nightly
 
--
+* Fix issue #57 by replacing setInterval with setTimeout for scroll throttling
 
 h3. 4.1.1
 

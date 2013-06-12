@@ -10,7 +10,7 @@ define(function(require) {
   require('jquery.tinyscrollbar')
 
   $.continuousCalendar = {
-    version: typeof VERSION != 'undefined' ? VERSION : 'nightly',
+    version : typeof VERSION != 'undefined' ? VERSION : 'nightly',
     released: typeof RELEASED != 'undefined' ? RELEASED : 'nightly'
   }
   $.fn.continuousCalendar = function(options) {
@@ -108,17 +108,15 @@ define(function(require) {
           if(!customScrollContainer) initScrollBar()
           customScrollContainer.bind('scroll', setYearLabel)
         } else {
-          var didScroll = false
+          var waiting = false
           calendarBody.scrollContent.scroll(function() {
-            didScroll = true
-          })
-
-          setInterval(function() {
-            if(didScroll) {
-              didScroll = false
+            if(waiting) return
+            setTimeout(function() {
+              waiting = false
               setYearLabel()
-            }
-          }, 250)
+            }, 250)
+            waiting = true
+          })
         }
       }
 
