@@ -4,7 +4,8 @@ define(function(require) {
   var DateRange = require('./DateRange')
   var DateTime = require('./DateTime')
 
-  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList) {
+  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate,
+                  endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList) {
     var mouseDownDate = null
     var selection
     var oldSelection
@@ -17,23 +18,31 @@ define(function(require) {
 
     return {
       showInitialSelection: setRangeLabels,
-      initEvents          : function() {
-        setInitialSelection()
-        oldSelection = selection.clone()
-        initRangeCalendarEvents(container, calendarBody.bodyTable)
-        drawSelection()
-      },
-      addRangeLengthLabel : function() {
-        if($('.rangeLengthLabel', container).isEmpty()) {
-          var rangeLengthContainer = $('<div class="label"><span class="rangeLengthLabel"></span></div>')
-          $('.continuousCalendar', container).append(rangeLengthContainer)
-        }
-      },
-      addEndDateLabel     : function(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') },
-      performTrigger      : function() {
-        container.data('calendarRange', selection)
-        executeCallback(selection)
+      initEvents          : initEvents,
+      addRangeLengthLabel : addRangeLengthLabel,
+      addEndDateLabel     : addEndDateLabel,
+      performTrigger      : performTrigger
+    }
+
+    function initEvents() {
+      setInitialSelection()
+      oldSelection = selection.clone()
+      initRangeCalendarEvents(container, calendarBody.bodyTable)
+      drawSelection()
+    }
+
+    function addRangeLengthLabel() {
+      if($('.rangeLengthLabel', container).isEmpty()) {
+        var rangeLengthContainer = $('<div class="label"><span class="rangeLengthLabel"></span></div>')
+        $('.continuousCalendar', container).append(rangeLengthContainer)
       }
+    }
+
+    function addEndDateLabel(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') }
+
+    function performTrigger() {
+      container.data('calendarRange', selection)
+      executeCallback(selection)
     }
 
     function setInitialSelection() { selection = startDate && endDate ? new DateRange(startDate, endDate, locale) : DateRange.emptyRange(locale) }

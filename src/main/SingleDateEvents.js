@@ -4,22 +4,26 @@ define(function(require) {
 
   return function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate) {
     return {
-      showInitialSelection: function() {
-        if(startDate) setDateLabel(DateFormat.format(startDate, locale.weekDateFormat, locale))
-      },
-      initEvents          : function() {
-        initSingleDateCalendarEvents()
-        var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd', locale)
-        if(selectedDateKey in calendarBody.dateCellMap) {
-          calendarBody.getDateCell(calendarBody.dateCellMap[selectedDateKey]).addClass('selected')
-        }
-      },
+      showInitialSelection: showInitialSelection,
+      initEvents          : initEvents,
       addRangeLengthLabel : $.noop,
       addEndDateLabel     : $.noop,
-      performTrigger      : function() {
-        container.data('calendarRange', startDate)
-        executeCallback(startDate)
+      performTrigger      : performTrigger
+    }
+
+    function showInitialSelection() { if(startDate) setDateLabel(DateFormat.format(startDate, locale.weekDateFormat, locale)) }
+
+    function initEvents() {
+      initSingleDateCalendarEvents()
+      var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd', locale)
+      if(selectedDateKey in calendarBody.dateCellMap) {
+        calendarBody.getDateCell(calendarBody.dateCellMap[selectedDateKey]).addClass('selected')
       }
+    }
+
+    function performTrigger() {
+      container.data('calendarRange', startDate)
+      executeCallback(startDate)
     }
 
     function initSingleDateCalendarEvents() {
