@@ -1,6 +1,11 @@
 h3. Nightly
 
+-
+
+h3. 4.2.0
+
 * Fix issue #57 by replacing setInterval with setTimeout for scroll throttling
+* Add language support for Latvian
 
 h3. 4.1.1
 
