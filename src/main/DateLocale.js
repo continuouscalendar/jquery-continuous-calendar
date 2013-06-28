@@ -1,15 +1,17 @@
 define(function(require) {
-  var FI = require('./locale/FI')
-  var EN = require('./locale/EN')
   var AU = require('./locale/AU')
+  var EN = require('./locale/EN')
   var ET = require('./locale/ET')
+  var FI = require('./locale/FI')
+  var LV = require('./locale/LV')
   var RU = require('./locale/RU')
   var SV = require('./locale/SV')
   var DateLocale = {
-    FI: FI,
-    EN: EN,
     AU: AU,
+    EN: EN,
     ET: ET,
+    FI: FI,
+    LV: LV,
     RU: RU,
     SV: SV
   }
