@@ -13,6 +13,8 @@ define(function(require) {
       var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (+hoursAndMinutes === 1 ? 'tunti' : 'tuntia')
     },
+    clearRangeLabel: 'Poista valinta',
+    clearDateLabel : 'Poista valinta',
     shortDateFormat: 'j.n.Y',
     weekDateFormat : 'D j.n.Y',
     dateTimeFormat : 'D j.n.Y k\\lo G:i',
