@@ -13,6 +13,8 @@ define(function(require) {
       var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
       return hoursAndMinutes + ' ' + (+hoursAndMinutes === 1 ? 'Minut' : 'Minuter')
     },
+    clearRangeLabel: 'TODO',
+    clearDateLabel : 'TODO',
     shortDateFormat: 'j.n.Y',
     weekDateFormat : 'D j.n.Y',
     dateTimeFormat : 'D j.n.Y k\\lo G:i',

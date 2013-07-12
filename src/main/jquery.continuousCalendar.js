@@ -34,7 +34,7 @@ define(function(require) {
         callback       : $.noop,
         customScroll   : false,
         theme          : '',
-        allowClearDates: true
+        allowClearDates: false
       }
       var params = $.extend({}, defaults, options)
       var locale = DateLocale.fromArgument(params.locale)
