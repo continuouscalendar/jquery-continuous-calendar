@@ -48,7 +48,7 @@ define(function(require) {
     var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates', 'fadeOutDuration', 'customScroll' ]
     var options = {
       theme : $('[name=theme]:checked').val(),
-      locale: DateLocale[$('[name=locale]:checked').val()]
+      locale: $('[name=locale]:checked').val()
     }
 
     for(var i = 0; i < optionsList.length; i++) {
