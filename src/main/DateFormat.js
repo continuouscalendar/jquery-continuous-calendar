@@ -55,7 +55,7 @@ define(function(require) {
 
   DateFormat.parse = function(input) {
     if(input == 'today') {
-      return DateTime.now()
+      return DateTime.now().getOnlyDate()
     }
     return new DateTime(input)
   }
