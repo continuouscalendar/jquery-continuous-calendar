@@ -57,11 +57,7 @@ define(function(require) {
     if(input == 'today') {
       return DateTime.now()
     }
-    var date = new Date(input)
-    if(isNaN(date.getTime())) {
-      throw Error('Could not parse date from "' + input + '"')
-    }
-    return new DateTime(date)
+    return new DateTime(input)
   }
 
   DateFormat.patterns = {
