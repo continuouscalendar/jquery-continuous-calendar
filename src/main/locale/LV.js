@@ -4,7 +4,7 @@ define(function(require) {
   return {
     id             : 'LV',
     monthNames     : ['Janvāris', 'Februāris', 'Marts', 'Aprīlis', 'Maijs', 'Jūnijs', ' Jūlijs', 'Augusts', 'Septembris', 'Oktobris', 'Novembris', 'Decembris'],
-    dayNames       : ['Svētdiena', ' Pirmdiena', 'Otrdiena', 'Trešdiena', 'Ceturtdiena', 'Piektdiena', 'Sestdiena'],
+    dayNames       : ['Svētdiena', 'Pirmdiena', 'Otrdiena', 'Trešdiena', 'Ceturtdiena', 'Piektdiena', 'Sestdiena'],
     shortDayNames  : ['Sv', 'P', 'O', 'T', 'C', 'Pk', 'S'],
     yearsLabel     : function(years) { return years + ' ' + (years == '1' ? 'G' : 'G'); },
     monthsLabel    : function(months) { return months + ' ' + (months == '1' ? 'Mēnesī' : 'Mēnešiem') },
