@@ -4,6 +4,7 @@ define(function(require) {
   function DateTime(year, month, date, hours, minutes, seconds) {
     if(arguments.length == 0) this.date = new Date()
     else if(year instanceof Date) this.date = new Date(year.getTime())
+    else if(year instanceof DateTime) this.date = new Date(year.date.getTime())
     else if(typeof year == 'string') this.date = new Date(year)
     else if(typeof year == 'number') this.date = createSafeDate(+year, +month, +date, +hours, +minutes, +seconds)
     else throw Error('None of supported parameters was used for constructor: ' + Array.prototype.slice.call(arguments).join(', '))
