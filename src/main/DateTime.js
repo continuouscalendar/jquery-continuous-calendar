@@ -244,7 +244,8 @@ define(function(require) {
 
   DateTime.prototype.isBetweenDates = function(start, end) {
     if(start.getTime() > end.getTime()) throw Error("start date can't be after end date")
-    return this.compareTo(start) >= 0 && this.compareTo(end) <= 0
+    var onlyDate = this.getOnlyDate()
+    return onlyDate.compareTo(start.getOnlyDate()) >= 0 && onlyDate.compareTo(end.getOnlyDate()) <= 0
   }
 
   DateTime.prototype.firstDateOfMonth = function() { return DateTime.fromDate(this.getFullYear(), this.getMonth(), 1) }
