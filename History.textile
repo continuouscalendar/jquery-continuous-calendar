@@ -2,6 +2,11 @@ h3. Nightly
 
 -
 
+h3. 4.2.1
+
+* Update latvian translations
+* Fix off by one bug when calculating last date to be shown
+
 h3. 4.2.0
 
 * Fix issue #57 by replacing setInterval with setTimeout for scroll throttling
