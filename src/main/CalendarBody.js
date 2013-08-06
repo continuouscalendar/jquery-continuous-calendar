@@ -77,10 +77,10 @@ define(function(require) {
       }
 
       function dateCell(date) {
-        var dateCell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '">' + date.getDate() + '</td>'
+        var cell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '">' + date.getDate() + '</td>'
         dateCellMap[DateFormat.format(date, 'Ymd', locale)] = dateCellDates.length
         dateCellDates.push(date)
-        return dateCell
+        return cell
       }
 
       function monthCell(firstDayOfWeek, isFirst) {
