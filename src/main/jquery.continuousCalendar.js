@@ -39,7 +39,7 @@ define(function(require) {
       var locale = DateLocale.fromArgument(params.locale)
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
-      var today = DateTime.now().getOnlyDate()
+      var today = DateTime.today()
 
       if(params.selectToday) {
         var formattedToday = formatDate(today)
@@ -95,7 +95,7 @@ define(function(require) {
       }
 
       function determineRangeToRenderFormParams(params) {
-        var firstWeekdayOfGivenDate = (startDate || DateTime.now().getOnlyDate()).getFirstDateOfWeek(locale)
+        var firstWeekdayOfGivenDate = (startDate || DateTime.today()).getFirstDateOfWeek(locale)
         var rangeStart = dateOrWeek(params.firstDate, -params.weeksBefore * 7)
         var rangeEnd = dateOrWeek(params.lastDate, params.weeksAfter * 7 + 6)
 

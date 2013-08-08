@@ -23,7 +23,7 @@ define(function(require) {
 
   function radioChoice(l) { return '<label class="row"><input type="radio" name="locale" value="' + l + '" id="' + l + '" /><span class="label">DateLocale.' + l + '</span></label>' }
 
-  var now = DateTime.now().getOnlyDate()
+  var now = DateTime.today()
   var disabledDates = $([now, now, now])
     .map(function(i, el) { return DateFormat.format(el.plusDays(i + 3), 'n/j/Y') })
     .toArray()
