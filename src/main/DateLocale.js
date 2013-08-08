@@ -1,23 +1,23 @@
 define(function(require) {
-  var AU = require('./locale/AU')
-  var EN = require('./locale/EN')
-  var ET = require('./locale/ET')
   var FI = require('./locale/FI')
-  var LV = require('./locale/LV')
+  var EN = require('./locale/EN')
+  var AU = require('./locale/AU')
+  var ET = require('./locale/ET')
   var RU = require('./locale/RU')
   var SV = require('./locale/SV')
+  var LV = require('./locale/LV')
   var DateLocale = {
-    AU: AU,
-    EN: EN,
-    ET: ET,
     FI: FI,
-    LV: LV,
+    EN: EN,
+    AU: AU,
+    ET: ET,
     RU: RU,
-    SV: SV
+    SV: SV,
+    LV: LV
   }
 
   DateLocale.fromArgument = function(stringOrObject) {
-    if(typeof stringOrObject == 'string')
+    if(typeof stringOrObject === 'string')
       return DateLocale[stringOrObject.toUpperCase()]
     else return stringOrObject
   }

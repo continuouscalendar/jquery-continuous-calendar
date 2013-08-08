@@ -10,8 +10,8 @@ define(function(require) {
   require('jquery.tinyscrollbar')
 
   $.continuousCalendar = {
-    version : typeof VERSION != 'undefined' ? VERSION : 'nightly',
-    released: typeof RELEASED != 'undefined' ? RELEASED : 'nightly'
+    version : typeof VERSION !== 'undefined' ? VERSION : 'nightly',
+    released: typeof RELEASED !== 'undefined' ? RELEASED : 'nightly'
   }
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })
@@ -81,16 +81,17 @@ define(function(require) {
       function initScrollBar() { if(params.customScroll) customScrollContainer = $('.tinyscrollbar', container).tinyscrollbar() }
 
       function initCalendarTable() {
-        if(calendarBody.scrollContent) return
+        if (!calendarBody.scrollContent) {
 
-        calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
-          params.customScroll, params.disableWeekends, disabledDatesObject))
-        bindScrollEvent()
+          calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
+              params.customScroll, params.disableWeekends, disabledDatesObject))
+          bindScrollEvent()
 
-        popupBehavior.initState()
-        dateBehavior.addRangeLengthLabel()
-        dateBehavior.initEvents()
-        scrollToSelection()
+          popupBehavior.initState()
+          dateBehavior.addRangeLengthLabel()
+          dateBehavior.initEvents()
+          scrollToSelection()
+        }
       }
 
       function determineRangeToRenderFormParams(params) {
@@ -110,12 +111,13 @@ define(function(require) {
         } else {
           var waiting = false
           calendarBody.scrollContent.scroll(function() {
-            if(waiting) return
-            setTimeout(function() {
-              waiting = false
-              setYearLabel()
-            }, 250)
-            waiting = true
+            if (!waiting) {
+              setTimeout(function() {
+                waiting = false
+                setYearLabel()
+              }, 250)
+              waiting = true
+            }
           })
         }
       }
@@ -251,5 +253,5 @@ define(function(require) {
   }
   $.fn.calendarRange = function() { return $(this).data('calendarRange') }
   $.fn.exists = function() { return this.length > 0 }
-  $.fn.isEmpty = function() { return this.length == 0 }
+  $.fn.isEmpty = function() { return this.length === 0 }
 })

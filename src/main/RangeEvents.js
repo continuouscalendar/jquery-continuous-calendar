@@ -59,26 +59,15 @@ define(function(require) {
       var hasShiftKeyPressed = event.shiftKey
       if(isInstantSelection(elem, hasShiftKeyPressed)) {
         selection = instantSelection(elem, hasShiftKeyPressed)
-        return
+      } else {
+        status = Status.CREATE_OR_RESIZE
+        mouseDownDate = getElemDate(elem)
+        if(mouseDownDate.equalsOnlyDate(selection.end)) mouseDownDate = selection.start
+        else if(mouseDownDate.equalsOnlyDate(selection.start)) mouseDownDate = selection.end
+        else if(selection.hasDate(mouseDownDate)) status = Status.MOVE
+        else if(enabledCell(elem)) startNewRange()
       }
 
-      status = Status.CREATE_OR_RESIZE
-      mouseDownDate = getElemDate(elem)
-
-      if(mouseDownDate.equalsOnlyDate(selection.end)) {
-        mouseDownDate = selection.start
-        return
-      }
-      if(mouseDownDate.equalsOnlyDate(selection.start)) {
-        mouseDownDate = selection.end
-        return
-      }
-      if(selection.hasDate(mouseDownDate)) {
-        status = Status.MOVE
-        return
-      }
-
-      if(enabledCell(elem)) startNewRange()
 
       function enabledCell(elem) { return isDateCell(elem) && isEnabled(elem) }
 
@@ -130,24 +119,25 @@ define(function(require) {
     }
 
     function mouseMove(event) {
-      if(status == Status.NONE) return
-      var date = getElemDate(event.target)
-      var actions = {
-        move  : function() {
-          var deltaDays = mouseDownDate.distanceInDays(date)
-          var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
-          if(isPermittedRange(movedSelection)) {
-            mouseDownDate = date
-            selection = movedSelection
+      if (status !== Status.NONE) {
+        var date = getElemDate(event.target)
+        var actions = {
+          move:   function() {
+            var deltaDays = mouseDownDate.distanceInDays(date)
+            var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
+            if (isPermittedRange(movedSelection)) {
+              mouseDownDate = date
+              selection = movedSelection
+            }
+          },
+          create: function() {
+            var newSelection = new DateRange(mouseDownDate, date, locale)
+            if (isEnabled(event.target) && isPermittedRange(newSelection)) selection = newSelection
           }
-        },
-        create: function() {
-          var newSelection = new DateRange(mouseDownDate, date, locale)
-          if(isEnabled(event.target) && isPermittedRange(newSelection)) selection = newSelection
         }
+        actions[status]()
+        drawSelection()
       }
-      actions[status]()
-      drawSelection()
     }
 
     function isPermittedRange(newSelection) { return newSelection.isPermittedRange(params.minimumRange, params.disableWeekends, calendarRange) }
@@ -179,12 +169,13 @@ define(function(require) {
     }
 
     function iterateAndToggleCells(range) {
-      if(range.days() == 0) return
-      var startIndex = index(range.start)
-      var endIndex = index(range.end)
-      for(var i = startIndex; i <= endIndex; i++)
-        calendarBody.getDateCell(i).get(0).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
-      if(rangeHasDisabledDate()) $('td.selected', container).addClass('invalidSelection')
+      if (range.days() > 0) {
+        var startIndex = index(range.start)
+        var endIndex = index(range.end)
+        for (var i = startIndex; i <= endIndex; i++)
+          calendarBody.getDateCell(i).get(0).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
+        if (rangeHasDisabledDate()) $('td.selected', container).addClass('invalidSelection')
+      }
       function index(date) { return calendarBody.dateCellMap[DateFormat.format(date, 'Ymd', locale)] }
     }
 

@@ -2,11 +2,11 @@ define(function(require) {
   var $ = require('jquery')
 
   function DateTime(year, month, date, hours, minutes, seconds) {
-    if(arguments.length == 0) this.date = new Date()
+    if(arguments.length === 0) this.date = new Date()
     else if(year instanceof Date) this.date = new Date(year.getTime())
     else if(year instanceof DateTime) this.date = new Date(year.date.getTime())
-    else if(typeof year == 'string') this.date = new Date(year)
-    else if(typeof year == 'number') this.date = createSafeDate(+year, +month, +date, +hours, +minutes, +seconds)
+    else if(typeof year === 'string') this.date = new Date(year)
+    else if(typeof year === 'number') this.date = createSafeDate(+year, +month, +date, +hours, +minutes, +seconds)
     else throw Error('None of supported parameters was used for constructor: ' + Array.prototype.slice.call(arguments).join(', '))
 
     function createSafeDate(year, month, date, hours, minutes, seconds) {
@@ -14,13 +14,13 @@ define(function(require) {
       minutes = minutes || 0
       seconds = seconds || 0
       var newDate = new Date(year, month -1, date, hours, minutes, seconds, 0)
-      if(newDate.toString() == 'Invalid Date' ||
-        month != newDate.getMonth() + 1 ||
-        year != newDate.getFullYear() ||
-        date != newDate.getDate() ||
-        hours != newDate.getHours() ||
-        minutes != newDate.getMinutes() ||
-        seconds != newDate.getSeconds()) throw Error('Invalid Date: ' + year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds)
+      if(newDate.toString() === 'Invalid Date' ||
+          month !== newDate.getMonth() + 1 ||
+          year !== newDate.getFullYear() ||
+          date !== newDate.getDate() ||
+          hours !== newDate.getHours() ||
+          minutes !== newDate.getMinutes() ||
+          seconds !== newDate.getSeconds()) throw Error('Invalid Date: ' + year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds)
       return  newDate
     }
   }
@@ -71,7 +71,7 @@ define(function(require) {
     if(!fullPatternTest.test(isoDateTime)) throw Error(isoDateTime + ' is not valid ISO Date (YYYY-MM-DDTHH:MM)')
 
     var dateAndTime = isoDateTime.split('T')
-    var time = parseTime(dateAndTime.length == 2 && dateAndTime[1])
+    var time = parseTime(dateAndTime.length === 2 && dateAndTime[1])
     var date = parseDate(dateAndTime[0])
     return new DateTime(date.year, date.month, date.day, time.hours, time.minutes, time.seconds)
   }
@@ -120,7 +120,7 @@ define(function(require) {
   }
 
   DateTime.prototype.withTime = function(h, m) {
-    if(typeof h == 'string') {
+    if(typeof h === 'string') {
       var hoursAndMinutes = h.split(':')
       h = hoursAndMinutes[0]
       m = hoursAndMinutes[1]
@@ -140,10 +140,17 @@ define(function(require) {
   DateTime.WEEK = 7 * DateTime.DAY
 
   DateTime.now = function() {
-    if(typeof DateTime._now == 'undefined') {
+    if(typeof DateTime._now === 'undefined') {
       DateTime._now = new DateTime()
     }
     return DateTime._now
+  }
+
+  DateTime.today = function() {
+    if(typeof DateTime._today == 'undefined') {
+      DateTime._today = new DateTime().getOnlyDate()
+    }
+    return DateTime._today
   }
 
   DateTime.getDaysInMonth = function(year, month) {
@@ -168,7 +175,7 @@ define(function(require) {
 
     // Fix the DateTime offset caused by daylight saving time
     var delta = hours - newDateTime.getHours()
-    if(delta != 0) {
+    if(delta !== 0) {
       // Correct the delta to be between [-12, 12]
       if(delta > 12) {
         delta -= 24
@@ -202,27 +209,27 @@ define(function(require) {
     }
   }
 
-  DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.now()) }
+  DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.today()) }
 
   DateTime.prototype.getWeekInYear = function(weekNumberingSystem) {
-    if(weekNumberingSystem != 'US' && weekNumberingSystem != 'ISO') {
+    if(weekNumberingSystem !== 'US' && weekNumberingSystem !== 'ISO') {
       throw('Week numbering system must be either US or ISO, was ' + weekNumberingSystem)
     }
 
     var firstDay = new Date(this.getFullYear(), 0, 1).getDay()
-    if(weekNumberingSystem == 'US') {
+    if(weekNumberingSystem === 'US') {
       return Math.ceil((this.getDayInYear() + firstDay) / 7)
     }
     var THU = 4
     var weekday = this.getDay()
-    if(weekday == 0) weekday = 7
-    if(firstDay == 0) firstDay = 7
+    if(weekday === 0) weekday = 7
+    if(firstDay === 0) firstDay = 7
     // If Dec 29 falls on Mon, Dec 30 on Mon or Tue, Dec 31 on Mon - Wed, it's on the first week of next year
-    if(this.getMonth() == 12 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
+    if(this.getMonth() === 12 && this.getDate() >= 29 && (this.getDate() - weekday) > 27) {
       return 1
     }
     // If Jan 1-3 falls on Fri, Sat or Sun, it's on the last week of the previous year
-    if(this.getMonth() == 1 && this.getDate() < 4 && weekday > THU) {
+    if(this.getMonth() === 1 && this.getDate() < 4 && weekday > THU) {
       return new DateTime(new Date(this.getFullYear() - 1, 11, 31)).getWeekInYear('ISO')
     }
     var week = Math.ceil((this.getDayInYear() + firstDay - 1) / 7)
@@ -233,13 +240,13 @@ define(function(require) {
 
   DateTime.prototype.clone = function() { return new DateTime(this.date) }
 
-  DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 == 0 }
+  DateTime.prototype.isOddMonth = function() { return this.getMonth() % 2 === 0 }
 
   DateTime.prototype.equalsOnlyDate = function(date) {
     if(!date) {
       return false
     }
-    return this.getMonth() == date.getMonth() && this.getDate() == date.getDate() && this.getFullYear() == date.getFullYear()
+    return this.getMonth() === date.getMonth() && this.getDate() === date.getDate() && this.getFullYear() === date.getFullYear()
   }
 
   DateTime.prototype.isBetweenDates = function(start, end) {
@@ -262,7 +269,7 @@ define(function(require) {
 
   DateTime.prototype.getOnlyDate = function() { return DateTime.fromDate(this.getFullYear(), this.getMonth(), this.getDate()) }
 
-  DateTime.prototype.isWeekend = function() { return this.getDay() == 6 || this.getDay() == 0 }
+  DateTime.prototype.isWeekend = function() { return this.getDay() === 6 || this.getDay() === 0 }
 
   DateTime.prototype.toString = function() { return this.toISOString() }
 
@@ -275,7 +282,7 @@ define(function(require) {
 
   DateTime.prototype.toISOString = function() {
     return $.map([this.getFullYear(), (this.getMonth()), this.getDate()], withTwoDigitsAtLeast).join('-') + 'T' +
-      $.map([this.getHours(), this.getMinutes(), this.getSeconds()], withTwoDigitsAtLeast).join(':')
+        $.map([this.getHours(), this.getMinutes(), this.getSeconds()], withTwoDigitsAtLeast).join(':')
     function withTwoDigitsAtLeast(value) { return value < 10 ? '0' + value : '' + value}
   }
 

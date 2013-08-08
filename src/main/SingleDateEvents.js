@@ -29,14 +29,15 @@ define(function(require) {
     function initSingleDateCalendarEvents() {
       $('.date', container).bind('click', function() {
         var dateCell = $(this)
-        if(dateCell.hasClass('disabled')) return
-        $('td.selected', container).removeClass('selected')
-        dateCell.addClass('selected')
-        var selectedDate = getElemDate(dateCell.get(0));
-        params.startField.val(DateFormat.shortDateFormat(selectedDate, locale))
-        setDateLabel(DateFormat.format(selectedDate, locale.weekDateFormat, locale))
-        popupBehavior.close(this)
-        executeCallback(selectedDate)
+        if (!dateCell.hasClass('disabled')) {
+          $('td.selected', container).removeClass('selected')
+          dateCell.addClass('selected')
+          var selectedDate = getElemDate(dateCell.get(0));
+          params.startField.val(DateFormat.shortDateFormat(selectedDate, locale))
+          setDateLabel(DateFormat.format(selectedDate, locale.weekDateFormat, locale))
+          popupBehavior.close(this)
+          executeCallback(selectedDate)
+        }
       })
     }
 

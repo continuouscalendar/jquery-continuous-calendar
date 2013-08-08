@@ -2,6 +2,11 @@ h3. Nightly
 
 -
 
+h3. 4.2.2
+
+* Add DateTime.today() to show current date with midnight time
+* Improve code quality
+
 h3. 4.2.1
 
 * Update latvian translations

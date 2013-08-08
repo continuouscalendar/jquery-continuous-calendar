@@ -17,8 +17,8 @@ define(function(require) {
       scrollContent.addClass('viewport')
       calendarContainer.append(
           $('<div class="tinyscrollbar"></div>')
-            .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
-            .append(scrollContent))
+              .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
+              .append(scrollContent))
     } else {
       calendarContainer.append(scrollContent)
     }
@@ -90,7 +90,7 @@ define(function(require) {
           th += locale.monthNames[firstDayOfWeek.getMonth()-1]
         } else {
           th += '">'
-          if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() == 1) {
+          if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1) {
             th += firstDayOfWeek.getFullYear()
           }
         }
@@ -113,7 +113,7 @@ define(function(require) {
 
     function todayStyle(date) { return date.isToday() ? 'today' : '' }
 
-    function holidayStyle(date) { return date.getDay() == 0 ? 'holiday' : '' }
+    function holidayStyle(date) { return date.getDay() === 0 ? 'holiday' : '' }
 
     function getDateCell(index) { return $(dateCells[index]) }
   }
