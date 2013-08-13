@@ -44,7 +44,7 @@ define(function(require) {
     function addDateClearingLabel() {
       if(params.allowClearDates) {
         var dateClearingLabel = $('<span class="clearDates clickable"></span>').text(locale.clearRangeLabel)
-        var dateClearingContainer = $('<div class="label clear"></div>').append(dateClearingLabel)
+        var dateClearingContainer = $('<div class="label clearLabel"></div>').append(dateClearingLabel)
         $('.continuousCalendar', container).append(dateClearingContainer)
       }
     }
