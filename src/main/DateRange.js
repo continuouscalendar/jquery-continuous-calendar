@@ -28,6 +28,7 @@ define(function(require) {
       this.expandDaysTo = function() { return this }
       this.hasEndsOnWeekend = function() { return false }
       this.isPermittedRange = function() { return true }
+      this.hasSelection = function() { return false }
     }
 
     return new NullDateRange()
@@ -162,6 +163,10 @@ define(function(require) {
       return this.shiftDays(distanceToOuterRangeEnd)
     }
     return this
+  }
+
+  DateRange.prototype.hasSelection = function() {
+    return this.days() > 0
   }
 
   return DateRange

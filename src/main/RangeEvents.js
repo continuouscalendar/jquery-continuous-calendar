@@ -21,6 +21,7 @@ define(function(require) {
       initEvents          : initEvents,
       addRangeLengthLabel : addRangeLengthLabel,
       addEndDateLabel     : addEndDateLabel,
+      addDateClearingLabel: addDateClearingLabel,
       performTrigger      : performTrigger
     }
 
@@ -40,15 +41,31 @@ define(function(require) {
 
     function addEndDateLabel(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') }
 
+    function addDateClearingLabel() {
+      if(params.allowClearDates) {
+        var dateClearingLabel = $('<span class="clearDates clickable"></span>').text(locale.clearRangeLabel)
+        var dateClearingContainer = $('<div class="label clearLabel"></div>').append(dateClearingLabel)
+        $('.continuousCalendar', container).append(dateClearingContainer)
+      }
+    }
+
     function performTrigger() {
       container.data('calendarRange', selection)
       executeCallback(selection)
     }
 
-    function setInitialSelection() { selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange() }
+    function setInitialSelection() {
+      selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange()
+      if (!selection.start && !selection.end) {
+        $('span.separator', container).hide()
+      }
+    }
 
     function initRangeCalendarEvents(container, bodyTable) {
       $('span.rangeLengthLabel', container).text(locale.daysLabel(selection.days()))
+      if (params.allowClearDates) {
+        $('span.clearDates', container).click(clearRangeClick)
+      }
       bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
       bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
       disableTextSelection(bodyTable.get(0))
@@ -149,6 +166,12 @@ define(function(require) {
       afterSelection()
     }
 
+    function clearRangeClick(event) {
+      selection = DateRange.emptyRange()
+      drawSelection()
+      afterSelection()
+    }
+
     function rangeHasDisabledDate() {
       for(var i = 0; i < disabledDatesList.length; i++) {
         if(selection.hasDate(new DateTime(disabledDatesList[i]))) return true
@@ -160,6 +183,8 @@ define(function(require) {
       selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends, calendarRange)
       drawSelectionBetweenDates(selection)
       $('span.rangeLengthLabel', container).text(locale.daysLabel(selection.days()))
+      var clearDates = $('span.clearDates', container)
+      clearDates.toggle(selection.hasSelection())
     }
 
     function drawSelectionBetweenDates(range) {
@@ -205,13 +230,22 @@ define(function(require) {
 
     function setRangeLabels() {
       if(!selection) setInitialSelection()
+
       if(selection.start && selection.end) {
         var format = locale.weekDateFormat
         $('span.startDateLabel', container).text(DateFormat.format(selection.start, format, locale))
         $('span.endDateLabel', container).text(DateFormat.format(selection.end, format, locale))
-        $('span.separator', container).show()
+        $('span.separator, span.clearRangeLabel', container).show()
+        $('span.startDateLabel', container).closest('.label').show()
       } else {
-        $('span.separator', container).hide()
+        if (!selection.start) {
+          $('span.startDateLabel', container).empty()
+          $('span.startDateLabel', container).closest('.label').hide()
+        }
+        if (!selection.end) {
+          $('span.endDateLabel', container).empty()
+        }
+        $('span.separator, span.clearRangeLabel', container).hide()
       }
     }
 
