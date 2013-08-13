@@ -184,7 +184,7 @@ define(function(require) {
       drawSelectionBetweenDates(selection)
       $('span.rangeLengthLabel', container).text(locale.daysLabel(selection.days()))
       var clearDates = $('span.clearDates', container)
-      clearDates.toggle(selection.days() > 0)
+      clearDates.toggle(selection.hasSelection())
     }
 
     function drawSelectionBetweenDates(range) {
