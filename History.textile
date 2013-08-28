@@ -2,6 +2,10 @@ h3. Nightly
 
 -
 
+h3. 4.3.0
+
+* Add the option of allowing clearing of dates on both range and single date calendars
+
 h3. 4.2.2
 
 * Add DateTime.today() to show current date with midnight time

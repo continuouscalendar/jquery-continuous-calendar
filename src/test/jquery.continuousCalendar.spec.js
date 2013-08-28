@@ -120,6 +120,15 @@ define(function(require) {
         cal().find('.week').withText(15).click()
         expect(cal().find('.selected').size()).toEqual(1)
       })
+
+      it('can be cleared', function() {
+        createCalendarFields({startDate: '7/24/2013'}).continuousCalendar({weeksBefore: 2, weeksAfter: 0, allowClearDates: true})
+        var clearDates = cal().find('.clearDates')
+        expect(clearDates).toBeVisible()
+        clearDates.click()
+        expect(cal().find('.selected').size()).toEqual(0)
+        expect(clearDates).not.toBeVisible()
+      })
     })
 
     describe('calendar range selection', function() {
@@ -141,6 +150,18 @@ define(function(require) {
         createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', disabledDates: '4/22/2009'})
         dragDatesSlowly(15, 29)
         expect(cal().find('.selected').size()).toEqual(0)
+        expect(startFieldValue()).toEqual('')
+        expect(endFieldValue()).toEqual('')
+        expect(cal().find('.rangeLengthLabel')).toHaveText('0 Days')
+      })
+
+      it('can be cleared', function() {
+        createCalendarFields({startDate: '7/24/2013', endDate: '8/5/2013'}).continuousCalendar({firstDate: '7/22/2009', lastDate: '8/7/2009', allowClearDates: true})
+        var clearDates = cal().find('.clearDates')
+        expect(clearDates).toBeVisible()
+        clearDates.click()
+        expect(cal().find('.selected').size()).toEqual(0)
+        expect(clearDates).not.toBeVisible()
         expect(startFieldValue()).toEqual('')
         expect(endFieldValue()).toEqual('')
         expect(cal().find('.rangeLengthLabel')).toHaveText('0 Days')
@@ -405,6 +426,15 @@ define(function(require) {
         expect(startLabelValue()).toEqual('Su 10/26/2008')
         expect(startFieldValue()).toEqual('10/26/2008')
       })
+
+      it('clearing closes the calendar', function() {
+        createClearablePopupWeekCalendar()
+        cal().find('.calendarIcon').click()
+        cal().find('.clearDates').click()
+        expect(cal().find('.continuousCalendar')).not.toBeVisible()
+        expect(startFieldValue()).toEqual('')
+        expect(endFieldValue()).toEqual('')
+      })
     })
 
     describe('minimum range with disabled weekends', function() {
@@ -599,8 +629,14 @@ define(function(require) {
 
   function createPopupCalendar() { createCalendarFields({startDate: '4/29/2009'}).continuousCalendar({isPopup: true}) }
 
+  function createClearablePopupCalendar() { createCalendarFields({startDate: '7/24/2013'}).continuousCalendar({isPopup: true, allowClearDates: true}) }
+
   function createPopupWeekCalendar() {
     createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '5/1/2011', lastDate: '5/31/2011', isPopup: true, selectWeek: true})
+  }
+
+  function createClearablePopupWeekCalendar() {
+    createCalendarFields({startDate: '7/23/2013', endDate: '7/25/2013'}).continuousCalendar({firstDate: '7/21/2011', lastDate: '8/6/2011', isPopup: true, selectWeek: true, allowClearDates: true})
   }
 
   function elemByDate(date) { return elemFromContainerByDate(cal(), date) }

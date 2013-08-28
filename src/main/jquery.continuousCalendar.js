@@ -33,7 +33,8 @@ define(function(require) {
         fadeOutDuration: 0,
         callback       : $.noop,
         customScroll   : false,
-        theme          : ''
+        theme          : '',
+        allowClearDates: false
       }
       var params = $.extend({}, defaults, options)
       var locale = DateLocale.fromArgument(params.locale)
@@ -89,6 +90,7 @@ define(function(require) {
 
           popupBehavior.initState()
           dateBehavior.addRangeLengthLabel()
+          dateBehavior.addDateClearingLabel()
           dateBehavior.initEvents()
           scrollToSelection()
         }
