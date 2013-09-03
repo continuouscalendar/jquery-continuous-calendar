@@ -33,6 +33,9 @@ define(function(require) {
         fadeOutDuration: 0,
         callback       : $.noop,
         customScroll   : false,
+        scrollOptions  : {
+          sizethumb: 'auto'
+        },
         theme          : '',
         allowClearDates: false
       }
@@ -79,7 +82,7 @@ define(function(require) {
         dateBehavior.performTrigger()
       }
 
-      function initScrollBar() { if(params.customScroll) customScrollContainer = $('.tinyscrollbar', container).tinyscrollbar() }
+      function initScrollBar() { if(params.customScroll) customScrollContainer = $('.tinyscrollbar', container).tinyscrollbar(params.scrollOptions) }
 
       function initCalendarTable() {
         if (!calendarBody.scrollContent) {
