@@ -39,7 +39,9 @@ define(function(require) {
     function headerRow() {
       var tr = $(Template.headerRow())
       $(locale.dayNames).each(function(index) {
-        var weekDay = $(Template.th()).append(locale.shortDayNames[(index + locale.firstWeekday) % 7]).addClass('weekDay')
+        var weekDay = $(Template.th())
+            .append(locale.shortDayNames[(index + locale.firstWeekday) % 7])
+            .addClass('weekDay')
         tr.append(weekDay)
       })
       return $(Template.thead()).append(tr)
@@ -57,7 +59,7 @@ define(function(require) {
       var isFirst = true;
       var rows = []
       while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
-        calendarRow(rows, firstWeekDay.clone(), isFirst)
+        rows.push(calendarRow(firstWeekDay.clone(), isFirst))
         isFirst = false
         firstWeekDay = firstWeekDay.plusDays(7)
       }
@@ -66,16 +68,17 @@ define(function(require) {
         rows: rows.join('')
       })
 
-      function calendarRow(rows, firstDayOfWeek, isFirst) {
-        //TODO: use Template.bodyRow()
-        rows.push('<tr>')
-        rows.push(monthCell(firstDayOfWeek, isFirst))
-        rows.push(weekCell(firstDayOfWeek))
+      function calendarRow(firstDayOfWeek, isFirst) {
+        var contentArray = []
+        contentArray.push(monthCell(firstDayOfWeek, isFirst))
+        contentArray.push(weekCell(firstDayOfWeek))
         for(var i = 0; i < 7; i++) {
           var date = firstDayOfWeek.plusDays(i)
-          rows.push(dateCell(date))
+          contentArray.push(dateCell(date))
         }
-        rows.push('</tr>')
+        return Template.bodyRow({
+          content: contentArray.join('')
+        })
       }
 
       function dateCell(date) {

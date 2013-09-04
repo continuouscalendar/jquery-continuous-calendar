@@ -54,13 +54,14 @@ define(function(require) {
     return helper(tmpl, data)
   }
 
-  templates.bodyRow = function() {
+  templates.bodyRow = function(data) {
     var tmpl = '<tr><%= content %></tr>'
     return helper(tmpl, data)
   }
 
   templates.dateCell = function(data) {
-    var tmpl = '<td class="<%= classNames %>" date-cell-index="<%= index %>"><%= content %></td>'
+    var tmpl = '<td class="<%= classNames %>" date-cell-index="<%= index %>"> \
+               <%= content %></td>'
     return helper(tmpl, data)
   }
 
@@ -73,7 +74,6 @@ define(function(require) {
     var tmpl = '<th class="month <%= classNames %>"><%= content %></th>'
     return helper(tmpl, data)
   }
-
 
   return templates
 })
