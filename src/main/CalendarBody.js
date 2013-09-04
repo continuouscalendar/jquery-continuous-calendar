@@ -50,7 +50,9 @@ define(function(require) {
     function highlightToday(dateCellMap) {
       var todayKey = DateFormat.format(DateTime.today(), 'Ymd', locale)
       if(todayKey in dateCellMap) {
-        getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
+        getDateCell(dateCellMap[todayKey])
+            .addClass('today')
+            .wrapInner(Template.innerWrapper)
       }
     }
 

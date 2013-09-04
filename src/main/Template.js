@@ -75,5 +75,9 @@ define(function(require) {
     return helper(tmpl, data)
   }
 
+  templates.innerWrapper = function() {
+    return helper('<div />', data)
+  }
+
   return templates
 })
