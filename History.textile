@@ -2,6 +2,12 @@ h3. Nightly
 
 -
 
+
+h3. 4.4.0
+
+* Add possibility to use fixed height scroll when using custom scrollbar
+* Update russian translations for clear date labels
+
 h3. 4.3.0
 
 * Add the option of allowing clearing of dates on both range and single date calendars
