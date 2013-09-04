@@ -4,6 +4,7 @@
 
 *.ipr
 *.iws
+*.swp
 .idea/workspace.xml
 out/
 .sass-cache
