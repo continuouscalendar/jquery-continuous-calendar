@@ -41,6 +41,11 @@ define(function(require) {
         allowClearDates: false
       }
       var params = $.extend({}, defaults, options)
+      if (options) {
+        params.templates = $.extend(true, {}, Template, options.templates)
+      } else {
+        params.templates = Template
+      }
       var locale = DateLocale.fromArgument(params.locale)
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
@@ -89,7 +94,7 @@ define(function(require) {
         if (!calendarBody.scrollContent) {
 
           calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
-              params.customScroll, params.disableWeekends, disabledDatesObject))
+              params.customScroll, params.disableWeekends, disabledDatesObject, params.templates))
           bindScrollEvent()
 
           popupBehavior.initState()
@@ -135,7 +140,7 @@ define(function(require) {
       }
 
       function dateBehaviour(isRange) {
-        var basicParams = [container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate]
+        var basicParams = [container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, params.templates]
         var rangeParams = [endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList]
         return isRange ? RangeEvents.apply(null, basicParams.concat(rangeParams)) : SingleDateEvents.apply(null, basicParams)
       }

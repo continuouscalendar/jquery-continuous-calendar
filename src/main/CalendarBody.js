@@ -2,9 +2,9 @@ define(function(require) {
   var $ = require('jquery')
   var DateFormat = require('./DateFormat')
   var DateTime = require('./DateTime')
-  var Template = require('./Template')
 
-  return function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
+  return function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject, templates) {
+    var Template = templates
     var dateCellMap = {}
     var dateCellDates = []
 

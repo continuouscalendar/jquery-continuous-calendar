@@ -1,9 +1,9 @@
 define(function(require) {
   var $ = require('jquery')
   var DateFormat = require('./DateFormat')
-  var Template = require('./Template')
 
-  return function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate) {
+  return function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, templates) {
+    var Template = templates
     return {
       showInitialSelection: showInitialSelection,
       initEvents          : initEvents,
