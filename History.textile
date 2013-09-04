@@ -3,6 +3,10 @@ h3. Nightly
 -
 
 
+h3. 4.4.1
+
+* Fix declensions for russian localization
+
 h3. 4.4.0
 
 * Add possibility to use fixed height scroll when using custom scrollbar
