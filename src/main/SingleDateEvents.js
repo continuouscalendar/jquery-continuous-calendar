@@ -1,6 +1,7 @@
 define(function(require) {
   var $ = require('jquery')
   var DateFormat = require('./DateFormat')
+  var Template = require('./Template')
 
   return function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate) {
     return {
@@ -29,9 +30,9 @@ define(function(require) {
 
     function addDateClearingLabel() {
       if(params.allowClearDates) {
-        var dateClearingLabel = $('<span class="clearDates clickable"></span>').hide()
+        var dateClearingLabel = $(Template.clearDates()).hide()
         dateClearingLabel.text(locale.clearDateLabel)
-        var dateClearingContainer = $('<div class="label clearLabel"></div>').append(dateClearingLabel)
+        var dateClearingContainer = $(Template.clearLabel()).append(dateClearingLabel)
         $('.continuousCalendar', container).append(dateClearingContainer)
       }
     }

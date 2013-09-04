@@ -76,7 +76,48 @@ define(function(require) {
   }
 
   templates.innerWrapper = function() {
-    return helper('<div />', data)
+    return helper('<div />')
+  }
+
+  templates.lengthLabel = function() {
+    return helper('<div class="label"><span class="rangeLengthLabel" /></div>')
+  }
+
+  templates.separator = function() {
+    return helper('<span class="separator"> - </span>')
+  }
+
+  templates.endDateLabel = function() {
+    return helper('<span class="endDateLabel" />')
+  }
+
+  templates.startDateLabel = function() {
+    return helper('<div class="label"><span class="startDateLabel" /></div>')
+  }
+
+  templates.clearDates = function() {
+    return helper('<span class="clearDates clickable" />')
+  }
+
+  templates.clearLabel = function() {
+    return helper('<div class="label clearLabel" />')
+  }
+
+  templates.icon = function(data) {
+    var tmpl = '<a href="javascirpt:;" class="calendarIcon"><%= content %></a>'
+    return helper(tmpl, data)
+  }
+
+  templates.popupContainer = function() {
+    return helper('<div class="popUpContainer" />')
+  }
+
+  templates.calendar = function() {
+    return helper('<div class="continuousCalendar" />')
+  }
+
+  templates.emptyContainer = function() {
+    return helper('<div />')
   }
 
   return templates

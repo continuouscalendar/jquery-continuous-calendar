@@ -3,6 +3,7 @@ define(function(require) {
   var DateFormat = require('./DateFormat')
   var DateRange = require('./DateRange')
   var DateTime = require('./DateTime')
+  var Template = require('./Template')
 
   return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate,
                   endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList) {
@@ -34,17 +35,17 @@ define(function(require) {
 
     function addRangeLengthLabel() {
       if($('.rangeLengthLabel', container).isEmpty()) {
-        var rangeLengthContainer = $('<div class="label"><span class="rangeLengthLabel"></span></div>')
+        var rangeLengthContainer = $(Template.lengthLabel())
         $('.continuousCalendar', container).append(rangeLengthContainer)
       }
     }
 
-    function addEndDateLabel(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') }
+    function addEndDateLabel(dateLabelContainer) { dateLabelContainer.append(Template.separator()).append(Template.endDateLabel()) }
 
     function addDateClearingLabel() {
       if(params.allowClearDates) {
-        var dateClearingLabel = $('<span class="clearDates clickable"></span>').text(locale.clearRangeLabel)
-        var dateClearingContainer = $('<div class="label clearLabel"></div>').append(dateClearingLabel)
+        var dateClearingLabel = $(Template.clearDates()).text(locale.clearRangeLabel)
+        var dateClearingContainer = $(Template.clearLabel()).append(dateClearingLabel)
         $('.continuousCalendar', container).append(dateClearingContainer)
       }
     }
@@ -91,7 +92,6 @@ define(function(require) {
       function isInstantSelection(elem, hasShiftKeyPressed) {
         if(params.selectWeek) return enabledCell(elem) || isWeekCell(elem)
         else return isWeekCell(elem) || isMonthCell(elem) || hasShiftKeyPressed
-
       }
 
       function instantSelection(elem, hasShiftKeyPressed) {

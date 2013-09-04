@@ -52,7 +52,7 @@ define(function(require) {
       if(todayKey in dateCellMap) {
         getDateCell(dateCellMap[todayKey])
             .addClass('today')
-            .wrapInner(Template.innerWrapper)
+            .wrapInner(Template.innerWrapper())
       }
     }
 

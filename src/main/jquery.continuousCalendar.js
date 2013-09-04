@@ -7,6 +7,7 @@ define(function(require) {
   var CalendarBody = require('./CalendarBody')
   var RangeEvents = require('./RangeEvents')
   var SingleDateEvents = require('./SingleDateEvents')
+  var Template = require('./Template')
   require('jquery.tinyscrollbar')
 
   $.continuousCalendar = {
@@ -143,12 +144,15 @@ define(function(require) {
         var popUpVersion = {
           initUI               : function() {
             calendarContainer.addClass('popup').hide()
-            var icon = $('<a href="#" class="calendarIcon">' + today.getDate() + '</a>').click(toggleCalendar)
-            container.prepend('<div></div>')
+            var icon = $(Template.icon({
+              content: today.getDate()
+            }))
+            icon.click(toggleCalendar)
+            container.prepend(Template.emptyContainer())
             container.prepend(icon)
           },
           initState            : $.noop,
-          getContainer         : function(newContainer) { return $('<div class="popUpContainer">').append(newContainer); },
+          getContainer         : function(newContainer) { return $(Template.popupContainer()).append(newContainer); },
           close                : function(cell) { toggleCalendar.call(cell) },
           addDateLabelBehaviour: function(label) {
             label.addClass('clickable')
@@ -193,14 +197,14 @@ define(function(require) {
         if(existingContainer.exists()) {
           return existingContainer
         } else {
-          var newContainer = $('<div class="continuousCalendar">')
+          var newContainer = $(Template.calendar())
           container.append(popupBehavior.getContainer(newContainer))
           return newContainer
         }
       }
 
       function addDateLabels(container, popupBehavior, dateBehavior) {
-        var dateLabelContainer = $('<div class="label"><span class="startDateLabel"></span></div>')
+        var dateLabelContainer = $(Template.startDateLabel())
         dateBehavior.addEndDateLabel(dateLabelContainer)
         container.prepend(dateLabelContainer)
         popupBehavior.addDateLabelBehaviour(dateLabelContainer.children())
