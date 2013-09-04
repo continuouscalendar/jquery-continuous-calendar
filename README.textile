@@ -142,10 +142,8 @@ require(['jquery', 'jquery.continuous-calendar/jquery.continuousCalendar'], func
 h1. Instructions for contributors
 
 * make a fork
-* code
-* run tests (src/test/*.html)
-* run release.sh <version> (see *git tag* for previous versions)
-* push --tags
+* code by using existing code style
+* update and run tests (src/test/*.html)
 * make pull request
 
 h1. License
