@@ -31,10 +31,15 @@ define(function(require) {
   }
 
   templates.tinyScrollbar = function() {
-    return helper('<div class="tinyscrollbar"><div class="scrollbar"> \
-        <div class="track"><div class="thumb"> \
-        <div class="end" /> \
-        </div></div></div></div>')
+    var tmpl = [
+      '<div class="tinyscrollbar">',
+      '<div class="scrollbar">',
+      '<div class="track">',
+      '<div class="thumb">',
+      '<div class="end">',
+      '</div></div></div></div></div>'
+    ].join('')
+    return helper(tmpl)
   }
 
   templates.headerRow = function() {
@@ -60,8 +65,11 @@ define(function(require) {
   }
 
   templates.dateCell = function(data) {
-    var tmpl = '<td class="<%= classNames %>" date-cell-index="<%= index %>"> \
-               <%= content %></td>'
+    var tmpl = [
+      '<td class="<%= classNames %>" date-cell-index="<%= index %>">',
+      '<%= content %>',
+      '</td>'
+    ].join('')
     return helper(tmpl, data)
   }
 
