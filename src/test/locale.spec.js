@@ -53,22 +53,18 @@ define(function(require) {
       expect(locale.daysLabel(32)).toEqual('32 Дня')
     })
 
-    /*
-     * TODO: I don't get it
-     *
     it('Hours and minuts', function() {
-      expect(locale.hoursLabel(0, 1)).toEqual('1 Минута')
-      expect(locale.hoursLabel(0, 2)).toEqual('2 Минуты')
-      expect(locale.hoursLabel(1, 3)).toEqual('63 Минуты')
-      expect(locale.hoursLabel(2, 4)).toEqual('124 Минуты')
-      expect(locale.hoursLabel(0, 5)).toEqual('5 Минут')
-      expect(locale.hoursLabel(1, 6)).toEqual('66 Минут')
-      expect(locale.hoursLabel(0, 11)).toEqual('11 Минут')
-      expect(locale.hoursLabel(1, 12)).toEqual('72 Минуты')
-      expect(locale.hoursLabel(1, 20)).toEqual('80 Минут')
-      expect(locale.hoursLabel(0, 21)).toEqual('21 Минута')
-      expect(locale.hoursLabel(1, 22)).toEqual('82 Минуты')
+      expect(locale.hoursLabel(0, 1)).toEqual('0,02 Часа')
+      expect(locale.hoursLabel(0, 2)).toEqual('0,03 Часа')
+      expect(locale.hoursLabel(1, 3)).toEqual('1,05 Часа')
+      expect(locale.hoursLabel(2, 4)).toEqual('2,07 Часа')
+      expect(locale.hoursLabel(0, 5)).toEqual('0,08 Часа')
+      expect(locale.hoursLabel(1, 6)).toEqual('1,1 Часа')
+      expect(locale.hoursLabel(0, 11)).toEqual('0,18 Часа')
+      expect(locale.hoursLabel(1, 12)).toEqual('1,2 Часа')
+      expect(locale.hoursLabel(1, 20)).toEqual('1,33 Часа')
+      expect(locale.hoursLabel(0, 21)).toEqual('0,35 Часа')
+      expect(locale.hoursLabel(1, 22)).toEqual('1,37 Часа')
     })
-    */
   })
 })

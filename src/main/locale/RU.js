@@ -41,7 +41,16 @@ define(function(require) {
     daysLabel      : function(days) {return pluralize(days, ['День', 'Дня', 'Дней'])},
     hoursLabel     : function(hours, minutes) {
       var hoursAndMinutes = DateFormat.hoursAndMinutes(hours, minutes).replace('.', ',')
-      return pluralize(hoursAndMinutes, ['Минута', 'Минуты', 'Минут'])
+      /*
+       * It's weird to say like this but correct pronounce is:
+       * 1,2  = '1 целая две десятых часа'
+       * 0,1  = '1 десятая часа'
+       * 0,06 = '6 сотых часа'
+       * 2,05 = '2 целых пять сотых часа'
+       * 3,12 = '3 целых двенадцать сотых часа'
+       * 4,29 = '4 целых 29 сотых часа'
+       */
+      return hoursAndMinutes + ' Часа'
     },
     clearRangeLabel: 'Очистить диапазон',
     clearDateLabel : 'Очистить дату',
