@@ -26,5 +26,10 @@ require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFor
         $(this).append($("<option>").text(i + ":00")).append($("<option>").text(i + ":30"))
       }
     })
+
+  var templates = {
+    th: function() {return '<th style="background: #333;color: #eee; font-weight: bold;" />'}
+  }
+  $("#redefinedTemplates").continuousCalendar({templates: templates})
 })
 
