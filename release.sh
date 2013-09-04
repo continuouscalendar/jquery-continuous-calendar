@@ -13,6 +13,8 @@ rm build/*latest*
 echo "Compressing js..."
 bundle() { node src/lib/r-2.1.2.js -o src/main/build.js uglify.defines.VERSION=string,$version uglify.defines.RELEASED=string,`date '+%Y-%m-%d'` $*; }
 bundle out=$LATEST_JS_MIN
+echo "Updating playground..."
+node src/lib/r-2.1.2.js -o site/playground-build.js
 echo "Compressing css..."
 java -jar yuicompressor-2.4.6.jar --type css src/main/jquery.continuousCalendar.css -o $LATEST_CSS_MIN
 #TODO create js documentation
@@ -35,6 +37,7 @@ else
 		git add continuousCalendar.jquery.json
 		git commit -m "Build for version $version"
 		git tag $version
+		./ghpages.sh
 		git status
 		echo "Now:"
 		echo "1. type git push --tags"
