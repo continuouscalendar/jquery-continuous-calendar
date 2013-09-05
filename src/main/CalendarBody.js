@@ -17,7 +17,7 @@ define(function(require) {
       bodyTable.addClass('overview')
       scrollContent.addClass('viewport')
       calendarContainer.append(
-          $(Template.tinyScrollbar()).append(scrollContent))
+          $(Template._tinyScrollbar()).append(scrollContent))
     } else {
       calendarContainer.append(scrollContent)
     }
@@ -37,7 +37,7 @@ define(function(require) {
     }
 
     function headerRow() {
-      var tr = $(Template.headerRow())
+      var tr = $(Template._headerRow())
       $(locale.dayNames).each(function(index) {
         var weekDay = $(Template.th())
             .append(locale.shortDayNames[(index + locale.firstWeekday) % 7])
@@ -84,7 +84,7 @@ define(function(require) {
       }
 
       function dateCell(date) {
-        var cell = Template.dateCell({
+        var cell = Template._dateCell({
           classNames: dateStyles(date),
           index: dateCellDates.length,
           content: date.getDate()
@@ -103,7 +103,7 @@ define(function(require) {
         } else if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1) {
           content = firstDayOfWeek.getFullYear()
         }
-        return Template.monthCell({
+        return Template._monthCell({
           classNames: classNames,
           content: content
         })

@@ -202,14 +202,14 @@ define(function(require) {
         if(existingContainer.exists()) {
           return existingContainer
         } else {
-          var newContainer = $(Template.calendar())
+          var newContainer = $(Template._calendar())
           container.append(popupBehavior.getContainer(newContainer))
           return newContainer
         }
       }
 
       function addDateLabels(container, popupBehavior, dateBehavior) {
-        var dateLabelContainer = $(Template.startDateLabel())
+        var dateLabelContainer = $(Template._startDateLabel())
         dateBehavior.addEndDateLabel(dateLabelContainer)
         container.prepend(dateLabelContainer)
         popupBehavior.addDateLabelBehaviour(dateLabelContainer.children())

@@ -35,16 +35,16 @@ define(function(require) {
 
     function addRangeLengthLabel() {
       if($('.rangeLengthLabel', container).isEmpty()) {
-        var rangeLengthContainer = $(Template.lengthLabel())
+        var rangeLengthContainer = $(Template._lengthLabel())
         $('.continuousCalendar', container).append(rangeLengthContainer)
       }
     }
 
-    function addEndDateLabel(dateLabelContainer) { dateLabelContainer.append(Template.separator()).append(Template.endDateLabel()) }
+    function addEndDateLabel(dateLabelContainer) { dateLabelContainer.append(Template._separator()).append(Template._endDateLabel()) }
 
     function addDateClearingLabel() {
       if(params.allowClearDates) {
-        var dateClearingLabel = $(Template.clearDates()).text(locale.clearRangeLabel)
+        var dateClearingLabel = $(Template._clearDates()).text(locale.clearRangeLabel)
         var dateClearingContainer = $(Template.clearLabel()).append(dateClearingLabel)
         $('.continuousCalendar', container).append(dateClearingContainer)
       }

@@ -30,7 +30,7 @@ define(function(require) {
 
     function addDateClearingLabel() {
       if(params.allowClearDates) {
-        var dateClearingLabel = $(Template.clearDates()).hide()
+        var dateClearingLabel = $(Template._clearDates()).hide()
         dateClearingLabel.text(locale.clearDateLabel)
         var dateClearingContainer = $(Template.clearLabel()).append(dateClearingLabel)
         $('.continuousCalendar', container).append(dateClearingContainer)

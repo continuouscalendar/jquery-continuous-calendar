@@ -30,7 +30,7 @@ define(function(require) {
     return helper('<div class="calendarScrollContent" />')
   }
 
-  templates.tinyScrollbar = function() {
+  templates._tinyScrollbar = function() {
     var tmpl = [
       '<div class="tinyscrollbar">',
       '<div class="scrollbar">',
@@ -42,7 +42,7 @@ define(function(require) {
     return helper(tmpl)
   }
 
-  templates.headerRow = function() {
+  templates._headerRow = function() {
     return helper('<tr><th class="month" /><th class="week">&nbsp;</th>')
   }
 
@@ -64,7 +64,7 @@ define(function(require) {
     return helper(tmpl, data)
   }
 
-  templates.dateCell = function(data) {
+  templates._dateCell = function(data) {
     var tmpl = [
       '<td class="<%= classNames %>" date-cell-index="<%= index %>">',
       '<%= content %>',
@@ -78,7 +78,7 @@ define(function(require) {
     return helper(tmpl, data)
   }
 
-  templates.monthCell = function(data) {
+  templates._monthCell = function(data) {
     var tmpl = '<th class="month <%= classNames %>"><%= content %></th>'
     return helper(tmpl, data)
   }
@@ -87,23 +87,23 @@ define(function(require) {
     return helper('<div />')
   }
 
-  templates.lengthLabel = function() {
+  templates._lengthLabel = function() {
     return helper('<div class="label"><span class="rangeLengthLabel" /></div>')
   }
 
-  templates.separator = function() {
+  templates._separator = function() {
     return helper('<span class="separator"> - </span>')
   }
 
-  templates.endDateLabel = function() {
+  templates._endDateLabel = function() {
     return helper('<span class="endDateLabel" />')
   }
 
-  templates.startDateLabel = function() {
+  templates._startDateLabel = function() {
     return helper('<div class="label"><span class="startDateLabel" /></div>')
   }
 
-  templates.clearDates = function() {
+  templates._clearDates = function() {
     return helper('<span class="clearDates clickable" />')
   }
 
@@ -120,7 +120,7 @@ define(function(require) {
     return helper('<div class="popUpContainer" />')
   }
 
-  templates.calendar = function() {
+  templates._calendar = function() {
     return helper('<div class="continuousCalendar" />')
   }
 
