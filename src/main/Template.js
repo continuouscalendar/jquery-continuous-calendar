@@ -1,3 +1,32 @@
+/**
+ * Templates could be redefined with options provided for $.fn.continuousCalendar
+ * For example:
+ *   $.fn.continuousCalendar({
+ *     templates: {
+ *       header: function() {
+ *         return '<table class="awesome-header" />'
+ *       }
+ *     }
+ *   })
+ *
+ * There public and private templates, private starts with underscore. Only public templates could be redefined.
+ * List of public templates:
+ *   + header
+ *   + body
+ *   + scrollContent
+ *   + th
+ *   + thead
+ *   + tbody
+ *   + bodyRow
+ *   + weekCell
+ *   + innerWrapper
+ *   + clearLabel
+ *   + icon
+ *   + popupContainer
+ *   + emptyContainer
+ *
+ * @return {Object.<Function.<String>>}
+ */
 define(function(require) {
   /**
    * @param {string} tmpl Should contain <%= `name` %> which replaced by `value`

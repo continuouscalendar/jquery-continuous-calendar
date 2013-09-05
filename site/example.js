@@ -28,7 +28,11 @@ require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFor
     })
 
   var templates = {
-    th: function() {return '<th style="background: #333;color: #eee; font-weight: bold;" />'}
+    th: function() {return '<th style="background: #333;color: #eee; font-weight: bold;" />'},
+    header: function() {return '<table class="calendarHeader" style="width: 400px; font-size: 14px;" />'},
+    body: function() {return '<table class="calendarBody" style="width: 400px; font-size: 14px;" />'},
+    scrollContent: function() {return '<div class="calendarScrollContent" style="width: 416px; height: 200px;" />'},
+    weekCell: function() {return ''}
   }
   $("#redefinedTemplates").continuousCalendar({templates: templates})
 })
