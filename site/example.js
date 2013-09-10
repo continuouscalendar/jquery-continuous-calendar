@@ -35,5 +35,10 @@ require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFor
     weekCell: function() {return ''}
   }
   $("#redefinedTemplates").continuousCalendar({templates: templates})
-})
 
+  var templatesUnderscore = {
+    weekCell: _.template('<th class="week <%= classNames %>"><%= content %></th>'),
+    bodyRow: _.template('<tr><%= content %></tr>')
+  }
+  $("#redefinedTemplatesUnderscore").continuousCalendar({templates: templatesUnderscore})
+})
