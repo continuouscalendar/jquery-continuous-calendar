@@ -4,7 +4,7 @@ define(function(require) {
   var DateRange = require('./DateRange')
   var DateTime = require('./DateTime')
 
-  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, templates,
+  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, Template,
                   endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList) {
     var mouseDownDate = null
     var selection
@@ -15,7 +15,6 @@ define(function(require) {
       NONE            : 'none'
     }
     var status = Status.NONE
-    var Template = templates
 
     return {
       showInitialSelection: setRangeLabels,

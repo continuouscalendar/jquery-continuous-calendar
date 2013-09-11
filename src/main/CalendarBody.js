@@ -3,8 +3,7 @@ define(function(require) {
   var DateFormat = require('./DateFormat')
   var DateTime = require('./DateTime')
 
-  return function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject, templates) {
-    var Template = templates
+  return function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject, Template) {
     var dateCellMap = {}
     var dateCellDates = []
 
