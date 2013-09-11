@@ -29,21 +29,6 @@
  * @return {Object.<Function.<String>>}
  */
 define(function(require) {
-  /**
-   * @param {string} tmpl Should contain <%= `name` %> which replaced by `value`
-   * @param {Object} variables Ex. {`name`: '`value`'}
-   * @return {string}
-   */
-  function helper(tmpl, data) {
-    if (!data) { return tmpl }
-
-    for (var name in data) {
-      var encodedName = ['<%= ', name, ' %>'].join('')
-      tmpl = tmpl.replace(encodedName, data[name])
-    }
-    return tmpl
-  }
-
   var templates = {}
 
   templates.header = function() { return helper('<table class="calendarHeader" />') }
@@ -173,6 +158,21 @@ define(function(require) {
   templates._calendar = function() { return helper('<div class="continuousCalendar" />') }
 
   templates.emptyContainer = function() { return helper('<div />') }
+
+  /**
+   * @param {string} tmpl Should contain <%= `name` %> which replaced by `value`
+   * @param {Object} variables Ex. {`name`: '`value`'}
+   * @return {string}
+   */
+  function helper(tmpl, data) {
+    if (!data) { return tmpl }
+
+    for (var name in data) {
+      var encodedName = ['<%= ', name, ' %>'].join('')
+      tmpl = tmpl.replace(encodedName, data[name])
+    }
+    return tmpl
+  }
 
   return templates
 })
