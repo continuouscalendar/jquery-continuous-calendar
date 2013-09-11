@@ -3,22 +3,20 @@ define(function(require) {
   var DateFormat = require('./DateFormat')
   var DateTime = require('./DateTime')
 
-  return function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
+  return function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject, Template) {
     var dateCellMap = {}
     var dateCellDates = []
 
-    var headerTable = $('<table class="calendarHeader">').append(headerRow())
-    var bodyTable = $('<table class="calendarBody">').append(calendarBody())
-    var scrollContent = $('<div class="calendarScrollContent">').append(bodyTable)
+    var headerTable = $(Template.header()).append(headerRow())
+    var bodyTable = $(Template.body()).append(calendarBody())
+    var scrollContent = $(Template.scrollContent()).append(bodyTable)
     calendarContainer.append(headerTable)
 
     if(customScroll) {
       bodyTable.addClass('overview')
       scrollContent.addClass('viewport')
       calendarContainer.append(
-          $('<div class="tinyscrollbar"></div>')
-              .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
-              .append(scrollContent))
+          $(Template._tinyScrollbar()).append(scrollContent))
     } else {
       calendarContainer.append(scrollContent)
     }
@@ -38,18 +36,22 @@ define(function(require) {
     }
 
     function headerRow() {
-      var tr = $('<tr><th class="month"></th><th class="week">&nbsp;</th>')
+      var tr = $(Template._headerRow())
       $(locale.dayNames).each(function(index) {
-        var weekDay = $('<th>').append(locale.shortDayNames[(index + locale.firstWeekday) % 7]).addClass('weekDay')
+        var weekDay = $(Template.th())
+            .append(locale.shortDayNames[(index + locale.firstWeekday) % 7])
+            .addClass('weekDay')
         tr.append(weekDay)
       })
-      return $('<thead>').append(tr)
+      return $(Template.thead()).append(tr)
     }
 
     function highlightToday(dateCellMap) {
       var todayKey = DateFormat.format(DateTime.today(), 'Ymd', locale)
       if(todayKey in dateCellMap) {
-        getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
+        getDateCell(dateCellMap[todayKey])
+            .addClass('today')
+            .wrapInner(Template.innerWrapper())
       }
     }
 
@@ -58,46 +60,53 @@ define(function(require) {
       var isFirst = true;
       var rows = []
       while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
-        calendarRow(rows, firstWeekDay.clone(), isFirst)
+        rows.push(calendarRow(firstWeekDay.clone(), isFirst))
         isFirst = false
         firstWeekDay = firstWeekDay.plusDays(7)
       }
 
-      return '<tbody>' + rows.join('') + '</tbody>'
+      return Template.tbody({ rows: rows.join('') })
 
-      function calendarRow(rows, firstDayOfWeek, isFirst) {
-        rows.push('<tr>')
-        rows.push(monthCell(firstDayOfWeek, isFirst))
-        rows.push(weekCell(firstDayOfWeek))
+      function calendarRow(firstDayOfWeek, isFirst) {
+        var contentArray = []
+        contentArray.push(monthCell(firstDayOfWeek, isFirst))
+        contentArray.push(weekCell(firstDayOfWeek))
         for(var i = 0; i < 7; i++) {
           var date = firstDayOfWeek.plusDays(i)
-          rows.push(dateCell(date))
+          contentArray.push(dateCell(date))
         }
-        rows.push('</tr>')
+        return Template.bodyRow({ content: contentArray.join('') })
       }
 
       function dateCell(date) {
-        var cell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '">' + date.getDate() + '</td>'
+        var cell = Template._dateCell({
+          classNames: dateStyles(date),
+          index: dateCellDates.length,
+          content: date.getDate()
+        })
         dateCellMap[DateFormat.format(date, 'Ymd', locale)] = dateCellDates.length
         dateCellDates.push(date)
         return cell
       }
 
       function monthCell(firstDayOfWeek, isFirst) {
-        var th = '<th class="month ' + backgroundBy(firstDayOfWeek)
+        var classNames = backgroundBy(firstDayOfWeek)
+        var content = ''
         if(isFirst || firstDayOfWeek.getDate() <= 7) {
-          th += ' monthName">'
-          th += locale.monthNames[firstDayOfWeek.getMonth()-1]
-        } else {
-          th += '">'
-          if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1) {
-            th += firstDayOfWeek.getFullYear()
-          }
+          classNames += ' monthName'
+          content = locale.monthNames[firstDayOfWeek.getMonth()-1]
+        } else if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1) {
+          content = firstDayOfWeek.getFullYear()
         }
-        return th + '</th>'
+        return Template._monthCell({ classNames: classNames, content: content })
       }
 
-      function weekCell(firstDayOfWeek) { return '<th class="week ' + backgroundBy(firstDayOfWeek) + '">' + firstDayOfWeek.getWeekInYear('ISO') + '</th>' }
+      function weekCell(firstDayOfWeek) {
+        return Template.weekCell({
+          classNames: backgroundBy(firstDayOfWeek),
+          content: firstDayOfWeek.getWeekInYear('ISO')
+        })
+      }
     }
 
     function dateStyles(date) { return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)].sort().join(' ')) }

@@ -18,7 +18,8 @@ require(['matchers', 'jasmine', 'jasmine-html', 'jasmine-jquery'], function(matc
     'jquery.continuousCalendar.spec',
     'DateRange.spec',
     'DateTime.spec',
-    'locale.spec'
+    'locale.spec',
+    'Template.spec'
   ], function() {
     var env = jasmine.getEnv()
     var trivialReporter = new jasmine.TrivialReporter()

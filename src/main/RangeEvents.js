@@ -4,7 +4,7 @@ define(function(require) {
   var DateRange = require('./DateRange')
   var DateTime = require('./DateTime')
 
-  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate,
+  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, Template,
                   endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList) {
     var mouseDownDate = null
     var selection
@@ -34,17 +34,17 @@ define(function(require) {
 
     function addRangeLengthLabel() {
       if($('.rangeLengthLabel', container).isEmpty()) {
-        var rangeLengthContainer = $('<div class="label"><span class="rangeLengthLabel"></span></div>')
+        var rangeLengthContainer = $(Template._lengthLabel())
         $('.continuousCalendar', container).append(rangeLengthContainer)
       }
     }
 
-    function addEndDateLabel(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') }
+    function addEndDateLabel(dateLabelContainer) { dateLabelContainer.append(Template._separator()).append(Template._endDateLabel()) }
 
     function addDateClearingLabel() {
       if(params.allowClearDates) {
-        var dateClearingLabel = $('<span class="clearDates clickable"></span>').text(locale.clearRangeLabel)
-        var dateClearingContainer = $('<div class="label clearLabel"></div>').append(dateClearingLabel)
+        var dateClearingLabel = $(Template._clearDates()).text(locale.clearRangeLabel)
+        var dateClearingContainer = $(Template.clearLabel()).append(dateClearingLabel)
         $('.continuousCalendar', container).append(dateClearingContainer)
       }
     }
@@ -91,7 +91,6 @@ define(function(require) {
       function isInstantSelection(elem, hasShiftKeyPressed) {
         if(params.selectWeek) return enabledCell(elem) || isWeekCell(elem)
         else return isWeekCell(elem) || isMonthCell(elem) || hasShiftKeyPressed
-
       }
 
       function instantSelection(elem, hasShiftKeyPressed) {
