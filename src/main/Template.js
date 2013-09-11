@@ -35,9 +35,7 @@ define(function(require) {
    * @return {string}
    */
   function helper(tmpl, data) {
-    if (!data) {
-      return tmpl
-    }
+    if (!data) { return tmpl }
 
     for (var name in data) {
       var encodedName = ['<%= ', name, ' %>'].join('')
@@ -48,17 +46,11 @@ define(function(require) {
 
   var templates = {}
 
-  templates.header = function() {
-    return helper('<table class="calendarHeader" />')
-  }
+  templates.header = function() { return helper('<table class="calendarHeader" />') }
 
-  templates.body = function() {
-    return helper('<table class="calendarBody" />')
-  }
+  templates.body = function() { return helper('<table class="calendarBody" />') }
 
-  templates.scrollContent = function() {
-    return helper('<div class="calendarScrollContent" />')
-  }
+  templates.scrollContent = function() { return helper('<div class="calendarScrollContent" />') }
 
   /**
    * @private
@@ -78,17 +70,11 @@ define(function(require) {
   /**
    * @private
    */
-  templates._headerRow = function() {
-    return helper('<tr><th class="month" /><th class="week">&nbsp;</th>')
-  }
+  templates._headerRow = function() { return helper('<tr><th class="month" /><th class="week">&nbsp;</th>') }
 
-  templates.th = function() {
-    return helper('<th>')
-  }
+  templates.th = function() { return helper('<th>') }
 
-  templates.thead = function() {
-    return helper('<thead>')
-  }
+  templates.thead = function() { return helper('<thead>') }
 
   /**
    * @param {object} data
@@ -145,68 +131,48 @@ define(function(require) {
     return helper(tmpl, data)
   }
 
-  templates.innerWrapper = function() {
-    return helper('<div />')
-  }
+  templates.innerWrapper = function() { return helper('<div />') }
 
   /**
    * @private
    */
-  templates._lengthLabel = function() {
-    return helper('<div class="label"><span class="rangeLengthLabel" /></div>')
-  }
+  templates._lengthLabel = function() { return helper('<div class="label"><span class="rangeLengthLabel" /></div>') }
 
   /**
    * @private
    */
-  templates._separator = function() {
-    return helper('<span class="separator"> - </span>')
-  }
+  templates._separator = function() { return helper('<span class="separator"> - </span>') }
 
   /**
    * @private
    */
-  templates._endDateLabel = function() {
-    return helper('<span class="endDateLabel" />')
-  }
+  templates._endDateLabel = function() { return helper('<span class="endDateLabel" />') }
 
   /**
    * @private
    */
-  templates._startDateLabel = function() {
-    return helper('<div class="label"><span class="startDateLabel" /></div>')
-  }
+  templates._startDateLabel = function() { return helper('<div class="label"><span class="startDateLabel" /></div>') }
 
   /**
    * @private
    */
-  templates._clearDates = function() {
-    return helper('<span class="clearDates clickable" />')
-  }
+  templates._clearDates = function() { return helper('<span class="clearDates clickable" />') }
 
-  templates.clearLabel = function() {
-    return helper('<div class="label clearLabel" />')
-  }
+  templates.clearLabel = function() { return helper('<div class="label clearLabel" />') }
 
   templates.icon = function(data) {
     var tmpl = '<a href="javascirpt:;" class="calendarIcon"><%= content %></a>'
     return helper(tmpl, data)
   }
 
-  templates.popupContainer = function() {
-    return helper('<div class="popUpContainer" />')
-  }
+  templates.popupContainer = function() { return helper('<div class="popUpContainer" />') }
 
   /**
    * @private
    */
-  templates._calendar = function() {
-    return helper('<div class="continuousCalendar" />')
-  }
+  templates._calendar = function() { return helper('<div class="continuousCalendar" />') }
 
-  templates.emptyContainer = function() {
-    return helper('<div />')
-  }
+  templates.emptyContainer = function() { return helper('<div />') }
 
   return templates
 })
