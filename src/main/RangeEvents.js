@@ -152,7 +152,7 @@ define(function(require) {
             if (isEnabled(event.target) && isPermittedRange(newSelection)) selection = newSelection
           }
         }
-        actions[status]()
+        if (date) actions[status]()
         drawSelection()
       }
     }

@@ -166,6 +166,11 @@ define(function(require) {
         expect(endFieldValue()).toEqual('')
         expect(cal().find('.rangeLengthLabel')).toHaveText('0 Days')
       })
+
+      it('does not throw an error when range selection is dragged outside of calendar', function() {
+        createCalendarWithNoRange('7/14/2013', '7/26/2013')
+        dragOutsideCalendar(15)
+      })
     })
 
     describe('calendar events', function() {
@@ -600,6 +605,11 @@ define(function(require) {
       elemByDate(day).mouseover()
     }
     elemByDate(exit).mouseover().mouseup()
+  }
+
+  function dragOutsideCalendar(enter) {
+    elemByDate(enter).mousedown()
+    cal().find(".monthName").mouseover()
   }
 
   function createCalendarWithOneWeek() { createCalendarFields({startDate: '4/30/2008'}).continuousCalendar({weeksBefore: 0, weeksAfter: 0}) }
