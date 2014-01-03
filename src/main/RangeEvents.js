@@ -22,6 +22,7 @@ define(function(require) {
       addRangeLengthLabel : addRangeLengthLabel,
       addEndDateLabel     : addEndDateLabel,
       addDateClearingLabel: addDateClearingLabel,
+      setSelection        : setSelection,
       performTrigger      : performTrigger
     }
 
@@ -30,6 +31,11 @@ define(function(require) {
       oldSelection = selection.clone()
       initRangeCalendarEvents(container, calendarBody.bodyTable)
       drawSelection()
+    }
+
+    function setSelection(start, end) {
+      if (start && end) selection = new DateRange(start, end)
+      mouseUp()
     }
 
     function addRangeLengthLabel() {
