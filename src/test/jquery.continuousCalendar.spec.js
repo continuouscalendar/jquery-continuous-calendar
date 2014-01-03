@@ -171,6 +171,16 @@ define(function(require) {
         createCalendarWithNoRange('7/14/2013', '7/26/2013')
         dragOutsideCalendar(15)
       })
+
+      it('changes its selection when opening according to start and end fields', function() {
+        createPopupRangeCalendar('12/15/2013', '2/22/2014')
+        setStartFieldValue('1/14/2014')
+        setEndFieldValue('1/16/2014')
+        cal().find('.calendarIcon').click()
+        assertHasValues('.selected', [14, 15, 16])
+        expect(startLabelValue()).toEqual('Tu 1/14/2014')
+        expect(endLabelValue()).toEqual('Th 1/16/2014')
+      })
     })
 
     describe('calendar events', function() {
@@ -430,6 +440,7 @@ define(function(require) {
         expect(previous.find('.continuousCalendar')).toBeVisible()
         expect(startLabelValue()).toEqual('Su 10/26/2008')
         expect(startFieldValue()).toEqual('10/26/2008')
+        expect(cal().calendarRange()).toEqual(DateTime.fromDate(2008, 10, 26))
       })
 
       it('clearing closes the calendar', function() {
@@ -439,6 +450,14 @@ define(function(require) {
         expect(cal().find('.continuousCalendar')).not.toBeVisible()
         expect(startFieldValue()).toEqual('')
         expect(endFieldValue()).toEqual('')
+      })
+
+      it('changes its selection when opening according to start field value', function() {
+        createPopupCalendar()
+        setStartFieldValue('3/16/2009')
+        cal().find('.calendarIcon').click()
+        assertHasValues('.selected', [16])
+        expect(startLabelValue()).toEqual('Mo 3/16/2009')
       })
     })
 
@@ -639,6 +658,8 @@ define(function(require) {
 
   function createPopupCalendar() { createCalendarFields({startDate: '4/29/2009'}).continuousCalendar({isPopup: true}) }
 
+  function createPopupRangeCalendar(start, end) { createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: start, lastDate: end, isPopup: true}) }
+
   function createClearablePopupCalendar() { createCalendarFields({startDate: '7/24/2013'}).continuousCalendar({isPopup: true, allowClearDates: true}) }
 
   function createPopupWeekCalendar() {
@@ -665,7 +686,13 @@ define(function(require) {
 
   function endFieldValue() { return cal().find('input.endDate').val() }
 
+  function endLabelValue() { return cal().find('span.endDateLabel').text() }
+
   function click(selector) { $(selector).click() }
+
+  function setStartFieldValue(value) { return cal().find('input.startDate').val(value) }
+
+  function setEndFieldValue(value) { return cal().find('input.endDate').val(value) }
 
   function assertHasValues(selector, expectedArray) {
     expect($.map(cal().find(selector), function(elem) {

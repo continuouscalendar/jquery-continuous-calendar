@@ -169,6 +169,7 @@ define(function(require) {
               setYearLabel()
               beforeFirstOpening = false
             }
+            dateBehavior.setSelection(fieldDate(params.startField), fieldDate(params.endField))
             scrollToSelection()
             $(document).bind('click.continuousCalendar', toggleCalendar)
 
