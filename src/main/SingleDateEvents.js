@@ -9,22 +9,41 @@ define(function(require) {
       addRangeLengthLabel : $.noop,
       addEndDateLabel     : $.noop,
       addDateClearingLabel: addDateClearingLabel,
+      setSelection        : setSelection,
       performTrigger      : performTrigger
     }
 
     function showInitialSelection() {
       if(startDate) {
-        setDateLabel(DateFormat.format(startDate, locale.weekDateFormat, locale))
+        setFieldValues(startDate)
         $('.clearDates', container).show()
       }
     }
 
     function initEvents() {
       initSingleDateCalendarEvents()
-      var selectedDateKey = startDate && DateFormat.format(startDate, 'Ymd', locale)
+      setSelection(fieldDate(params.startField) || startDate)
+    }
+
+    function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null }
+
+    function setSelection(date) {
+      var selectedDateKey = date && DateFormat.format(date, 'Ymd', locale)
       if(selectedDateKey in calendarBody.dateCellMap) {
-        calendarBody.getDateCell(calendarBody.dateCellMap[selectedDateKey]).addClass('selected')
+        setSelectedDate(date, calendarBody.getDateCell(calendarBody.dateCellMap[selectedDateKey]))
       }
+    }
+
+    function setSelectedDate(date, cell) {
+      $('td.selected', container).removeClass('selected')
+      cell.addClass('selected')
+      setFieldValues(date)
+    }
+
+    function setFieldValues(date) {
+      container.data('calendarRange', date)
+      params.startField.val(DateFormat.shortDateFormat(date, locale))
+      setDateLabel(DateFormat.format(date, locale.weekDateFormat, locale))
     }
 
     function addDateClearingLabel() {
@@ -45,12 +64,8 @@ define(function(require) {
       $('.date', container).bind('click', function() {
         var dateCell = $(this)
         if (!dateCell.hasClass('disabled')) {
-          $('td.selected', container).removeClass('selected')
-          dateCell.addClass('selected')
           var selectedDate = getElemDate(dateCell.get(0));
-          container.data('calendarRange', selectedDate)
-          params.startField.val(DateFormat.shortDateFormat(selectedDate, locale))
-          setDateLabel(DateFormat.format(selectedDate, locale.weekDateFormat, locale))
+          setSelectedDate(selectedDate, dateCell)
           popupBehavior.close(this)
           executeCallback(selectedDate)
         }
