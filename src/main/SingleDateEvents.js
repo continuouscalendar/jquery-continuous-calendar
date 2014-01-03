@@ -48,6 +48,7 @@ define(function(require) {
           $('td.selected', container).removeClass('selected')
           dateCell.addClass('selected')
           var selectedDate = getElemDate(dateCell.get(0));
+          container.data('calendarRange', selectedDate)
           params.startField.val(DateFormat.shortDateFormat(selectedDate, locale))
           setDateLabel(DateFormat.format(selectedDate, locale.weekDateFormat, locale))
           popupBehavior.close(this)

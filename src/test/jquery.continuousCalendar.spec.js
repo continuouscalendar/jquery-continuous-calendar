@@ -430,6 +430,7 @@ define(function(require) {
         expect(previous.find('.continuousCalendar')).toBeVisible()
         expect(startLabelValue()).toEqual('Su 10/26/2008')
         expect(startFieldValue()).toEqual('10/26/2008')
+        expect(cal().calendarRange()).toEqual(DateTime.fromDate(2008, 10, 26))
       })
 
       it('clearing closes the calendar', function() {
