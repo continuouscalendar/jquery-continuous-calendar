@@ -53,11 +53,26 @@ define(function(require) {
 
   DateFormat.escape = function(string) { return string.replace(/('|\\)/g, '\\$1') }
 
-  DateFormat.parse = function(input) {
+  DateFormat.parse = function(input, locale) {
     if(input === 'today') {
       return DateTime.today()
     }
-    return new DateTime(input)
+    var format = locale ? locale.shortDateFormat : DateFormat.patterns.ShortDatePattern
+
+    var date = DateFormat.parseDate(input, format)
+    return (date !== null) ? date : new DateTime(input)
+  }
+
+  DateFormat.parseDate = function(input, format) {
+    if(DateFormat.parseRegexes[format] === undefined) {
+      DateFormat.parseRegexes[format] = new RegExp(format.replace(/[djmnY]/g, '(\\d+)').replace(/\./g, '\\.'))
+    }
+    var values = input.match(DateFormat.parseRegexes[format])
+    if (values === null) return null
+    var keys = format.replace(/[^djmnY]/g, '').split('')
+    var day = {}
+    keys.map(function(key, i) { day[key] = values[i+1] })
+    return new DateTime(+day.Y, +(day.m ? day.m : day.n), +(day.d ? day.d : day.j))
   }
 
   DateFormat.patterns = {
