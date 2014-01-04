@@ -25,7 +25,7 @@ define(function(require) {
       setSelection(fieldDate(params.startField) || startDate)
     }
 
-    function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val()) : null }
+    function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateFormat.parse(field.val(), locale) : null }
 
     function setSelection(date) {
       var selectedDateKey = date && DateFormat.format(date, 'Ymd', locale)
