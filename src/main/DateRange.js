@@ -2,6 +2,7 @@ define(function(require) {
   var $ = require('jquery')
   var DateTime = require('./DateTime')
   var DateFormat = require('./DateFormat')
+  var DateParser = require('./DateParser')
 
   function DateRange(date1, date2) {
     if(!date1 || !date2) {
@@ -113,8 +114,8 @@ define(function(require) {
   DateRange.prototype.hasEndsOnWeekend = function() { return this.start.isWeekend() || this.end.isWeekend() }
 
   DateRange.prototype.withTimes = function(startTimeStr, endTimeStr) {
-    var parsedStartTime = DateFormat.parseTime(startTimeStr)
-    var parsedEndTime = DateFormat.parseTime(endTimeStr)
+    var parsedStartTime = DateParser.parseTime(startTimeStr)
+    var parsedEndTime = DateParser.parseTime(endTimeStr)
     var rangeWithTimes = this.clone()
     if(parsedStartTime && parsedEndTime) {
       rangeWithTimes._valid = true

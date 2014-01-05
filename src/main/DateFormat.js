@@ -2,8 +2,6 @@ define(function(require) {
   var DateTime = require('./DateTime')
 
   var DateFormat = {}
-  DateFormat.parseFunctions = {count: 0}
-  DateFormat.parseRegexes = []
   DateFormat.formatFunctions = {count: 0}
 
   DateFormat.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
@@ -53,28 +51,6 @@ define(function(require) {
 
   DateFormat.escape = function(string) { return string.replace(/('|\\)/g, '\\$1') }
 
-  DateFormat.parse = function(input, locale) {
-    if(input === 'today') {
-      return DateTime.today()
-    }
-    var format = locale ? locale.shortDateFormat : DateFormat.patterns.ShortDatePattern
-
-    var date = DateFormat.parseDate(input, format)
-    return (date !== null) ? date : new DateTime(input)
-  }
-
-  DateFormat.parseDate = function(input, format) {
-    if(DateFormat.parseRegexes[format] === undefined) {
-      DateFormat.parseRegexes[format] = new RegExp(format.replace(/[djmnY]/g, '(\\d+)').replace(/\./g, '\\.'))
-    }
-    var values = input.match(DateFormat.parseRegexes[format])
-    if (values === null) return null
-    var keys = format.replace(/[^djmnY]/g, '').split('')
-    var day = {}
-    keys.map(function(key, i) { day[key] = values[i+1] })
-    return new DateTime(+day.Y, +(day.m ? day.m : day.n), +(day.d ? day.d : day.j))
-  }
-
   DateFormat.patterns = {
     ISO8601LongPattern              : 'Y-m-d H:i:s',
     ISO8601ShortPattern             : 'Y-m-d',
@@ -90,28 +66,6 @@ define(function(require) {
     SortableDateTimePattern         : 'Y-m-d\\TH:i:s',
     UniversalSortableDateTimePattern: 'Y-m-d H:i:sO',
     YearMonthPattern                : 'F, Y'
-  }
-
-  DateFormat.parseTime = function(timeStr) {
-    var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
-    var time = [+(splittedTime[0]), +(splittedTime[1])]
-    return (isHour(time[0]) && isMinute(time[1])) ? time : null
-
-    function splitTime(timeStr) {
-      if (timeStr.indexOf('.') !== -1) {
-        return  timeStr.split('.')
-      }
-      var splitTimes = {
-        4: [timeStr.slice(0, 2) , timeStr.slice(2, 4)],
-        3: [timeStr.slice(0, 1) , timeStr.slice(1, 3)],
-        2: [timeStr, 0]
-      }
-      return splitTimes[timeStr.length] || [-1, -1]
-    }
-
-    function isMinute(minutes) { return !isNaN(minutes) && minutes >= 0 && minutes <= 59 }
-
-    function isHour(hours) { return !isNaN(hours) && hours >= 0 && hours <= 23 }
   }
 
   DateFormat.createNewFormat = function(dateTime, format, locale) {
