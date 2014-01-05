@@ -453,11 +453,11 @@ define(function(require) {
       })
 
       it('changes its selection when opening according to start field value', function() {
-        createPopupCalendar()
-        setStartFieldValue('3/16/2009')
+        createCalendarFields({startDate: ''}).continuousCalendar({isPopup: true, locale: 'fi'})
+        setStartFieldValue('16.12.2013')
         cal().find('.calendarIcon').click()
         assertHasValues('.selected', [16])
-        expect(startLabelValue()).toEqual('Mo 3/16/2009')
+        expect(startLabelValue()).toEqual('ma 16.12.2013')
       })
     })
 

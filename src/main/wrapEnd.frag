@@ -1,5 +1,6 @@
 require('jquery.continuousCalendar')
 window.DateFormat = require('DateFormat')
+window.DateParser = require('DateParser')
 window.DateLocale = require('DateLocale')
 window.DateTime = require('DateTime')
 window.DateRange = require('DateRange')
