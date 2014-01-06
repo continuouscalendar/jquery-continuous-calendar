@@ -1,20 +1,20 @@
 define(function(require) {
   var DateTime = require('./DateTime')
 
-  var DateParser = {}
-  DateParser.parseRegexes = []
-  DateParser.defaultFormat = 'n/j/Y'
+  var DateParse = {}
+  DateParse.parseRegexes = []
+  DateParse.defaultFormat = 'n/j/Y'
 
-  DateParser.parse = function(input, locale) {
+  DateParse.parse = function(input, locale) {
     if(input === 'today') {
       return DateTime.today()
     }
-    var format = locale ? locale.shortDateFormat : DateParser.defaultFormat
-    var date = DateParser.parseDate(input, format)
+    var format = locale ? locale.shortDateFormat : DateParse.defaultFormat
+    var date = DateParse.parseDate(input, format)
     return date ? date : new DateTime(input)
   }
 
-  DateParser.parseDate = function(input, format) {
+  DateParse.parseDate = function(input, format) {
     var values = input.match(getOrCreateParseRegexp())
     return values ? matchesToDateTime(values) : null
 
@@ -31,14 +31,14 @@ define(function(require) {
     }
 
     function getOrCreateParseRegexp() {
-      if(DateParser.parseRegexes[format] === undefined) {
-        DateParser.parseRegexes[format] = new RegExp(format.replace(/[djmnY]/g, '(\\d+)').replace(/\./g, '\\.'))
+      if(DateParse.parseRegexes[format] === undefined) {
+        DateParse.parseRegexes[format] = new RegExp(format.replace(/[djmnY]/g, '(\\d+)').replace(/\./g, '\\.'))
       }
-      return DateParser.parseRegexes[format]
+      return DateParse.parseRegexes[format]
     }
   }
 
-  DateParser.parseTime = function(timeStr) {
+  DateParse.parseTime = function(timeStr) {
     var splittedTime = splitTime(timeStr.replace(/:|,/i, '.'))
     var time = [+(splittedTime[0]), +(splittedTime[1])]
     return (isHour(time[0]) && isMinute(time[1])) ? time : null
@@ -60,5 +60,5 @@ define(function(require) {
     function isHour(hours) { return !isNaN(hours) && hours >= 0 && hours <= 23 }
   }
 
-  return DateParser
+  return DateParse
 })
