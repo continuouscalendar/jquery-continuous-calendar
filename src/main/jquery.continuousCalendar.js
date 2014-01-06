@@ -1,7 +1,7 @@
 define(function(require) {
   var $ = require('jquery')
   var DateFormat = require('./DateFormat')
-  var DateParser = require('./DateParser')
+  var DateParse = require('./DateParse')
   var DateLocale = require('./DateLocale')
   var DateRange = require('./DateRange')
   var DateTime = require('./DateTime')
@@ -107,7 +107,7 @@ define(function(require) {
 
         return  new DateRange(rangeStart, rangeEnd)
 
-        function dateOrWeek(date, week) { return date ? DateParser.parse(date, locale) : firstWeekdayOfGivenDate.plusDays(week)}
+        function dateOrWeek(date, week) { return date ? DateParse.parse(date, locale) : firstWeekdayOfGivenDate.plusDays(week)}
       }
 
       function bindScrollEvent() {
@@ -130,7 +130,7 @@ define(function(require) {
 
       function parseDisabledDates(dates) {
         var dateMap = {}
-        $.each(dates, function(index, date) { dateMap[DateParser.parse(date, locale).date] = true })
+        $.each(dates, function(index, date) { dateMap[DateParse.parse(date, locale).date] = true })
         return dateMap
       }
 
@@ -240,7 +240,7 @@ define(function(require) {
 
       function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.height() / $('tr', calendarBody.bodyTable).size(), 10) }
 
-      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateParser.parse(field.val(), locale) : null }
+      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateParse.parse(field.val(), locale) : null }
 
       function executeCallback(selection) {
         params.callback.call(container, selection)

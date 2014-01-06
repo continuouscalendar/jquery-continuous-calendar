@@ -1,7 +1,7 @@
 define(function(require) {
   var $ = require('jquery')
   var DateFormat = require('./DateFormat')
-  var DateParser = require('./DateParser')
+  var DateParse = require('./DateParse')
 
   return function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate) {
     return {
@@ -26,7 +26,7 @@ define(function(require) {
       setSelection(fieldDate(params.startField) || startDate)
     }
 
-    function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateParser.parse(field.val(), locale) : null }
+    function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateParse.parse(field.val(), locale) : null }
 
     function setSelection(date) {
       var selectedDateKey = date && DateFormat.format(date, 'Ymd', locale)
