@@ -7,8 +7,7 @@
   out     : '../../build/jquery.continuousCalendar-latest-min.js',
   urlArgs : undefined,
   paths   : {
-    jquery                : 'jqueryStub',
-    'jquery.tinyscrollbar': 'jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'
+    jquery                : 'jqueryStub'
   },
   wrap:{
     startFile:'wrapStart.frag',
