@@ -2,6 +2,11 @@ h3. Nightly
 
 -
 
+h3. 4.5.1
+
+* Refer to tinyscrollbar directly
+* Provide project as npm module
+
 h3. 4.5.0
 
 * Fix parsing localized input fields
