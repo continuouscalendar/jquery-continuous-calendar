@@ -2,6 +2,11 @@ h3. Nightly
 
 -
 
+h3. 4.5.0
+
+* Fix parsing localized input fields
+* Add selection setting through field(s)
+* Do not throw an error when range selection is dragged outside of calendar
 
 h3. 4.4.1
 
