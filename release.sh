@@ -38,11 +38,11 @@ else
 		git add -A .
 		git commit -m "Build for version $version"
 		git tag $version
-		./ghpages.sh
 		git status
 		echo "Now type:"
 		echo "git push --tags"
 		echo "git push"
+		echo "./ghpages.sh"
 		echo "npm install ./"
 
 	fi
