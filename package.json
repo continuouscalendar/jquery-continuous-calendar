@@ -23,5 +23,11 @@
     "url": "https://github.com/reaktor/jquery-continuous-calendar/issues"
   },
   "main": "./src/main/jquery.continuousCalendar",
-  "homepage": "http://reaktor.github.com/jquery-continuous-calendar/"
+  "homepage": "http://reaktor.github.com/jquery-continuous-calendar/",
+  "files": [
+    "build",
+    "src/main",
+    "package.json",
+    "LICENSE-2.0.txt"
+  ]
 }
