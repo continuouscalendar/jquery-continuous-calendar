@@ -12,6 +12,7 @@ rm build/*latest*
 [ "$version" != "" -a ! -f $BUILD_PREFIX-$version.js ] && rm build/*
 echo "Compressing js..."
 bundle() { node src/lib/r-2.1.2.js -o src/main/build.js uglify.defines.VERSION=string,$version uglify.defines.RELEASED=string,`date '+%Y-%m-%d'` $*; }
+update_version() { sed  -i '' -E "s/(\"version\".*:.*\").*(\".*)/\1$version\2/g" $@; }
 bundle out=$LATEST_JS_MIN
 echo "Updating playground..."
 node src/lib/r-2.1.2.js -o site/playground-build.js
@@ -32,17 +33,18 @@ else
 		echo "Creating version $version"
 		cp $LATEST_JS_MIN $BUILD_PREFIX-$version-min.js
 		cp $LATEST_CSS_MIN $BUILD_PREFIX-$version-min.css
-		sed  -i '' -E "s/(\"version\".*:.*\").*(\".*)/\1$version\2/g" continuousCalendar.jquery.json
-		git add -A build
-		git add continuousCalendar.jquery.json
+		update_version continuousCalendar.jquery.json
+		update_version package.json
+		git add -A .
 		git commit -m "Build for version $version"
 		git tag $version
 		./ghpages.sh
 		git status
-		echo "Now:"
-		echo "1. type git push --tags"
-		echo "2. type git push"
-		echo "3. make a pull request"
+		echo "Now type:"
+		echo "git push --tags"
+		echo "git push"
+		echo "npm install ./"
+
 	fi
 fi
 cd $current_dir
