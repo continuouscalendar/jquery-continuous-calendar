@@ -1,34 +1,34 @@
 requirejs.config({
   paths: {
-    'jquery'              : '../lib/jquery-1.9.1.min',
-    'jasmine'             : '../lib/jasmine',
-    'jasmine-html'        : '../lib/jasmine-html',
-    'jasmine-jquery'      : '../lib/jasmine-jquery-1.2.0'
+    'jquery'     : '../lib/jquery-1.9.1.min',
+    'mocha'      : '../lib/mocha',
+    'chai'       : '../lib/chai',
+    'chai.jquery': '../lib/chai-jquery'
   },
   shim : {
-    'jasmine'       : {exports: 'jasmine'},
-    'jasmine-html'  : ['jasmine'],
-    'jasmine-jquery': ['jasmine']
+    'mocha': { exports: 'mocha' }
   }
 })
 
-require(['matchers', 'jasmine', 'jasmine-html', 'jasmine-jquery'], function(matchers, jasmine) {
-  require([
-    'jquery.continuousCalendar.spec',
-    'DateRange.spec',
-    'DateTime.spec',
-    'locale.spec'
-  ], function() {
-    var env = jasmine.getEnv()
-    var trivialReporter = new jasmine.TrivialReporter()
-    env.specFilter = function(spec) {
-      return trivialReporter.specFilter(spec)
-    }
+define(function(require) {
+  var mocha = require('mocha')
+  var chai = require('chai')
+  var chaiJquery = require('chai.jquery')
+  var matchers = require('./matchers')
+//  var webConsoleReporter = require('./vendor/WebConsole')
+  var $ = require('jquery')
 
-    beforeEach(function() { this.addMatchers(matchers) })
+  mocha.setup({ui: 'bdd', reporter: 'html'})
+  chai.use(chaiJquery)
+  chai.use(matchers)
+  window.expect = chai.expect;
 
-    env.addReporter(trivialReporter)
-    env.execute()
+
+
+  require(['./allTests'], function() {
+    $.fx.off = true
+    $.ajaxSetup({ async: false })
+    if(window.mochaPhantomJS) { window.mochaPhantomJS.run(); }
+    else { mocha.run(); }
   })
 })
-

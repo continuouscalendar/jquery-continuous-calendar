@@ -3,21 +3,68 @@ define(function(require) {
   var DateFormat = require('../main/DateFormat')
   var jQuery = $ = require('jquery')
 
-  return {
-    toHaveLength             : function(length) {
-      var result = $(this.actual).length == length
-      if(this.actual instanceof jQuery) {
-        this.actual = $('<div></div>').append(this.actual.clone()).html()
+  return function(chai, utils) {
+    var flag = utils.flag
+    var matchers = {
+      toHaveLength             : function(length) {
+        this.assert(
+          $(flag(this, 'object')).length === length
+          , 'expected #{this} to have length #{exp}'
+          , 'expected #{this} not to have length #{exp}'
+          , length
+        );
+      },
+      toHaveDate               : function(date_str) {
+        this.assert(
+          flag(this, 'object').hasDate(new DateTime(date_str))
+          , 'expected #{this} to have date #{exp}'
+          , 'expected #{this} not to have date #{exp}'
+          , date_str
+        );
+      },
+      toBeInside               : function(range) {
+        this.assert(
+          flag(this, 'object').isInside(range)
+          , 'expected #{this} to be inside range #{exp}'
+          , 'expected #{this} not to inside range #{exp}'
+          , range
+        );
+      },
+      toBeValidRange           : function() {
+        this.assert(
+          flag(this, 'object').isValid()
+          , 'expected #{this} to be valid range'
+          , 'expected #{this} not to be valid range'
+        );
+      },
+      toPrintDefiningDurationOf: function(duration_str, locale) {
+        this.assert(
+          DateFormat.formatDefiningRangeDuration(flag(this, 'object'), locale) == duration_str
+          , 'expected #{this} to print default duration of #{exp}'
+          , 'expected #{this} not to print default duration of #{exp}'
+          , duration_str
+        );
+      },
+      toCompareWith            : function(expected) {
+        this.assert(
+          flag(this, 'object').compareTo(expected) === 0
+          , 'expected #{this} to compare with #{exp}'
+          , 'expected #{this} not to compare with #{exp}'
+          , expected
+        );
+      },
+      toEqualRoughly           : function(expected, tolerance) {
+        this.assert(
+          flag(this, 'object') <= expected + tolerance && flag(this, 'object') >= expected - tolerance
+          , 'expected #{this} to equal roughly #{exp}'
+          , 'expected #{this} not to equal roughly #{exp}'
+          , expected
+        );
       }
-      return result
-    },
-    toHaveDate               : function(date_str) { return this.actual.hasDate(new DateTime(date_str)) },
-    toBeInside               : function(range) { return this.actual.isInside(range) },
-    toBeValidRange           : function() { return this.actual.isValid() },
-    toPrintDefiningDurationOf: function(duration_str, locale) { return DateFormat.formatDefiningRangeDuration(this.actual, locale) == duration_str },
-    toCompareWith: function(expected) {
-      return this.actual.compareTo(expected) === 0
-    },
-    toEqualRoughly: function(expected, tolerance) { return this.actual <= expected + tolerance && this.actual >= expected - tolerance }
+    }
+
+    $.each(matchers, function(name, fn) {
+      chai.Assertion.addMethod(name, fn);
+    })
   }
 })
