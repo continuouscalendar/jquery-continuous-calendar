@@ -1,7 +1,7 @@
 ({
   appDir  : "",
   baseUrl : ".",
-  name    : '../lib/almond',
+  name    : '../../node_modules/almond/almond',
   include: ['jquery.continuousCalendar'],
   insertRequire: ['jquery.continuousCalendar'],
   out     : '../../build/jquery.continuousCalendar-latest-min.js',

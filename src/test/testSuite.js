@@ -1,9 +1,9 @@
 requirejs.config({
   paths: {
-    'jquery'     : '../lib/jquery-1.9.1.min',
-    'mocha'      : '../lib/mocha',
-    'chai'       : '../lib/chai',
-    'chai.jquery': '../lib/chai-jquery'
+    'chai':        '../../node_modules/chai/chai',
+    'chai.jquery': '../../node_modules/chai-jquery/chai-jquery',
+    'mocha':       '../../node_modules/mocha/mocha',
+    'jquery'     : '../lib/jquery-1.9.1.min'
   },
   shim : {
     'mocha': { exports: 'mocha' }
