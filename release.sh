@@ -43,7 +43,7 @@ else
 		echo "git push --tags"
 		echo "git push"
 		echo "./ghpages.sh"
-		echo "npm install ./"
+		echo "npm publish ./"
 
 	fi
 fi

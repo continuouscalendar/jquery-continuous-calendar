@@ -1,6 +1,6 @@
 requirejs.config({
   paths: {
-    'jquery'              : '../src/lib/jquery-1.8.0.min'
+    'jquery'              : '../src/lib/jquery-1.9.1.min'
   }
 })
 

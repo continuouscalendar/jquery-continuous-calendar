@@ -14,30 +14,30 @@ define(function(require) {
       beforeEach(resetRange)
 
       it('creates range of three days', function() {
-        expect(range.start).toEqual(start)
-        expect(range.end).toEqual(end)
-        expect(range.days()).toEqual(3)
-        expect(range).not.toHaveDate('09/9/2009')
-        expect(range).toHaveDate('09/10/2009')
-        expect(range).toHaveDate('09/11/2009')
-        expect(range).toHaveDate('09/12/2009')
-        expect(range).not.toHaveDate('09/13/2009')
-        expect(DateFormat.formatRange(range, DateLocale.FI)).toEqual('10.9.2009 - 12.9.2009')
+        expect(range.start).to.eql(start)
+        expect(range.end).to.eql(end)
+        expect(range.days()).to.equal(3)
+        expect(range).not.to.toHaveDate('09/9/2009')
+        expect(range).to.toHaveDate('09/10/2009')
+        expect(range).to.toHaveDate('09/11/2009')
+        expect(range).to.toHaveDate('09/12/2009')
+        expect(range).not.to.toHaveDate('09/13/2009')
+        expect(DateFormat.formatRange(range, DateLocale.FI)).to.equal('10.9.2009 - 12.9.2009')
       })
 
       it('range is movable', function() {
         var twoDaysAfter = range.shiftDays(2)
-        expect(twoDaysAfter.start.getDate()).toEqual(12)
-        expect(twoDaysAfter.end.getDate()).toEqual(12 + 2)
+        expect(twoDaysAfter.start.getDate()).to.equal(12)
+        expect(twoDaysAfter.end.getDate()).to.equal(12 + 2)
       })
 
       it('range is expandable', function() {
-        expect(range.expandTo(new DateTime('09/15/2009')).days()).toEqual(6)
+        expect(range.expandTo(new DateTime('09/15/2009')).days()).to.equal(6)
       })
 
       it('two ranges can do interception', function() {
-        expect(range.and(createRange('09/11/2009', '09/19/2009')).days()).toEqual(2)
-        expect(range.and(createRange('09/16/2009', '09/19/2009')).days()).toEqual(0)
+        expect(range.and(createRange('09/11/2009', '09/19/2009')).days()).to.equal(2)
+        expect(range.and(createRange('09/16/2009', '09/19/2009')).days()).to.equal(0)
       })
 
       it('range can be asked if it is a subset of another range', function() {
@@ -56,8 +56,8 @@ define(function(require) {
         var range2 = range1.shiftInside(outerRange)
         expect(range1).toBeInside(outerRange)
         expect(range2).toBeInside(outerRange)
-        expect(range1.start.getDate()).toEqual(range2.start.getDate())
-        expect(range1.end.getDate()).toEqual(range2.end.getDate())
+        expect(range1.start.getDate()).to.eql(range2.start.getDate())
+        expect(range1.end.getDate()).to.eql(range2.end.getDate())
       })
 
       it('range can be moved forward inside outer range', function() {
@@ -65,8 +65,8 @@ define(function(require) {
         var range2 = range1.shiftInside(outerRange)
         expect(range1).not.toBeInside(outerRange)
         expect(range2).toBeInside(outerRange)
-        expect(range2.start.getDate()).toEqual(28)
-        expect(range2.end.getDate()).toEqual(3)
+        expect(range2.start.getDate()).to.equal(28)
+        expect(range2.end.getDate()).to.equal(3)
       })
 
       it('range can be moved backward inside outer range', function() {
@@ -74,14 +74,14 @@ define(function(require) {
         var range2 = range1.shiftInside(outerRange)
         expect(range1).not.toBeInside(outerRange)
         expect(range2).toBeInside(outerRange)
-        expect(range2.start.getDate()).toEqual(25)
-        expect(range2.end.getDate()).toEqual(1)
+        expect(range2.start.getDate()).to.equal(25)
+        expect(range2.end.getDate()).to.equal(1)
       })
 
       it('range longer than outer range cannot be moved', function() {
         var range1 = new DateRange(outerRange.start.minusDays(1), outerRange.end.plusDays(1))
         var range2 = range1.shiftInside(outerRange)
-        expect(range2.days()).toEqual(0)
+        expect(range2.days()).to.equal(0)
       })
     })
 
@@ -91,33 +91,33 @@ define(function(require) {
       it('range can be requested near the beginning of outer range', function() {
         var oldRange = createRange('03/28/2011', '04/03/2011')
         var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
-        expect(newRange.days()).toEqual(7)
-        expect(newRange.start.getDate()).toEqual(29)
-        expect(newRange.end.getDate()).toEqual(4)
+        expect(newRange.days()).to.equal(7)
+        expect(newRange.start.getDate()).to.equal(29)
+        expect(newRange.end.getDate()).to.equal(4)
       })
 
       it('range can be requested near the end of outer range', function() {
         var oldRange = createRange('04/25/2011', '04/25/2011')
         var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, false, outerRange)
-        expect(newRange.days()).toEqual(7)
+        expect(newRange.days()).to.equal(7)
       })
 
       it('range cannot be requested to be outside outer range', function() {
         var oldRange = createRange('04/26/2011', '04/26/2011')
         var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, false, outerRange)
-        expect(newRange.days()).toEqual(0)
+        expect(newRange.days()).to.equal(0)
       })
 
       it('range may not be found near the end of outer range due to weekends', function() {
         var oldRange = createRange('04/24/2011', '04/24/2011')
         var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
-        expect(newRange.days()).toEqual(0)
+        expect(newRange.days()).to.equal(0)
       })
 
       it('does not expand an empty range', function() {
         var oldRange = DateRange.emptyRange()
         var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
-        expect(newRange.days()).toEqual(0)
+        expect(newRange.days()).to.equal(0)
       })
     })
 
@@ -126,18 +126,18 @@ define(function(require) {
 
       it('date range can have times', function() {
         var rangeWithTimes = range.withTimes('10:00', '14:45')
-        expect(rangeWithTimes.days()).toEqual(2)
-        expect(rangeWithTimes.hours()).toEqual(4)
-        expect(rangeWithTimes.minutes()).toEqual(45)
-        expect(DateFormat.formatRange(rangeWithTimes, DateLocale.FI)).toEqual('2 päivää 4,75 tuntia')
-        expect(DateFormat.formatRange(new DateRange(range.start, range.end).withTimes('10:00', '14:45'), DateLocale.EN)).toEqual('2 Days 4.75 Hours')
+        expect(rangeWithTimes.days()).to.equal(2)
+        expect(rangeWithTimes.hours()).to.equal(4)
+        expect(rangeWithTimes.minutes()).to.equal(45)
+        expect(DateFormat.formatRange(rangeWithTimes, DateLocale.FI)).to.equal('2 päivää 4,75 tuntia')
+        expect(DateFormat.formatRange(new DateRange(range.start, range.end).withTimes('10:00', '14:45'), DateLocale.EN)).to.equal('2 Days 4.75 Hours')
         var rangeWithPmTimes = range.withTimes('17:00', '16:00')
-        expect(rangeWithPmTimes.days()).toEqual(1)
-        expect(rangeWithPmTimes.hours()).toEqual(23)
-        expect(rangeWithPmTimes.minutes()).toEqual(0)
+        expect(rangeWithPmTimes.days()).to.equal(1)
+        expect(rangeWithPmTimes.hours()).to.equal(23)
+        expect(rangeWithPmTimes.minutes()).to.equal(0)
         range.start = range.start.plusDays(1)
-        expect(DateFormat.formatRange(range.withTimes('10:00', '11:00'), DateLocale.FI)).toEqual('1 päivä 1 tunti')
-        expect(DateFormat.formatRange(new DateRange(range.start, range.end).withTimes('10:00', '11:00'), DateLocale.EN)).toEqual('1 Day 1 Hour')
+        expect(DateFormat.formatRange(range.withTimes('10:00', '11:00'), DateLocale.FI)).to.equal('1 päivä 1 tunti')
+        expect(DateFormat.formatRange(new DateRange(range.start, range.end).withTimes('10:00', '11:00'), DateLocale.EN)).to.equal('1 Day 1 Hour')
       })
 
       it('one day range with start time after end time is not valid', function() {
@@ -184,7 +184,7 @@ define(function(require) {
       it('minutes are rounded to 2 digits', function() {
         var rangeWithTimes = range.withTimes('15:00', '16:10');
         assertHasCorrectHoursAndMinutes(rangeWithTimes, 1, 10)
-        expect(DateFormat.formatRange(rangeWithTimes, DateLocale.FI)).toEqual('2 päivää 1,17 tuntia')
+        expect(DateFormat.formatRange(rangeWithTimes, DateLocale.FI)).to.equal('2 päivää 1,17 tuntia')
       })
 
       it('range is displayed with the most defining unit', function() {
@@ -205,8 +205,8 @@ define(function(require) {
 
     function assertHasCorrectHoursAndMinutes(range, hours, minutes) {
       expect(range).toBeValidRange()
-      expect(range.hours()).toEqual(hours)
-      expect(range.minutes()).toEqual(minutes)
+      expect(range.hours()).to.equal(hours)
+      expect(range.minutes()).to.equal(minutes)
     }
 
     function resetRange() {
