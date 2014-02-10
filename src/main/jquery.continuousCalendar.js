@@ -11,8 +11,7 @@ define(function(require) {
   require('./jquery.tinyscrollbar-1.66/jquery.tinyscrollbar')
 
   $.continuousCalendar = {
-    version : typeof VERSION !== 'undefined' ? VERSION : 'nightly',
-    released: typeof RELEASED !== 'undefined' ? RELEASED : 'nightly'
+    "version" : "4.5.2"
   }
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })

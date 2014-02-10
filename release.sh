@@ -12,6 +12,7 @@ rm build/*latest*
 [ "$version" != "" -a ! -f $BUILD_PREFIX-$version.js ] && rm build/*
 echo "Compressing js..."
 update_version() { sed  -i '' -E "s/(\"version\".*:.*\").*(\".*)/\1$version\2/g" $@; }
+update_version src/main/jquery.continuousCalendar.js
 npm install
 echo "Compressing css..."
 java -jar yuicompressor-2.4.6.jar --type css src/main/jquery.continuousCalendar.css -o $LATEST_CSS_MIN
