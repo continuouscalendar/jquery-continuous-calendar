@@ -1,13 +1,13 @@
 ({
   appDir  : "",
-  baseUrl : ".",
+  baseUrl : "../main",
   name    : '../../node_modules/almond/almond',
   include: ['jquery.continuousCalendar'],
   insertRequire: ['jquery.continuousCalendar'],
   out     : '../../build/jquery.continuousCalendar-latest-min.js',
   urlArgs : undefined,
   paths   : {
-    jquery                : 'jqueryStub'
+    jquery                : '../build/jqueryStub'
   },
   wrap:{
     startFile:'wrapStart.frag',
