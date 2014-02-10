@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html",
-    "prepublish": "r.js -o src/main/build.js"
+    "prepublish": "r.js -o src/main/build.js && r.js -o site/playground-build.js"
   },
   "keywords": [
     "calendar",
