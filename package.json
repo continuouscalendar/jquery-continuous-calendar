@@ -7,7 +7,8 @@
     "url": "https://github.com/reaktor/jquery-continuous-calendar"
   },
   "scripts": {
-    "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html"
+    "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html",
+    "prepublish": "r.js -o src/main/build.js"
   },
   "keywords": [
     "calendar",
