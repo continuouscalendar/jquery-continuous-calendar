@@ -15,7 +15,7 @@ update_version() { sed  -i '' -E "s/(\"version\".*:.*\").*(\".*)/\1$version\2/g"
 update_version src/main/jquery.continuousCalendar.js
 npm install
 echo "Compressing css..."
-java -jar yuicompressor-2.4.6.jar --type css src/main/jquery.continuousCalendar.css -o $LATEST_CSS_MIN
+node node_modules/requirejs/bin/r.js -o cssIn=src/main/jquery.continuousCalendar.css optimizeCss=standard out=$LATEST_CSS_MIN
 #TODO create js documentation
 #/usr/local/share/npm/lib/node_modules/doxx/bin/doxx --source ./src/main --target ./docs
 if [ "$version" = "" ]
