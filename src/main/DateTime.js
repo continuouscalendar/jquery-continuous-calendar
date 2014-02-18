@@ -191,6 +191,10 @@ define(function(require) {
   DateTime.prototype.minusDays = function(days) {
     return this.plusDays(-days)
   }
+  
+  DateTime.LEFT_DATE_IS_BEFORE_RIGHT_DATE = -1
+  DateTime.LEFT_DATE_IS_AFTER_RIGHT_DATE = -1
+  DateTime.LEFT_DATE_EQUALS_RIGHT_DATE = 0
 
   DateTime.prototype.compareTo = function(date) {
     if(!date) {
@@ -199,12 +203,12 @@ define(function(require) {
     var lhs = this.getTime()
     var rhs = date.getTime()
     if(lhs < rhs) {
-      return -1
+      return DateTime.LEFT_DATE_IS_BEFORE_RIGHT_DATE
     } else {
       if(lhs > rhs) {
-        return 1
+        return DateTime.LEFT_DATE_IS_AFTER_RIGHT_DATE
       } else {
-        return 0
+        return DateTime.LEFT_DATE_EQUALS_RIGHT_DATE
       }
     }
   }
