@@ -13,14 +13,14 @@ define(function(require) {
       hours = hours || 0
       minutes = minutes || 0
       seconds = seconds || 0
-      var newDate = new Date(year, month -1, date, hours, minutes, seconds, 0)
+      var newDate = new Date(year, month - 1, date, hours, minutes, seconds, 0)
       if(newDate.toString() === 'Invalid Date' ||
-          month !== newDate.getMonth() + 1 ||
-          year !== newDate.getFullYear() ||
-          date !== newDate.getDate() ||
-          hours !== newDate.getHours() ||
-          minutes !== newDate.getMinutes() ||
-          seconds !== newDate.getSeconds()) throw Error('Invalid Date: ' + year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds)
+        month !== newDate.getMonth() + 1 ||
+        year !== newDate.getFullYear() ||
+        date !== newDate.getDate() ||
+        hours !== newDate.getHours() ||
+        minutes !== newDate.getMinutes() ||
+        seconds !== newDate.getSeconds()) throw Error('Invalid Date: ' + year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds)
       return  newDate
     }
   }
@@ -192,21 +192,21 @@ define(function(require) {
     return this.plusDays(-days)
   }
 
+  /**
+   * Compares DateTimes. Examples:
+   * earlier.compareTo(later)) < 0
+   * later.compareTo(earlier)) > 0
+   * later.compareTo(later)) == 0
+
+   * @param date {DateTime}
+   * @returns {number}
+   */
   DateTime.prototype.compareTo = function(date) {
     if(!date) {
       return 1
     }
-    var lhs = this.getTime()
-    var rhs = date.getTime()
-    if(lhs < rhs) {
-      return -1
-    } else {
-      if(lhs > rhs) {
-        return 1
-      } else {
-        return 0
-      }
-    }
+    var diff = this.getTime() - date.getTime()
+    return diff === 0 ? 0 : diff / Math.abs(diff)
   }
 
   DateTime.prototype.isToday = function() { return this.equalsOnlyDate(DateTime.today()) }
@@ -282,7 +282,7 @@ define(function(require) {
 
   DateTime.prototype.toISOString = function() {
     return $.map([this.getFullYear(), (this.getMonth()), this.getDate()], withTwoDigitsAtLeast).join('-') + 'T' +
-        $.map([this.getHours(), this.getMinutes(), this.getSeconds()], withTwoDigitsAtLeast).join(':')
+      $.map([this.getHours(), this.getMinutes(), this.getSeconds()], withTwoDigitsAtLeast).join(':')
     function withTwoDigitsAtLeast(value) { return value < 10 ? '0' + value : '' + value}
   }
 
