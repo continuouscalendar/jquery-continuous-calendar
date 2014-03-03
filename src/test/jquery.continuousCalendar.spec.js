@@ -267,20 +267,19 @@ define(function(require) {
       })
 
       it('mouse click and drag works with no initial selection', function() {
-        createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '2/1/2009', isRange: true})
+        createCalendarFields().continuousCalendar({firstDate: '1/1/2009', lastDate: '2/1/2009', isRange: true})
         dragDates(22, 23)
         expect(cal().find('.selected').size()).to.equal(2)
         expect(cal().find('.rangeLengthLabel')).to.have.text('2 Days')
       })
 
       it('mouse click on month on range calendar selects whole month', function() {
-        createCalendarFields({startDate: '', endDate: '' }).continuousCalendar({firstDate: '1/1/2009', lastDate: '3/1/2009', isRange: true})
+        createCalendarFields().continuousCalendar({firstDate: '1/1/2009', lastDate: '3/1/2009', isRange: true})
         var monthName = cal().find('.month').withText('February').last()
         mouseClick(monthName)
         expect(cal().find('.selected').size()).to.equal(28)
-        var year = startFieldValue().split('/')[2]
-        expect(startFieldValue()).to.equal('2/1/2009')
-        expect(endFieldValue()).to.equal('2/28/2009')
+        expect(startLabelValue()).to.equal('Su 2/1/2009')
+        expect(endLabelValue()).to.equal('Sa 2/28/2009')
         expect(cal().find('.rangeLengthLabel')).to.have.text('28 Days')
       })
 
@@ -327,12 +326,12 @@ define(function(require) {
       })
 
       it('range has current day selected as default when configured so', function() {
-        createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({weeksBefore: 20, lastDate: 'today', selectToday: true, isRange: true})
+        createCalendarFields().continuousCalendar({weeksBefore: 20, lastDate: 'today', selectToday: true, isRange: true})
         expect(cal().find('.selected').size()).to.equal(1)
       })
 
       it('range can be specified with weeks and dates mixed', function() {
-        createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({weeksBefore: 20, lastDate: 'today', isRange: true})
+        createCalendarFields().continuousCalendar({weeksBefore: 20, lastDate: 'today', isRange: true})
         expect(cal().find('.week').length).to.equal(22)
       })
 
@@ -359,7 +358,7 @@ define(function(require) {
           window.calendarCallBack = range.days()
         }
 
-        createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '4/26/2009', lastDate: '5/2/2009', callback: testFunction, isRange: true})
+        createCalendarFields().continuousCalendar({firstDate: '4/26/2009', lastDate: '5/2/2009', callback: testFunction, isRange: true})
         cal().bind('calendarChange', function() {
           window.calendarChanged = $(this).find('.selected').length
         })
@@ -376,7 +375,7 @@ define(function(require) {
       })
 
       it('month and day names are localizable', function() {
-        createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009', locale: 'fi', isRange: true})
+        createCalendarFields().continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009', locale: 'fi', isRange: true})
         assertHasValues('.continuousCalendar thead th.weekDay', ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'])
         assertHasValues('.monthName', [
           'joulukuu',
@@ -393,7 +392,6 @@ define(function(require) {
           'marraskuu',
           'joulukuu'])
         mouseDownMouseUpOnDate(1)
-        expect(startFieldValue()).to.equal('1.1.2009')
         expect(startLabelValue()).to.equal('to 1.1.2009')
       })
 
@@ -506,8 +504,8 @@ define(function(require) {
         createWeekCalendar()
         mouseClick(cal().find('.date').withText(21).first())
         assertHasValues('.selected', [19, 20, 21, 22, 23, 24, 25])
-        expect(startFieldValue()).to.equal('4/19/2009')
-        expect(endFieldValue()).to.equal('4/25/2009')
+        expect(startLabelValue()).to.equal('Su 4/19/2009')
+        expect(endLabelValue()).to.equal('Sa 4/25/2009')
         expect(cal().find('.rangeLengthLabel')).to.have.text('7 Days')
       })
 
@@ -515,8 +513,8 @@ define(function(require) {
         createWeekCalendar()
         mouseClick(cal().find('.date').withText(15).first())
         assertHasValues('.selected', [15, 16, 17, 18])
-        expect(startFieldValue()).to.equal('4/15/2009')
-        expect(endFieldValue()).to.equal('4/18/2009')
+        expect(startLabelValue()).to.equal('We 4/15/2009')
+        expect(endLabelValue()).to.equal('Sa 4/18/2009')
         expect(cal().find('.rangeLengthLabel')).to.have.text('4 Days')
       })
 
@@ -525,8 +523,8 @@ define(function(require) {
         cal().find('.calendarIcon').click()
         mouseClick(cal().find('.date').withText(11))
         expect(cal().find('.continuousCalendar')).not.to.be.visible
-        expect(startFieldValue()).to.equal('5/8/2011')
-        expect(endFieldValue()).to.equal('5/14/2011')
+        expect(startLabelValue()).to.equal('Su 5/8/2011')
+        expect(endLabelValue()).to.equal('Sa 5/14/2011')
       })
 
       it('week click closes the calendar', function() {
@@ -645,7 +643,7 @@ define(function(require) {
   }
 
   function createWeekCalendar() {
-    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', selectWeek: true, isRange: true})
+    createCalendarFields().continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', selectWeek: true, isRange: true})
   }
 
   function createBigCalendar() {
