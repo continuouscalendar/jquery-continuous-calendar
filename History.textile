@@ -2,6 +2,14 @@ h3. Nightly
 
 -
 
+h3. 4.6.0
+
+* Determine single date vs range with configuration parameter instead of provided input elements. Fixes #9
+
+h3. 4.5.3
+
+* Leave only production files under src/main
+
 h3. 4.5.1
 
 * Refer to tinyscrollbar directly
