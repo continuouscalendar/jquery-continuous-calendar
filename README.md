@@ -22,6 +22,7 @@ Features
 -   Support for different date formats
 -   Support for specifying holidays or disabled days
 -   Support for setting minimum range
+-   AMD Support
 
 Supported languages
 ===================
@@ -44,6 +45,10 @@ Supported browsers
 
 Getting started
 ===============
+
+For NPM project just type
+
+	npm install jquery-continuous-calendar
 
 Insert in head
 --------------
@@ -72,64 +77,6 @@ Insert in body
   	  $("#dateRange1").continuousCalendar();
 	</script>
 
-AMD support
-===========
-
-Directory layout:
-
-    - index.html
-    - scripts/
-      |- jquery-1.8.2.js
-      |- jquery.continuous-calendar/
-      |  |- DateFormat.js
-      |  |- DateLocale.js
-      |  |- DateRange.js
-      |  |- DateTime.js
-      |  |- _jquery.continuousCalendar.scss
-      |  |- jquery.continuousCalendar.js
-      |  `- jquery.tinyscrollbar-1.66/
-      |     |- _jquery.tinyscrollbar.scss
-      |     |- bg-scrollbar-thumb-y.png
-      |     |- bg-scrollbar-track-y.png
-      |     |- bg-scrollbar-trackend-y.png
-      |     `- jquery.tinyscrollbar.js
-      |- main.js
-      `- require-2.1.1.js
-
-index.html
-----------
-
-	<!DOCTYPE html>
-	<html>
-  	<head>
-    	<script data-main="scripts/main" src="scripts/require-2.1.1.js"></script>
-  	</head>
-  	<body>
-    	<div id="dateRange1">
-      		<input type="hidden" class="startDate" name="range_start">
-      		<input type="hidden" class="endDate" name="range_end">
-    	</div>
-  	</body>
-	</html>
-
-main.js
--------
-
-	require.config({
-		paths: {
-			'jquery':               'jquery-1.8.2',
-			'jquery.tinyscrollbar': 'jquery.continuous-calendar/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'
-		},
-		shim: {
-			'jquery.tinyscrollbar': [ 'jquery' ]
-		}
-	})
-
-	require(['jquery', 'jquery.continuous-calendar/jquery.continuousCalendar'], function($) {
-		$(function() {
-			$("#dateRange1").continuousCalendar();
-		})
-	})
 
 Instructions for contributors
 =============================
