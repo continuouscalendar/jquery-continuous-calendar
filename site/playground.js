@@ -40,11 +40,11 @@ define(function(require) {
     var containerClass = 'container' + counter
     var container = $('<div>').addClass(containerClass)
     var containerWrapper = $('<div class="containerWrapper">').append(container)
-    if(valueOf('isRange')) {
-      container.append('<input type="hidden" class="startDate" value="' + $('#selectionStart').val() + '" /><input type="hidden" class="endDate" value="' + $('#selectionEnd').val() + '"/>')
-    }
+    //if(valueOf('isRange')) {
+    //  container.append('<input type="hidden" class="startDate" value="' + $('#selectionStart').val() + '" /><input type="hidden" class="endDate" value="' + $('#selectionEnd').val() + '"/>')
+    //}
     $('body').append(containerWrapper)
-    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates', 'fadeOutDuration', 'customScroll', 'allowClearDates' ]
+    var optionsList = [ 'selectToday', 'disableWeekends', 'isPopup', 'weeksBefore', 'weeksAfter', 'firstDate', 'lastDate', 'minimumRange', 'selectWeek', 'disabledDates', 'fadeOutDuration', 'customScroll', 'allowClearDates', 'isRange' ]
     var options = {
       theme : $('[name=theme]:checked').val(),
       locale: $('[name=locale]:checked').val()

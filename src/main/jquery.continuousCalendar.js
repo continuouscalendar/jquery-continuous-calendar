@@ -37,7 +37,8 @@ define(function(require) {
           sizethumb: 'auto'
         },
         theme          : '',
-        allowClearDates: false
+        allowClearDates: false,
+        isRange        : false
       }
       var params = $.extend({}, defaults, options)
       var locale = DateLocale.fromArgument(params.locale)
@@ -72,7 +73,7 @@ define(function(require) {
         disabledDatesObject = params.disabledDates ? parseDisabledDates(disabledDatesList) : {}
         calendarRange = determineRangeToRenderFormParams(params)
         popupBehavior = popUpBehaviour(params.isPopup)
-        dateBehavior = dateBehaviour(isRange())
+        dateBehavior = dateBehaviour(params.isRange)
         params.fadeOutDuration = +params.fadeOutDuration
         calendarContainer = getCalendarContainerOrCreateOne()
         calendarContainer.click(function(e) { e.stopPropagation() })
@@ -253,8 +254,6 @@ define(function(require) {
       function setEndField(value) { params.endField.val(value) }
 
       function formatDate(date) { return date ? DateFormat.shortDateFormat(date, locale) : '' }
-
-      function isRange() { return params.endField && params.endField.length > 0 }
     }
   }
   $.fn.calendarRange = function() { return $(this).data('calendarRange') }
