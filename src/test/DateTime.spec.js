@@ -77,8 +77,8 @@ define(function(require) {
           it('returns current time', function() {
             var date = new Date()
             date.setMilliseconds(0)
-            expect(now().withResetMS().getTime()).to.equal(date.getTime())
-            expect(now().getTime()).to.equal(now().getTime())
+            expect(now().withResetMS().getTime()).to.be.closeTo(date.getTime(), 1000)
+            expect(now().getTime()).to.be.closeTo(now().getTime(), 1000)
           })
         })
 
