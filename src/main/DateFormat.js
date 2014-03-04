@@ -4,14 +4,56 @@ define(function(require) {
   var DateFormat = {}
   DateFormat.formatFunctions = {count: 0}
 
+  DateFormat._codes = {
+    d: function(d, l) {return  DateFormat.leftPad(d.getDate(), 2, '0') },
+    D: function(d, l) { return  l.shortDayNames[d.getDay()] },
+    j: function(d, l) { return  d.getDate() },
+    l: function(d, l) { return  l.dayNames[d.getDay()] },
+    w: function(d, l) { return  d.getDay() },
+    z: function(d, l) { return  d.getDayInYear() },
+    F: function(d, l) { return  l.monthNames[d.getMonth()-1] },
+    m: function(d, l) { return  DateFormat.leftPad(d.getMonth(), 2, '0') },
+    M: function(d, l) { return  l.monthNames[d.getMonth()-1].substring(0, 3) },
+    n: function(d, l) { return  (d.getMonth()) },
+    t: function(d, l) { return  d.getDaysInMonth() },
+    Y: function(d, l) { return  d.getFullYear() },
+    y: function(d, l) { return  ('' + d.getFullYear()).substring(2, 4) },
+    a: function(d, l) { return  (d.getHours() < 12 ? 'am' : 'pm') },
+    A: function(d, l) { return  (d.getHours() < 12 ? 'AM' : 'PM') },
+    g: function(d, l) { return  ((d.getHours() %12) ? d.getHours() % 12 : 12) },
+    G: function(d, l) { return  d.getHours() },
+    h: function(d, l) { return  DateFormat.leftPad((d.getHours() %12) ? d.getHours() % 12 : 12, 2, '0') },
+    H: function(d, l) { return  DateFormat.leftPad(d.getHours(), 2, '0') },
+    i: function(d, l) { return  DateFormat.leftPad(d.getMinutes(), 2, '0') },
+    s: function(d, l) { return  DateFormat.leftPad(d.getSeconds(), 2, '0') },
+    O: function(d, l) { return  DateFormat.getGMTOffset(d) },
+    Z: function(d, l) { return  (d.getTimezoneOffset() * -60) }
+  }
+
   DateFormat.hoursAndMinutes = function(hours, minutes) { return (Math.round((hours + minutes / 60) * 100) / 100).toString() }
 
   DateFormat.format = function(dateTime, format, locale) {
-    if(DateFormat.formatFunctions[format] === undefined) {
-      DateFormat.createNewFormat(dateTime, format, locale)
+    var result = ''
+    var special = false
+    var ch = ''
+    for(var i = 0; i < format.length; ++i) {
+      ch = format.charAt(i)
+      if(!special && ch === '\\') {
+        special = true
+      } else {
+        if(special) {
+          special = false
+          result += ch
+        } else {
+          result += codeToValue(dateTime, ch, locale)
+        }
+      }
     }
-    var func = DateFormat.formatFunctions[format]
-    return dateTime[func]()
+    return result
+  }
+
+  function codeToValue(dateTime, ch, locale) {
+    return ch in DateFormat._codes ? DateFormat._codes[ch](dateTime, locale) : ch
   }
 
   DateFormat.shortDateFormat = function(dateTime, locale) { return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y', locale) }
@@ -68,55 +110,5 @@ define(function(require) {
     YearMonthPattern                : 'F, Y'
   }
 
-  DateFormat.createNewFormat = function(dateTime, format, locale) {
-    var funcName = 'format' + DateFormat.formatFunctions.count++
-    DateFormat.formatFunctions[format] = funcName
-    var code = 'DateTime.prototype.' + funcName + ' = function(){return '
-    var special = false
-    var ch = ''
-    for(var i = 0; i < format.length; ++i) {
-      ch = format.charAt(i)
-      if(!special && ch === '\\') {
-        special = true
-      } else {
-        if(special) {
-          special = false
-          code += "'" + DateFormat.escape(ch) + "' + "
-        } else {
-          code += DateFormat.getFormatCode(ch, locale)
-        }
-      }
-    }
-    eval(code.substring(0, code.length - 3) + ';}')
-  }
-
-  DateFormat.getFormatCode = function(character) {
-    var codes = {
-      d: "DateFormat.leftPad(this.getDate(), 2, '0') + ",
-      D: 'locale.shortDayNames[this.getDay()] + ',
-      j: 'this.getDate() + ',
-      l: 'locale.dayNames[this.getDay()] + ',
-      w: 'this.getDay() + ',
-      z: 'this.getDayInYear() + ',
-      F: 'locale.monthNames[this.getMonth()-1] + ',
-      m: "DateFormat.leftPad(this.getMonth(), 2, '0') +",
-      M: 'locale.monthNames[this.getMonth()-1].substring(0, 3) + ',
-      n: '(this.getMonth()) + ',
-      t: 'this.getDaysInMonth() + ',
-      Y: 'this.getFullYear() + ',
-      y: "('' + this.getFullYear()).substring(2, 4) + ",
-      a: "(this.getHours() < 12 ? 'am' : 'pm') + ",
-      A: "(this.getHours() < 12 ? 'AM' : 'PM') + ",
-      g: '((this.getHours() %12) ? this.getHours() % 12 : 12) + ',
-      G: 'this.getHours() + ',
-      h: "DateFormat.leftPad((this.getHours() %12) ? this.getHours() % 12 : 12, 2, '0') + ",
-      H: "DateFormat.leftPad(this.getHours(), 2, '0') + ",
-      i: "DateFormat.leftPad(this.getMinutes(), 2, '0') + ",
-      s: "DateFormat.leftPad(this.getSeconds(), 2, '0') + ",
-      O: 'DateFormat.getGMTOffset(this) + ',
-      Z: '(this.getTimezoneOffset() * -60) + '
-    }
-    return character in codes ? codes[character] : "'" + DateFormat.escape(character) + "' + "
-  }
   return DateFormat
 })
