@@ -172,7 +172,7 @@ define(function(require) {
       afterSelection()
     }
 
-    function clearRangeClick(event) {
+    function clearRangeClick() {
       selection = DateRange.emptyRange()
       drawSelection()
       afterSelection()

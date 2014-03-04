@@ -659,8 +659,6 @@ define(function(require) {
 
   function createPopupRangeCalendar(start, end) { createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: start, lastDate: end, isPopup: true, isRange: true}) }
 
-  function createClearablePopupCalendar() { createCalendarFields({startDate: '7/24/2013'}).continuousCalendar({isPopup: true, allowClearDates: true}) }
-
   function createPopupWeekCalendar() {
     createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '5/1/2011', lastDate: '5/31/2011', isPopup: true, selectWeek: true, isRange: true})
   }
@@ -699,4 +697,3 @@ define(function(require) {
     })).to.eql($.map(expectedArray, function(i) { return i.toString() }))
   }
 })
-
