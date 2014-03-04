@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 BUILD_PREFIX=build/jquery.continuousCalendar
 LATEST_JS_MIN=$BUILD_PREFIX-latest-min.js
 LATEST_CSS_MIN=$BUILD_PREFIX-latest-min.css
@@ -7,8 +8,9 @@ cd $(dirname $0)
 echo Build nightly...
 old_version=$(git tag | tail -n1)
 version=$1
+npm test
 compass compile -c config.rb
-rm build/*latest*
+rm build/*latest* || true
 [ "$version" != "" -a ! -f $BUILD_PREFIX-$version.js ] && rm build/*
 echo "Compressing js..."
 update_version() { sed  -i '' -E "s/(\"version\".*:.*\").*(\".*)/\1$version\2/g" $@; }
