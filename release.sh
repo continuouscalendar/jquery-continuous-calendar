@@ -33,16 +33,16 @@ else
 		cp $LATEST_CSS_MIN $BUILD_PREFIX-$version-min.css
 		update_version continuousCalendar.jquery.json
 		update_version package.json
+		echo -e "h3. $version \n\n$PLEASE EDIT:\n$(git log --pretty=format:%s $old_version^..)\n\n$(cat History.textile)" > History.textile
+		vim History.textile
 		git add -A .
 		git commit -m "Build for version $version"
 		git tag $version
 		git status
 		echo "Now type:"
-		echo "git push --tags"
-		echo "git push"
+		echo "git push --follow-tags"
 		echo "./ghpages.sh"
-		echo "npm publish ./"
-
+		echo "npm publish"
 	fi
 fi
 cd $current_dir
