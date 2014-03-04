@@ -1,18 +1,15 @@
 define(function(require) {
   var DateTime = require('./DateTime')
-
   var DateFormat = {}
-  DateFormat.formatFunctions = {count: 0}
-
-  DateFormat._codes = {
-    d: function(d, l) {return  DateFormat.leftPad(d.getDate(), 2, '0') },
+  var codes = {
+    d: function(d, l) { return  leftPad(d.getDate(), 2, '0') },
     D: function(d, l) { return  l.shortDayNames[d.getDay()] },
     j: function(d, l) { return  d.getDate() },
     l: function(d, l) { return  l.dayNames[d.getDay()] },
     w: function(d, l) { return  d.getDay() },
     z: function(d, l) { return  d.getDayInYear() },
     F: function(d, l) { return  l.monthNames[d.getMonth()-1] },
-    m: function(d, l) { return  DateFormat.leftPad(d.getMonth(), 2, '0') },
+    m: function(d, l) { return  leftPad(d.getMonth(), 2, '0') },
     M: function(d, l) { return  l.monthNames[d.getMonth()-1].substring(0, 3) },
     n: function(d, l) { return  (d.getMonth()) },
     t: function(d, l) { return  d.getDaysInMonth() },
@@ -22,11 +19,11 @@ define(function(require) {
     A: function(d, l) { return  (d.getHours() < 12 ? 'AM' : 'PM') },
     g: function(d, l) { return  ((d.getHours() %12) ? d.getHours() % 12 : 12) },
     G: function(d, l) { return  d.getHours() },
-    h: function(d, l) { return  DateFormat.leftPad((d.getHours() %12) ? d.getHours() % 12 : 12, 2, '0') },
-    H: function(d, l) { return  DateFormat.leftPad(d.getHours(), 2, '0') },
-    i: function(d, l) { return  DateFormat.leftPad(d.getMinutes(), 2, '0') },
-    s: function(d, l) { return  DateFormat.leftPad(d.getSeconds(), 2, '0') },
-    O: function(d, l) { return  DateFormat.getGMTOffset(d) },
+    h: function(d, l) { return  leftPad((d.getHours() %12) ? d.getHours() % 12 : 12, 2, '0') },
+    H: function(d, l) { return  leftPad(d.getHours(), 2, '0') },
+    i: function(d, l) { return  leftPad(d.getMinutes(), 2, '0') },
+    s: function(d, l) { return  leftPad(d.getSeconds(), 2, '0') },
+    O: function(d, l) { return  getGMTOffset(d) },
     Z: function(d, l) { return  (d.getTimezoneOffset() * -60) }
   }
 
@@ -52,10 +49,6 @@ define(function(require) {
     return result
   }
 
-  function codeToValue(dateTime, ch, locale) {
-    return ch in DateFormat._codes ? DateFormat._codes[ch](dateTime, locale) : ch
-  }
-
   DateFormat.shortDateFormat = function(dateTime, locale) { return DateFormat.format(dateTime, locale ? locale.shortDateFormat : 'n/j/Y', locale) }
 
   DateFormat.formatRange = function(dateRange, locale) {
@@ -73,25 +66,6 @@ define(function(require) {
     if(months > 0) return locale.monthsLabel(months)
     return locale.daysLabel(dateRange.days())
   }
-
-  DateFormat.getGMTOffset = function(dateTime) {
-    return (dateTime.date.getTimezoneOffset() > 0 ? '-' : '+') +
-        DateFormat.leftPad(Math.floor(dateTime.getTimezoneOffset() / 60), 2, '0') +
-        DateFormat.leftPad(dateTime.getTimezoneOffset() % 60, 2, '0')
-  }
-
-  DateFormat.leftPad = function(val, size, ch) {
-    var result = String(val)
-    if(ch === null) {
-      ch = ' '
-    }
-    while(result.length < size) {
-      result = ch + result
-    }
-    return result
-  }
-
-  DateFormat.escape = function(string) { return string.replace(/('|\\)/g, '\\$1') }
 
   DateFormat.patterns = {
     ISO8601LongPattern              : 'Y-m-d H:i:s',
@@ -111,4 +85,25 @@ define(function(require) {
   }
 
   return DateFormat
+
+  function codeToValue(dateTime, ch, locale) {
+    return ch in codes ? codes[ch](dateTime, locale) : ch
+  }
+
+  function getGMTOffset(dateTime) {
+    return (dateTime.date.getTimezoneOffset() > 0 ? '-' : '+') +
+      leftPad(Math.floor(dateTime.getTimezoneOffset() / 60), 2, '0') +
+      leftPad(dateTime.getTimezoneOffset() % 60, 2, '0')
+  }
+
+  function leftPad(val, size, ch) {
+    var result = String(val)
+    if(ch === null) {
+      ch = ' '
+    }
+    while(result.length < size) {
+      result = ch + result
+    }
+    return result
+  }
 })
