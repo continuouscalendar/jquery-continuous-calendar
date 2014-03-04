@@ -1,4 +1,4 @@
-define(function(require) {
+define(function(require, _exports, module) {
   var DateTime = require('../main/DateTime')
   var DateRange = require('../main/DateRange')
   var DateFormat = require('../main/DateFormat')
@@ -6,7 +6,7 @@ define(function(require) {
   var $ = require('jquery')
   require('../main/jquery.continuousCalendar')
 
-  describe('jquery.continuous-calendar', function() {
+  describe(module.id, function() {
     describe('empty calendar of full year', function() {
       before(function() {
         createCalendarContainer()

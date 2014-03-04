@@ -1,10 +1,10 @@
-define(function(require) {
+define(function(require, _exports, module) {
   var DateTime = require('../main/DateTime')
   var util = require('./testUtils')
   var __ = util.__
   var sequence = util.sequence
 
-  describe('DateTime', function() {
+  describe(module.id, function() {
     with(DateTime) {
       var dateWithMS = new Date(2010, 2, 3, 12, 45, 30)
       var dateWithNoMS = new Date(2010, 2, 3, 12, 45, 0)

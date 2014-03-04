@@ -1,10 +1,10 @@
-define(function(require) {
+define(function(require, _exports, module) {
   var DateTime = require('../main/DateTime')
   var DateRange = require('../main/DateRange')
   var DateFormat = require('../main/DateFormat')
   var DateLocale = require('../main/DateLocale')
 
-  describe('DateRange', function() {
+  describe(module.id, function() {
     var range
     var start
     var end
