@@ -1,3 +1,7 @@
+h3. 4.6.1 
+
+Get rid of eval in DateFormat.js. Fixes #67
+
 h3. 4.6.0
 
 * Determine single date vs range with configuration parameter instead of provided input elements. Fixes #9
