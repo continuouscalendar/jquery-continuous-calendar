@@ -69,7 +69,14 @@ define(function(require) {
       createCalendar()
 
       function createCalendar() {
-        disabledDatesList = params.disabledDates ? params.disabledDates.split(' ') : []
+        //TODO change api to take YYYY-MM-DD instead of MM/DD/YYYY and array instead of space separated string
+        disabledDatesList = params.disabledDates ? $.map(params.disabledDates.split(' '), function(slashStr) {
+          var mdy = slashStr.split('/')
+          var year = mdy[2]
+          var month = mdy[0]
+          var day = mdy[1]
+          return [ year, (month.length === 1 ? '0':'') + month, (day.length === 1 ? '0':'') + day].join('-')
+        }) : []
         disabledDatesObject = params.disabledDates ? parseDisabledDates(disabledDatesList) : {}
         calendarRange = determineRangeToRenderFormParams(params)
         popupBehavior = popUpBehaviour(params.isPopup)
@@ -130,7 +137,7 @@ define(function(require) {
 
       function parseDisabledDates(dates) {
         var dateMap = {}
-        $.each(dates, function(index, date) { dateMap[DateParse.parse(date, locale).date] = true })
+        $.each(dates, function(index, date) { dateMap[DateTime.fromIsoDate(date).date] = true })
         return dateMap
       }
 

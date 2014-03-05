@@ -23,16 +23,12 @@ define(function(require, _exports, module) {
           expect(new DateTime().withResetMS().getTime()).to.toEqualRoughly(currentDate.getTime(), 1000)
         })
 
-        it('with string', function() {
-          expect(new DateTime('2012/11/3').toISOString()).to.equal('2012-11-03T00:00:00')
-        })
-
-        it('with numbers', function() {
-          expect(new DateTime(2012, 12, 29, 11, 45, 59).toISOString()).to.equal('2012-12-29T11:45:59')
+        it('with date', function() {
+          expect(new DateTime(new Date(2012, 10, 3, 0, 0, 0)).toISOString()).to.equal('2012-11-03T00:00:00')
         })
 
         it('throws errors on invalid values', function() {
-          expect(function() {new DateTime(2012, 12, 29, 11, 45, 60)}).to.throw('Invalid Date: 2012-12-29 11:45:60')
+          expect(function() {new DateTime('2012/11/3')}).to.throw('Argument must be a date object. 2012/11/3 was given')
         })
       })
 
@@ -54,7 +50,7 @@ define(function(require, _exports, module) {
 
         describe('fromIsoDateTime', function() {
           it('creates dateTime correctly from ISO date time', function() {
-            expect(fromIsoDateTime('2012-01-20T13:35').date).to.eql(new DateTime(2012, 1, 20, 13, 35).date)
+            expect(fromIsoDateTime('2012-01-20T13:35').date).to.eql(fromDateTime(2012, 1, 20, 13, 35).date)
           })
 
           it('thorws errors of invalid iso formats', function() {
@@ -95,7 +91,7 @@ define(function(require, _exports, module) {
 
         describe('fromDate', function() {
           it('returns new date with given values', function() {
-            expect(fromDate(2010, 3, 3).date).to.eql(new DateTime(2010, 3, 3, 0, 0, 0).date)
+            expect(fromDate(2010, 3, 3).date).to.eql(fromDate(2010, 3, 3).date)
           })
 
           it('throws errors on invalid values', function() {
@@ -154,8 +150,8 @@ define(function(require, _exports, module) {
 
         describe('withTime', function() {
           it('should update only time and reset seconds and milliseconds', function() {
-            expect(dateTimeWithMS.withTime(10, 30).date).to.eql(new DateTime(2010, 3, 3, 10, 30).date)
-            expect(dateTimeWithMS.withTime('11:30').date).to.eql(new DateTime(2010, 3, 3, 11, 30).date)
+            expect(dateTimeWithMS.withTime(10, 30).date).to.eql(fromDateTime(2010, 3, 3, 10, 30).date)
+            expect(dateTimeWithMS.withTime('11:30').date).to.eql(fromDateTime(2010, 3, 3, 11, 30).date)
           })
         })
 

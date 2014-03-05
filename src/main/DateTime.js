@@ -1,28 +1,10 @@
 define(function(require) {
   var $ = require('jquery')
 
-  function DateTime(year, month, date, hours, minutes, seconds) {
+  function DateTime(date) {
     if(arguments.length === 0) this.date = new Date()
-    else if(year instanceof Date) this.date = new Date(year.getTime())
-    else if(year instanceof DateTime) this.date = new Date(year.date.getTime())
-    else if(typeof year === 'string') this.date = new Date(year)
-    else if(typeof year === 'number') this.date = createSafeDate(+year, +month, +date, +hours, +minutes, +seconds)
-    else throw Error('None of supported parameters was used for constructor: ' + Array.prototype.slice.call(arguments).join(', '))
-
-    function createSafeDate(year, month, date, hours, minutes, seconds) {
-      hours = hours || 0
-      minutes = minutes || 0
-      seconds = seconds || 0
-      var newDate = new Date(year, month - 1, date, hours, minutes, seconds, 0)
-      if(newDate.toString() === 'Invalid Date' ||
-        month !== newDate.getMonth() + 1 ||
-        year !== newDate.getFullYear() ||
-        date !== newDate.getDate() ||
-        hours !== newDate.getHours() ||
-        minutes !== newDate.getMinutes() ||
-        seconds !== newDate.getSeconds()) throw Error('Invalid Date: ' + year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds)
-      return  newDate
-    }
+    else if(date instanceof Date) this.date = new Date(date)
+    else throw Error('Argument must be a date object. ' + date + ' was given')
   }
 
   DateTime.SUNDAY = 0
@@ -37,16 +19,16 @@ define(function(require) {
   DateTime.y2kYear = 50
   DateTime.monthNumbers = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 }
 
-  DateTime.fromDateTime = function(year, month, day, hours, minutes) {
-    return new DateTime(year, month, day, hours, minutes)
+  DateTime.fromDateTime = function(year, month, day, hours, minutes, seconds) {
+    return new DateTime(createSafeDate(+year, +month, +day, +hours, +minutes, +seconds || 0))
   }
 
   DateTime.fromDate = function(year, month, day) {
-    return DateTime.fromDateTime(year, month, day, 0, 0)
+    return DateTime.fromDateTime(year, month, day, 0, 0, 0)
   }
 
   DateTime.fromDateObject = function(date) {
-    return DateTime.fromMillis(date.getTime())
+    return new DateTime(date)
   }
 
   /**
@@ -73,29 +55,7 @@ define(function(require) {
     var dateAndTime = isoDateTime.split('T')
     var time = parseTime(dateAndTime.length === 2 && dateAndTime[1])
     var date = parseDate(dateAndTime[0])
-    return new DateTime(date.year, date.month, date.day, time.hours, time.minutes, time.seconds)
-  }
-
-  function parseDate(str) {
-    var dateComponents = str.split('-')
-    return {
-      year : +dateComponents[0],
-      month: +dateComponents[1],
-      day  : +dateComponents[2]
-    }
-  }
-
-  function parseTime(str) {
-    if(str) {
-      var timeComponents = str.split(':')
-      return {
-        hours  : +timeComponents[0],
-        minutes: +timeComponents[1],
-        seconds: +timeComponents[2] || 0
-      }
-    } else {
-      return { hours: 0, minutes: 0 }
-    }
+    return DateTime.fromDateTime(date.year, date.month, date.day, time.hours, time.minutes, time.seconds)
   }
 
   DateTime.fromMillis = function(ms) { return new DateTime(new Date(ms)) }
@@ -288,6 +248,43 @@ define(function(require) {
 
   DateTime.prototype.getMonth = function() {
     return this.date.getMonth() + 1
+  }
+
+  function createSafeDate(year, month, date, hours, minutes, seconds) {
+    hours = hours || 0
+    minutes = minutes || 0
+    seconds = seconds || 0
+    var newDate = new Date(year, month - 1, date, hours, minutes, seconds, 0)
+    if(newDate.toString() === 'Invalid Date' ||
+      month !== newDate.getMonth() + 1 ||
+      year !== newDate.getFullYear() ||
+      date !== newDate.getDate() ||
+      hours !== newDate.getHours() ||
+      minutes !== newDate.getMinutes() ||
+      seconds !== newDate.getSeconds()) throw Error('Invalid Date: ' + year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds)
+    return  newDate
+  }
+
+  function parseDate(str) {
+    var dateComponents = str.split('-')
+    return {
+      year : +dateComponents[0],
+      month: +dateComponents[1],
+      day  : +dateComponents[2]
+    }
+  }
+
+  function parseTime(str) {
+    if(str) {
+      var timeComponents = str.split(':')
+      return {
+        hours  : +timeComponents[0],
+        minutes: +timeComponents[1],
+        seconds: +timeComponents[2] || 0
+      }
+    } else {
+      return { hours: 0, minutes: 0 }
+    }
   }
 
   return DateTime

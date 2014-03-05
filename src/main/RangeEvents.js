@@ -180,7 +180,7 @@ define(function(require) {
 
     function rangeHasDisabledDate() {
       for(var i = 0; i < disabledDatesList.length; i++) {
-        if(selection.hasDate(new DateTime(disabledDatesList[i]))) return true
+        if(selection.hasDate(DateTime.fromIsoDate(disabledDatesList[i]))) return true
       }
       return false
     }

@@ -11,7 +11,7 @@ define(function(require) {
     }
     var format = locale ? locale.shortDateFormat : DateParse.defaultFormat
     var date = DateParse.parseDate(input, format)
-    return date ? date : new DateTime(input)
+    return date ? date : new DateTime(new Date(input))
   }
 
   DateParse.parseDate = function(input, format) {
@@ -20,7 +20,7 @@ define(function(require) {
 
     function matchesToDateTime(values) {
       var day = matchesToObject(values)
-      return new DateTime(day.Y, (day.m ? day.m : day.n), (day.d ? day.d : day.j))
+      return DateTime.fromDate(day.Y, (day.m ? day.m : day.n), (day.d ? day.d : day.j))
     }
 
     function matchesToObject(matchValues) {

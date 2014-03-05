@@ -17,11 +17,11 @@ define(function(require, _exports, module) {
         expect(range.start).to.eql(start)
         expect(range.end).to.eql(end)
         expect(range.days()).to.equal(3)
-        expect(range).not.to.toHaveDate('09/9/2009')
-        expect(range).to.toHaveDate('09/10/2009')
-        expect(range).to.toHaveDate('09/11/2009')
-        expect(range).to.toHaveDate('09/12/2009')
-        expect(range).not.to.toHaveDate('09/13/2009')
+        expect(range).not.to.toHaveDate('2009-09-09')
+        expect(range).to.toHaveDate('2009-09-10')
+        expect(range).to.toHaveDate('2009-09-11')
+        expect(range).to.toHaveDate('2009-09-12')
+        expect(range).not.to.toHaveDate('2009-09-13')
         expect(DateFormat.formatRange(range, DateLocale.FI)).to.equal('10.9.2009 - 12.9.2009')
       })
 
@@ -32,12 +32,12 @@ define(function(require, _exports, module) {
       })
 
       it('range is expandable', function() {
-        expect(range.expandTo(new DateTime('09/15/2009')).days()).to.equal(6)
+        expect(range.expandTo(DateTime.fromDate(2009, 9, 15)).days()).to.equal(6)
       })
 
       it('two ranges can do interception', function() {
-        expect(range.and(createRange('09/11/2009', '09/19/2009')).days()).to.equal(2)
-        expect(range.and(createRange('09/16/2009', '09/19/2009')).days()).to.equal(0)
+        expect(range.and(createRange('2009-09-11', '2009-09-19')).days()).to.equal(2)
+        expect(range.and(createRange('2009-09-16', '2009-09-19')).days()).to.equal(0)
       })
 
       it('range can be asked if it is a subset of another range', function() {
@@ -52,7 +52,7 @@ define(function(require, _exports, module) {
       beforeEach(resetOuterRange)
 
       it('range already inside outer range is not moved', function() {
-        var range1 = createRange('04/04/2011', '04/10/2011')
+        var range1 = createRange('2011-04-04', '2011-04-10')
         var range2 = range1.shiftInside(outerRange)
         expect(range1).toBeInside(outerRange)
         expect(range2).toBeInside(outerRange)
@@ -61,7 +61,7 @@ define(function(require, _exports, module) {
       })
 
       it('range can be moved forward inside outer range', function() {
-        var range1 = createRange('03/15/2011', '03/21/2011')
+        var range1 = createRange('2011-03-15', '2011-03-21')
         var range2 = range1.shiftInside(outerRange)
         expect(range1).not.toBeInside(outerRange)
         expect(range2).toBeInside(outerRange)
@@ -70,7 +70,7 @@ define(function(require, _exports, module) {
       })
 
       it('range can be moved backward inside outer range', function() {
-        var range1 = createRange('04/28/2011', '05/04/2011')
+        var range1 = createRange('2011-04-28', '2011-05-04')
         var range2 = range1.shiftInside(outerRange)
         expect(range1).not.toBeInside(outerRange)
         expect(range2).toBeInside(outerRange)
@@ -89,7 +89,7 @@ define(function(require, _exports, module) {
       beforeEach(resetOuterRange)
 
       it('range can be requested near the beginning of outer range', function() {
-        var oldRange = createRange('03/28/2011', '04/03/2011')
+        var oldRange = createRange('2011-03-28', '2011-04-03')
         var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
         expect(newRange.days()).to.equal(7)
         expect(newRange.start.getDate()).to.equal(29)
@@ -97,19 +97,19 @@ define(function(require, _exports, module) {
       })
 
       it('range can be requested near the end of outer range', function() {
-        var oldRange = createRange('04/25/2011', '04/25/2011')
+        var oldRange = createRange('2011-04-25', '2011-04-25')
         var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, false, outerRange)
         expect(newRange.days()).to.equal(7)
       })
 
       it('range cannot be requested to be outside outer range', function() {
-        var oldRange = createRange('04/26/2011', '04/26/2011')
+        var oldRange = createRange('2011-04-26', '2011-04-26')
         var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, false, outerRange)
         expect(newRange.days()).to.equal(0)
       })
 
       it('range may not be found near the end of outer range due to weekends', function() {
-        var oldRange = createRange('04/24/2011', '04/24/2011')
+        var oldRange = createRange('2011-04-24', '2011-04-24')
         var newRange = DateRange.rangeWithMinimumSize(oldRange, 7, true, outerRange)
         expect(newRange.days()).to.equal(0)
       })
@@ -142,9 +142,9 @@ define(function(require, _exports, module) {
 
       it('one day range with start time after end time is not valid', function() {
         expect(range).toBeValidRange()
-        range.start = new DateTime('09/13/2009')
+        range.start = DateTime.fromDate(2009, 9, 13)
         expect(range).not.toBeValidRange()
-        range.start = new DateTime('09/12/2009')
+        range.start = DateTime.fromDate(2009, 9, 12)
         expect(range).toBeValidRange()
         range = range.withTimes('15:00', '14:30')
         expect(range).not.toBeValidRange()
@@ -188,17 +188,17 @@ define(function(require, _exports, module) {
       })
 
       it('range is displayed with the most defining unit', function() {
-        range = createRange('01/01/2004', '05/01/2006')
+        range = createRange('2004-01-01', '2006-05-01')
         expect(range).toPrintDefiningDurationOf('2 vuotta', DateLocale.FI)
-        range = createRange('01/01/2004', '05/01/2005')
+        range = createRange('2004-01-01', '2005-05-01')
         expect(range).toPrintDefiningDurationOf('1 vuosi', DateLocale.FI)
-        range = createRange('01/01/2004', '05/01/2004')
+        range = createRange('2004-01-01', '2004-05-01')
         expect(range).toPrintDefiningDurationOf('4 kuukautta', DateLocale.FI)
-        range = createRange('01/01/2004', '02/16/2004')
+        range = createRange('2004-01-01', '2004-02-16')
         expect(range).toPrintDefiningDurationOf('1 kuukausi', DateLocale.FI)
-        range = createRange('01/01/2004', '01/31/2004')
+        range = createRange('2004-01-01', '2004-01-31')
         expect(range).toPrintDefiningDurationOf('1 kuukausi', DateLocale.FI)
-        range = createRange('01/01/2004', '01/07/2004')
+        range = createRange('2004-01-01', '2004-01-07')
         expect(range).toPrintDefiningDurationOf('7 päivää', DateLocale.FI)
       })
     })
@@ -210,19 +210,19 @@ define(function(require, _exports, module) {
     }
 
     function resetRange() {
-      start = new DateTime('09/10/2009')
-      end = new DateTime('09/12/2009')
+      start = DateTime.fromDate(2009, 9, 10)
+      end = DateTime.fromDate(2009, 9, 12)
       range = new DateRange(end, start)
     }
 
     function resetOuterRange() {
-      start = new DateTime('03/28/2011')
-      end = new DateTime('05/01/2011')
+      start = DateTime.fromDate(2011, 3, 28)
+      end = DateTime.fromDate(2011, 5, 1)
       outerRange = new DateRange(start, end)
     }
 
     function createRange(date1, date2) {
-      return new DateRange(new DateTime(date1), new DateTime(date2))
+      return new DateRange(DateTime.fromIsoDate(date1), DateTime.fromIsoDate(date2))
     }
   })
 })

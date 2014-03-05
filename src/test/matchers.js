@@ -14,12 +14,12 @@ define(function(require) {
           , length
         );
       },
-      toHaveDate               : function(date_str) {
+      toHaveDate               : function(isoDate) {
         this.assert(
-          flag(this, 'object').hasDate(new DateTime(date_str))
+          flag(this, 'object').hasDate(DateTime.fromIsoDate(isoDate))
           , 'expected #{this} to have date #{exp}'
           , 'expected #{this} not to have date #{exp}'
-          , date_str
+          , isoDate
         );
       },
       toBeInside               : function(range) {
