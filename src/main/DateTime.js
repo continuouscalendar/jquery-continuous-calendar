@@ -60,19 +60,6 @@ define(function(require) {
 
   DateTime.fromMillis = function(ms) { return new DateTime(new Date(ms)) }
 
-  $.each([
-    'getTime',
-    'getFullYear',
-    'getDate',
-    'getDay',
-    'getHours',
-    'getMinutes',
-    'getSeconds',
-    'getMilliseconds'
-  ], function(_index, func) {
-    DateTime.prototype[func] = function() { return this.date[func]() }
-  })
-
   DateTime.prototype.withResetMS = function() {
     var newDate = this.clone()
     newDate.date.setMilliseconds(0)
@@ -112,6 +99,24 @@ define(function(require) {
     }
     return DateTime._today
   }
+
+  DateTime.prototype.getTime = function() { return this.date.getTime() }
+
+  DateTime.prototype.getFullYear = function() { return this.date.getFullYear() }
+
+  DateTime.prototype.getDate = function() { return this.date.getDate() }
+
+  DateTime.prototype.getMonth = function() { return this.date.getMonth() + 1 }
+
+  DateTime.prototype.getDay = function() { return this.date.getDay() }
+
+  DateTime.prototype.getHours = function() { return this.date.getHours() }
+
+  DateTime.prototype.getMinutes = function() { return this.date.getMinutes() }
+
+  DateTime.prototype.getSeconds = function() { return this.date.getSeconds() }
+
+  DateTime.prototype.getMilliseconds = function() { return this.date.getMilliseconds() }
 
   DateTime.getDaysInMonth = function(year, month) {
     if(month > 12 || month < 1)
@@ -244,10 +249,6 @@ define(function(require) {
     return $.map([this.getFullYear(), (this.getMonth()), this.getDate()], withTwoDigitsAtLeast).join('-') + 'T' +
       $.map([this.getHours(), this.getMinutes(), this.getSeconds()], withTwoDigitsAtLeast).join(':')
     function withTwoDigitsAtLeast(value) { return value < 10 ? '0' + value : '' + value}
-  }
-
-  DateTime.prototype.getMonth = function() {
-    return this.date.getMonth() + 1
   }
 
   function createSafeDate(year, month, date, hours, minutes, seconds) {
