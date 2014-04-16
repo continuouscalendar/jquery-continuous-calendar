@@ -1,3 +1,8 @@
+h3. 4.6.2 
+
+* Bring old IE support back by using $.map instead of Array.prototype.map
+* Make DateTime constructor less ambigous and rely on factory methods instead
+
 h3. 4.6.1 
 
 Get rid of eval in DateFormat.js. Fixes #67
