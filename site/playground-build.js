@@ -2,7 +2,7 @@
   appDir       : "",
   baseUrl      : ".",
   name         : '../node_modules/almond/almond',
-  include      : ['playground'],
+  include      : ['playground','../src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'],
   insertRequire: ['playground'],
   out          : 'playground-min.js',
   urlArgs      : undefined,

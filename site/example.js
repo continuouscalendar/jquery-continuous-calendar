@@ -3,7 +3,7 @@ requirejs.config({
     'jquery'              : '../src/lib/jquery-1.9.1.min'
   }
 })
-require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFormat', '../src/main/DateLocale'], function($, _calendar, DateFormat, DateLocale) {
+require(['jquery', '../src/main/jquery.continuousCalendar', '../src/main/DateFormat', '../src/main/DateLocale', '../src/main/jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'], function($, _calendar, DateFormat, DateLocale) {
   jQuery = $
   $("#singleDate2, #singleDate3").continuousCalendar({weeksBefore: 60, weeksAfter: 1, isPopup: true, locale: 'EN', customScroll: true})
   $("#range1").continuousCalendar({firstDate: "2/15/2007", lastDate: "9/10/2009", isPopup: true, locale: 'EN', customScroll: false, isRange: true})

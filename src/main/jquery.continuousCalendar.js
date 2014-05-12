@@ -8,7 +8,6 @@ define(function(require) {
   var CalendarBody = require('./CalendarBody')
   var RangeEvents = require('./RangeEvents')
   var SingleDateEvents = require('./SingleDateEvents')
-  require('./jquery.tinyscrollbar-1.66/jquery.tinyscrollbar')
 
   $.continuousCalendar = {
     "version" : "4.6.2"

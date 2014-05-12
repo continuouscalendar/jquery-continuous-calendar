@@ -2,7 +2,7 @@
   appDir  : "",
   baseUrl : "../main",
   name    : '../../node_modules/almond/almond',
-  include: ['jquery.continuousCalendar'],
+  include: ['jquery.continuousCalendar', 'jquery.tinyscrollbar-1.66/jquery.tinyscrollbar'],
   insertRequire: ['jquery.continuousCalendar'],
   out     : '../../build/jquery.continuousCalendar-latest-min.js',
   urlArgs : undefined,
