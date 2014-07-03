@@ -8,3 +8,5 @@
 .idea/workspace.xml
 out/
 .sass-cache
+.idea/libraries/
+.idea/jsLibraryMappings.xml
