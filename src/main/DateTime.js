@@ -240,9 +240,8 @@ define(function(require) {
 
   DateTime.prototype.getFirstDateOfWeek = function(locale) {
     var firstWeekday = locale ? locale.firstWeekday : DateTime.MONDAY
-    if(firstWeekday < this.getDay()) return this.plusDays(firstWeekday - this.getDay())
-    else if(firstWeekday > this.getDay()) return this.plusDays(firstWeekday - this.getDay() - 7)
-    else return this.clone()
+    if(firstWeekday == this.getDay) return this.clone()
+    else return this.plusDays(firstWeekday - this.getDay() - (firstWeekday > this.getDay() ? 7 : 0))
   }
 
   DateTime.prototype.toISOString = function() { return isoDate.call(this) + 'T' + isoTime.call(this) }
