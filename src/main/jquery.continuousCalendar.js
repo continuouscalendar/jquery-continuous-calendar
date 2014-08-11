@@ -37,12 +37,14 @@ define(function(require) {
         },
         theme          : '',
         allowClearDates: false,
-        isRange        : false
+        isRange        : false,
+        startDate      : null,
+        endDate        : null
       }
       var params = $.extend({}, defaults, options)
       var locale = params.locale
-      var startDate = fieldDate(params.startField)
-      var endDate = fieldDate(params.endField)
+      var startDate = fieldDate(params.startField) || params.startDate
+      var endDate = fieldDate(params.endField) || params.endDate
       var today = DateTime.today()
 
       if(params.selectToday) {
