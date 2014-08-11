@@ -2,7 +2,7 @@ define(function(require) {
   var $ = require('jquery')
   var DateFormat = require('./DateFormat')
   var DateParse = require('./DateParse')
-  var DateLocale = require('./DateLocale')
+  var EN = require('./locale/EN')
   var DateRange = require('./DateRange')
   var DateTime = require('./DateTime')
   var CalendarBody = require('./CalendarBody')
@@ -24,7 +24,7 @@ define(function(require) {
         endField       : $('input.endDate', this),
         isPopup        : false,
         selectToday    : false,
-        locale         : DateLocale.EN,
+        locale         : EN,
         disableWeekends: false,
         disabledDates  : null,
         minimumRange   : -1,
@@ -40,7 +40,7 @@ define(function(require) {
         isRange        : false
       }
       var params = $.extend({}, defaults, options)
-      var locale = DateLocale.fromArgument(params.locale)
+      var locale = params.locale
       var startDate = fieldDate(params.startField)
       var endDate = fieldDate(params.endField)
       var today = DateTime.today()

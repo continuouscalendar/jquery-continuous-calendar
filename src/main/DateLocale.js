@@ -6,7 +6,7 @@ define(function(require) {
   var RU = require('./locale/RU')
   var SV = require('./locale/SV')
   var LV = require('./locale/LV')
-  var DateLocale = {
+  return {
     FI: FI,
     EN: EN,
     AU: AU,
@@ -15,12 +15,4 @@ define(function(require) {
     SV: SV,
     LV: LV
   }
-
-  DateLocale.fromArgument = function(stringOrObject) {
-    if(typeof stringOrObject === 'string')
-      return DateLocale[stringOrObject.toUpperCase()]
-    else return stringOrObject
-  }
-
-  return DateLocale
 })

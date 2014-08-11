@@ -375,7 +375,7 @@ define(function(require, _exports, module) {
       })
 
       it('month and day names are localizable', function() {
-        createCalendarFields().continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009', locale: 'fi', isRange: true})
+        createCalendarFields().continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009', locale: DateLocale.FI, isRange: true})
         assertHasValues('.continuousCalendar thead th.weekDay', ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'])
         assertHasValues('.monthName', [
           'joulukuu',
@@ -451,7 +451,7 @@ define(function(require, _exports, module) {
       })
 
       it('changes its selection when opening according to start field value', function() {
-        createCalendarFields({startDate: ''}).continuousCalendar({isPopup: true, locale: 'fi'})
+        createCalendarFields({startDate: ''}).continuousCalendar({isPopup: true, locale: DateLocale.FI})
         setStartFieldValue('16.12.2013')
         cal().find('.calendarIcon').click()
         assertHasValues('.selected', [16])
