@@ -245,11 +245,19 @@ define(function(require) {
     else return this.clone()
   }
 
-  DateTime.prototype.toISOString = function() {
-    return $.map([this.getFullYear(), (this.getMonth()), this.getDate()], withTwoDigitsAtLeast).join('-') + 'T' +
-      $.map([this.getHours(), this.getMinutes(), this.getSeconds()], withTwoDigitsAtLeast).join(':')
-    function withTwoDigitsAtLeast(value) { return value < 10 ? '0' + value : '' + value}
+  DateTime.prototype.toISOString = function() { return isoDate.call(this) + 'T' + isoTime.call(this) }
+
+  DateTime.prototype.toISODateString = function() { return isoDate.call(this) }
+
+  function isoDate() {
+    return $.map([this.getFullYear(), (this.getMonth()), this.getDate()], withTwoDigitsAtLeast).join('-')
   }
+
+  function isoTime() {
+    return $.map([this.getHours(), this.getMinutes(), this.getSeconds()], withTwoDigitsAtLeast).join(':')
+  }
+
+  function withTwoDigitsAtLeast(value) { return value < 10 ? '0' + value : '' + value}
 
   function createSafeDate(year, month, date, hours, minutes, seconds) {
     hours = hours || 0
