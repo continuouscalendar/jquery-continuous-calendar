@@ -65,7 +65,7 @@ define(function(require) {
       $('.date', container).bind('click', function() {
         var dateCell = $(this)
         if (!dateCell.hasClass('disabled')) {
-          var selectedDate = getElemDate(dateCell.get(0));
+          var selectedDate = getElemDate(dateCell.get(0))
           setSelectedDate(selectedDate, dateCell)
           popupBehavior.close(this)
           executeCallback(selectedDate)

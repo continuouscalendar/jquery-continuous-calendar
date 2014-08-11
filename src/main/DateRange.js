@@ -81,7 +81,7 @@ define(function(require) {
 
   DateRange.prototype.isValid = function() { return this._valid && this.end.getTime() - this.start.getTime() >= 0 }
 
-  DateRange.prototype.days = function() { return this._hasTimes ? this._days : Math.round(this.start.distanceInDays(this.end) + 1); }
+  DateRange.prototype.days = function() { return this._hasTimes ? this._days : Math.round(this.start.distanceInDays(this.end) + 1) }
 
   DateRange.prototype.shiftDays = function(days) { return new DateRange(this.start.plusDays(days), this.end.plusDays(days)) }
 

@@ -156,7 +156,7 @@ define(function(require) {
             container.prepend(icon)
           },
           initState            : $.noop,
-          getContainer         : function(newContainer) { return $('<div class="popUpContainer">').append(newContainer); },
+          getContainer         : function(newContainer) { return $('<div class="popUpContainer">').append(newContainer) },
           close                : function(cell) { toggleCalendar.call(cell) },
           addDateLabelBehaviour: function(label) {
             label.addClass('clickable')

@@ -55,7 +55,7 @@ define(function(require) {
 
     function calendarBody() {
       var firstWeekDay = calendarRange.start.getFirstDateOfWeek(locale)
-      var isFirst = true;
+      var isFirst = true
       var rows = []
       while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
         calendarRow(rows, firstWeekDay.clone(), isFirst)
