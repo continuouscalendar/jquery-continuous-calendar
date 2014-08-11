@@ -64,7 +64,7 @@ define(function(require) {
       var disabledDatesList
       var disabledDatesObject
 
-      $(this).addClass('continuousCalendarContainer').addClass(params.theme).append('&nbsp;') //IE fix for popup version
+      $(this).addClass('continuousCalendarContainer').addClass(params.theme)
       createCalendar()
 
       function createCalendar() {
@@ -151,7 +151,6 @@ define(function(require) {
           initUI               : function() {
             calendarContainer.addClass('popup').hide()
             var icon = $('<a href="#" class="calendarIcon">' + today.getDate() + '</a>').click(toggleCalendar)
-            container.prepend('<div></div>')
             container.prepend(icon)
           },
           initState            : $.noop,
