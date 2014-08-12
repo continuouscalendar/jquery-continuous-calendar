@@ -451,7 +451,7 @@ define(function(require, _exports, module) {
       })
 
       it('changes its selection when opening according to start field value', function() {
-        createCalendarFields({startDate: ''}).continuousCalendar({isPopup: true, locale: DateLocale.FI})
+        createCalendarFields({startDate: '12/17/2013'}).continuousCalendar({isPopup: true, locale: DateLocale.FI})
         setStartFieldValue('16.12.2013')
         cal().find('.calendarIcon').click()
         assertHasValues('.selected', [16])
