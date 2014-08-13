@@ -65,7 +65,7 @@ define(function(require, _exports, module) {
         describe('fromMillis', function() {
           it('returns DateTime with given milliseconds', function() {
             var ms = new Date().getTime()
-            expect(fromMillis(ms).getTime()).to.equal(ms)
+            expect(fromMillis(ms).getTime()).to.be.closeTo(ms, 1000)
           })
         })
 
