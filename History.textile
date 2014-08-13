@@ -1,3 +1,13 @@
+h3. 4.7.0 
+
+* Prevent date labels wrap between week day and date
+* Add possibility to set date selection as constructor parameter
+* Add DateTime.toISODateString
+* De-couple DateLocale and continuousCalendar
+* Remove IE 6 tweaks
+* Make tinyscrollbar as separate dependency
+* Add Duration module
+
 h3. 4.6.2 
 
 * Bring old IE support back by using $.map instead of Array.prototype.map
