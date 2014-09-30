@@ -42,5 +42,8 @@
     "chai-jquery": "~1.1.2",
     "almond": "~0.2.6",
     "phantomjs": "^1.9.7-1"
+  },
+  "devDependencies": {
+    "amdclean": "^2.2.4"
   }
 }

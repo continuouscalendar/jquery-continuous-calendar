@@ -1,20 +1,27 @@
 ({
   appDir  : "",
-  baseUrl : "../main",
-  name    : '../../node_modules/almond/almond',
+  baseUrl: "../main",
+  name    : 'jquery.continuousCalendar',
   include: [
-    'jquery.continuousCalendar',
     'jquery.tinyscrollbar-1.66/jquery.tinyscrollbar',
-    'DateLocale'
+    'DateLocale',
+    'DateFormat'
   ],
-  insertRequire: ['jquery.continuousCalendar'],
   out     : '../../build/jquery.continuousCalendar-latest-min.js',
   urlArgs : undefined,
   paths   : {
     jquery                : '../build/jqueryStub'
   },
-  wrap:{
-    startFile:'wrapStart.frag',
-    endFile:'wrapEnd.frag'
+  optimize:'none',
+  onModuleBundleComplete: function (data) {
+    var fs = module.require('fs'),
+      amdclean = module.require('amdclean'),
+      outputFile = data.path,
+      cleanedCode = amdclean.clean({
+        'filePath': outputFile,
+        transformAMDChecks: false
+      });
+
+    fs.writeFileSync(outputFile, cleanedCode);
   }
 })
