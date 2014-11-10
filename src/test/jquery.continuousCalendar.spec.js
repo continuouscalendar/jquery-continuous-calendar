@@ -457,6 +457,14 @@ define(function(require, _exports, module) {
         assertHasValues('.selected', [16])
         expect(startLabelValue()).to.equal('ma 16.12.2013')
       })
+
+      it('call popup callback when opening calendar', function() {
+        var count = 0;
+        function cb() { count++ }
+        createCalendarFields({startDate: '12/17/2013'}).continuousCalendar({isPopup: true, popupCallback: cb})
+        cal().find('.calendarIcon').click()
+        expect(count).to.equal(1)
+      })
     })
 
     describe('minimum range with disabled weekends', function() {
