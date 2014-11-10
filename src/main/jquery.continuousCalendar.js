@@ -31,6 +31,7 @@ define(function(require) {
         selectWeek     : false,
         fadeOutDuration: 0,
         callback       : $.noop,
+        popupCallback  : $.noop,
         customScroll   : false,
         scrollOptions  : {
           sizethumb: 'auto'
@@ -170,6 +171,7 @@ define(function(require) {
             calendarContainer.fadeOut(params.fadeOutDuration)
             $(document).unbind('click.continuousCalendar')
           } else {
+            params.popupCallback()
             calendarContainer.show()
             if(beforeFirstOpening) {
               initScrollBar()
