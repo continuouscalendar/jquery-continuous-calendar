@@ -14,14 +14,8 @@ define(function(require) {
       var format = locale ? locale.shortDateFormat : DateParse.defaultFormat
       var date = DateParse.parseDate(input, format)
       return date ? date : new DateTime(new Date(input))
-    } else {
-      if(input instanceof Date) {
-        return DateTime.fromDateObject(input)
-      } else if (input instanceof DateTime) {
-        return input
-      }
     }
-    throw new Error("DateParse only accepts a string, Date or DateTime")
+    throw new Error("DateParse only accepts strings")
   }
 
   DateParse.parseDate = function(input, format) {

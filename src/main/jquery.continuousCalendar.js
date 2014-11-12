@@ -116,7 +116,18 @@ define(function(require) {
 
         return  new DateRange(rangeStart, rangeEnd)
 
-        function dateOrWeek(date, week) { return date ? DateParse.parse(date, locale) : firstWeekdayOfGivenDate.plusDays(week)}
+        function dateOrWeek(date, week) { 
+          if(date) {
+            if(date instanceof Date) {
+              return DateTime.fromDateObject(date)
+            } else if (date instanceof DateTime) {
+              return date
+            } else {
+              return DateParse.parse(date, locale)
+            }
+          }
+          return firstWeekdayOfGivenDate.plusDays(week)
+        }
       }
 
       function bindScrollEvent() {
