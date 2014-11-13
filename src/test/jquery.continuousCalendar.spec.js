@@ -100,6 +100,28 @@ define(function(require, _exports, module) {
           expect(cal().find('.selected')).to.have.text('15')
         }
       })
+
+      it('supports js date objects as bounds', function() {
+        var start = new Date("2009-04-18"), end = new Date("2009-05-03")
+        createCalendarFields().continuousCalendar({firstDate: start, lastDate: end})
+        assertHasValues('.date', [
+          12, 13, 14, 15, 16, 17, 18, 
+          19, 20, 21, 22, 23, 24, 25, 
+          26, 27, 28, 29, 30,  1,  2, 
+           3,  4,  5,  6,  7,  8,  9  
+        ])
+      })
+
+      it('supports DateTime objects as bounds', function() {
+        var start = DateTime.fromDateObject(new Date("2009-04-18")), end = DateTime.fromDateObject(new Date("2009-05-03"))
+        createCalendarFields().continuousCalendar({firstDate: start, lastDate: end})
+        assertHasValues('.date', [
+          12, 13, 14, 15, 16, 17, 18, 
+          19, 20, 21, 22, 23, 24, 25, 
+          26, 27, 28, 29, 30,  1,  2, 
+           3,  4,  5,  6,  7,  8,  9  
+        ])
+      })
     })
 
     describe('date picker calendar with day selected', function() {

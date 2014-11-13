@@ -7,12 +7,15 @@ define(function(require) {
   DateParse.defaultFormat = 'n/j/Y'
 
   DateParse.parse = function(input, locale) {
-    if(input === 'today') {
-      return DateTime.today()
+    if(typeof input === 'string') {
+      if(input === 'today') {
+        return DateTime.today()
+      }
+      var format = locale ? locale.shortDateFormat : DateParse.defaultFormat
+      var date = DateParse.parseDate(input, format)
+      return date ? date : new DateTime(new Date(input))
     }
-    var format = locale ? locale.shortDateFormat : DateParse.defaultFormat
-    var date = DateParse.parseDate(input, format)
-    return date ? date : new DateTime(new Date(input))
+    throw new Error("DateParse only accepts strings")
   }
 
   DateParse.parseDate = function(input, format) {
