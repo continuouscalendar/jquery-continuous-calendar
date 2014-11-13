@@ -1,3 +1,9 @@
+h3. 4.8.0 
+
+* Support js date objects and DateTime objects as first and last date
+* Add callback for popup opening
+* Use inline images for custom scrollbar
+
 h3. 4.7.0 
 
 * Prevent date labels wrap between week day and date
