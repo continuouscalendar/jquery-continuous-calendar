@@ -1,7 +1,6 @@
-define(function(require) {
-  var DateTime = require('../DateTime')
+define(function (require, exports, module) {  var DateTime = require('../DateTime')
   var DateFormat = require('../DateFormat')
-  return {
+  module.exports = {
     id             : 'ET',
     monthNames     : [ 'Jaanuar', 'Veebruar', 'Märts', 'Aprill', 'Mai', 'Juuni', 'Juuli', 'August', 'September', 'Oktoober', 'November', 'Detsember'],
     dayNames       : ['Pühapäev', 'Esmaspäev', 'Teisipäev', 'Kolmapäev', 'Neljapäev', 'Reede', 'Laupäev'],
@@ -20,4 +19,5 @@ define(function(require) {
     dateTimeFormat : 'D j.n.Y k\\l G:i',
     firstWeekday   : DateTime.MONDAY
   }
-})
+
+});

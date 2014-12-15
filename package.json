@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html --reporter dot",
-    "prepublish": "r.js -o src/build/build.js && r.js -o site/playground-build.js"
+    "prepublish": "r.js -convert node_modules/dateutils/src src/main && r.js -o src/build/build.js && r.js -o site/playground-build.js"
   },
   "keywords": [
     "calendar",
@@ -34,13 +34,16 @@
     "package.json",
     "LICENSE-2.0.txt"
   ],
-  "dependencies": {
-    "requirejs": "~2.1.10",
+  "devDependencies": {
     "mocha": "~1.14.0",
     "mocha-phantomjs": "~3.1.6",
     "chai": "~1.8.1",
     "chai-jquery": "~1.1.2",
     "almond": "~0.2.6",
-    "phantomjs": "^1.9.7-1"
+    "phantomjs": "^1.9.7-1",
+    "requirejs": "~2.1.10"
+  },
+  "dependencies": {
+    "dateutils": "^0.1.5"
   }
 }
