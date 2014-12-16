@@ -1,0 +1,70 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install' ]
+2 info using npm@2.0.2
+3 info using node@v0.10.32
+4 verbose node symlink /usr/local/bin/node
+5 verbose readDependencies using package.json deps
+6 verbose install where, deps [ '/Users/eeroan/work/github/jquery-continuous-calendar',
+6 verbose install   [ 'dateutils',
+6 verbose install     'mocha',
+6 verbose install     'mocha-phantomjs',
+6 verbose install     'chai',
+6 verbose install     'chai-jquery',
+6 verbose install     'almond',
+6 verbose install     'phantomjs',
+6 verbose install     'requirejs' ] ]
+7 info preinstall jquery-continuous-calendar@4.8.0
+8 verbose readDependencies using package.json deps
+9 verbose already installed skipping requirejs@~2.1.10 /Users/eeroan/work/github/jquery-continuous-calendar
+10 verbose already installed skipping dateutils@^0.1.5 /Users/eeroan/work/github/jquery-continuous-calendar
+11 verbose already installed skipping mocha@~1.14.0 /Users/eeroan/work/github/jquery-continuous-calendar
+12 verbose already installed skipping mocha-phantomjs@~3.1.6 /Users/eeroan/work/github/jquery-continuous-calendar
+13 verbose already installed skipping chai@~1.8.1 /Users/eeroan/work/github/jquery-continuous-calendar
+14 verbose already installed skipping chai-jquery@~1.1.2 /Users/eeroan/work/github/jquery-continuous-calendar
+15 verbose already installed skipping almond@~0.2.6 /Users/eeroan/work/github/jquery-continuous-calendar
+16 verbose already installed skipping phantomjs@^1.9.7-1 /Users/eeroan/work/github/jquery-continuous-calendar
+17 silly resolved []
+18 info build /Users/eeroan/work/github/jquery-continuous-calendar
+19 verbose linkStuff [ false, false, false, '/Users/eeroan/work/github' ]
+20 info linkStuff jquery-continuous-calendar@4.8.0
+21 verbose linkBins jquery-continuous-calendar@4.8.0
+22 verbose linkMans jquery-continuous-calendar@4.8.0
+23 verbose rebuildBundles jquery-continuous-calendar@4.8.0
+24 verbose rebuildBundles [ '.bin',
+24 verbose rebuildBundles   'almond',
+24 verbose rebuildBundles   'chai',
+24 verbose rebuildBundles   'chai-jquery',
+24 verbose rebuildBundles   'dateutils',
+24 verbose rebuildBundles   'mocha',
+24 verbose rebuildBundles   'mocha-phantomjs',
+24 verbose rebuildBundles   'phantomjs',
+24 verbose rebuildBundles   'requirejs' ]
+25 info install jquery-continuous-calendar@4.8.0
+26 info postinstall jquery-continuous-calendar@4.8.0
+27 info prepublish jquery-continuous-calendar@4.8.0
+28 verbose unsafe-perm in lifecycle true
+29 info jquery-continuous-calendar@4.8.0 Failed to exec prepublish script
+30 verbose stack Error: jquery-continuous-calendar@4.8.0 prepublish: `r.js -convert node_modules/dateutils/src src/main/dateutils && r.js -o src/build/build.js && r.js -o site/playground-build.js`
+30 verbose stack Exit status 1
+30 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:212:16)
+30 verbose stack     at ChildProcess.emit (events.js:98:17)
+30 verbose stack     at maybeClose (child_process.js:756:16)
+30 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:823:5)
+31 verbose pkgid jquery-continuous-calendar@4.8.0
+32 verbose cwd /Users/eeroan/work/github/jquery-continuous-calendar
+33 error Darwin 13.4.0
+34 error argv "node" "/usr/local/bin/npm" "install"
+35 error node v0.10.32
+36 error npm  v2.0.2
+37 error code ELIFECYCLE
+38 error jquery-continuous-calendar@4.8.0 prepublish: `r.js -convert node_modules/dateutils/src src/main/dateutils && r.js -o src/build/build.js && r.js -o site/playground-build.js`
+38 error Exit status 1
+39 error Failed at the jquery-continuous-calendar@4.8.0 prepublish script.
+39 error This is most likely a problem with the jquery-continuous-calendar package,
+39 error not with npm itself.
+39 error Tell the author that this fails on your system:
+39 error     r.js -convert node_modules/dateutils/src src/main/dateutils && r.js -o src/build/build.js && r.js -o site/playground-build.js
+39 error You can get their info via:
+39 error     npm owner ls jquery-continuous-calendar
+39 error There is likely additional logging output above.
+40 verbose exit [ 1, true ]

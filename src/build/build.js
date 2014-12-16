@@ -5,7 +5,7 @@
   include: [
     'jquery.continuousCalendar',
     'jquery.tinyscrollbar-1.66/jquery.tinyscrollbar',
-    'DateLocale'
+    'dateutils/DateLocale'
   ],
   insertRequire: ['jquery.continuousCalendar'],
   out     : '../../build/jquery.continuousCalendar-latest-min.js',

@@ -7,9 +7,9 @@ requirejs.config({
 define(function(require) {
   require('../src/main/jquery.continuousCalendar')
   var $ = require('jquery')
-  var DateFormat = require('../src/main/DateFormat')
-  var DateLocale = require('../src/main/DateLocale')
-  var DateTime = require('../src/main/DateTime')
+  var DateFormat = require('../src/main/dateutils/DateFormat')
+  var DateLocale = require('../src/main/dateutils/DateLocale')
+  var DateTime = require('../src/main/dateutils/DateTime')
   jQuery = $
 
   counter = 0

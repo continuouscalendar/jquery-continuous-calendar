@@ -6,9 +6,9 @@ requirejs.config({
 
 define(function(require) {
   var $ = require('jquery')
-  var DateTime = require('../src/main/DateTime')
-  var DateRange = require('../src/main/DateRange')
-  var DateLocale = require('../src/main/DateLocale')
+  var DateTime = require('../src/main/dateutils/DateTime')
+  var DateRange = require('../src/main/dateutils/DateRange')
+  var DateLocale = require('../src/main/dateutils/DateLocale')
   var CalendarBody = require('../src/main/CalendarBody')
   var container = $('<div class="continuousCalendar">')
   $('body').append($('<div class="continuousCalendarContainer"></div>').append(container))

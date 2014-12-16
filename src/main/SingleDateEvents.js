@@ -1,7 +1,7 @@
 define(function(require) {
   var $ = require('jquery')
-  var DateFormat = require('./DateFormat')
-  var DateParse = require('./DateParse')
+  var DateFormat = require('./dateutils/DateFormat')
+  var DateParse = require('./dateutils/DateParse')
 
   return function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate) {
     return {

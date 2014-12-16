@@ -1,8 +1,8 @@
 define(function(require) {
   var $ = require('jquery')
-  var DateFormat = require('./DateFormat')
-  var DateRange = require('./DateRange')
-  var DateTime = require('./DateTime')
+  var DateFormat = require('./dateutils/DateFormat')
+  var DateRange = require('./dateutils/DateRange')
+  var DateTime = require('./dateutils/DateTime')
 
   return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate,
                   endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList) {
