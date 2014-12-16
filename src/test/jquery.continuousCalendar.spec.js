@@ -1,8 +1,8 @@
 define(function(require, _exports, module) {
-  var DateTime = require('../main/DateTime')
-  var DateRange = require('../main/DateRange')
-  var DateFormat = require('../main/DateFormat')
-  var DateLocale = require('../main/DateLocale')
+  var DateTime = require('../main/dateutils/DateTime')
+  var DateRange = require('../main/dateutils/DateRange')
+  var DateFormat = require('../main/dateutils/DateFormat')
+  var DateLocale = require('../main/dateutils/DateLocale')
   var $ = require('jquery')
   require('../main/jquery.continuousCalendar')
 
@@ -602,12 +602,13 @@ define(function(require, _exports, module) {
     testIndex++
     var container = $('<div>').addClass('testCalendarContainer')
     var containerWrapper = $('<div>').addClass('containerWrapper')
-    var currentTest = mocha.suite.ctx.currentTest
-    var suite_description = currentTest.parent.title
-    var description = currentTest.title
-    var index = $('<div></div>').append('<strong>' + suite_description + '</strong><br>' + description).addClass('testLabel')
+    //TODO current test is undefined for some reason
+    //var currentTest = mocha.suite.ctx.currentTest
+    //var suite_description = currentTest.parent.title
+    //var description = currentTest.title
+    //var index = $('<div></div>').append('<strong>' + suite_description + '</strong><br>' + description).addClass('testLabel')
     container.attr('id', calendarId())
-    containerWrapper.append(index)
+    //containerWrapper.append(index)
     containerWrapper.append(container)
     $('#calendars').append(containerWrapper)
   }
