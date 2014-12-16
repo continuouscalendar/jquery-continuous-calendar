@@ -46,9 +46,11 @@ exports.create = function(parent, title){
  * @api private
  */
 
-function Suite(title, ctx) {
+function Suite(title, parentContext) {
   this.title = title;
-  this.ctx = ctx;
+  var context = function() {};
+  context.prototype = parentContext;
+  this.ctx = new context();
   this.suites = [];
   this.tests = [];
   this.pending = false;
@@ -140,9 +142,15 @@ Suite.prototype.bail = function(bail){
  * @api private
  */
 
-Suite.prototype.beforeAll = function(fn){
+Suite.prototype.beforeAll = function(title, fn){
   if (this.pending) return this;
-  var hook = new Hook('"before all" hook', fn);
+  if ('function' === typeof title) {
+    fn = title;
+    title = fn.name;
+  }
+  title = '"before all" hook' + (title ? ': ' + title : '');
+
+  var hook = new Hook(title, fn);
   hook.parent = this;
   hook.timeout(this.timeout());
   hook.slow(this.slow());
@@ -160,9 +168,15 @@ Suite.prototype.beforeAll = function(fn){
  * @api private
  */
 
-Suite.prototype.afterAll = function(fn){
+Suite.prototype.afterAll = function(title, fn){
   if (this.pending) return this;
-  var hook = new Hook('"after all" hook', fn);
+  if ('function' === typeof title) {
+    fn = title;
+    title = fn.name;
+  }
+  title = '"after all" hook' + (title ? ': ' + title : '');
+
+  var hook = new Hook(title, fn);
   hook.parent = this;
   hook.timeout(this.timeout());
   hook.slow(this.slow());
@@ -180,9 +194,15 @@ Suite.prototype.afterAll = function(fn){
  * @api private
  */
 
-Suite.prototype.beforeEach = function(fn){
+Suite.prototype.beforeEach = function(title, fn){
   if (this.pending) return this;
-  var hook = new Hook('"before each" hook', fn);
+  if ('function' === typeof title) {
+    fn = title;
+    title = fn.name;
+  }
+  title = '"before each" hook' + (title ? ': ' + title : '');
+
+  var hook = new Hook(title, fn);
   hook.parent = this;
   hook.timeout(this.timeout());
   hook.slow(this.slow());
@@ -200,9 +220,15 @@ Suite.prototype.beforeEach = function(fn){
  * @api private
  */
 
-Suite.prototype.afterEach = function(fn){
+Suite.prototype.afterEach = function(title, fn){
   if (this.pending) return this;
-  var hook = new Hook('"after each" hook', fn);
+  if ('function' === typeof title) {
+    fn = title;
+    title = fn.name;
+  }
+  title = '"after each" hook' + (title ? ': ' + title : '');
+
+  var hook = new Hook(title, fn);
   hook.parent = this;
   hook.timeout(this.timeout());
   hook.slow(this.slow());

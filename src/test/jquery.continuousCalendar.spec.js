@@ -8,8 +8,9 @@ define(function(require, _exports, module) {
 
   describe(module.id, function() {
     describe('empty calendar of full year', function() {
+      var _this = this
       before(function() {
-        createCalendarContainer()
+        createCalendarContainer.call(_this)
         createCalendarFromJanuary()
       })
 
@@ -491,7 +492,7 @@ define(function(require, _exports, module) {
 
     describe('minimum range with disabled weekends', function() {
       beforeEach(function() {
-        createCalendarContainer()
+        createCalendarContainer.call(this)
         createCalendarFields({startDate: '4/15/2009', endDate: '4/15/2009'})
           .continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', minimumRange: 4, disableWeekends: true, isRange: true})
       })
@@ -603,12 +604,12 @@ define(function(require, _exports, module) {
     var container = $('<div>').addClass('testCalendarContainer')
     var containerWrapper = $('<div>').addClass('containerWrapper')
     //TODO current test is undefined for some reason
-    //var currentTest = mocha.suite.ctx.currentTest
-    //var suite_description = currentTest.parent.title
-    //var description = currentTest.title
-    //var index = $('<div></div>').append('<strong>' + suite_description + '</strong><br>' + description).addClass('testLabel')
+    var currentTest = this.currentTest || this
+    var suite_description = currentTest.parent.title
+    var description = currentTest.title
+    var index = $('<div></div>').append('<strong>' + suite_description + '</strong><br>' + description).addClass('testLabel')
     container.attr('id', calendarId())
-    //containerWrapper.append(index)
+    containerWrapper.append(index)
     containerWrapper.append(container)
     $('#calendars').append(containerWrapper)
   }

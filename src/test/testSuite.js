@@ -19,13 +19,14 @@ define(function(require) {
   var $ = require('jquery')
 
   mocha.setup({ui: 'bdd', reporter: 'html'})
+
   chai.use(chaiJquery)
   chai.use(matchers)
   window.expect = chai.expect;
 
 
 
-  require(['./allTests'], function() {
+  require(['./jquery.continuousCalendar.spec'], function() {
     $.fx.off = true
     $.ajaxSetup({ async: false })
     if(window.mochaPhantomJS) { window.mochaPhantomJS.run(); }
