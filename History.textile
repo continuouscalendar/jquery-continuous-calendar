@@ -1,3 +1,8 @@
+h3. 4.9.0 
+
+* Read dateutils from external dependency
+* Ensure box-sizing=content box for calendar icon
+
 h3. 4.8.0 
 
 * Support js date objects and DateTime objects as first and last date

@@ -1,7 +1,7 @@
 .continuousCalendarContainer { position: relative; }
 .continuousCalendarContainer div, .continuousCalendarContainer th, .continuousCalendarContainer td { margin: 0; padding: 0; vertical-align: middle; }
 .continuousCalendarContainer th { font-style: normal; font-weight: normal; text-align: left; }
-.continuousCalendarContainer a.calendarIcon { font-size: 9px; color: #000; text-decoration: none; display: block; background: #eee; border: 1px solid #666; border-top: 4px solid #a00; float: left; padding: 1px 3px; line-height: 1; text-align: center; width: 10px; }
+.continuousCalendarContainer a.calendarIcon { box-sizing: content-box; font-size: 9px; color: #000; text-decoration: none; display: block; background: #eee; border: 1px solid #666; border-top: 4px solid #a00; float: left; padding: 1px 3px; line-height: 1; text-align: center; width: 10px; }
 .continuousCalendarContainer .popup { position: absolute; z-index: 10000 !important; box-shadow: 5px 5px 5px -5px #999999; }
 .continuousCalendarContainer .popup .calendarHeader { width: 220px; }
 .continuousCalendarContainer input.endDate, .continuousCalendarContainer input.startDate { display: none; }
