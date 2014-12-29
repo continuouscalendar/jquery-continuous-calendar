@@ -1,10 +1,10 @@
-![Calendar screen shot](http://reaktor.github.com/jquery-continuous-calendar/site/calendar.png)
-[Homepage]: http://reaktor.github.com/jquery-continuous-calendar/
-[Examples]: http://reaktor.github.com/jquery-continuous-calendar/site/example.html
-[Playground]: http://reaktor.github.com/jquery-continuous-calendar/site/playground.html
-[Unit tests]: http://reaktor.github.com/jquery-continuous-calendar/src/test/jquery.continuousCalendar.spec.html
-[Latest revision as ZIP file]: http://github.com/reaktor/jquery-continuous-calendar/zipball/master
-[Change log]: https://github.com/reaktor/jquery-continuous-calendar/blob/master/History.textile
+![Calendar screen shot](http://continuouscalendar.github.com/jquery-continuous-calendar/site/calendar.png)
+[Homepage]: http://continuouscalendar.github.com/jquery-continuous-calendar/
+[Examples]: http://continuouscalendar.github.com/jquery-continuous-calendar/site/example.html
+[Playground]: http://continuouscalendar.github.com/jquery-continuous-calendar/site/playground.html
+[Unit tests]: http://continuouscalendar.github.com/jquery-continuous-calendar/src/test/jquery.continuousCalendar.spec.html
+[Latest revision as ZIP file]: http://github.com/continuouscalendar/jquery-continuous-calendar/zipball/master
+[Change log]: https://github.com/continuouscalendar/jquery-continuous-calendar/blob/master/History.textile
 [wicket-continuous-calendar]: https://code.google.com/p/wicket-continuous-calendar/
 
 Features
@@ -54,7 +54,7 @@ Insert in head
 --------------
 
 	<!-- basic default calendar styles -->
-	<link rel="stylesheet" href="http://reaktor.github.io/jquery-continuous-calendar/build/jquery.continuousCalendar-latest-min.css" type="text/css" />
+	<link rel="stylesheet" href="http://continuouscalendar.github.io/jquery-continuous-calendar/build/jquery.continuousCalendar-latest-min.css" type="text/css" />
 
 	<!-- custom user specified calendar styles -->
 	<style type="text/css">
@@ -63,7 +63,7 @@ Insert in head
 
 	<!-- required JavaScript files -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-	<script type="text/javascript" src="http://reaktor.github.io/jquery-continuous-calendar/build/jquery.continuousCalendar-latest-min.js"></script>
+	<script type="text/javascript" src="http://continuouscalendar.github.io/jquery-continuous-calendar/build/jquery.continuousCalendar-latest-min.js"></script>
 
 Insert in body
 --------------
