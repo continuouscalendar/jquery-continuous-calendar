@@ -1,3 +1,7 @@
+h3. 4.10.0 
+
+* Provide possibility to use iso date format for input field
+
 h3. 4.9.0 
 
 * Read dateutils from external dependency
