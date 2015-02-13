@@ -3,6 +3,7 @@
 # IDEA Project files
 
 *.ipr
+*.iml
 *.iws
 *.swp
 .idea/workspace.xml
@@ -10,3 +11,4 @@ out/
 .sass-cache
 .idea/libraries/
 .idea/jsLibraryMappings.xml
+.idea/copyright
