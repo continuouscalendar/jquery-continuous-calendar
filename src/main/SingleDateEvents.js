@@ -3,7 +3,7 @@ define(function(require) {
   var DateFormat = require('./dateutils/DateFormat')
   var DateParse = require('./dateutils/DateParse')
 
-  return function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate) {
+  return function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField) {
     return {
       showInitialSelection: showInitialSelection,
       initEvents          : initEvents,
@@ -43,7 +43,7 @@ define(function(require) {
 
     function setFieldValues(date) {
       container.data('calendarRange', date)
-      params.startField.val(DateFormat.shortDateFormat(date, locale))
+      setStartField(date)
       setDateLabel(DateFormat.format(date, locale.weekDateFormat, locale))
     }
 

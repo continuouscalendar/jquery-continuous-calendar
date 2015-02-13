@@ -204,6 +204,16 @@ define(function(require, _exports, module) {
         expect(startLabelValue()).to.equal('Tu 1/14/2014')
         expect(endLabelValue()).to.equal('Th 1/16/2014')
       })
+
+      it('changes its selection when opening according to ISO start and end fields', function() {
+        createPopupRangeCalendar('12/15/2013', '2/22/2014', {useIsoForInput:true})
+        setStartFieldValue('2014-01-14')
+        setEndFieldValue('2014-01-16')
+        cal().find('.calendarIcon').click()
+        assertHasValues('.selected', [14, 15, 16])
+        expect(startLabelValue()).to.equal('Tu 1/14/2014')
+        expect(endLabelValue()).to.equal('Th 1/16/2014')
+      })
     })
 
     describe('calendar events', function() {
@@ -481,6 +491,19 @@ define(function(require, _exports, module) {
         expect(startLabelValue()).to.equal('ma 16.12.2013')
       })
 
+      it('changes its selection when opening according to start field ISO value', function() {
+        createCalendarFields({startDate: '2013-12-17'}).continuousCalendar({isPopup: true, locale: DateLocale.FI, useIsoForInput:true})
+        setStartFieldValue('2013-12-16')
+        cal().find('.calendarIcon').click()
+        assertHasValues('.selected', [16])
+        expect(startLabelValue()).to.equal('ma 16.12.2013')
+      })
+
+      it('changes its selection to current day', function() {
+        createCalendarFields({startDate: ''}).continuousCalendar({isPopup: true, selectToday:true, locale: DateLocale.FI, useIsoForInput:true})
+        expect(startFieldValue()).to.equal(DateTime.today().toISODateString())
+      })
+
       it('call popup callback when opening calendar', function() {
         var count = 0;
         function cb() { count++ }
@@ -689,7 +712,7 @@ define(function(require, _exports, module) {
 
   function createPopupCalendar() { createCalendarFields({startDate: '4/29/2009'}).continuousCalendar({isPopup: true}) }
 
-  function createPopupRangeCalendar(start, end) { createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: start, lastDate: end, isPopup: true, isRange: true}) }
+  function createPopupRangeCalendar(start, end, options) { createCalendarFields({startDate: '', endDate: ''}).continuousCalendar($.extend({firstDate: start, lastDate: end, isPopup: true, isRange: true}, (options || {}))) }
 
   function createPopupWeekCalendar() {
     createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '5/1/2011', lastDate: '5/31/2011', isPopup: true, selectWeek: true, isRange: true})

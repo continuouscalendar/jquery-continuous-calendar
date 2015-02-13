@@ -40,7 +40,8 @@ define(function(require) {
         allowClearDates: false,
         isRange        : false,
         startDate      : null,
-        endDate        : null
+        endDate        : null,
+        useIsoForInput : false
       }
       var params = $.extend({}, defaults, options)
       var locale = params.locale
@@ -49,11 +50,10 @@ define(function(require) {
       var today = DateTime.today()
 
       if(params.selectToday) {
-        var formattedToday = formatDate(today)
         startDate = today
         endDate = today
-        setStartField(formattedToday)
-        setEndField(formattedToday)
+        setStartField(today)
+        setEndField(today)
       }
       var container = this
       var averageCellHeight
@@ -155,8 +155,8 @@ define(function(require) {
       }
 
       function dateBehaviour(isRange) {
-        var basicParams = [container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate]
-        var rangeParams = [endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList]
+        var basicParams = [container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
+        var rangeParams = [endDate, setEndField, calendarRange, disabledDatesList]
         return isRange ? RangeEvents.apply(null, basicParams.concat(rangeParams)) : SingleDateEvents.apply(null, basicParams)
       }
 
@@ -260,7 +260,7 @@ define(function(require) {
 
       function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.height() / $('tr', calendarBody.bodyTable).size(), 10) }
 
-      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateParse.parse(field.val(), locale) : null }
+      function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? (params.useIsoForInput ? DateTime.fromIsoDate(field.val()) : DateParse.parse(field.val(), locale)) : null }
 
       function executeCallback(selection) {
         params.callback.call(container, selection)
@@ -269,11 +269,11 @@ define(function(require) {
 
       function getElemDate(elem) { return calendarBody.dateCellDates[$(elem).closest('[date-cell-index]').attr('date-cell-index')] }
 
-      function setStartField(value) { params.startField.val(value) }
+      function setStartField(date) { params.startField.val(formatDate(date)) }
 
-      function setEndField(value) { params.endField.val(value) }
+      function setEndField(date) { params.endField.val(formatDate(date)) }
 
-      function formatDate(date) { return date ? DateFormat.shortDateFormat(date, locale) : '' }
+      function formatDate(date) { return date ? (params.useIsoForInput ? date.toISODateString() : DateFormat.shortDateFormat(date, locale)) : '' }
     }
   }
   $.fn.calendarRange = function() { return $(this).data('calendarRange') }

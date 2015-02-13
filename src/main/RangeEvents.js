@@ -4,8 +4,8 @@ define(function(require) {
   var DateRange = require('./dateutils/DateRange')
   var DateTime = require('./dateutils/DateTime')
 
-  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate,
-                  endDate, calendarRange, setStartField, setEndField, formatDate, disabledDatesList) {
+  return function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, setStartField,
+                  endDate, setEndField, calendarRange, disabledDatesList) {
     var mouseDownDate = null
     var selection
     var oldSelection
@@ -224,11 +224,9 @@ define(function(require) {
         // Flash invalidSelection styled cells when selection is expanded to minimum length
         setTimeout(function() { drawSelectionBetweenDates(selection) }, 200)
       }
-      var formattedStart = formatDate(selection.start)
-      var formattedEnd = formatDate(selection.end)
       container.data('calendarRange', selection)
-      setStartField(formattedStart)
-      setEndField(formattedEnd)
+      setStartField(selection.start)
+      setEndField(selection.end)
       setRangeLabels()
       if(params.selectWeek) calendar.close($('td.selected', container).first())
       executeCallback(selection)
