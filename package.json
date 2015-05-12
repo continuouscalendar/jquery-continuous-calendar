@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html --reporter dot",
+    "buildAmd": "r.js -convert src src/main",
     "prepublish": "r.js -convert node_modules/dateutils/src src/main/dateutils && r.js -o src/build/build.js && r.js -o site/playground-build.js"
   },
   "keywords": [
