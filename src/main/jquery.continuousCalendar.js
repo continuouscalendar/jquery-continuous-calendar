@@ -116,7 +116,7 @@ define(function(require) {
 
         return  new DateRange(rangeStart, rangeEnd)
 
-        function dateOrWeek(date, week) { 
+        function dateOrWeek(date, week) {
           if(date) {
             if(date instanceof Date) {
               return DateTime.fromDateObject(date)

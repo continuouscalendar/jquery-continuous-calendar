@@ -77,7 +77,8 @@ define(function(require) {
       }
 
       function dateCell(date) {
-        var cell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '">' + date.getDate() + '</td>'
+        var tooltip = (locale.holidays && (date.toISODateString() in locale.holidays)) ? 'title="' + locale.holidays[date.toISODateString()] + '" ' : ''
+        var cell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '" ' + tooltip + '>' + date.getDate() + '</td>'
         dateCellMap[DateFormat.format(date, 'Ymd', locale)] = dateCellDates.length
         dateCellDates.push(date)
         return cell
@@ -113,7 +114,11 @@ define(function(require) {
 
     function todayStyle(date) { return date.isToday() ? 'today' : '' }
 
-    function holidayStyle(date) { return date.getDay() === 0 ? 'holiday' : '' }
+    function holidayStyle(date) {
+      var isSunday = date.getDay() === 0
+      var isHoliday =  locale.holidays && (date.toISODateString() in locale.holidays)
+      return (isSunday || isHoliday) ? 'holiday' : ''
+    }
 
     function getDateCell(index) { return $(dateCells[index]) }
   }
