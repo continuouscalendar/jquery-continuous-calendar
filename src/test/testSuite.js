@@ -3,6 +3,7 @@ requirejs.config({
     'chai':        '../../node_modules/chai/chai',
     'chai.jquery': '../../node_modules/chai-jquery/chai-jquery',
     'mocha':       '../../node_modules/mocha/mocha',
+    'dateutils':       '../../node_modules/dateutils',
     'jquery'     : '../lib/jquery-1.9.1.min'
   },
   shim : {
