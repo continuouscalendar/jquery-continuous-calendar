@@ -1,3 +1,7 @@
+h3. 4.11.0 
+
+* Highlight Finnish holidays and show tooltips
+
 h3. 4.10.0 
 
 * Provide possibility to use iso date format for input field
