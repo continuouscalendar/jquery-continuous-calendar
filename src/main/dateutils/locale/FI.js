@@ -1,5 +1,6 @@
 define(function (require, exports, module) {var DateTime = require('../DateTime')
 var DateFormat = require('../DateFormat')
+var holidays = require('./FI-holidays')
 module.exports = {
   id: 'FI',
   monthNames: ['tammikuu', 'helmikuu', 'maaliskuu', 'huhtikuu', 'toukokuu', 'kesäkuu', 'heinäkuu', 'elokuu', 'syyskuu', 'lokakuu', 'marraskuu', 'joulukuu'],
@@ -17,7 +18,8 @@ module.exports = {
   shortDateFormat: 'j.n.Y',
   weekDateFormat: 'D j.n.Y',
   dateTimeFormat: 'D j.n.Y k\\lo G:i',
-  firstWeekday: DateTime.MONDAY
+  firstWeekday: DateTime.MONDAY,
+  holidays: holidays
 }
 
 });

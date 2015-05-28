@@ -42,7 +42,11 @@ var expectSources =
    { path: common.globalconfig,
      type: 'ini',
      data: gcData },
-  builtin: { data: biData } }
+  builtin:
+    { path: common.builtin,
+      type: 'ini',
+      data: biData }
+}
 
 test('with builtin', function (t) {
   npmconf.load(cli, common.builtin, function (er, conf) {

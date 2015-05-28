@@ -13,11 +13,12 @@ define(function (require, exports, module) {  var DateTime = require('../DateTim
       return hoursAndMinutes + ' ' + (+hoursAndMinutes === 1 ? 'Tund' : 'Tundi')
     },
     clearRangeLabel: 'TODO',
-    clearDateLabel : 'TODO',
+    clearDateLabel: 'TODO',
     shortDateFormat: 'j.n.Y',
     weekDateFormat : 'D j.n.Y',
     dateTimeFormat : 'D j.n.Y k\\l G:i',
-    firstWeekday   : DateTime.MONDAY
+    firstWeekday   : DateTime.MONDAY,
+    holidays: {}
   }
 
 });

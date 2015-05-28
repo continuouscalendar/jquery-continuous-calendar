@@ -99,6 +99,7 @@ function load_(builtin, rc, cli, cb) {
   var conf = new Conf(rc)
 
   conf.usingBuiltin = !!builtin
+  conf.sources.builtin = rc.sources.builtin
   conf.add(cli, 'cli')
   conf.addEnv()
 

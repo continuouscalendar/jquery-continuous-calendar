@@ -17,7 +17,8 @@ module.exports = {
   shortDateFormat: 'n/j/Y',
   weekDateFormat: 'D n/j/Y',
   dateTimeFormat: 'D n/j/Y G:i',
-  firstWeekday: DateTime.SUNDAY
+  firstWeekday: DateTime.SUNDAY,
+  holidays: {}
 }
 
 });
