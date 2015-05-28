@@ -6,9 +6,7 @@
 *.iml
 *.iws
 *.swp
-.idea/workspace.xml
 out/
 .sass-cache
-.idea/libraries/
-.idea/jsLibraryMappings.xml
-.idea/copyright
+.idea
+.DS_Store
