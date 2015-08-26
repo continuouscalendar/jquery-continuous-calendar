@@ -1,3 +1,7 @@
+h3. 4.12.0 
+
+* Add Language support for German and French
+
 h3. 4.11.0 
 
 * Highlight Finnish holidays and show tooltips
