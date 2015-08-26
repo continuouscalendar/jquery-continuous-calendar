@@ -5,6 +5,8 @@ var ET = require('./locale/ET')
 var RU = require('./locale/RU')
 var SV = require('./locale/SV')
 var LV = require('./locale/LV')
+var FR = require('./locale/FR')
+var DE = require('./locale/DE')
 module.exports = {
   FI: FI,
   EN: EN,

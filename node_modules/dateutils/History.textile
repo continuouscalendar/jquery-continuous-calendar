@@ -1,3 +1,7 @@
+h3. 0.2.0 
+
+* Add language support for German and French
+
 h3. 0.1.9 
 
 * Put back missing clear date translations

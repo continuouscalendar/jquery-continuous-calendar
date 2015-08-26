@@ -1,5 +1,5 @@
 module.exports = {
-  "version":  "0.1.9",
+  "version":  "0.2.0",
   DateFormat: require('./DateFormat'),
   DateLocale: require('./DateLocale'),
   DateParse:  require('./DateParse'),

@@ -38,12 +38,12 @@
     "mocha": "^2.2.5",
     "phantomjs": "^1.9.17",
     "mocha-phantomjs": "~3.5.3",
-    "chai": "~2.3.0",
+    "chai": "~3.2.0",
     "chai-jquery": "~2.0.0",
     "almond": "~0.3.1",
-    "requirejs": "~2.1.17"
+    "requirejs": "~2.1.20"
   },
   "dependencies": {
-    "dateutils": "^0.1.9"
+    "dateutils": "^0.2.0"
   }
 }

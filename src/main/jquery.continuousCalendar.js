@@ -10,7 +10,7 @@ define(function(require) {
   var SingleDateEvents = require('./SingleDateEvents')
 
   $.continuousCalendar = {
-    "version" : "4.11.0"
+    "version" : ""
   }
   $.fn.continuousCalendar = function(options) {
     return this.each(function() { _continuousCalendar.call($(this), options) })
