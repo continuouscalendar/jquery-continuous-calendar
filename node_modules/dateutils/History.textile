@@ -1,3 +1,7 @@
+h3. 0.2.1 
+
+* BUGFIX: Include German and French in Datelocale exports
+
 h3. 0.2.0 
 
 * Add language support for German and French
