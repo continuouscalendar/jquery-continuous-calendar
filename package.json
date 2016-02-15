@@ -1,6 +1,6 @@
 {
   "name": "jquery-continuous-calendar",
-  "version": "4.12.2",
+  "version": "4.12.1",
   "description": "Date picker and range selector with scrollable months instead of paged",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
     "portContinuousCalendar": "r.js -convert src/continuousCalendar src/main",
     "buildBundle": "r.js -o src/build/build.js",
     "buildPlayground": "r.js -o site/playground-build.js",
-    "prepublish": "npm run portDateutils && npm run buildBundle && npm run buildPlayground"
+    "prepublish": "npm run portDateutils && npm run portContinuousCalendar && npm run buildBundle && npm run buildPlayground"
   },
   "keywords": [
     "calendar",
