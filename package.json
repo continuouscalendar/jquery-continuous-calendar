@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/reaktor/jquery-continuous-calendar/issues"
   },
-  "main": "./src/main/jquery.continuousCalendar",
+  "main": "./src/continuousCalendar/jquery.continuousCalendar",
   "homepage": "http://reaktor.github.com/jquery-continuous-calendar/",
   "files": [
     "build",
