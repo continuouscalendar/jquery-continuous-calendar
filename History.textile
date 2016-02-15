@@ -1,3 +1,7 @@
+h3. 4.12.2 
+
+* Use commonJS for source files
+
 h3. 4.12.1 
 
 * Update dateutils to stable version
