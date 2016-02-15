@@ -1,4 +1,4 @@
-define(function (require, exports, module) {  var $ = require('jquery')
+  var $ = require('jquery')
   var DateFormat = require('./dateutils/DateFormat')
   var DateParse = require('./dateutils/DateParse')
 
@@ -86,5 +86,3 @@ define(function (require, exports, module) {  var $ = require('jquery')
       setDateLabel('')
     }
   }
-
-});

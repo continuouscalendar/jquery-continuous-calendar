@@ -1,4 +1,4 @@
-define(function (require, exports, module) {  var $ = require('jquery')
+  var $ = require('jquery')
   var DateFormat = require('./dateutils/DateFormat')
   var DateTime = require('./dateutils/DateTime')
 
@@ -121,5 +121,3 @@ define(function (require, exports, module) {  var $ = require('jquery')
 
     function getDateCell(index) { return $(dateCells[index]) }
   }
-
-});

@@ -1,4 +1,4 @@
-define(function (require, exports, module) {  var $ = require('jquery')
+  var $ = require('jquery')
   var DateFormat = require('./dateutils/DateFormat')
   var DateRange = require('./dateutils/DateRange')
   var DateTime = require('./dateutils/DateTime')
@@ -260,5 +260,3 @@ define(function (require, exports, module) {  var $ = require('jquery')
 
     function isEnabled(elem) { return !$(elem).hasClass('disabled') }
   }
-
-});

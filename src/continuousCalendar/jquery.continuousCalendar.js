@@ -1,4 +1,4 @@
-define(function (require, exports, module) {  var $ = require('jquery')
+  var $ = require('jquery')
   var DateFormat = require('./dateutils/DateFormat')
   var DateParse = require('./dateutils/DateParse')
   var EN = require('./dateutils/locale/EN')
@@ -278,5 +278,3 @@ define(function (require, exports, module) {  var $ = require('jquery')
   $.fn.calendarRange = function() { return $(this).data('calendarRange') }
   $.fn.exists = function() { return this.length > 0 }
   $.fn.isEmpty = function() { return this.length === 0 }
-
-});
