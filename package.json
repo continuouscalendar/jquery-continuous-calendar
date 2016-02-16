@@ -11,6 +11,7 @@
     "portDateutils": "r.js -convert node_modules/dateutils/src src/main/dateutils",
     "portContinuousCalendar": "r.js -convert src/continuousCalendar src/main",
     "buildBundle": "r.js -o src/build/build.js",
+    "buildBundle2": "browserify src/continuousCalendar/jquery.continuousCalendar.js --ignore jquery -o build/jquery.continuousCalendar-min.js",
     "buildPlayground": "r.js -o site/playground-build.js",
     "prepublish": "npm run portDateutils && npm run portContinuousCalendar && npm run buildBundle && npm run buildPlayground"
   },
