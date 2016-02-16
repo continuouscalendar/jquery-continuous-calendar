@@ -1,9 +1,9 @@
   var $ = require('jquery')
-  var DateFormat = require('./dateutils/DateFormat')
-  var DateParse = require('./dateutils/DateParse')
-  var EN = require('./dateutils/locale/EN')
-  var DateRange = require('./dateutils/DateRange')
-  var DateTime = require('./dateutils/DateTime')
+  var DateFormat = require('dateutils').DateFormat
+  var DateParse = require('dateutils').DateParse
+  var EN = require('dateutils').DateLocale.EN
+  var DateRange = require('dateutils').DateRange
+  var DateTime = require('dateutils').DateTime
   var CalendarBody = require('./CalendarBody')
   var RangeEvents = require('./RangeEvents')
   var SingleDateEvents = require('./SingleDateEvents')

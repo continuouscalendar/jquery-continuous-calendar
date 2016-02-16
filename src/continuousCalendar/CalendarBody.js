@@ -1,6 +1,6 @@
   var $ = require('jquery')
-  var DateFormat = require('./dateutils/DateFormat')
-  var DateTime = require('./dateutils/DateTime')
+  var DateFormat = require('dateutils').DateFormat
+  var DateTime = require('dateutils').DateTime
 
   module.exports = function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
     var dateCellMap = {}

@@ -1,6 +1,6 @@
   var $ = require('jquery')
-  var DateFormat = require('./dateutils/DateFormat')
-  var DateParse = require('./dateutils/DateParse')
+  var DateFormat = require('dateutils').DateFormat
+  var DateParse = require('dateutils').DateParse
 
   module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField) {
     return {

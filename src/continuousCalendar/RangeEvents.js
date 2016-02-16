@@ -1,7 +1,7 @@
   var $ = require('jquery')
-  var DateFormat = require('./dateutils/DateFormat')
-  var DateRange = require('./dateutils/DateRange')
-  var DateTime = require('./dateutils/DateTime')
+  var DateFormat = require('dateutils').DateFormat
+  var DateRange = require('dateutils').DateRange
+  var DateTime = require('dateutils').DateTime
 
   module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, setStartField,
                   endDate, setEndField, calendarRange, disabledDatesList) {
