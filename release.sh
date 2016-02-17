@@ -14,12 +14,10 @@ rm build/*latest* || true
 [ "$version" != "" -a ! -f $BUILD_PREFIX-$version.js ] && rm build/*
 echo "Compressing js..."
 update_version() { sed  -i '' -E "s/(\"version\".*:.*\").*(\".*)/\1$version\2/g" $@; }
-update_version src/main/jquery.continuousCalendar.js
+update_version src/continuousCalendar/jquery.continuousCalendar.js
 npm install
 echo "Compressing css..."
 node node_modules/requirejs/bin/r.js -o cssIn=src/main/jquery.continuousCalendar.css optimizeCss=standard out=$LATEST_CSS_MIN
-#TODO create js documentation
-#/usr/local/share/npm/lib/node_modules/doxx/bin/doxx --source ./src/main --target ./docs
 if [ "$version" = "" ]
 then
 	echo "Version information not found. Type ./release.sh <version>"
