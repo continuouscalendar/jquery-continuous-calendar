@@ -1,3 +1,7 @@
+h3. 5.0.1 
+
+* Replace symlink with copy because for github pages issues
+
 h3. 5.0.0 
 
 * Drop RequireJS support and use browserify for bundles

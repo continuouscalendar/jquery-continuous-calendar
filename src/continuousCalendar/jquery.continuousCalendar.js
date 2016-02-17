@@ -9,7 +9,7 @@ var RangeEvents = require('./RangeEvents')
 var SingleDateEvents = require('./SingleDateEvents')
 
 $.continuousCalendar = {
-  "version" : "5.0.0"
+  "version" : "5.0.1"
 }
 $.fn.continuousCalendar = function(options) {
   return this.each(function() { _continuousCalendar.call($(this), options) })
