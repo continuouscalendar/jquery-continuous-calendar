@@ -10,6 +10,8 @@
 
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/chaijs.svg)](https://saucelabs.com/u/chaijs)
 
+[![Slack Status](https://chai-slack.herokuapp.com/badge.svg)]( https://chai-slack.herokuapp.com/)
+[![Join the chat at https://gitter.im/chaijs/chai](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/chaijs/chai)
 
 Chai is a BDD / TDD assertion library for [node](http://nodejs.org) and the browser that
 can be delightfully paired with any javascript testing framework.
@@ -49,7 +51,7 @@ list of contributors.
 
 ### Core Contributors
 
-Feel free to reach out to any of the core-contributors with you questions or
+Feel free to reach out to any of the core contributors with your questions or
 concerns. We will do our best to respond in a timely manner.
 
 [![Jake Luer](https://avatars3.githubusercontent.com/u/58988?v=3&s=50)](https://github.com/logicalparadox)
