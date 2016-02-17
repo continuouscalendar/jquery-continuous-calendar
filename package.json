@@ -10,10 +10,9 @@
     "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html --reporter dot",
     "portDateutils": "r.js -convert node_modules/dateutils/src src/main/dateutils",
     "portContinuousCalendar": "r.js -convert src/continuousCalendar src/main",
-    "buildBundle": "r.js -o src/build/build.js",
-    "buildBundle2": "browserify src/continuousCalendar/jquery.continuousCalendar.js --ignore jquery -o build/jquery.continuousCalendar-min.js",
-    "buildPlayground": "r.js -o site/playground-build.js",
-    "prepublish": "npm run portDateutils && npm run portContinuousCalendar && npm run buildBundle && npm run buildPlayground"
+    "buildBundle": "browserify src/build/bundleWrapper.js -o build/jquery.continuousCalendar-latest.js",
+    "minifyBundle": "uglifyjs build/jquery.continuousCalendar-latest.js > build/jquery.continuousCalendar-latest-min.js",
+    "prepublish": "npm run buildBundle && npm run minifyBundle"
   },
   "keywords": [
     "calendar",
@@ -42,15 +41,25 @@
   "devDependencies": {
     "almond": "~0.3.1",
     "browserify": "^13.0.0",
+    "browserify-shim": "^3.8.12",
     "chai": "~3.2.0",
     "chai-jquery": "~2.0.0",
     "mocha": "^2.2.5",
     "mocha-phantomjs": "~3.5.3",
     "phantomjs": "^1.9.17",
-    "requirejs": "~2.1.20"
+    "requirejs": "~2.1.20",
+    "uglify-js": "^2.6.1"
   },
   "dependencies": {
     "dateutils": "^0.2.1",
     "jquery": "^2.2.0"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "jquery": "global:jQuery"
   }
 }

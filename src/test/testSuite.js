@@ -3,9 +3,11 @@ requirejs.config({
     'chai':        '../../node_modules/chai/chai',
     'chai.jquery': '../../node_modules/chai-jquery/chai-jquery',
     'mocha':       '../../node_modules/mocha/mocha',
-    'jquery'     : '../lib/jquery-1.9.1.min'
+    'jquery'     : '../../node_modules/jquery/dist/jquery'
   },
-  shim : {
+    'baseUrl': '.',
+
+    shim : {
     'mocha': { exports: 'mocha' }
   }
 })

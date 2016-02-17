@@ -1,10 +1,6 @@
 define(function(require, _exports, module) {
-  var DateTime = require('../main/dateutils/DateTime')
-  var DateRange = require('../main/dateutils/DateRange')
-  var DateFormat = require('../main/dateutils/DateFormat')
-  var DateLocale = require('../main/dateutils/DateLocale')
   var $ = require('jquery')
-  require('../main/jquery.continuousCalendar')
+  require('../../build/jquery.continuousCalendar-latest')
 
   describe(module.id, function() {
     describe('empty calendar of full year', function() {
@@ -106,10 +102,10 @@ define(function(require, _exports, module) {
         var start = new Date("2009-04-18"), end = new Date("2009-05-03")
         createCalendarFields().continuousCalendar({firstDate: start, lastDate: end})
         assertHasValues('.date', [
-          12, 13, 14, 15, 16, 17, 18, 
-          19, 20, 21, 22, 23, 24, 25, 
-          26, 27, 28, 29, 30,  1,  2, 
-           3,  4,  5,  6,  7,  8,  9  
+          12, 13, 14, 15, 16, 17, 18,
+          19, 20, 21, 22, 23, 24, 25,
+          26, 27, 28, 29, 30,  1,  2,
+           3,  4,  5,  6,  7,  8,  9
         ])
       })
 
@@ -117,10 +113,10 @@ define(function(require, _exports, module) {
         var start = DateTime.fromDateObject(new Date("2009-04-18")), end = DateTime.fromDateObject(new Date("2009-05-03"))
         createCalendarFields().continuousCalendar({firstDate: start, lastDate: end})
         assertHasValues('.date', [
-          12, 13, 14, 15, 16, 17, 18, 
-          19, 20, 21, 22, 23, 24, 25, 
-          26, 27, 28, 29, 30,  1,  2, 
-           3,  4,  5,  6,  7,  8,  9  
+          12, 13, 14, 15, 16, 17, 18,
+          19, 20, 21, 22, 23, 24, 25,
+          26, 27, 28, 29, 30,  1,  2,
+           3,  4,  5,  6,  7,  8,  9
         ])
       })
     })

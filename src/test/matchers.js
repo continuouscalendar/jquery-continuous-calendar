@@ -1,6 +1,4 @@
 define(function(require) {
-  var DateTime = require('../main/dateutils/DateTime')
-  var DateFormat = require('../main/dateutils/DateFormat')
   var jQuery = $ = require('jquery')
 
   return function(chai, utils) {
