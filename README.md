@@ -1,6 +1,5 @@
 ![Calendar screen shot](http://continuouscalendar.github.com/jquery-continuous-calendar/site/calendar.png)
 [Homepage]: http://continuouscalendar.github.com/jquery-continuous-calendar/
-[Examples]: http://continuouscalendar.github.com/jquery-continuous-calendar/site/example.html
 [Playground]: http://continuouscalendar.github.com/jquery-continuous-calendar/site/playground.html
 [Unit tests]: http://continuouscalendar.github.com/jquery-continuous-calendar/src/test/jquery.continuousCalendar.spec.html
 [Latest revision as ZIP file]: http://github.com/continuouscalendar/jquery-continuous-calendar/zipball/master
