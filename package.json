@@ -23,7 +23,9 @@
     "form",
     "i18n",
     "input",
-    "ui"
+    "ui",
+    "jquery",
+    "jquery-plugin"
   ],
   "author": "Eero Anttila",
   "license": "Apache-2.0",
