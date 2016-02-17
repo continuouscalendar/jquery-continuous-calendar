@@ -1,3 +1,7 @@
+h3. 5.0.0 
+
+* Drop RequireJS support and use browserify for bundles
+
 h3. 4.12.2 
 
 * Use commonJS for source files
