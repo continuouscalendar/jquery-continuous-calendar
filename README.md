@@ -32,6 +32,10 @@ Supported languages
 -   Latvian
 -   Russian
 -   Swedish
+-   German
+-   French
+-   Chinese
+
 
 Supported browsers
 ==================
@@ -83,7 +87,7 @@ Instructions for contributors
 -   make a fork
 -   code by using existing code style
 -   update and run tests (src/test/**.html)\
-- make pull request
+-   make pull request
 
 License
 =======
