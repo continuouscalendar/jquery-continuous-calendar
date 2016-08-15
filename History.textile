@@ -1,3 +1,43 @@
+h3. 4.13.0 
+
+ EDIT:
+Build for version 5.0.1
+Replace symlink with copy because for github pages issues
+Build for version 5.0.0
+Update release script
+Get rid of redundant example page
+Update jquery and use sym link to point under node_modules
+Add keywords
+Update all dependencies
+Drop RequireJS support and use browserify for bundles
+Update node_modules
+Reformat
+Refer to dateutils directly from node_modules
+Add script for bundling with browserify
+Add jquery as npm dependency
+Install browserify
+Point to commonjs file
+Build sources for npm install
+Build for version 4.12.2
+Port to commonjs
+Split build scripts
+Build for version 4.12.1
+Build for version 4.12.0
+Update dependencies
+Build for version 4.11.0
+Highlight Finnish holidays and show tooltips
+Update node_modules and build dateutils
+Update dependencies
+Update gitignore
+Introduce editorconfig
+Remove idea files from vcs
+Build for version 4.10.0
+Provide possibility to use iso date format for input field
+Add stuff to gitignore
+Remove iml from vcs
+Fix paths after updating repository url
+Build for version 4.9.0
+
 h3. 5.0.1 
 
 * Replace symlink with copy because for github pages issues

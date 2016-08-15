@@ -1,6 +1,6 @@
 {
   "name": "jquery-continuous-calendar",
-  "version": "5.0.1",
+  "version": "4.13.0",
   "description": "Date picker and range selector with scrollable months instead of paged",
   "repository": {
     "type": "git",
@@ -46,15 +46,15 @@
     "browserify-shim": "^3.8.12",
     "chai": "~3.5.0",
     "chai-jquery": "~2.0.0",
-    "mocha": "^2.4.5",
-    "mocha-phantomjs": "~4.0.2",
+    "mocha": "^3.0.2",
+    "mocha-phantomjs": "~4.1.0",
     "phantomjs": "^2.1.3",
-    "requirejs": "~2.1.22",
+    "requirejs": "~2.2.0",
     "uglify-js": "^2.6.1"
   },
   "dependencies": {
-    "dateutils": "^0.2.1",
-    "jquery": "^2.2.0"
+    "dateutils": "^0.3.0",
+    "jquery": "^3.1.0"
   },
   "browserify": {
     "transform": [

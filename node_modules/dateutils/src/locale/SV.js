@@ -16,7 +16,7 @@ module.exports = {
   clearDateLabel: 'TODO',
   shortDateFormat: 'j.n.Y',
   weekDateFormat: 'D j.n.Y',
-  dateTimeFormat: 'D j.n.Y k\\lo G:i',
+  dateTimeFormat: 'D j.n.Y G:i',
   firstWeekday: DateTime.MONDAY,
   holidays: {}
 }
