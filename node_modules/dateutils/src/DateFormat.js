@@ -154,9 +154,7 @@ DateFormat.patterns = {
 }
 
 /** @private */
-function codeToValue(dateTime, ch, locale) {
-  return ch in codes ? codes[ch](dateTime, locale) : ch
-}
+function codeToValue(dateTime, ch, locale) { return ch in codes ? codes[ch](dateTime, locale) : ch }
 
 /** @private */
 function getGMTOffset(dateTime) {
