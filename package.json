@@ -4,7 +4,7 @@
   "description": "Date picker and range selector with scrollable months instead of paged",
   "repository": {
     "type": "git",
-    "url": "https://github.com/reaktor/jquery-continuous-calendar"
+    "url": "https://github.com/continuouscalendar/jquery-continuous-calendar"
   },
   "scripts": {
     "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html --reporter dot",
@@ -30,10 +30,10 @@
   "author": "Eero Anttila",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/reaktor/jquery-continuous-calendar/issues"
+    "url": "https://github.com/continuouscalendar/jquery-continuous-calendar/issues"
   },
   "main": "./src/continuousCalendar/jquery.continuousCalendar",
-  "homepage": "http://reaktor.github.com/jquery-continuous-calendar/",
+  "homepage": "http://continuouscalendar.github.com/jquery-continuous-calendar/",
   "files": [
     "build",
     "src/main",

@@ -32,10 +32,10 @@
       "url" : "http://www.apache.org/licenses/LICENSE-2.0"
     }
   ],
-  "bugs"        : "https://github.com/reaktor/jquery-continuous-calendar/issues",
-  "homepage"    : "http://reaktor.github.com/jquery-continuous-calendar/",
-  "docs"        : "http://reaktor.github.com/jquery-continuous-calendar/#api_documentation",
-  "download"    : "https://github.com/reaktor/jquery-continuous-calendar/archive/3.0.3.zip",
+  "bugs"        : "https://github.com/continuouscalendar/jquery-continuous-calendar/issues",
+  "homepage"    : "http://continuouscalendar.github.com/jquery-continuous-calendar/",
+  "docs"        : "http://continuouscalendar.github.com/jquery-continuous-calendar/#api_documentation",
+  "download"    : "https://github.com/continuouscalendar/jquery-continuous-calendar/archive/3.0.3.zip",
   "dependencies": {
     "jquery": ">=1.5"
   }
