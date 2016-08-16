@@ -68,14 +68,14 @@ define(function(require, _exports, module) {
 
       it('if start date not selected show around current day instead', function() {
         createCalendarFields().continuousCalendar({weeksBefore: 0, weeksAfter: 0})
-        expect(cal().find('.date').size()).to.equal(7)
+        expect(cal().find('.date').length).to.equal(7)
         var weekDays = []
         var firstDay = DateTime.now().getFirstDateOfWeek(DateLocale.EN)
         for(var i = 0; i < 7; i++) {
           weekDays.push(firstDay.plusDays(i).getDate())
         }
         assertHasValues('.date', weekDays)
-        expect(cal().find('.selected').size()).to.equal(0)
+        expect(cal().find('.selected').length).to.equal(0)
       })
 
       it('disabled date is not selectable', function() {
@@ -137,7 +137,7 @@ define(function(require, _exports, module) {
       it('week number click on single date calendar does nothing', function() {
         createCalendarFields({startDate: '4/18/2009'}).continuousCalendar({weeksBefore: 2, weeksAfter: 0})
         cal().find('.week').withText(15).click()
-        expect(cal().find('.selected').size()).to.equal(1)
+        expect(cal().find('.selected').length).to.equal(1)
       })
 
       it('can be cleared', function() {
@@ -145,7 +145,7 @@ define(function(require, _exports, module) {
         var clearDates = cal().find('.clearDates')
         expect(clearDates).to.be.visible
         clearDates.click()
-        expect(cal().find('.selected').size()).to.equal(0)
+        expect(cal().find('.selected').length).to.equal(0)
         expect(clearDates).not.to.be.visible
       })
     })
@@ -155,7 +155,7 @@ define(function(require, _exports, module) {
 
       it('highlights selected date range with move handles in first and last data', function() {
         createRangeCalendarWithFiveWeeks()
-        expect(cal().find('.selected').size()).to.equal(7)
+        expect(cal().find('.selected').length).to.equal(7)
         expect(cal().find('.rangeLengthLabel')).to.have.text('7 Days')
         expect(cal().find('.selected:first')).to.have.class('rangeStart')
       })
@@ -168,7 +168,7 @@ define(function(require, _exports, module) {
       it('is cleared if a disabled date is inside the range', function() {
         createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', disabledDates: '4/22/2009', isRange: true})
         dragDatesSlowly(15, 29)
-        expect(cal().find('.selected').size()).to.equal(0)
+        expect(cal().find('.selected').length).to.equal(0)
         expect(startFieldValue()).to.equal('')
         expect(endFieldValue()).to.equal('')
         expect(cal().find('.rangeLengthLabel')).to.have.text('0 Days')
@@ -179,7 +179,7 @@ define(function(require, _exports, module) {
         var clearDates = cal().find('.clearDates')
         expect(clearDates).to.be.visible
         clearDates.click()
-        expect(cal().find('.selected').size()).to.equal(0)
+        expect(cal().find('.selected').length).to.equal(0)
         expect(clearDates).not.to.be.visible
         expect(startFieldValue()).to.equal('')
         expect(endFieldValue()).to.equal('')
@@ -256,7 +256,7 @@ define(function(require, _exports, module) {
       it('mouse click and drag highlights range and updates fields', function() {
         createRangeCalendarWithFiveWeeks()
         dragDatesSlowly(15, 29)
-        expect(cal().find('.selected').size()).to.equal(15)
+        expect(cal().find('.selected').length).to.equal(15)
         expect(startFieldValue()).to.equal('4/15/2009')
         expect(endFieldValue()).to.equal('4/29/2009')
         expect(cal().find('.rangeLengthLabel')).to.have.text('15 Days')
@@ -276,12 +276,12 @@ define(function(require, _exports, module) {
 
         it('drag can start or end on current date', function() {
           dragDatesSlowly(today.getDate(), weekAhead.getDate())
-          expect(cal().find('.selected').size()).to.equal(8)
+          expect(cal().find('.selected').length).to.equal(8)
           expect(startFieldValue()).to.equal(todayStr)
           expect(endFieldValue()).to.equal(weekAheadStr)
           expect(cal().find('.rangeLengthLabel')).to.have.text('8 Days')
           dragDatesSlowly(weekAgo.getDate(), today.getDate())
-          expect(cal().find('.selected').size()).to.equal(8)
+          expect(cal().find('.selected').length).to.equal(8)
           expect(startFieldValue()).to.equal(weekAgoStr)
           expect(endFieldValue()).to.equal(todayStr)
           expect(cal().find('.rangeLengthLabel')).to.have.text('8 Days')
@@ -298,7 +298,7 @@ define(function(require, _exports, module) {
       it('mouse click and drag works with no initial selection', function() {
         createCalendarFields().continuousCalendar({firstDate: '1/1/2009', lastDate: '2/1/2009', isRange: true})
         dragDates(22, 23)
-        expect(cal().find('.selected').size()).to.equal(2)
+        expect(cal().find('.selected').length).to.equal(2)
         expect(cal().find('.rangeLengthLabel')).to.have.text('2 Days')
       })
 
@@ -306,7 +306,7 @@ define(function(require, _exports, module) {
         createCalendarFields().continuousCalendar({firstDate: '1/1/2009', lastDate: '3/1/2009', isRange: true})
         var monthName = cal().find('.month').withText('February').last()
         mouseClick(monthName)
-        expect(cal().find('.selected').size()).to.equal(28)
+        expect(cal().find('.selected').length).to.equal(28)
         expect(startLabelValue()).to.equal('Su 2/1/2009')
         expect(endLabelValue()).to.equal('Sa 2/28/2009')
         expect(cal().find('.rangeLengthLabel')).to.have.text('28 Days')
@@ -315,7 +315,7 @@ define(function(require, _exports, module) {
       it('mouse click on month in single date calendar does nothing', function() {
         createBigCalendarForSingleDate()
         cal().find('.month').withText('May').click()
-        expect(cal().find('.selected').size()).to.equal(0)
+        expect(cal().find('.selected').length).to.equal(0)
         expect(startFieldValue()).to.equal('')
       })
 
@@ -338,25 +338,25 @@ define(function(require, _exports, module) {
         assertHasValues('.selected', [ 29, 30, 1, 2, 3, 4, 5, 6, 7])
         clickDateWithShift(13)
         assertHasValues('.selected', [ 29, 30, 1, 2, 3, 4, 5, 6, 7])
-        expect(cal().find('.disabled').size()).to.equal(7)
+        expect(cal().find('.disabled').length).to.equal(7)
         //4/15/2009',lastDate:'5/12/2009
       })
 
       it('range has default of one year per direction', function() {
         createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({isRange: true})
-        expect(cal().find('.date').size()).to.equal(7 * (26 * 2 + 1))
+        expect(cal().find('.date').length).to.equal(7 * (26 * 2 + 1))
       })
 
       it('highlights current date', function() {
         createBigCalendar()
         var cells = cal().find('.today')
-        expect(cells.size()).to.equal(1)
+        expect(cells.length).to.equal(1)
         expect(cells).to.have.text('' + DateTime.now().getDate())
       })
 
       it('range has current day selected as default when configured so', function() {
         createCalendarFields().continuousCalendar({weeksBefore: 20, lastDate: 'today', selectToday: true, isRange: true})
-        expect(cal().find('.selected').size()).to.equal(1)
+        expect(cal().find('.selected').length).to.equal(1)
       })
 
       it('range can be specified with weeks and dates mixed', function() {
