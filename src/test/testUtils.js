@@ -1,4 +1,4 @@
-define(function() {
+module.exports = (function() {
   var __ = {}
 
   Function.prototype.curry = function() {
@@ -39,4 +39,4 @@ define(function() {
         })(givenArguments.slice(0), Array.prototype.slice.call(arguments))
       }
   }
-})
+})()
