@@ -228,7 +228,8 @@ $.fn.continuousCalendar = function(options) {
     }
 
     function scrollToSelection() {
-      var selectionStartOrToday = $('.selected', calendarBody.scrollContent).get(0) || $('.today', calendarBody.scrollContent).get(0)
+      const scrollContent = calendarBody.scrollContent.get(0)
+      const selectionStartOrToday = scrollContent.querySelector('.selected') || scrollContent.querySelector('.today')
       if(selectionStartOrToday) {
         var position = selectionStartOrToday.offsetTop - (calendarBody.scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
         if(params.customScroll) {
@@ -244,7 +245,7 @@ $.fn.continuousCalendar = function(options) {
 
     function setYearLabel() {
       var scrollContent = calendarBody.scrollContent.get(0)
-      var table = $('table', scrollContent).get(0)
+      var table = scrollContent.querySelector('table')
       var scrollTop = params.customScroll ? -$('.overview', calendarContainer).position().top : scrollContent.scrollTop
       var rowNumber = parseInt(scrollTop / averageCellHeight, 10)
       var date = getElemDate(table.rows[rowNumber].cells[2])

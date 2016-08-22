@@ -133,11 +133,11 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function disableTextSelection(elem) {
     //Firefox
-    $(elem).css('MozUserSelect', 'none')
+    elem.style.MozUserSelect = 'none'
     //IE
-    $(elem).bind('selectstart', function() { return false })
+    elem.addEventListener('selectstart', function() { return false })
     //Opera, etc.
-    $(elem).mousedown(function() { return false })
+    elem.addEventListener('onmousedown', function() { return false })
   }
 
   function mouseMove(event) {
