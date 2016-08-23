@@ -16,6 +16,8 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function showInitialSelection() {
     if(startDate) {
       setFieldValues(startDate)
+      const clearDates = container.get(0).querySelector('.clearDates')
+      if(clearDates) clearDates.style.display = ''
       $('.clearDates', container).show()
     }
   }
@@ -35,8 +37,9 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function setSelectedDate(date, cell) {
-    $('td.selected', container).removeClass('selected')
-    cell.addClass('selected')
+    const selectedElem = container.get(0).querySelector('td.selected')
+    selectedElem && selectedElem.classList.remove('selected')
+    cell.get(0).classList.add('selected')
     setFieldValues(date)
   }
 
@@ -48,10 +51,8 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function addDateClearingLabel() {
     if(params.allowClearDates) {
-      var dateClearingLabel = $('<span class="clearDates clickable"></span>').hide()
-      dateClearingLabel.text(locale.clearDateLabel)
-      var dateClearingContainer = $('<div class="label clearLabel"></div>').append(dateClearingLabel)
-      $('.continuousCalendar', container).append(dateClearingContainer)
+      container.get(0).querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel">' +
+        '<span class="clearDates clickable" style="display: none">' + locale.clearDateLabel + '</span></div>')
     }
   }
 
@@ -74,15 +75,15 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function setDateLabel(val) {
-    $('span.startDateLabel', container).text(val)
+    container.get(0).querySelector('span.startDateLabel').innerText = val
     if(params.allowClearDates) {
-      $('.clearDates', container).toggle(val !== '')
+      container.get(0).querySelector('.clearDates').style.display = (val === '' ? 'none' : '')
     }
   }
 
   function clickClearDate() {
-    $('td.selected', container).removeClass('selected')
-    params.startField.val('')
+    container.get(0).querySelector('td.selected').classList.remove('selected')
+    params.startField.get(0).value = ''
     setDateLabel('')
   }
 }

@@ -135,7 +135,7 @@ $.fn.continuousCalendar = function(options) {
         customScrollContainer.bind('scroll', setYearLabel)
       } else {
         var waiting = false
-        calendarBody.scrollContent.scroll(function() {
+        $(calendarBody.scrollContent).scroll(function() {
           if (!waiting) {
             setTimeout(function() {
               waiting = false
@@ -228,28 +228,28 @@ $.fn.continuousCalendar = function(options) {
     }
 
     function scrollToSelection() {
-      const scrollContent = calendarBody.scrollContent.get(0)
+      const scrollContent = calendarBody.scrollContent
       const selectionStartOrToday = scrollContent.querySelector('.selected') || scrollContent.querySelector('.today')
       if(selectionStartOrToday) {
-        var position = selectionStartOrToday.offsetTop - (calendarBody.scrollContent.height() - selectionStartOrToday.offsetHeight) / 2
+        var position = selectionStartOrToday.offsetTop - ($(calendarBody.scrollContent).height() - selectionStartOrToday.offsetHeight) / 2
         if(params.customScroll) {
-          var totalHeight = calendarBody.bodyTable.height()
-          var maxScroll = totalHeight - calendarBody.scrollContent.height()
+          var totalHeight = $(calendarBody.bodyTable).height()
+          var maxScroll = totalHeight - $(calendarBody.scrollContent).height()
           var validPosition = position > maxScroll ? maxScroll : position
           customScrollContainer.tinyscrollbar_update(validPosition > 0 ? validPosition : 0)
         } else {
-          calendarBody.scrollContent.scrollTop(position)
+          $(calendarBody.scrollContent).scrollTop(position)
         }
       }
     }
 
     function setYearLabel() {
-      var scrollContent = calendarBody.scrollContent.get(0)
+      var scrollContent = calendarBody.scrollContent
       var table = scrollContent.querySelector('table')
       var scrollTop = params.customScroll ? -$('.overview', calendarContainer).position().top : scrollContent.scrollTop
       var rowNumber = parseInt(scrollTop / averageCellHeight, 10)
       var date = getElemDate(table.rows[rowNumber].cells[2])
-      calendarBody.yearTitle.text(date.getFullYear())
+      calendarBody.yearTitle.innerText = date.getFullYear()
     }
 
     function calculateCellHeightAndInitScroll() {
@@ -258,7 +258,7 @@ $.fn.continuousCalendar = function(options) {
       setYearLabel()
     }
 
-    function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.height() / $('tr', calendarBody.bodyTable).length, 10) }
+    function calculateCellHeight() { averageCellHeight = parseInt($(calendarBody.bodyTable).height() / $('tr', $(calendarBody.bodyTable)).length, 10) }
 
     function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? (params.useIsoForInput ? DateTime.fromIsoDate(field.val()) : DateParse.parse(field.val(), locale)) : null }
 
