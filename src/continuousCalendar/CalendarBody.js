@@ -5,28 +5,21 @@ var DateTime = require('dateutils').DateTime
 module.exports = function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
   var dateCellMap = {}
   var dateCellDates = []
-
-  var headerTable = document.createElement('table')
-  headerTable.className = 'calendarHeader'
-  var yearTitle = el('th', {className:'month'})
-  headerTable.appendChild(headerRow(yearTitle))
-  var bodyTable = document.createElement('table')
-  bodyTable.className = 'calendarBody'
-  bodyTable.innerHTML = calendarBody()
-  var scrollContent = document.createElement('div')
-  scrollContent.className = 'calendarScrollContent'
-  scrollContent.appendChild(bodyTable)
-  calendarContainer.append(headerTable)
+  const yearTitle = el('th', {className:'month'})
+  const headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
+  const bodyTable = el('table', {className: 'calendarBody', innerHTML: calendarBody()})
+  const scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
+  calendarContainer.get(0).appendChild(headerTable)
 
   if(customScroll) {
     bodyTable.classList.add('overview')
     scrollContent.classList.add('viewport')
-    calendarContainer.append(
-        $('<div class="tinyscrollbar"></div>')
-            .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
-            .append(scrollContent))
+    calendarContainer.get(0).appendChild(el('div', {
+      className: 'tinyscrollbar',
+      innerHTML: '<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>'
+    }, scrollContent))
   } else {
-    calendarContainer.append(scrollContent)
+    calendarContainer.get(0).appendChild(scrollContent)
   }
   var dateCells = $('td.date', calendarContainer).get()
   highlightToday(dateCellMap)
@@ -44,8 +37,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
 
   function headerRow(yearTitle) {
     const thead = el('thead')
-    const tr = el('tr', {className:'month'})
-    tr.appendChild(yearTitle)
+    const tr = el('tr', {className:'month'}, yearTitle)
     tr.insertAdjacentHTML('beforeend', '<th class="week">&nbsp;</th>' + locale.dayNames.map(function(name, index) {
       return'<th class="weekDay">' + locale.shortDayNames[(index + locale.firstWeekday) % 7] + '</th>'
     }).join(''))
@@ -134,5 +126,9 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     for(var i in properties) elem[i] = properties[i]
     if(childNode) elem.appendChild(childNode)
     return elem
+  }
+
+  function els(selector) {
+    return Array.prototype.slice.call(document.querySelectorAll(selector))
   }
 }
