@@ -6,14 +6,21 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   var dateCellMap = {}
   var dateCellDates = []
 
-  var headerTable = $('<table class="calendarHeader">').append(headerRow())
-  var bodyTable = $('<table class="calendarBody">').append(calendarBody())
-  var scrollContent = $('<div class="calendarScrollContent">').append(bodyTable)
+  var headerTable = document.createElement('table')
+  headerTable.className = 'calendarHeader'
+  var yearTitle = el('th', {className:'month'})
+  headerTable.appendChild(headerRow(yearTitle))
+  var bodyTable = document.createElement('table')
+  bodyTable.className = 'calendarBody'
+  bodyTable.innerHTML = calendarBody()
+  var scrollContent = document.createElement('div')
+  scrollContent.className = 'calendarScrollContent'
+  scrollContent.appendChild(bodyTable)
   calendarContainer.append(headerTable)
 
   if(customScroll) {
-    bodyTable.addClass('overview')
-    scrollContent.addClass('viewport')
+    bodyTable.classList.add('overview')
+    scrollContent.classList.add('viewport')
     calendarContainer.append(
         $('<div class="tinyscrollbar"></div>')
             .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
@@ -23,7 +30,6 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   }
   var dateCells = $('td.date', calendarContainer).get()
   highlightToday(dateCellMap)
-  var yearTitle = $('th.month', headerTable)
 
   return {
     bodyTable    : bodyTable,
@@ -36,13 +42,15 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     getDateCell  : getDateCell
   }
 
-  function headerRow() {
-    var tr = $('<tr><th class="month"></th><th class="week">&nbsp;</th>')
-    $(locale.dayNames).each(function(index) {
-      var weekDay = $('<th>').append(locale.shortDayNames[(index + locale.firstWeekday) % 7]).addClass('weekDay')
-      tr.append(weekDay)
-    })
-    return $('<thead>').append(tr)
+  function headerRow(yearTitle) {
+    const thead = el('thead')
+    const tr = el('tr', {className:'month'})
+    tr.appendChild(yearTitle)
+    tr.insertAdjacentHTML('beforeend', '<th class="week">&nbsp;</th>' + locale.dayNames.map(function(name, index) {
+      return'<th class="weekDay">' + locale.shortDayNames[(index + locale.firstWeekday) % 7] + '</th>'
+    }).join(''))
+    thead.appendChild(tr)
+    return thead
   }
 
   function highlightToday(dateCellMap) {
@@ -120,4 +128,11 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   }
 
   function getDateCell(index) { return $(dateCells[index]) }
+
+  function el(tagName, properties, childNode) {
+    var elem = document.createElement(tagName)
+    for(var i in properties) elem[i] = properties[i]
+    if(childNode) elem.appendChild(childNode)
+    return elem
+  }
 }

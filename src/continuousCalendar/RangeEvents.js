@@ -38,19 +38,17 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function addRangeLengthLabel() {
-    if($('.rangeLengthLabel', container).isEmpty()) {
-      var rangeLengthContainer = $('<div class="label"><span class="rangeLengthLabel"></span></div>')
-      $('.continuousCalendar', container).append(rangeLengthContainer)
-    }
+    const rangeLengthLabel = container.get(0).querySelector('.rangeLengthLabel')
+    if(rangeLengthLabel && rangeLengthLabel.childNodes)
+      return
+    container.get(0).querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label"><span class="rangeLengthLabel"></span></div>')
   }
 
-  function addEndDateLabel(dateLabelContainer) { dateLabelContainer.append('<span class="separator"> - </span>').append('<span class="endDateLabel"></span>') }
+  function addEndDateLabel(dateLabelContainer) { dateLabelContainer.get(0).insertAdjacentHTML('beforeend', '<span class="separator"> - </span><span class="endDateLabel"></span>') }
 
   function addDateClearingLabel() {
     if(params.allowClearDates) {
-      var dateClearingLabel = $('<span class="clearDates clickable"></span>').text(locale.clearRangeLabel)
-      var dateClearingContainer = $('<div class="label clearLabel"></div>').append(dateClearingLabel)
-      $('.continuousCalendar', container).append(dateClearingContainer)
+      container.get(0).querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel"><span class="clearDates clickable">' + locale.clearRangeLabel + '</span></div>')
     }
   }
 
@@ -62,18 +60,19 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function setInitialSelection() {
     selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange()
     if (!selection.start && !selection.end) {
-      $('span.separator', container).hide()
+      container.get(0).querySelector('span.separator').style.display = 'none'
     }
   }
 
   function initRangeCalendarEvents(container, bodyTable) {
-    $('span.rangeLengthLabel', container).text(locale.daysLabel(selection.days()))
+    const rangeLengthLabel = container.get(0).querySelector('span.rangeLengthLabel')
+    rangeLengthLabel.innerText = locale.daysLabel(selection.days())
     if (params.allowClearDates) {
       $('span.clearDates', container).click(clearRangeClick)
     }
-    bodyTable.addClass(params.selectWeek ? 'weekRange' : 'freeRange')
-    bodyTable.mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
-    disableTextSelection(bodyTable.get(0))
+    bodyTable.classList.add(params.selectWeek ? 'weekRange' : 'freeRange')
+    $(bodyTable).mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
+    disableTextSelection(bodyTable)
   }
 
   function mouseDown(event) {
@@ -102,11 +101,11 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     function instantSelection(elem, hasShiftKeyPressed) {
       if((params.selectWeek && enabledCell(elem)) || isWeekCell(elem)) {
         status = Status.NONE
-        var firstDayOfWeek = getElemDate($(elem).parent().children('.date').get(0))
+        var firstDayOfWeek = getElemDate(elem.parentNode.querySelector('.date'))
         return instantSelectWeek(firstDayOfWeek)
       } else if(isMonthCell(elem)) {
         status = Status.NONE
-        var dayInMonth = getElemDate($(elem).siblings('.date').get(0))
+        var dayInMonth = getElemDate(elem.parentNode.querySelector('.date'))
         return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth(), locale)
       } else if(hasShiftKeyPressed) {
         if(selection.days() > 0 && enabledCell(elem)) {
@@ -187,9 +186,9 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function drawSelection() {
     selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends, calendarRange)
     drawSelectionBetweenDates(selection)
-    $('span.rangeLengthLabel', container).text(locale.daysLabel(selection.days()))
-    var clearDates = $('span.clearDates', container)
-    clearDates.toggle(selection.hasSelection())
+    container.get(0).querySelector('span.rangeLengthLabel').innerText = locale.daysLabel(selection.days())
+    const clearDates = container.get(0).querySelector('span.clearDates')
+    if(clearDates) clearDates.style.display = (selection.hasSelection() ? '' : 'none')
   }
 
   function drawSelectionBetweenDates(range) {
@@ -204,7 +203,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       var endIndex = index(range.end)
       for (var i = startIndex; i <= endIndex; i++)
         calendarBody.getDateCell(i).get(0).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
-      if (rangeHasDisabledDate()) $('td.selected', container).addClass('invalidSelection')
+      if (rangeHasDisabledDate()) container.get(0).querySelector('td.selected').classList.add('invalidSelection')
     }
     function index(date) { return calendarBody.dateCellMap[DateFormat.format(date, 'Ymd', locale)] }
   }
@@ -254,9 +253,9 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function isDateCell(elem) { return $(elem).closest('[date-cell-index]').hasClass('date') }
 
-  function isWeekCell(elem) { return $(elem).hasClass('week') }
+  function isWeekCell(elem) { return elem.classList.contains('week') }
 
-  function isMonthCell(elem) { return $(elem).hasClass('month') }
+  function isMonthCell(elem) { return elem.classList.contains('month') }
 
-  function isEnabled(elem) { return !$(elem).hasClass('disabled') }
+  function isEnabled(elem) { return !elem.classList.contains('disabled') }
 }
