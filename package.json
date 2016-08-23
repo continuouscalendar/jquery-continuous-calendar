@@ -7,7 +7,7 @@
     "url": "https://github.com/continuouscalendar/jquery-continuous-calendar"
   },
   "scripts": {
-    "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html --reporter dot",
+    "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html?spec --reporter specr",
     "portDateutils": "r.js -convert node_modules/dateutils/src src/main/dateutils",
     "portContinuousCalendar": "r.js -convert src/continuousCalendar src/main",
     "buildBundle": "browserify src/build/bundleWrapper.js -o build/jquery.continuousCalendar-latest.js",

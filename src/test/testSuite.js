@@ -19,8 +19,8 @@ define(function(require) {
   var matchers = require('./matchers')
 //  var webConsoleReporter = require('./vendor/WebConsole')
   var $ = require('jquery')
-
-  mocha.setup({ui: 'bdd', reporter: 'html'})
+  var reporter = /spec/.test(document.location.search) ? 'spec' : 'html'
+  mocha.setup({ui: 'bdd', reporter: reporter})
 
   chai.use(chaiJquery)
   chai.use(matchers)
