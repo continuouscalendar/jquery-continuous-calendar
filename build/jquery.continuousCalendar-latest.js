@@ -1755,7 +1755,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     }
   }
 
-  function isDateCell(elem) { return $(elem).closest('[date-cell-index]').hasClass('date') }
+  function isDateCell(elem) { return elem.classList.contains('date') || elem.parentNode.classList.contains('date') }
 
   function isWeekCell(elem) { return elem.classList.contains('week') }
 
