@@ -202,7 +202,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       var startIndex = index(range.start)
       var endIndex = index(range.end)
       for (var i = startIndex; i <= endIndex; i++)
-        calendarBody.getDateCell(i).get(0).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
+        calendarBody.getDateCell(i).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
       if (rangeHasDisabledDate()) container.get(0).querySelector('td.selected').classList.add('invalidSelection')
     }
     function index(date) { return calendarBody.dateCellMap[DateFormat.format(date, 'Ymd', locale)] }

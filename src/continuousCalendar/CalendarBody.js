@@ -1,4 +1,3 @@
-var $ = require('jquery')
 var DateFormat = require('dateutils').DateFormat
 var DateTime = require('dateutils').DateTime
 
@@ -10,17 +9,17 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   const headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
   const bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
   const scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
-  calendarContainer.get(0).appendChild(headerTable)
+  calendarContainer.appendChild(headerTable)
 
   if(customScroll) {
     bodyTable.classList.add('overview')
     scrollContent.classList.add('viewport')
-    calendarContainer.get(0).appendChild(el('div', {
+    calendarContainer.appendChild(el('div', {
       className: 'tinyscrollbar',
       innerHTML: '<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>'
     }, scrollContent))
   } else {
-    calendarContainer.get(0).appendChild(scrollContent)
+    calendarContainer.appendChild(scrollContent)
   }
   highlightToday(dateCellMap)
 
@@ -48,7 +47,10 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   function highlightToday(dateCellMap) {
     var todayKey = DateFormat.format(DateTime.today(), 'Ymd', locale)
     if(todayKey in dateCellMap) {
-      getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
+      const dateCell = getDateCell(dateCellMap[todayKey])
+      dateCell.classList.add('today')
+      dateCell.innerHTML = '<div>' + dateCell.innerText + '</div>'
+
     }
   }
 
@@ -128,7 +130,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     return (isSunday || isHoliday) ? 'holiday' : ''
   }
 
-  function getDateCell(index) { return $(dateCells[index]) }
+  function getDateCell(index) { return dateCells[index] }
 
   function el(tagName, properties, childNode) {
     var elem = document.createElement(tagName)

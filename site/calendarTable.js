@@ -12,5 +12,5 @@ define(function(require) {
   var CalendarBody = require('../src/main/CalendarBody')
   var container = $('<div class="continuousCalendar">')
   $('body').append($('<div class="continuousCalendarContainer"></div>').append(container))
-  CalendarBody(container, new DateRange(DateTime.now(), DateTime.now().plusDays(50)), DateLocale.FI, false, false, '')
+  CalendarBody(container.get(0), new DateRange(DateTime.now(), DateTime.now().plusDays(50)), DateLocale.FI, false, false, '')
 })

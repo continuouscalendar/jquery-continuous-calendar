@@ -39,7 +39,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function setSelectedDate(date, cell) {
     const selectedElem = container.get(0).querySelector('td.selected')
     selectedElem && selectedElem.classList.remove('selected')
-    cell.get(0).classList.add('selected')
+    cell.classList.add('selected')
     setFieldValues(date)
   }
 
@@ -66,7 +66,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       var dateCell = $(this)
       if (!dateCell.hasClass('disabled')) {
         var selectedDate = getElemDate(dateCell.get(0))
-        setSelectedDate(selectedDate, dateCell)
+        setSelectedDate(selectedDate, dateCell.get(0))
         popupBehavior.close(this)
         executeCallback(selectedDate)
       }
