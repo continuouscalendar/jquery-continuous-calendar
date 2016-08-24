@@ -106,7 +106,10 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     }
   }
 
-  function dateStyles(date) { return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)].sort().join(' ')) }
+  function dateStyles(date) {
+    return ['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)]
+      .filter(function(x) { return x}).join(' ')
+  }
 
   function backgroundBy(date) { return date.isOddMonth() ? 'odd' : '' }
 
