@@ -57,22 +57,25 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     var isFirst = true
     var rows = []
     while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
-      calendarRow(rows, firstWeekDay.clone(), isFirst)
+      var row = calendarRow(firstWeekDay, isFirst)
+      rows.push(row)
       isFirst = false
       firstWeekDay = firstWeekDay.plusDays(7)
     }
 
     return '<tbody>' + rows.join('') + '</tbody>'
 
-    function calendarRow(rows, firstDayOfWeek, isFirst) {
-      rows.push('<tr>')
-      rows.push(monthCell(firstDayOfWeek, isFirst))
-      rows.push(weekCell(firstDayOfWeek))
+    function calendarRow(firstDayOfWeek, isFirst) {
+      const row = []
+      row.push('<tr>')
+      row.push(monthCell(firstDayOfWeek, isFirst))
+      row.push(weekCell(firstDayOfWeek))
       for(var i = 0; i < 7; i++) {
         var date = firstDayOfWeek.plusDays(i)
-        rows.push(dateCell(date))
+        row.push(dateCell(date))
       }
-      rows.push('</tr>')
+      row.push('</tr>')
+      return row.join('')
     }
 
     function dateCell(date) {
