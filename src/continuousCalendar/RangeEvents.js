@@ -232,22 +232,29 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function setRangeLabels() {
     if(!selection) setInitialSelection()
+    const cont = container.get(0)
+    const startDateLabel = cont.querySelector('span.startDateLabel')
+    const endDateLabel = cont.querySelector('span.endDateLabel')
+    const clearRangeLabel = cont.querySelector('span.clearRangeLabel')
+    const separator = cont.querySelector('span.separator')
 
     if(selection.start && selection.end) {
       var format = locale.weekDateFormat
-      $('span.startDateLabel', container).text(DateFormat.format(selection.start, format, locale))
-      $('span.endDateLabel', container).text(DateFormat.format(selection.end, format, locale))
-      $('span.separator, span.clearRangeLabel', container).show()
-      $('span.startDateLabel', container).closest('.label').show()
+      startDateLabel.innerText = DateFormat.format(selection.start, format, locale)
+      endDateLabel.innerText = DateFormat.format(selection.end, format, locale)
+      separator.style.display = ''
+      if(clearRangeLabel) clearRangeLabel.style.display = ''
+      startDateLabel.parentNode.style.display = ''
     } else {
       if (!selection.start) {
-        $('span.startDateLabel', container).empty()
-        $('span.startDateLabel', container).closest('.label').hide()
+        startDateLabel.innerText = ''
+        startDateLabel.parentNode.style.display = 'none'
       }
       if (!selection.end) {
-        $('span.endDateLabel', container).empty()
+        endDateLabel.innerText = ''
       }
-      $('span.separator, span.clearRangeLabel', container).hide()
+      separator.style.display = 'none'
+      if(clearRangeLabel) clearRangeLabel.style.display = 'none'
     }
   }
 
