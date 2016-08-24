@@ -66,7 +66,8 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     return el('tbody', {}, rows)
 
     function calendarRow(firstDayOfWeek, isFirst) {
-      const row = el('tr', {innerHTML:monthCell(firstDayOfWeek, isFirst) + weekCell(firstDayOfWeek)})
+      const row = el('tr', {}, monthCell(firstDayOfWeek, isFirst))
+      row.appendChild(weekCell(firstDayOfWeek))
       for(var i = 0; i < 7; i++) {
         var date = firstDayOfWeek.plusDays(i)
         row.appendChild(dateCell(date))
@@ -89,20 +90,20 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     }
 
     function monthCell(firstDayOfWeek, isFirst) {
-      var th = '<th class="month ' + backgroundBy(firstDayOfWeek)
-      if(isFirst || firstDayOfWeek.getDate() <= 7) {
-        th += ' monthName">'
-        th += locale.monthNames[firstDayOfWeek.getMonth()-1]
-      } else {
-        th += '">'
-        if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1) {
-          th += firstDayOfWeek.getFullYear()
-        }
-      }
-      return th + '</th>'
+      const showMonth = isFirst || firstDayOfWeek.getDate() <= 7
+      const showYear = firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1
+      return el('th', {
+        className: 'month ' + backgroundBy(firstDayOfWeek) + (showMonth ? ' monthName':''),
+        innerText: (showMonth ? locale.monthNames[firstDayOfWeek.getMonth()-1] : (showYear ? firstDayOfWeek.getFullYear() : ''))
+      })
     }
 
-    function weekCell(firstDayOfWeek) { return '<th class="week ' + backgroundBy(firstDayOfWeek) + '">' + firstDayOfWeek.getWeekInYear('ISO') + '</th>' }
+    function weekCell(firstDayOfWeek) {
+      return el('th', {
+        className: 'week ' + backgroundBy(firstDayOfWeek),
+        innerText: firstDayOfWeek.getWeekInYear('ISO')
+      })
+    }
   }
 
   function dateStyles(date) { return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)].sort().join(' ')) }
