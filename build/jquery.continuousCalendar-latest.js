@@ -1354,8 +1354,6 @@ window.DateTime = require('dateutils').DateTime
 window.DateRange = require('dateutils').DateRange
 
 },{"../continuousCalendar/jquery.continuousCalendar":23,"dateutils":7}],20:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
 var DateFormat = require('dateutils').DateFormat
 var DateTime = require('dateutils').DateTime
 
@@ -1367,17 +1365,17 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   const headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
   const bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
   const scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
-  calendarContainer.get(0).appendChild(headerTable)
+  calendarContainer.appendChild(headerTable)
 
   if(customScroll) {
     bodyTable.classList.add('overview')
     scrollContent.classList.add('viewport')
-    calendarContainer.get(0).appendChild(el('div', {
+    calendarContainer.appendChild(el('div', {
       className: 'tinyscrollbar',
       innerHTML: '<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>'
     }, scrollContent))
   } else {
-    calendarContainer.get(0).appendChild(scrollContent)
+    calendarContainer.appendChild(scrollContent)
   }
   highlightToday(dateCellMap)
 
@@ -1405,7 +1403,10 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   function highlightToday(dateCellMap) {
     var todayKey = DateFormat.format(DateTime.today(), 'Ymd', locale)
     if(todayKey in dateCellMap) {
-      getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
+      const dateCell = getDateCell(dateCellMap[todayKey])
+      dateCell.classList.add('today')
+      dateCell.innerHTML = '<div>' + dateCell.innerText + '</div>'
+
     }
   }
 
@@ -1485,7 +1486,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     return (isSunday || isHoliday) ? 'holiday' : ''
   }
 
-  function getDateCell(index) { return $(dateCells[index]) }
+  function getDateCell(index) { return dateCells[index] }
 
   function el(tagName, properties, childNode) {
     var elem = document.createElement(tagName)
@@ -1499,7 +1500,6 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   }
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"dateutils":7}],21:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
@@ -1706,7 +1706,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       var startIndex = index(range.start)
       var endIndex = index(range.end)
       for (var i = startIndex; i <= endIndex; i++)
-        calendarBody.getDateCell(i).get(0).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
+        calendarBody.getDateCell(i).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
       if (rangeHasDisabledDate()) container.get(0).querySelector('td.selected').classList.add('invalidSelection')
     }
     function index(date) { return calendarBody.dateCellMap[DateFormat.format(date, 'Ymd', locale)] }
@@ -1808,7 +1808,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function setSelectedDate(date, cell) {
     const selectedElem = container.get(0).querySelector('td.selected')
     selectedElem && selectedElem.classList.remove('selected')
-    cell.get(0).classList.add('selected')
+    cell.classList.add('selected')
     setFieldValues(date)
   }
 
@@ -1835,7 +1835,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       var dateCell = $(this)
       if (!dateCell.hasClass('disabled')) {
         var selectedDate = getElemDate(dateCell.get(0))
-        setSelectedDate(selectedDate, dateCell)
+        setSelectedDate(selectedDate, dateCell.get(0))
         popupBehavior.close(this)
         executeCallback(selectedDate)
       }
@@ -1958,7 +1958,7 @@ $.fn.continuousCalendar = function(options) {
     function initCalendarTable() {
       if (!calendarBody.scrollContent) {
 
-        calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
+        calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer.get(0), calendarRange, locale,
             params.customScroll, params.disableWeekends, disabledDatesObject))
         bindScrollEvent()
 

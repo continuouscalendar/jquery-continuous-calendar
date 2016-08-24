@@ -96,7 +96,7 @@ $.fn.continuousCalendar = function(options) {
     function initCalendarTable() {
       if (!calendarBody.scrollContent) {
 
-        calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
+        calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer.get(0), calendarRange, locale,
             params.customScroll, params.disableWeekends, disabledDatesObject))
         bindScrollEvent()
 
