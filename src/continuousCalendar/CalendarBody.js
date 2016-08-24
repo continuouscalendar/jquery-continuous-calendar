@@ -5,6 +5,7 @@ var DateTime = require('dateutils').DateTime
 module.exports = function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
   var dateCellMap = {}
   var dateCellDates = []
+  var dateCells = []
   const yearTitle = el('th', {className:'month'})
   const headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
   const bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
@@ -21,7 +22,6 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   } else {
     calendarContainer.get(0).appendChild(scrollContent)
   }
-  var dateCells = $('td.date', calendarContainer).get()
   highlightToday(dateCellMap)
 
   return {
@@ -81,9 +81,10 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
       })
       if(locale.holidays && (date.toISODateString() in locale.holidays))
         td.title = locale.holidays[date.toISODateString()]
-      td.setAttribute('date-cell-index', dateCellDates.length)
+      td.setAttribute('date-cell-index', String(dateCellDates.length))
       dateCellMap[DateFormat.format(date, 'Ymd', locale)] = dateCellDates.length
       dateCellDates.push(date)
+      dateCells.push(td)
       return td
     }
 
