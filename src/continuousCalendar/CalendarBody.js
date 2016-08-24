@@ -7,7 +7,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   var dateCellDates = []
   const yearTitle = el('th', {className:'month'})
   const headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
-  const bodyTable = el('table', {className: 'calendarBody', innerHTML: calendarBody()})
+  const bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
   const scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
   calendarContainer.get(0).appendChild(headerTable)
 
@@ -55,35 +55,36 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   function calendarBody() {
     var firstWeekDay = calendarRange.start.getFirstDateOfWeek(locale)
     var isFirst = true
-    var rows = []
+    const rows = document.createDocumentFragment()
+
     while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
-      var row = calendarRow(firstWeekDay, isFirst)
-      rows.push(row)
+      rows.appendChild(calendarRow(firstWeekDay, isFirst))
       isFirst = false
       firstWeekDay = firstWeekDay.plusDays(7)
     }
 
-    return '<tbody>' + rows.join('') + '</tbody>'
+    return el('tbody', {}, rows)
 
     function calendarRow(firstDayOfWeek, isFirst) {
-      const row = []
-      row.push('<tr>')
-      row.push(monthCell(firstDayOfWeek, isFirst))
-      row.push(weekCell(firstDayOfWeek))
+      const row = el('tr', {innerHTML:monthCell(firstDayOfWeek, isFirst) + weekCell(firstDayOfWeek)})
       for(var i = 0; i < 7; i++) {
         var date = firstDayOfWeek.plusDays(i)
-        row.push(dateCell(date))
+        row.appendChild(dateCell(date))
       }
-      row.push('</tr>')
-      return row.join('')
+      return row
     }
 
     function dateCell(date) {
-      var tooltip = (locale.holidays && (date.toISODateString() in locale.holidays)) ? 'title="' + locale.holidays[date.toISODateString()] + '" ' : ''
-      var cell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '" ' + tooltip + '>' + date.getDate() + '</td>'
+      const td = el('td', {
+        className:         dateStyles(date),
+        innerText:         date.getDate()
+      })
+      if(locale.holidays && (date.toISODateString() in locale.holidays))
+        td.title = locale.holidays[date.toISODateString()]
+      td.setAttribute('date-cell-index', dateCellDates.length)
       dateCellMap[DateFormat.format(date, 'Ymd', locale)] = dateCellDates.length
       dateCellDates.push(date)
-      return cell
+      return td
     }
 
     function monthCell(firstDayOfWeek, isFirst) {
