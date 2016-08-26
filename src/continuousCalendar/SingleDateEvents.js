@@ -16,7 +16,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function showInitialSelection() {
     if(startDate) {
       setFieldValues(startDate)
-      const clearDates = container.get(0).querySelector('.clearDates')
+      var clearDates = container.get(0).querySelector('.clearDates')
       if(clearDates) clearDates.style.display = ''
       $('.clearDates', container).show()
     }
@@ -37,7 +37,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function setSelectedDate(date, cell) {
-    const selectedElem = container.get(0).querySelector('td.selected')
+    var selectedElem = container.get(0).querySelector('td.selected')
     selectedElem && selectedElem.classList.remove('selected')
     cell.classList.add('selected')
     setFieldValues(date)

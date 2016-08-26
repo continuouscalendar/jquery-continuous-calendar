@@ -7,7 +7,8 @@
     "url": "https://github.com/continuouscalendar/jquery-continuous-calendar"
   },
   "scripts": {
-    "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html?spec --reporter specr",
+    "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html?spec --reporter specr && eslint .",
+    "lint": "eslint .",
     "portDateutils": "r.js -convert node_modules/dateutils/src src/main/dateutils",
     "portContinuousCalendar": "r.js -convert src/continuousCalendar src/main",
     "buildBundle": "browserify src/build/bundleWrapper.js -o build/jquery.continuousCalendar-latest.js",
@@ -47,6 +48,7 @@
     "browserify-shim": "^3.8.12",
     "chai": "~3.5.0",
     "chai-jquery": "~2.0.0",
+    "eslint": "^3.3.1",
     "mocha": "^3.0.2",
     "mocha-phantomjs": "~4.1.0",
     "phantomjs": "^2.1.3",

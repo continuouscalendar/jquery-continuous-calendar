@@ -1,0 +1,24 @@
+{
+  "extends": "eslint:recommended",
+  "rules": {
+    "arrow-parens": [2, "as-needed"],
+    "no-console": 0,
+    "no-const-assign": 2,
+    "no-sparse-arrays": 0,
+    "no-unneeded-ternary": 2,
+    "prefer-const": 2,
+    "semi": [2, "never"]
+  },
+  "env": {
+    "browser": true,
+    "mocha": true,
+    "jquery": true,
+    "node": true,
+    "es6" : false
+  },
+  "globals": {
+    "expect": true,
+    "define": true,
+    "requirejs": true
+  }
+}

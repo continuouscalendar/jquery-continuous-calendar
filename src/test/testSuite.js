@@ -24,14 +24,14 @@ define(function(require) {
 
   chai.use(chaiJquery)
   chai.use(matchers)
-  window.expect = chai.expect;
+  window.expect = chai.expect
 
 
 
   require(['./jquery.continuousCalendar.spec'], function() {
     $.fx.off = true
     $.ajaxSetup({ async: false })
-    if(window.mochaPhantomJS) { window.mochaPhantomJS.run(); }
-    else { mocha.run(); }
+    if(window.mochaPhantomJS) { window.mochaPhantomJS.run() }
+    else { mocha.run() }
   })
 })
