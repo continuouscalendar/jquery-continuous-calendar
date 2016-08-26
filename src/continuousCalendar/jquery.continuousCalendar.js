@@ -228,8 +228,8 @@ $.fn.continuousCalendar = function(options) {
     }
 
     function scrollToSelection() {
-      const scrollContent = calendarBody.scrollContent
-      const selectionStartOrToday = scrollContent.querySelector('.selected') || scrollContent.querySelector('.today')
+      var scrollContent = calendarBody.scrollContent
+      var selectionStartOrToday = scrollContent.querySelector('.selected') || scrollContent.querySelector('.today')
       if(selectionStartOrToday) {
         var position = selectionStartOrToday.offsetTop - ($(calendarBody.scrollContent).height() - selectionStartOrToday.offsetHeight) / 2
         if(params.customScroll) {

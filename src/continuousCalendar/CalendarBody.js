@@ -5,10 +5,10 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   var dateCellMap = {}
   var dateCellDates = []
   var dateCells = []
-  const yearTitle = el('th', {className:'month'})
-  const headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
-  const bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
-  const scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
+  var yearTitle = el('th', {className:'month'})
+  var headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
+  var bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
+  var scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
   calendarContainer.appendChild(headerTable)
 
   if(customScroll) {
@@ -35,8 +35,8 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   }
 
   function headerRow(yearTitle) {
-    const thead = el('thead')
-    const tr = el('tr', {className:'month'}, yearTitle)
+    var thead = el('thead')
+    var tr = el('tr', {className:'month'}, yearTitle)
     tr.insertAdjacentHTML('beforeend', '<th class="week">&nbsp;</th>' + locale.dayNames.map(function(name, index) {
       return'<th class="weekDay">' + locale.shortDayNames[(index + locale.firstWeekday) % 7] + '</th>'
     }).join(''))
@@ -47,7 +47,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   function highlightToday(dateCellMap) {
     var todayKey = DateFormat.format(DateTime.today(), 'Ymd', locale)
     if(todayKey in dateCellMap) {
-      const dateCell = getDateCell(dateCellMap[todayKey])
+      var dateCell = getDateCell(dateCellMap[todayKey])
       dateCell.classList.add('today')
       dateCell.innerHTML = '<div>' + dateCell.innerText + '</div>'
 
@@ -57,7 +57,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   function calendarBody() {
     var firstWeekDay = calendarRange.start.getFirstDateOfWeek(locale)
     var isFirst = true
-    const rows = document.createDocumentFragment()
+    var rows = document.createDocumentFragment()
 
     while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
       rows.appendChild(calendarRow(firstWeekDay, isFirst))
@@ -68,7 +68,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     return el('tbody', {}, rows)
 
     function calendarRow(firstDayOfWeek, isFirst) {
-      const row = el('tr', {}, monthCell(firstDayOfWeek, isFirst))
+      var row = el('tr', {}, monthCell(firstDayOfWeek, isFirst))
       row.appendChild(weekCell(firstDayOfWeek))
       for(var i = 0; i < 7; i++) {
         var date = firstDayOfWeek.plusDays(i)
@@ -78,7 +78,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     }
 
     function dateCell(date) {
-      const td = el('td', {
+      var td = el('td', {
         className:         dateStyles(date),
         innerText:         date.getDate()
       })
@@ -92,8 +92,8 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     }
 
     function monthCell(firstDayOfWeek, isFirst) {
-      const showMonth = isFirst || firstDayOfWeek.getDate() <= 7
-      const showYear = firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1
+      var showMonth = isFirst || firstDayOfWeek.getDate() <= 7
+      var showYear = firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1
       return el('th', {
         className: 'month ' + backgroundBy(firstDayOfWeek) + (showMonth ? ' monthName':''),
         innerText: (showMonth ? locale.monthNames[firstDayOfWeek.getMonth()-1] : (showYear ? firstDayOfWeek.getFullYear() : ''))
@@ -137,9 +137,5 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     for(var i in properties) elem[i] = properties[i]
     if(childNode) elem.appendChild(childNode)
     return elem
-  }
-
-  function els(selector) {
-    return Array.prototype.slice.call(document.querySelectorAll(selector))
   }
 }

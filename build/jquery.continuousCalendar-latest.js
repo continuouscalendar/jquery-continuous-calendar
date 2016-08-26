@@ -1361,10 +1361,10 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   var dateCellMap = {}
   var dateCellDates = []
   var dateCells = []
-  const yearTitle = el('th', {className:'month'})
-  const headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
-  const bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
-  const scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
+  var yearTitle = el('th', {className:'month'})
+  var headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
+  var bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
+  var scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
   calendarContainer.appendChild(headerTable)
 
   if(customScroll) {
@@ -1391,8 +1391,8 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   }
 
   function headerRow(yearTitle) {
-    const thead = el('thead')
-    const tr = el('tr', {className:'month'}, yearTitle)
+    var thead = el('thead')
+    var tr = el('tr', {className:'month'}, yearTitle)
     tr.insertAdjacentHTML('beforeend', '<th class="week">&nbsp;</th>' + locale.dayNames.map(function(name, index) {
       return'<th class="weekDay">' + locale.shortDayNames[(index + locale.firstWeekday) % 7] + '</th>'
     }).join(''))
@@ -1403,7 +1403,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   function highlightToday(dateCellMap) {
     var todayKey = DateFormat.format(DateTime.today(), 'Ymd', locale)
     if(todayKey in dateCellMap) {
-      const dateCell = getDateCell(dateCellMap[todayKey])
+      var dateCell = getDateCell(dateCellMap[todayKey])
       dateCell.classList.add('today')
       dateCell.innerHTML = '<div>' + dateCell.innerText + '</div>'
 
@@ -1413,7 +1413,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   function calendarBody() {
     var firstWeekDay = calendarRange.start.getFirstDateOfWeek(locale)
     var isFirst = true
-    const rows = document.createDocumentFragment()
+    var rows = document.createDocumentFragment()
 
     while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
       rows.appendChild(calendarRow(firstWeekDay, isFirst))
@@ -1424,7 +1424,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     return el('tbody', {}, rows)
 
     function calendarRow(firstDayOfWeek, isFirst) {
-      const row = el('tr', {}, monthCell(firstDayOfWeek, isFirst))
+      var row = el('tr', {}, monthCell(firstDayOfWeek, isFirst))
       row.appendChild(weekCell(firstDayOfWeek))
       for(var i = 0; i < 7; i++) {
         var date = firstDayOfWeek.plusDays(i)
@@ -1434,7 +1434,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     }
 
     function dateCell(date) {
-      const td = el('td', {
+      var td = el('td', {
         className:         dateStyles(date),
         innerText:         date.getDate()
       })
@@ -1448,8 +1448,8 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     }
 
     function monthCell(firstDayOfWeek, isFirst) {
-      const showMonth = isFirst || firstDayOfWeek.getDate() <= 7
-      const showYear = firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1
+      var showMonth = isFirst || firstDayOfWeek.getDate() <= 7
+      var showYear = firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1
       return el('th', {
         className: 'month ' + backgroundBy(firstDayOfWeek) + (showMonth ? ' monthName':''),
         innerText: (showMonth ? locale.monthNames[firstDayOfWeek.getMonth()-1] : (showYear ? firstDayOfWeek.getFullYear() : ''))
@@ -1494,10 +1494,6 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     if(childNode) elem.appendChild(childNode)
     return elem
   }
-
-  function els(selector) {
-    return Array.prototype.slice.call(document.querySelectorAll(selector))
-  }
 }
 
 },{"dateutils":7}],21:[function(require,module,exports){
@@ -1511,7 +1507,6 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
                 endDate, setEndField, calendarRange, disabledDatesList) {
   var mouseDownDate = null
   var selection
-  var oldSelection
   var Status = {
     CREATE_OR_RESIZE: 'create',
     MOVE            : 'move',
@@ -1531,7 +1526,6 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function initEvents() {
     setInitialSelection()
-    oldSelection = selection.clone()
     initRangeCalendarEvents(container, calendarBody.bodyTable)
     drawSelection()
   }
@@ -1542,7 +1536,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function addRangeLengthLabel() {
-    const rangeLengthLabel = container.get(0).querySelector('.rangeLengthLabel')
+    var rangeLengthLabel = container.get(0).querySelector('.rangeLengthLabel')
     if(rangeLengthLabel && rangeLengthLabel.childNodes)
       return
     container.get(0).querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label"><span class="rangeLengthLabel"></span></div>')
@@ -1569,7 +1563,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function initRangeCalendarEvents(container, bodyTable) {
-    const rangeLengthLabel = container.get(0).querySelector('span.rangeLengthLabel')
+    var rangeLengthLabel = container.get(0).querySelector('span.rangeLengthLabel')
     rangeLengthLabel.innerText = locale.daysLabel(selection.days())
     if (params.allowClearDates) {
       $('span.clearDates', container).click(clearRangeClick)
@@ -1691,14 +1685,13 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends, calendarRange)
     drawSelectionBetweenDates(selection)
     container.get(0).querySelector('span.rangeLengthLabel').innerText = locale.daysLabel(selection.days())
-    const clearDates = container.get(0).querySelector('span.clearDates')
+    var clearDates = container.get(0).querySelector('span.clearDates')
     if(clearDates) clearDates.style.display = (selection.hasSelection() ? '' : 'none')
   }
 
   function drawSelectionBetweenDates(range) {
     $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd').removeClass('invalidSelection')
     iterateAndToggleCells(range)
-    oldSelection = range.clone()
   }
 
   function iterateAndToggleCells(range) {
@@ -1736,11 +1729,11 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function setRangeLabels() {
     if(!selection) setInitialSelection()
-    const cont = container.get(0)
-    const startDateLabel = cont.querySelector('span.startDateLabel')
-    const endDateLabel = cont.querySelector('span.endDateLabel')
-    const clearRangeLabel = cont.querySelector('span.clearRangeLabel')
-    const separator = cont.querySelector('span.separator')
+    var cont = container.get(0)
+    var startDateLabel = cont.querySelector('span.startDateLabel')
+    var endDateLabel = cont.querySelector('span.endDateLabel')
+    var clearRangeLabel = cont.querySelector('span.clearRangeLabel')
+    var separator = cont.querySelector('span.separator')
 
     if(selection.start && selection.end) {
       var format = locale.weekDateFormat
@@ -1792,7 +1785,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function showInitialSelection() {
     if(startDate) {
       setFieldValues(startDate)
-      const clearDates = container.get(0).querySelector('.clearDates')
+      var clearDates = container.get(0).querySelector('.clearDates')
       if(clearDates) clearDates.style.display = ''
       $('.clearDates', container).show()
     }
@@ -1813,7 +1806,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function setSelectedDate(date, cell) {
-    const selectedElem = container.get(0).querySelector('td.selected')
+    var selectedElem = container.get(0).querySelector('td.selected')
     selectedElem && selectedElem.classList.remove('selected')
     cell.classList.add('selected')
     setFieldValues(date)
@@ -2097,8 +2090,8 @@ $.fn.continuousCalendar = function(options) {
     }
 
     function scrollToSelection() {
-      const scrollContent = calendarBody.scrollContent
-      const selectionStartOrToday = scrollContent.querySelector('.selected') || scrollContent.querySelector('.today')
+      var scrollContent = calendarBody.scrollContent
+      var selectionStartOrToday = scrollContent.querySelector('.selected') || scrollContent.querySelector('.today')
       if(selectionStartOrToday) {
         var position = selectionStartOrToday.offsetTop - ($(calendarBody.scrollContent).height() - selectionStartOrToday.offsetHeight) / 2
         if(params.customScroll) {

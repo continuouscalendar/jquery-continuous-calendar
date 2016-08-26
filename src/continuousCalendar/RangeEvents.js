@@ -7,7 +7,6 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
                 endDate, setEndField, calendarRange, disabledDatesList) {
   var mouseDownDate = null
   var selection
-  var oldSelection
   var Status = {
     CREATE_OR_RESIZE: 'create',
     MOVE            : 'move',
@@ -27,7 +26,6 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function initEvents() {
     setInitialSelection()
-    oldSelection = selection.clone()
     initRangeCalendarEvents(container, calendarBody.bodyTable)
     drawSelection()
   }
@@ -38,7 +36,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function addRangeLengthLabel() {
-    const rangeLengthLabel = container.get(0).querySelector('.rangeLengthLabel')
+    var rangeLengthLabel = container.get(0).querySelector('.rangeLengthLabel')
     if(rangeLengthLabel && rangeLengthLabel.childNodes)
       return
     container.get(0).querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label"><span class="rangeLengthLabel"></span></div>')
@@ -65,7 +63,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function initRangeCalendarEvents(container, bodyTable) {
-    const rangeLengthLabel = container.get(0).querySelector('span.rangeLengthLabel')
+    var rangeLengthLabel = container.get(0).querySelector('span.rangeLengthLabel')
     rangeLengthLabel.innerText = locale.daysLabel(selection.days())
     if (params.allowClearDates) {
       $('span.clearDates', container).click(clearRangeClick)
@@ -187,14 +185,13 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends, calendarRange)
     drawSelectionBetweenDates(selection)
     container.get(0).querySelector('span.rangeLengthLabel').innerText = locale.daysLabel(selection.days())
-    const clearDates = container.get(0).querySelector('span.clearDates')
+    var clearDates = container.get(0).querySelector('span.clearDates')
     if(clearDates) clearDates.style.display = (selection.hasSelection() ? '' : 'none')
   }
 
   function drawSelectionBetweenDates(range) {
     $('td.selected', container).removeClass('selected').removeClass('rangeStart').removeClass('rangeEnd').removeClass('invalidSelection')
     iterateAndToggleCells(range)
-    oldSelection = range.clone()
   }
 
   function iterateAndToggleCells(range) {
@@ -232,11 +229,11 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function setRangeLabels() {
     if(!selection) setInitialSelection()
-    const cont = container.get(0)
-    const startDateLabel = cont.querySelector('span.startDateLabel')
-    const endDateLabel = cont.querySelector('span.endDateLabel')
-    const clearRangeLabel = cont.querySelector('span.clearRangeLabel')
-    const separator = cont.querySelector('span.separator')
+    var cont = container.get(0)
+    var startDateLabel = cont.querySelector('span.startDateLabel')
+    var endDateLabel = cont.querySelector('span.endDateLabel')
+    var clearRangeLabel = cont.querySelector('span.clearRangeLabel')
+    var separator = cont.querySelector('span.separator')
 
     if(selection.start && selection.end) {
       var format = locale.weekDateFormat

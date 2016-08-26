@@ -1,6 +1,9 @@
 define(function(require, _exports, module) {
   var $ = require('jquery')
   require('../../build/jquery.continuousCalendar-latest')
+  var DateLocale = window.DateLocale
+  var DateTime = window.DateTime
+  var DateFormat = window.DateFormat
 
   describe(module.id, function() {
     describe('empty calendar of full year', function() {
@@ -367,18 +370,18 @@ define(function(require, _exports, module) {
 //TODO fails with IE7
       it('calendar executes callback-function and triggers event when date is picked', function() {
         function testFunction() {
-          calendarCallBack++
+          window.calendarCallBack++
         }
 
-        bindCalled = 0
+        window.bindCalled = 0
         window.calendarCallBack = 0
         createCalendarFields({startDate: ''}).continuousCalendar({firstDate: '4/26/2009', lastDate: '5/2/2009', callback: testFunction})
         cal().bind('calendarChange', function() {
-          bindCalled++
+          window.bindCalled++
         })
         elemByDate(28).click()
-        expect(bindCalled).to.equal(1, 'bind')
-        expect(calendarCallBack).to.equal(2)
+        expect(window.bindCalled).to.equal(1, 'bind')
+        expect(window.calendarCallBack).to.equal(2)
       })
 
       it('range calendar executes callback-function and triggers event when range is created or changed', function() {
@@ -501,7 +504,7 @@ define(function(require, _exports, module) {
       })
 
       it('call popup callback when opening calendar', function() {
-        var count = 0;
+        var count = 0
         function cb() { count++ }
         createCalendarFields({startDate: '12/17/2013'}).continuousCalendar({isPopup: true, popupCallback: cb})
         cal().find('.calendarIcon').click()
@@ -735,8 +738,6 @@ define(function(require, _exports, module) {
   function endFieldValue() { return cal().find('input.endDate').val() }
 
   function endLabelValue() { return cal().find('span.endDateLabel').text() }
-
-  function click(selector) { $(selector).click() }
 
   function setStartFieldValue(value) { return cal().find('input.startDate').val(value) }
 
