@@ -7,7 +7,8 @@
     "no-sparse-arrays": 0,
     "no-unneeded-ternary": 2,
     "prefer-const": 2,
-    "semi": [2, "never"]
+    "semi": [2, "never"],
+    "indent": ["error", 2]
   },
   "env": {
     "browser": true,
