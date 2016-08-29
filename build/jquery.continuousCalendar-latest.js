@@ -1871,7 +1871,7 @@ var RangeEvents = require('./RangeEvents')
 var SingleDateEvents = require('./SingleDateEvents')
 
 $.continuousCalendar = {
-  "version" : "5.1.0"
+  "version" : "5.1.0" // eslint-disable-line
 }
 $.fn.continuousCalendar = function(options) {
   return this.each(function() { _continuousCalendar.call($(this), options) })

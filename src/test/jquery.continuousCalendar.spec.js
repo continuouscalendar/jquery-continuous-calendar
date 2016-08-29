@@ -107,7 +107,7 @@ define(function(require, _exports, module) {
       })
 
       it('supports js date objects as bounds', function() {
-        var start = new Date("2009-04-18"), end = new Date("2009-05-03")
+        var start = new Date('2009-04-18'), end = new Date('2009-05-03')
         createCalendarFields().continuousCalendar({firstDate: start, lastDate: end})
         assertHasValues('.date', [
           12, 13, 14, 15, 16, 17, 18,
@@ -118,7 +118,7 @@ define(function(require, _exports, module) {
       })
 
       it('supports DateTime objects as bounds', function() {
-        var start = DateTime.fromDateObject(new Date("2009-04-18")), end = DateTime.fromDateObject(new Date("2009-05-03"))
+        var start = DateTime.fromDateObject(new Date('2009-04-18')), end = DateTime.fromDateObject(new Date('2009-05-03'))
         createCalendarFields().continuousCalendar({firstDate: start, lastDate: end})
         assertHasValues('.date', [
           12, 13, 14, 15, 16, 17, 18,
@@ -736,7 +736,7 @@ define(function(require, _exports, module) {
 
   function dragOutsideCalendar(enter) {
     elemByDate(enter).mousedown()
-    cal().find(".monthName").mouseover()
+    cal().find('.monthName').mouseover()
   }
 
   function createCalendarWithOneWeek() {
