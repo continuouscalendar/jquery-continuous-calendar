@@ -82,7 +82,12 @@ define(function(require, _exports, module) {
       })
 
       it('disabled date is not selectable', function() {
-        createCalendarFields().continuousCalendar({firstDate: '4/15/2009', lastDate: '5/9/2009', disableWeekends: true, disabledDates: '4/22/2009 4/29/2009'})
+        createCalendarFields().continuousCalendar({
+          firstDate:       '4/15/2009',
+          lastDate:        '5/9/2009',
+          disableWeekends: true,
+          disabledDates:   '4/22/2009 4/29/2009'
+        })
         elemByDate(15).click()
         keepsSameDate()
         elemByDate(13).click()
@@ -107,8 +112,8 @@ define(function(require, _exports, module) {
         assertHasValues('.date', [
           12, 13, 14, 15, 16, 17, 18,
           19, 20, 21, 22, 23, 24, 25,
-          26, 27, 28, 29, 30,  1,  2,
-           3,  4,  5,  6,  7,  8,  9
+          26, 27, 28, 29, 30, 1, 2,
+          3, 4, 5, 6, 7, 8, 9
         ])
       })
 
@@ -118,8 +123,8 @@ define(function(require, _exports, module) {
         assertHasValues('.date', [
           12, 13, 14, 15, 16, 17, 18,
           19, 20, 21, 22, 23, 24, 25,
-          26, 27, 28, 29, 30,  1,  2,
-           3,  4,  5,  6,  7,  8,  9
+          26, 27, 28, 29, 30, 1, 2,
+          3, 4, 5, 6, 7, 8, 9
         ])
       })
     })
@@ -144,7 +149,11 @@ define(function(require, _exports, module) {
       })
 
       it('can be cleared', function() {
-        createCalendarFields({startDate: '7/24/2013'}).continuousCalendar({weeksBefore: 2, weeksAfter: 0, allowClearDates: true})
+        createCalendarFields({startDate: '7/24/2013'}).continuousCalendar({
+          weeksBefore:     2,
+          weeksAfter:      0,
+          allowClearDates: true
+        })
         var clearDates = cal().find('.clearDates')
         expect(clearDates).to.be.visible
         clearDates.click()
@@ -169,7 +178,12 @@ define(function(require, _exports, module) {
       })
 
       it('is cleared if a disabled date is inside the range', function() {
-        createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', disabledDates: '4/22/2009', isRange: true})
+        createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({
+          firstDate:     '4/15/2009',
+          lastDate:      '5/12/2009',
+          disabledDates: '4/22/2009',
+          isRange:       true
+        })
         dragDatesSlowly(15, 29)
         expect(cal().find('.selected').length).to.equal(0)
         expect(startFieldValue()).to.equal('')
@@ -178,7 +192,12 @@ define(function(require, _exports, module) {
       })
 
       it('can be cleared', function() {
-        createCalendarFields({startDate: '7/24/2013', endDate: '8/5/2013'}).continuousCalendar({firstDate: '7/22/2009', lastDate: '8/7/2009', allowClearDates: true, isRange: true})
+        createCalendarFields({startDate: '7/24/2013', endDate: '8/5/2013'}).continuousCalendar({
+          firstDate:       '7/22/2009',
+          lastDate:        '8/7/2009',
+          allowClearDates: true,
+          isRange:         true
+        })
         var clearDates = cal().find('.clearDates')
         expect(clearDates).to.be.visible
         clearDates.click()
@@ -205,7 +224,7 @@ define(function(require, _exports, module) {
       })
 
       it('changes its selection when opening according to ISO start and end fields', function() {
-        createPopupRangeCalendar('12/15/2013', '2/22/2014', {useIsoForInput:true})
+        createPopupRangeCalendar('12/15/2013', '2/22/2014', {useIsoForInput: true})
         setStartFieldValue('2014-01-14')
         setEndFieldValue('2014-01-16')
         cal().find('.calendarIcon').click()
@@ -338,9 +357,9 @@ define(function(require, _exports, module) {
       it('range is expandable by clicking with shift key', function() {
         createRangeCalendarWithFiveWeeks()
         clickDateWithShift(7)
-        assertHasValues('.selected', [ 29, 30, 1, 2, 3, 4, 5, 6, 7])
+        assertHasValues('.selected', [29, 30, 1, 2, 3, 4, 5, 6, 7])
         clickDateWithShift(13)
-        assertHasValues('.selected', [ 29, 30, 1, 2, 3, 4, 5, 6, 7])
+        assertHasValues('.selected', [29, 30, 1, 2, 3, 4, 5, 6, 7])
         expect(cal().find('.disabled').length).to.equal(7)
         //4/15/2009',lastDate:'5/12/2009
       })
@@ -358,7 +377,12 @@ define(function(require, _exports, module) {
       })
 
       it('range has current day selected as default when configured so', function() {
-        createCalendarFields().continuousCalendar({weeksBefore: 20, lastDate: 'today', selectToday: true, isRange: true})
+        createCalendarFields().continuousCalendar({
+          weeksBefore: 20,
+          lastDate:    'today',
+          selectToday: true,
+          isRange:     true
+        })
         expect(cal().find('.selected').length).to.equal(1)
       })
 
@@ -375,7 +399,11 @@ define(function(require, _exports, module) {
 
         window.bindCalled = 0
         window.calendarCallBack = 0
-        createCalendarFields({startDate: ''}).continuousCalendar({firstDate: '4/26/2009', lastDate: '5/2/2009', callback: testFunction})
+        createCalendarFields({startDate: ''}).continuousCalendar({
+          firstDate: '4/26/2009',
+          lastDate:  '5/2/2009',
+          callback:  testFunction
+        })
         cal().bind('calendarChange', function() {
           window.bindCalled++
         })
@@ -390,7 +418,12 @@ define(function(require, _exports, module) {
           window.calendarCallBack = range.days()
         }
 
-        createCalendarFields().continuousCalendar({firstDate: '4/26/2009', lastDate: '5/2/2009', callback: testFunction, isRange: true})
+        createCalendarFields().continuousCalendar({
+          firstDate: '4/26/2009',
+          lastDate:  '5/2/2009',
+          callback:  testFunction,
+          isRange:   true
+        })
         cal().bind('calendarChange', function() {
           window.calendarChanged = $(this).find('.selected').length
         })
@@ -407,7 +440,12 @@ define(function(require, _exports, module) {
       })
 
       it('month and day names are localizable', function() {
-        createCalendarFields().continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009', locale: DateLocale.FI, isRange: true})
+        createCalendarFields().continuousCalendar({
+          firstDate: '1/1/2009',
+          lastDate:  '12/31/2009',
+          locale:    DateLocale.FI,
+          isRange:   true
+        })
         assertHasValues('.continuousCalendar thead th.weekDay', ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su'])
         assertHasValues('.monthName', [
           'joulukuu',
@@ -491,7 +529,11 @@ define(function(require, _exports, module) {
       })
 
       it('changes its selection when opening according to start field ISO value', function() {
-        createCalendarFields({startDate: '2013-12-17'}).continuousCalendar({isPopup: true, locale: DateLocale.FI, useIsoForInput:true})
+        createCalendarFields({startDate: '2013-12-17'}).continuousCalendar({
+          isPopup:        true,
+          locale:         DateLocale.FI,
+          useIsoForInput: true
+        })
         setStartFieldValue('2013-12-16')
         cal().find('.calendarIcon').click()
         assertHasValues('.selected', [16])
@@ -499,13 +541,20 @@ define(function(require, _exports, module) {
       })
 
       it('changes its selection to current day', function() {
-        createCalendarFields({startDate: ''}).continuousCalendar({isPopup: true, selectToday:true, locale: DateLocale.FI, useIsoForInput:true})
+        createCalendarFields({startDate: ''}).continuousCalendar({
+          isPopup:        true,
+          selectToday:    true,
+          locale:         DateLocale.FI,
+          useIsoForInput: true
+        })
         expect(startFieldValue()).to.equal(DateTime.today().toISODateString())
       })
 
       it('call popup callback when opening calendar', function() {
         var count = 0
+
         function cb() { count++ }
+
         createCalendarFields({startDate: '12/17/2013'}).continuousCalendar({isPopup: true, popupCallback: cb})
         cal().find('.calendarIcon').click()
         expect(count).to.equal(1)
@@ -516,11 +565,17 @@ define(function(require, _exports, module) {
       beforeEach(function() {
         createCalendarContainer.call(this)
         createCalendarFields({startDate: '4/15/2009', endDate: '4/15/2009'})
-          .continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', minimumRange: 4, disableWeekends: true, isRange: true})
+          .continuousCalendar({
+            firstDate:       '4/15/2009',
+            lastDate:        '5/12/2009',
+            minimumRange:    4,
+            disableWeekends: true,
+            isRange:         true
+          })
       })
 
       it('moving and creation has constraints', function() {
-        assertHasValues('.selected', [17, 18, 19 , 20]) //initial range is in bounds
+        assertHasValues('.selected', [17, 18, 19, 20]) //initial range is in bounds
 
       })
 
@@ -684,41 +739,97 @@ define(function(require, _exports, module) {
     cal().find(".monthName").mouseover()
   }
 
-  function createCalendarWithOneWeek() { createCalendarFields({startDate: '4/30/2008'}).continuousCalendar({weeksBefore: 0, weeksAfter: 0}) }
+  function createCalendarWithOneWeek() {
+    createCalendarFields({startDate: '4/30/2008'}).continuousCalendar({
+      weeksBefore: 0,
+      weeksAfter:  0
+    })
+  }
 
-  function createCalendarWithNoRange(start, end) { createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: start, lastDate: end, isRange: true}) }
+  function createCalendarWithNoRange(start, end) {
+    createCalendarFields({
+      startDate: '',
+      endDate:   ''
+    }).continuousCalendar({firstDate: start, lastDate: end, isRange: true})
+  }
 
   function createRangeCalendarWithFiveWeeks() {
-    createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', isRange: true})
+    createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({
+      firstDate: '4/15/2009',
+      lastDate:  '5/12/2009',
+      isRange:   true
+    })
   }
 
   function createRangeCalendarWithFiveWeeksAndDisabledWeekends() {
-    createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', disableWeekends: true, isRange: true})
+    createCalendarFields({startDate: '4/29/2009', endDate: '5/5/2009'}).continuousCalendar({
+      firstDate:       '4/15/2009',
+      lastDate:        '5/12/2009',
+      disableWeekends: true,
+      isRange:         true
+    })
   }
 
   function createWeekCalendar() {
-    createCalendarFields().continuousCalendar({firstDate: '4/15/2009', lastDate: '5/12/2009', selectWeek: true, isRange: true})
+    createCalendarFields().continuousCalendar({
+      firstDate:  '4/15/2009',
+      lastDate:   '5/12/2009',
+      selectWeek: true,
+      isRange:    true
+    })
   }
 
   function createBigCalendar() {
     var todayText = DateFormat.format(DateTime.now(), DateLocale.EN.shortDateFormat)
-    createCalendarFields({startDate: todayText, endDate: todayText }).continuousCalendar({weeksBefore: 60, weeksAfter: 30, isRange: true})
+    createCalendarFields({startDate: todayText, endDate: todayText}).continuousCalendar({
+      weeksBefore: 60,
+      weeksAfter:  30,
+      isRange:     true
+    })
   }
 
-  function createBigCalendarForSingleDate() { createCalendarFields({startDate: ''}).continuousCalendar({weeksBefore: 20, weeksAfter: 20}) }
+  function createBigCalendarForSingleDate() {
+    createCalendarFields({startDate: ''}).continuousCalendar({
+      weeksBefore: 20,
+      weeksAfter:  20
+    })
+  }
 
-  function createCalendarFromJanuary() { createCalendarFields({startDate: ''}).continuousCalendar({firstDate: '1/1/2009', lastDate: '12/31/2009'}) }
+  function createCalendarFromJanuary() {
+    createCalendarFields({startDate: ''}).continuousCalendar({
+      firstDate: '1/1/2009',
+      lastDate:  '12/31/2009'
+    })
+  }
 
   function createPopupCalendar() { createCalendarFields({startDate: '4/29/2009'}).continuousCalendar({isPopup: true}) }
 
-  function createPopupRangeCalendar(start, end, options) { createCalendarFields({startDate: '', endDate: ''}).continuousCalendar($.extend({firstDate: start, lastDate: end, isPopup: true, isRange: true}, (options || {}))) }
+  function createPopupRangeCalendar(start, end, options) {
+    createCalendarFields({
+      startDate: '',
+      endDate:   ''
+    }).continuousCalendar($.extend({firstDate: start, lastDate: end, isPopup: true, isRange: true}, (options || {})))
+  }
 
   function createPopupWeekCalendar() {
-    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({firstDate: '5/1/2011', lastDate: '5/31/2011', isPopup: true, selectWeek: true, isRange: true})
+    createCalendarFields({startDate: '', endDate: ''}).continuousCalendar({
+      firstDate:  '5/1/2011',
+      lastDate:   '5/31/2011',
+      isPopup:    true,
+      selectWeek: true,
+      isRange:    true
+    })
   }
 
   function createClearablePopupWeekCalendar() {
-    createCalendarFields({startDate: '7/23/2013', endDate: '7/25/2013'}).continuousCalendar({firstDate: '7/21/2011', lastDate: '8/6/2011', isPopup: true, selectWeek: true, allowClearDates: true, isRange: true})
+    createCalendarFields({startDate: '7/23/2013', endDate: '7/25/2013'}).continuousCalendar({
+      firstDate:       '7/21/2011',
+      lastDate:        '8/6/2011',
+      isPopup:         true,
+      selectWeek:      true,
+      allowClearDates: true,
+      isRange:         true
+    })
   }
 
   function elemByDate(date) { return elemFromContainerByDate(cal(), date) }

@@ -1,14 +1,14 @@
 requirejs.config({
-  paths: {
+  paths:     {
     'chai':        '../../node_modules/chai/chai',
     'chai.jquery': '../../node_modules/chai-jquery/chai-jquery',
     'mocha':       '../../node_modules/mocha/mocha',
-    'jquery'     : '../../node_modules/jquery/dist/jquery'
+    'jquery':      '../../node_modules/jquery/dist/jquery'
   },
-    'baseUrl': '.',
+  'baseUrl': '.',
 
-    shim : {
-    'mocha': { exports: 'mocha' }
+  shim: {
+    'mocha': {exports: 'mocha'}
   }
 })
 
@@ -26,11 +26,9 @@ define(function(require) {
   chai.use(matchers)
   window.expect = chai.expect
 
-
-
   require(['./jquery.continuousCalendar.spec'], function() {
     $.fx.off = true
-    $.ajaxSetup({ async: false })
+    $.ajaxSetup({async: false})
     if(window.mochaPhantomJS) { window.mochaPhantomJS.run() }
     else { mocha.run() }
   })
