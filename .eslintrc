@@ -8,7 +8,8 @@
     "no-unneeded-ternary": 2,
     "prefer-const": 2,
     "semi": [2, "never"],
-    "indent": ["error", 2]
+    "indent": ["error", 2],
+    "quotes": ["error", "single"]
   },
   "env": {
     "browser": true,
