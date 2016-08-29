@@ -1587,7 +1587,6 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       else if(enabledCell(elem)) startNewRange()
     }
 
-
     function enabledCell(elem) { return isDateCell(elem) && isEnabled(elem) }
 
     function isInstantSelection(elem, hasShiftKeyPressed) {

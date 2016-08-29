@@ -9,14 +9,15 @@
     "prefer-const": 2,
     "semi": [2, "never"],
     "indent": ["error", 2],
-    "quotes": ["error", "single"]
+    "quotes": ["error", "single"],
+    "no-multiple-empty-lines": ["error", {"max": 1}]
   },
   "env": {
     "browser": true,
     "mocha": true,
     "jquery": true,
     "node": true,
-    "es6" : false
+    "es6": false
   },
   "globals": {
     "expect": true,
