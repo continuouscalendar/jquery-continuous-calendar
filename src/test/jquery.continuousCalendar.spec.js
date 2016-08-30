@@ -1,8 +1,12 @@
-var DateLocale = window.DateLocale
-var DateTime = window.DateTime
-var DateFormat = window.DateFormat
+var DateLocale
+var DateTime
+var DateFormat
 
 describe('continuousCalendar', function() {
+  DateLocale = window.DateLocale
+  DateTime = window.DateTime
+  DateFormat = window.DateFormat
+
   describe('empty calendar of full year', function() {
     var _this = this
     before(function() {
