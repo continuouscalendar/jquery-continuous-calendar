@@ -29,8 +29,8 @@ $.fn.continuousCalendar = function(options) {
       minimumRange   : -1,
       selectWeek     : false,
       fadeOutDuration: 0,
-      callback       : $.noop,
-      popupCallback  : $.noop,
+      callback       : function() {},
+      popupCallback  : function() {},
       customScroll   : false,
       scrollOptions  : {
         sizethumb: 'auto'
@@ -55,6 +55,7 @@ $.fn.continuousCalendar = function(options) {
       setEndField(today)
     }
     var container = this
+    var container2 = $(this).get(0)
     var averageCellHeight
     var calendarContainer
     var beforeFirstOpening = true
@@ -66,12 +67,13 @@ $.fn.continuousCalendar = function(options) {
     var disabledDatesList
     var disabledDatesObject
 
-    $(this).addClass('continuousCalendarContainer').addClass(params.theme)
+    container2.classList.add('continuousCalendarContainer')
+    container2.classList.add('params.theme')
     createCalendar()
 
     function createCalendar() {
       //TODO change api to take YYYY-MM-DD instead of MM/DD/YYYY and array instead of space separated string
-      disabledDatesList = params.disabledDates ? $.map(params.disabledDates.split(' '), function(slashStr) {
+      disabledDatesList = params.disabledDates ? params.disabledDates.split(' ').map(function(slashStr) {
         var mdy = slashStr.split('/')
         var year = mdy[2]
         var month = mdy[0]
@@ -85,7 +87,7 @@ $.fn.continuousCalendar = function(options) {
       params.fadeOutDuration = +params.fadeOutDuration
       calendarContainer = getCalendarContainerOrCreateOne()
       calendarContainer.click(function(e) { e.stopPropagation() })
-      if($('.startDateLabel', container).isEmpty()) addDateLabels(container, popupBehavior, dateBehavior)
+      if(!container2.querySelector('.startDateLabel')) addDateLabels(container, popupBehavior, dateBehavior)
       popupBehavior.initUI()
       dateBehavior.showInitialSelection()
       dateBehavior.performTrigger()
@@ -149,7 +151,7 @@ $.fn.continuousCalendar = function(options) {
 
     function parseDisabledDates(dates) {
       var dateMap = {}
-      $.each(dates, function(index, date) { dateMap[DateTime.fromIsoDate(date).date] = true })
+      dates.forEach(function(date) { dateMap[DateTime.fromIsoDate(date).date] = true })
       return dateMap
     }
 
@@ -166,7 +168,7 @@ $.fn.continuousCalendar = function(options) {
           var icon = $('<a href="#" class="calendarIcon">' + today.getDate() + '</a>').click(toggleCalendar)
           container.prepend(icon)
         },
-        initState            : $.noop,
+        initState            : function () { },
         getContainer         : function(newContainer) { return $('<div class="popUpContainer">').append(newContainer) },
         close                : function(cell) { toggleCalendar.call(cell) },
         addDateLabelBehaviour: function(label) {
@@ -203,8 +205,8 @@ $.fn.continuousCalendar = function(options) {
         getContainer         : function(newContainer) {
           return newContainer
         },
-        close                : $.noop,
-        addDateLabelBehaviour: $.noop
+        close                : function() {},
+        addDateLabelBehaviour: function() {}
       }
       return isPopup ? popUpVersion : inlineVersion
     }
@@ -231,14 +233,15 @@ $.fn.continuousCalendar = function(options) {
       var scrollContent = calendarBody.scrollContent
       var selectionStartOrToday = scrollContent.querySelector('.selected') || scrollContent.querySelector('.today')
       if(selectionStartOrToday) {
-        var position = selectionStartOrToday.offsetTop - ($(calendarBody.scrollContent).height() - selectionStartOrToday.offsetHeight) / 2
+        var height = calendarBody.scrollContent.clientHeight
+        var position = selectionStartOrToday.offsetTop - (height - selectionStartOrToday.offsetHeight) / 2
         if(params.customScroll) {
-          var totalHeight = $(calendarBody.bodyTable).height()
-          var maxScroll = totalHeight - $(calendarBody.scrollContent).height()
+          var totalHeight = calendarBody.bodyTable.clientHeight
+          var maxScroll = totalHeight - height
           var validPosition = position > maxScroll ? maxScroll : position
           customScrollContainer.tinyscrollbar_update(validPosition > 0 ? validPosition : 0)
         } else {
-          $(calendarBody.scrollContent).scrollTop(position)
+          calendarBody.scrollContent.scrollTop = position
         }
       }
     }
@@ -258,7 +261,7 @@ $.fn.continuousCalendar = function(options) {
       setYearLabel()
     }
 
-    function calculateCellHeight() { averageCellHeight = parseInt($(calendarBody.bodyTable).height() / $('tr', $(calendarBody.bodyTable)).length, 10) }
+    function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.clientHeight / $('tr', $(calendarBody.bodyTable)).length, 10) }
 
     function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? (params.useIsoForInput ? DateTime.fromIsoDate(field.val()) : DateParse.parse(field.val(), locale)) : null }
 
