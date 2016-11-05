@@ -137,7 +137,7 @@ $.fn.continuousCalendar = function(options) {
         customScrollContainer.bind('scroll', setYearLabel)
       } else {
         var waiting = false
-        $(calendarBody.scrollContent).scroll(function() {
+        calendarBody.scrollContent.addEventListener('scroll', function() {
           if (!waiting) {
             setTimeout(function() {
               waiting = false
@@ -249,7 +249,7 @@ $.fn.continuousCalendar = function(options) {
     function setYearLabel() {
       var scrollContent = calendarBody.scrollContent
       var table = scrollContent.querySelector('table')
-      var scrollTop = params.customScroll ? -$('.overview', calendarContainer).position().top : scrollContent.scrollTop
+      var scrollTop = params.customScroll ? -calendarContainer.get(0).querySelector('.overview').offsetTop : scrollContent.scrollTop
       var rowNumber = parseInt(scrollTop / averageCellHeight, 10)
       var date = getElemDate(table.rows[rowNumber].cells[2])
       calendarBody.yearTitle.innerText = date.getFullYear()
@@ -261,7 +261,7 @@ $.fn.continuousCalendar = function(options) {
       setYearLabel()
     }
 
-    function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.clientHeight / $('tr', $(calendarBody.bodyTable)).length, 10) }
+    function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.clientHeight / calendarBody.bodyTable.querySelectorAll('tr').length, 10) }
 
     function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? (params.useIsoForInput ? DateTime.fromIsoDate(field.val()) : DateParse.parse(field.val(), locale)) : null }
 
