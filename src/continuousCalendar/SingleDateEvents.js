@@ -6,8 +6,8 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   return {
     showInitialSelection: showInitialSelection,
     initEvents          : initEvents,
-    addRangeLengthLabel : $.noop,
-    addEndDateLabel     : $.noop,
+    addRangeLengthLabel : function () { },
+    addEndDateLabel     : function () { },
     addDateClearingLabel: addDateClearingLabel,
     setSelection        : setSelection,
     performTrigger      : performTrigger
@@ -18,7 +18,6 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       setFieldValues(startDate)
       var clearDates = container.get(0).querySelector('.clearDates')
       if(clearDates) clearDates.style.display = ''
-      $('.clearDates', container).show()
     }
   }
 
