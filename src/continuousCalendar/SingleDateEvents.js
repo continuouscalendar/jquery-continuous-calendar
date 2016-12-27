@@ -66,7 +66,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       if (!dateCell.hasClass('disabled')) {
         var selectedDate = getElemDate(dateCell.get(0))
         setSelectedDate(selectedDate, dateCell.get(0))
-        popupBehavior.close(this)
+        popupBehavior.close()
         executeCallback(selectedDate)
       }
     })

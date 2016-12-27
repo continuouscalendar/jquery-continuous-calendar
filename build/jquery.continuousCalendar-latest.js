@@ -1834,7 +1834,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       if (!dateCell.hasClass('disabled')) {
         var selectedDate = getElemDate(dateCell.get(0))
         setSelectedDate(selectedDate, dateCell.get(0))
-        popupBehavior.close(this)
+        popupBehavior.close()
         executeCallback(selectedDate)
       }
     })
@@ -2035,7 +2035,7 @@ $.fn.continuousCalendar = function(options) {
         popUpContainer.appendChild(newContainer)
         return popUpContainer
       },
-      close:                 function(cell) { toggleCalendar.call(cell) },
+      close:                 toggleCalendar,
       addDateLabelBehaviour: function(label) {
         label.addClass('clickable')
         label.click(toggleCalendar)

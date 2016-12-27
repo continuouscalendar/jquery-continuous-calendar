@@ -170,7 +170,7 @@ module.exports = function(containerEl, options) {
         popUpContainer.appendChild(newContainer)
         return popUpContainer
       },
-      close:                 function(cell) { toggleCalendar.call(cell) },
+      close:                 toggleCalendar,
       addDateLabelBehaviour: function(label) {
         label.addClass('clickable')
         label.click(toggleCalendar)
