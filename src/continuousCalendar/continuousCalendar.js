@@ -80,7 +80,7 @@ module.exports = function(containerEl, options) {
     popupBehavior = popUpBehaviour(params.isPopup)
     dateBehavior = dateBehaviour(params.isRange)
     params.fadeOutDuration = +params.fadeOutDuration
-    calendarContainer = getCalendarContainerOrCreateOne()
+    calendarContainer = $(getCalendarContainerOrCreateOne())
     calendarContainer.click(function(e) { e.stopPropagation() })
     if(!container2.querySelector('.startDateLabel')) addDateLabels(container, popupBehavior, dateBehavior)
     popupBehavior.initUI()
@@ -164,7 +164,12 @@ module.exports = function(containerEl, options) {
         container.prepend(icon)
       },
       initState:             function() { },
-      getContainer:          function(newContainer) { return $('<div class="popUpContainer">').append(newContainer) },
+      getContainer:          function(newContainer) {
+        var popUpContainer = document.createElement('div')
+        popUpContainer.setAttribute('class', 'popUpContainer')
+        popUpContainer.appendChild(newContainer)
+        return popUpContainer
+      },
       close:                 function(cell) { toggleCalendar.call(cell) },
       addDateLabelBehaviour: function(label) {
         label.addClass('clickable')
@@ -207,12 +212,13 @@ module.exports = function(containerEl, options) {
   }
 
   function getCalendarContainerOrCreateOne() {
-    var existingContainer = $('.continuousCalendar', container)
-    if(existingContainer.exists()) {
+    var existingContainer = container2.querySelector('.continuousCalendar')
+    if(existingContainer) {
       return existingContainer
     } else {
-      var newContainer = $('<div class="continuousCalendar">')
-      container.append(popupBehavior.getContainer(newContainer))
+      var newContainer = document.createElement('div')
+      newContainer.setAttribute('class', 'continuousCalendar')
+      container2.appendChild(popupBehavior.getContainer(newContainer))
       return newContainer
     }
   }
