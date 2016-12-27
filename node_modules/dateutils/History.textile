@@ -1,3 +1,11 @@
+h3. 0.3.1 
+
+Set correct timezone
+Add travis config file
+Update bundle
+Make new bundle on prepublish
+Update build script instructions
+
 h3. 0.3.0 
 
 * Add Chinese date time format

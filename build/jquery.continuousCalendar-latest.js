@@ -934,7 +934,7 @@ module.exports = Duration
 
 },{}],7:[function(require,module,exports){
 module.exports = {
-  "version":  "0.3.0",
+  "version":  "0.3.1",
   DateFormat: require('./DateFormat'),
   DateLocale: require('./DateLocale'),
   DateParse:  require('./DateParse'),
@@ -1829,11 +1829,11 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function initSingleDateCalendarEvents() {
-    $('.date', container).bind('click', function() {
-      var dateCell = $(this)
-      if (!dateCell.hasClass('disabled')) {
-        var selectedDate = getElemDate(dateCell.get(0))
-        setSelectedDate(selectedDate, dateCell.get(0))
+    container.get(0).addEventListener('click', function(e) {
+      var dateCell = e.target
+      if (dateCell.classList.contains('date') && !dateCell.classList.contains('disabled')) {
+        var selectedDate = getElemDate(dateCell)
+        setSelectedDate(selectedDate, dateCell)
         popupBehavior.close()
         executeCallback(selectedDate)
       }

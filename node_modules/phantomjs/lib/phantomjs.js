@@ -7,7 +7,6 @@
 
 var fs = require('fs')
 var path = require('path')
-var which = require('which')
 
 
 /**
@@ -15,7 +14,10 @@ var which = require('which')
  * @type {string}
  */
 try {
-  exports.path = path.resolve(__dirname, require('./location').location)
+  var location = require('./location')
+  exports.path = path.resolve(__dirname, location.location)
+  exports.platform = location.platform
+  exports.arch = location.arch
 } catch(e) {
   // Must be running inside install script.
   exports.path = null
@@ -50,7 +52,7 @@ if (exports.path) {
   try {
     // avoid touching the binary if it's already got the correct permissions
     var st = fs.statSync(exports.path);
-    var mode = st.mode | 0555;
+    var mode = st.mode | parseInt("0555", 8);
     if (mode !== st.mode) {
       fs.chmodSync(exports.path, mode);
     }
