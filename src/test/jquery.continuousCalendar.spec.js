@@ -431,7 +431,7 @@ describe('continuousCalendar', function() {
       expect(window.calendarCallBack).to.equal(0)
       dragDates(28, 29)
       expect(window.calendarCallBack).to.equal(2)
-      expect(window.calendarContainer.find('.selected')).toHaveLength(2)
+      expect(window.calendarContainer.querySelectorAll('.selected')).toHaveLength(2)
       expect(window.calendarChanged).to.equal(2)
     })
 

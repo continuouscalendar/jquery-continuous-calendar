@@ -261,7 +261,7 @@ module.exports = function(containerEl, options) {
   function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? (params.useIsoForInput ? DateTime.fromIsoDate(field.val()) : DateParse.parse(field.val(), locale)) : null }
 
   function executeCallback(selection) {
-    params.callback.call(container, selection)
+    params.callback.call(container2, selection)
     container.trigger('calendarChange', selection)
   }
 
