@@ -145,7 +145,7 @@ describe('continuousCalendar', function() {
 
     it('week number click on single date calendar does nothing', function() {
       createCalendarFields({startDate: '4/18/2009'}).continuousCalendar({weeksBefore: 2, weeksAfter: 0})
-      cal().find('.week').withText(15).click()
+      clickEl(cal().find('.week').withText(15))
       expect(cal().find('.selected').length).to.equal(1)
     })
 
@@ -218,7 +218,7 @@ describe('continuousCalendar', function() {
       createPopupRangeCalendar('12/15/2013', '2/22/2014')
       setStartFieldValue('1/14/2014')
       setEndFieldValue('1/16/2014')
-      cal().find('.calendarIcon').click()
+      clickEl(cal().find('.calendarIcon'))
       assertHasValues('.selected', [14, 15, 16])
       expect(startLabelValue()).to.equal('Tu 1/14/2014')
       expect(endLabelValue()).to.equal('Th 1/16/2014')
@@ -228,7 +228,7 @@ describe('continuousCalendar', function() {
       createPopupRangeCalendar('12/15/2013', '2/22/2014', {useIsoForInput: true})
       setStartFieldValue('2014-01-14')
       setEndFieldValue('2014-01-16')
-      cal().find('.calendarIcon').click()
+      clickEl(cal().find('.calendarIcon'))
       assertHasValues('.selected', [14, 15, 16])
       expect(startLabelValue()).to.equal('Tu 1/14/2014')
       expect(endLabelValue()).to.equal('Th 1/16/2014')
@@ -339,7 +339,7 @@ describe('continuousCalendar', function() {
 
     it('mouse click on month in single date calendar does nothing', function() {
       createBigCalendarForSingleDate()
-      cal().find('.month').withText('May').click()
+      clickEl(cal().find('.month').withText('May'))
       expect(cal().find('.selected').length).to.equal(0)
       expect(startFieldValue()).to.equal('')
     })
@@ -484,7 +484,7 @@ describe('continuousCalendar', function() {
 
     it('date label click does nothing when not pop-up', function() {
       createRangeCalendarWithFiveWeeks()
-      cal().find('.startDateLabel').click()
+      clickEl(cal().find('.startDateLabel'))
       expect(cal().find('.continuousCalendar')).to.be.visible
     })
   })
@@ -496,7 +496,7 @@ describe('continuousCalendar', function() {
       createPopupCalendar()
       expect(cal().find('.continuousCalendar')).not.to.be.visible
       expect(startLabelValue()).to.equal('We 4/29/2009')
-      cal().find('.calendarIcon').click()
+      clickEl(cal().find('.calendarIcon'))
       expect(cal().find('.continuousCalendar')).to.be.visible
       //TODO fix this
       //assertHasValues('.continuousCalendar thead th.month', ['2008'], 'month is shown correctly')
@@ -516,7 +516,7 @@ describe('continuousCalendar', function() {
 
     it('clearing closes the calendar', function() {
       createClearablePopupWeekCalendar()
-      cal().find('.calendarIcon').click()
+      clickEl(cal().find('.calendarIcon'))
       clickEl(cal().find('.clearDates'))
       expect(cal().find('.continuousCalendar')).not.to.be.visible
       expect(startFieldValue()).to.equal('')
@@ -526,7 +526,7 @@ describe('continuousCalendar', function() {
     it('changes its selection when opening according to start field value', function() {
       createCalendarFields({startDate: '12/17/2013'}).continuousCalendar({isPopup: true, locale: DateLocale.FI})
       setStartFieldValue('16.12.2013')
-      cal().find('.calendarIcon').click()
+      clickEl(cal().find('.calendarIcon'))
       assertHasValues('.selected', [16])
       expect(startLabelValue()).to.equal('ma 16.12.2013')
     })
@@ -538,7 +538,7 @@ describe('continuousCalendar', function() {
         useIsoForInput: true
       })
       setStartFieldValue('2013-12-16')
-      cal().find('.calendarIcon').click()
+      clickEl(cal().find('.calendarIcon'))
       assertHasValues('.selected', [16])
       expect(startLabelValue()).to.equal('ma 16.12.2013')
     })
@@ -559,7 +559,7 @@ describe('continuousCalendar', function() {
       function cb() { count++ }
 
       createCalendarFields({startDate: '12/17/2013'}).continuousCalendar({isPopup: true, popupCallback: cb})
-      cal().find('.calendarIcon').click()
+      clickEl(cal().find('.calendarIcon'))
       expect(count).to.equal(1)
     })
   })
@@ -631,7 +631,7 @@ describe('continuousCalendar', function() {
 
     it('date click closes the calendar', function() {
       createPopupWeekCalendar()
-      cal().find('.calendarIcon').click()
+      clickEl(cal().find('.calendarIcon'))
       mouseClick(cal().find('.date').withText(11))
       expect(cal().find('.continuousCalendar')).not.to.be.visible
       expect(startLabelValue()).to.equal('Su 5/8/2011')
@@ -640,7 +640,7 @@ describe('continuousCalendar', function() {
 
     it('week click closes the calendar', function() {
       createPopupWeekCalendar()
-      cal().find('.calendarIcon').click()
+      clickEl(cal().find('.calendarIcon'))
       mouseClick(cal().find('.week').withText(21))
       expect(cal().find('.continuousCalendar')).not.to.be.visible
       expect(startFieldValue()).to.equal('5/29/2011')

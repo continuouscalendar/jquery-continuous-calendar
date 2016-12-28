@@ -93,7 +93,7 @@ module.exports = function(containerEl, options) {
   function initCalendarTable() {
     if(!calendarBody.scrollContent) {
 
-      calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
+      calendarBody = extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
         params.customScroll, params.disableWeekends, disabledDatesObject))
       bindScrollEvent()
 
@@ -161,8 +161,12 @@ module.exports = function(containerEl, options) {
       initUI:                function() {
         calendarContainer.classList.add('popup')
         calendarContainer.style.display = 'none'
-        var icon = $('<a href="#" class="calendarIcon">' + today.getDate() + '</a>').click(toggleCalendar)
-        container.prepend(icon)
+        var icon = document.createElement('a')
+        icon.setAttribute('href', '#')
+        icon.setAttribute('class', 'calendarIcon')
+        icon.innerText = today.getDate()
+        icon.addEventListener('click', toggleCalendar)
+        container.get(0).insertBefore(icon, container.get(0).firstChild)
       },
       initState:             function() { },
       getContainer:          function(newContainer) {
@@ -173,8 +177,8 @@ module.exports = function(containerEl, options) {
       },
       close:                 toggleCalendar,
       addDateLabelBehaviour: function(label) {
-        label.addClass('clickable')
-        label.click(toggleCalendar)
+        label.get(0).classList.add('clickable')
+        label.get(0).addEventListener('click', toggleCalendar)
       }
     }
 
@@ -183,7 +187,8 @@ module.exports = function(containerEl, options) {
       if(calendarContainer.style.display === '' ) {
         //calendarContainer.fadeOut(params.fadeOutDuration)
         calendarContainer.style.display = 'none'
-        $(document).unbind('click.continuousCalendar')
+        //TODO re-actiate
+        //$(document).unbind('click.continuousCalendar')
       } else {
         params.popupCallback()
         calendarContainer.style.display = ''
@@ -195,7 +200,8 @@ module.exports = function(containerEl, options) {
         }
         dateBehavior.setSelection(fieldDate(params.startField), fieldDate(params.endField))
         scrollToSelection()
-        $(document).bind('click.continuousCalendar', toggleCalendar)
+        //TODO re-actiate
+        //$(document).bind('click.continuousCalendar', toggleCalendar)
 
       }
       return false
