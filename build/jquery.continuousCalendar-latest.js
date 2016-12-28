@@ -1497,8 +1497,6 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
 }
 
 },{"dateutils":7}],21:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
 var DateFormat = require('dateutils').DateFormat
 var DateRange = require('dateutils').DateRange
 var DateTime = require('dateutils').DateTime
@@ -1730,7 +1728,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     setStartField(selection.start)
     setEndField(selection.end)
     setRangeLabels()
-    if(params.selectWeek) calendar.close($('td.selected', container).first())
+    if(params.selectWeek) calendar.close()
     executeCallback(selection)
   }
 
@@ -1771,7 +1769,6 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function isEnabled(elem) { return !elem.classList.contains('disabled') }
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"dateutils":7}],22:[function(require,module,exports){
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
