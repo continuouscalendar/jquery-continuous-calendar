@@ -15,7 +15,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function showInitialSelection() {
     if(startDate) {
       setFieldValues(startDate)
-      var clearDates = container.get(0).querySelector('.clearDates')
+      var clearDates = container.querySelector('.clearDates')
       if(clearDates) clearDates.style.display = ''
     }
   }
@@ -35,53 +35,53 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function setSelectedDate(date, cell) {
-    var selectedElem = container.get(0).querySelector('td.selected')
+    var selectedElem = container.querySelector('td.selected')
     selectedElem && selectedElem.classList.remove('selected')
     cell.classList.add('selected')
     setFieldValues(date)
   }
 
   function setFieldValues(date) {
-    container.get(0).calendarRange = date
+    container.calendarRange = date
     setStartField(date)
     setDateLabel(DateFormat.format(date, locale.weekDateFormat, locale))
   }
 
   function addDateClearingLabel() {
     if(params.allowClearDates) {
-      container.get(0).querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel">' +
+      container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel">' +
         '<span class="clearDates clickable" style="display: none">' + locale.clearDateLabel + '</span></div>')
     }
   }
 
   function performTrigger() {
-    container.get(0).calendarRange = startDate
+    container.calendarRange = startDate
     executeCallback(startDate)
   }
 
   function initSingleDateCalendarEvents() {
-    $('.date', container).bind('click', function() {
-      var dateCell = $(this)
-      if (!dateCell.hasClass('disabled')) {
-        var selectedDate = getElemDate(dateCell.get(0))
-        setSelectedDate(selectedDate, dateCell.get(0))
+    container.addEventListener('click', function(e) {
+      var dateCell = e.target
+      if (dateCell.classList.contains('date') && !dateCell.classList.contains('disabled')) {
+        var selectedDate = getElemDate(dateCell)
+        setSelectedDate(selectedDate, dateCell)
         popupBehavior.close()
         executeCallback(selectedDate)
       }
     })
-    var clearDates = container.get(0).querySelector('.clearDates')
+    var clearDates = container.querySelector('.clearDates')
     if(clearDates) clearDates.addEventListener('click', clickClearDate)
   }
 
   function setDateLabel(val) {
-    container.get(0).querySelector('span.startDateLabel').innerText = val
+    container.querySelector('span.startDateLabel').innerText = val
     if(params.allowClearDates) {
-      container.get(0).querySelector('.clearDates').style.display = (val === '' ? 'none' : '')
+      container.querySelector('.clearDates').style.display = (val === '' ? 'none' : '')
     }
   }
 
   function clickClearDate() {
-    container.get(0).querySelector('td.selected').classList.remove('selected')
+    container.querySelector('td.selected').classList.remove('selected')
     params.startField.get(0).value = ''
     setDateLabel('')
   }

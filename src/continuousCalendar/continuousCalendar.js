@@ -151,7 +151,7 @@ module.exports = function(containerEl, options) {
   }
 
   function dateBehaviour(isRange) {
-    var basicParams = [container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
+    var basicParams = [container.get(0), calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
     var rangeParams = [endDate, setEndField, calendarRange, disabledDatesList]
     return isRange ? RangeEvents.apply(null, basicParams.concat(rangeParams)) : SingleDateEvents.apply(null, basicParams)
   }
