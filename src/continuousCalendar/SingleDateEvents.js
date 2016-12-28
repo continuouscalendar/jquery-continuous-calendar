@@ -1,4 +1,3 @@
-var $ = require('jquery')
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
 
@@ -43,7 +42,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function setFieldValues(date) {
-    container.data('calendarRange', date)
+    container.get(0).calendarRange = date
     setStartField(date)
     setDateLabel(DateFormat.format(date, locale.weekDateFormat, locale))
   }
@@ -56,7 +55,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function performTrigger() {
-    container.data('calendarRange', startDate)
+    container.get(0).calendarRange = startDate
     executeCallback(startDate)
   }
 
@@ -70,7 +69,8 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
         executeCallback(selectedDate)
       }
     })
-    $('.clearDates', container).click(clickClearDate)
+    var clearDates = container.get(0).querySelector('.clearDates')
+    if(clearDates) clearDates.addEventListener('click', clickClearDate)
   }
 
   function setDateLabel(val) {

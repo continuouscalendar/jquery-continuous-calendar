@@ -51,7 +51,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function performTrigger() {
-    container.data('calendarRange', selection)
+    container.get(0).calendarRange = selection
     executeCallback(selection)
   }
 
@@ -218,7 +218,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       // Flash invalidSelection styled cells when selection is expanded to minimum length
       setTimeout(function() { drawSelectionBetweenDates(selection) }, 200)
     }
-    container.data('calendarRange', selection)
+    container.get(0).calendarRange = selection
     setStartField(selection.start)
     setEndField(selection.end)
     setRangeLabels()
