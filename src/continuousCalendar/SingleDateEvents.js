@@ -25,7 +25,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     setSelection(fieldDate(params.startField) || startDate)
   }
 
-  function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateParse.parse(field.val(), locale) : null }
+  function fieldDate(field) { return field && field.value && field.value.length > 0 ? DateParse.parse(field.value, locale) : null }
 
   function setSelection(date) {
     var selectedDateKey = date && DateFormat.format(date, 'Ymd', locale)
@@ -82,7 +82,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function clickClearDate() {
     container.querySelector('td.selected').classList.remove('selected')
-    params.startField.get(0).value = ''
+    params.startField.value = ''
     setDateLabel('')
   }
 }

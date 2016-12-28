@@ -14,8 +14,8 @@ module.exports = function(containerEl, options) {
     weeksAfter:      26,
     firstDate:       null,
     lastDate:        null,
-    startField:      $('input.startDate', containerEl),
-    endField:        $('input.endDate', containerEl),
+    startField:      containerEl.querySelector('input.startDate'),
+    endField:        containerEl.querySelector('input.endDate'),
     isPopup:         false,
     selectToday:     false,
     locale:          EN,
@@ -264,7 +264,7 @@ module.exports = function(containerEl, options) {
 
   function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.clientHeight / calendarBody.bodyTable.querySelectorAll('tr').length, 10) }
 
-  function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? (params.useIsoForInput ? DateTime.fromIsoDate(field.val()) : DateParse.parse(field.val(), locale)) : null }
+  function fieldDate(field) { return field && field.value && field.value.length > 0 ? (params.useIsoForInput ? DateTime.fromIsoDate(field.value) : DateParse.parse(field.value, locale)) : null }
 
   function executeCallback(selection) {
     params.callback.call(container2, selection)
@@ -273,9 +273,9 @@ module.exports = function(containerEl, options) {
 
   function getElemDate(elem) { return calendarBody.dateCellDates[$(elem).closest('[date-cell-index]').attr('date-cell-index')] }
 
-  function setStartField(date) { params.startField.val(formatDate(date)) }
+  function setStartField(date) { if(params.startField) params.startField.value = formatDate(date) }
 
-  function setEndField(date) { params.endField.val(formatDate(date)) }
+  function setEndField(date) { if(params.endField) params.endField.value = formatDate(date) }
 
   function formatDate(date) { return date ? (params.useIsoForInput ? date.toISODateString() : DateFormat.shortDateFormat(date, locale)) : '' }
 
