@@ -89,17 +89,17 @@ describe('continuousCalendar', function() {
         disableWeekends: true,
         disabledDates:   '4/22/2009 4/29/2009'
       })
-      elemByDate(15).click()
+      clickEl(elemByDate(15))
       keepsSameDate()
-      elemByDate(13).click()
+      clickEl(elemByDate(13))
       keepsSameDate()
-      elemByDate(18).click()
+      clickEl(elemByDate(18))
       keepsSameDate()
-      elemByDate(19).click()
+      clickEl(elemByDate(19))
       keepsSameDate()
-      elemByDate(22).click()
+      clickEl(elemByDate(22))
       keepsSameDate()
-      elemByDate(29).click()
+      clickEl(elemByDate(29))
       keepsSameDate()
 
       function keepsSameDate() {
@@ -240,7 +240,7 @@ describe('continuousCalendar', function() {
 
     it('highlights and selects clicked day', function() {
       createCalendarWithOneWeek()
-      cal().find('.date:eq(1)').click()
+      clickEl(cal().find('.date:eq(1)'))
       expect(cal().find('.selected')).to.have.text('28')
       expect(startFieldValue()).to.equal('4/28/2008')
       expect(startLabelValue()).to.equal('Mo 4/28/2008')
@@ -408,7 +408,7 @@ describe('continuousCalendar', function() {
       cal().bind('calendarChange', function() {
         window.bindCalled++
       })
-      elemByDate(28).click()
+      clickEl(elemByDate(28))
       expect(window.bindCalled).to.equal(1, 'bind')
       expect(window.calendarCallBack).to.equal(2)
     })
@@ -503,8 +503,8 @@ describe('continuousCalendar', function() {
     it('when selecting date', function() {
       var previous = cal(1)
       createPopupCalendar()
-      cal().find('.calendarIcon').click()
-      cal().find('.date:first').click()
+      clickEl(cal().find('.calendarIcon'))
+      clickEl(cal().find('.date:first'))
       expect(cal().find('.continuousCalendar')).not.to.be.visible
       expect(previous.find('.continuousCalendar')).to.be.visible
       expect(startLabelValue()).to.equal('Su 10/26/2008')
@@ -859,4 +859,10 @@ function assertHasValues(selector, expectedArray) {
   expect($.map(cal().find(selector), function(elem) {
     return $(elem).text()
   })).to.eql($.map(expectedArray, function(i) { return i.toString() }))
+}
+
+function clickEl(targetElement) {
+  var evt = document.createEvent('HTMLEvents')
+  evt.initEvent('click', true, true)
+  targetElement.get(0).dispatchEvent(evt)
 }

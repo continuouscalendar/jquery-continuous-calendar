@@ -1897,7 +1897,7 @@ module.exports = function(containerEl, options) {
     endDate:         null,
     useIsoForInput:  false
   }
-  var params = $.extend({}, defaults, options)
+  var params = extend(defaults, options)
   var locale = params.locale
   var startDate = fieldDate(params.startField) || params.startDate
   var endDate = fieldDate(params.endField) || params.endDate
@@ -1941,7 +1941,7 @@ module.exports = function(containerEl, options) {
     dateBehavior = dateBehaviour(params.isRange)
     params.fadeOutDuration = +params.fadeOutDuration
     calendarContainer = $(getCalendarContainerOrCreateOne())
-    calendarContainer.click(function(e) { e.stopPropagation() })
+    //calendarContainer.click(function(e) { e.stopPropagation() })
     if(!container2.querySelector('.startDateLabel')) addDateLabels(container, popupBehavior, dateBehavior)
     popupBehavior.initUI()
     dateBehavior.showInitialSelection()
@@ -2138,6 +2138,12 @@ module.exports = function(containerEl, options) {
   function setEndField(date) { params.endField.val(formatDate(date)) }
 
   function formatDate(date) { return date ? (params.useIsoForInput ? date.toISODateString() : DateFormat.shortDateFormat(date, locale)) : '' }
+
+  function extend(destination, source) {
+    for(var property in source)
+      destination[property] = source[property]
+    return destination
+  }
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
