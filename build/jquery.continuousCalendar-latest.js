@@ -934,7 +934,7 @@ module.exports = Duration
 
 },{}],7:[function(require,module,exports){
 module.exports = {
-  "version":  "0.3.0",
+  "version":  "0.3.1",
   DateFormat: require('./DateFormat'),
   DateLocale: require('./DateLocale'),
   DateParse:  require('./DateParse'),
@@ -1829,11 +1829,11 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function initSingleDateCalendarEvents() {
-    $('.date', container).bind('click', function() {
-      var dateCell = $(this)
-      if (!dateCell.hasClass('disabled')) {
-        var selectedDate = getElemDate(dateCell.get(0))
-        setSelectedDate(selectedDate, dateCell.get(0))
+    container.get(0).addEventListener('click', function(e) {
+      var dateCell = e.target
+      if (dateCell.classList.contains('date') && !dateCell.classList.contains('disabled')) {
+        var selectedDate = getElemDate(dateCell)
+        setSelectedDate(selectedDate, dateCell)
         popupBehavior.close()
         executeCallback(selectedDate)
       }
@@ -1868,45 +1868,40 @@ var CalendarBody = require('./CalendarBody')
 var RangeEvents = require('./RangeEvents')
 var SingleDateEvents = require('./SingleDateEvents')
 
-$.continuousCalendar = {
-  "version" : "5.1.1"
-}
-$.fn.continuousCalendar = function(options) {
-  return this.each(function() { _continuousCalendar.call($(this), options) })
-  function _continuousCalendar(options) {
-    var defaults = {
-      weeksBefore    : 26,
-      weeksAfter     : 26,
-      firstDate      : null,
-      lastDate       : null,
-      startField     : $('input.startDate', this),
-      endField       : $('input.endDate', this),
-      isPopup        : false,
-      selectToday    : false,
-      locale         : EN,
-      disableWeekends: false,
-      disabledDates  : null,
-      minimumRange   : -1,
-      selectWeek     : false,
-      fadeOutDuration: 0,
-      callback       : function() {},
-      popupCallback  : function() {},
-      customScroll   : false,
-      scrollOptions  : {
-        sizethumb: 'auto'
-      },
-      theme          : '',
-      allowClearDates: false,
-      isRange        : false,
-      startDate      : null,
-      endDate        : null,
-      useIsoForInput : false
-    }
-    var params = $.extend({}, defaults, options)
-    var locale = params.locale
-    var startDate = fieldDate(params.startField) || params.startDate
-    var endDate = fieldDate(params.endField) || params.endDate
-    var today = DateTime.today()
+module.exports = function(containerEl, options) {
+  var defaults = {
+    weeksBefore:     26,
+    weeksAfter:      26,
+    firstDate:       null,
+    lastDate:        null,
+    startField:      $('input.startDate', containerEl),
+    endField:        $('input.endDate', containerEl),
+    isPopup:         false,
+    selectToday:     false,
+    locale:          EN,
+    disableWeekends: false,
+    disabledDates:   null,
+    minimumRange:    -1,
+    selectWeek:      false,
+    fadeOutDuration: 0,
+    callback:        function() {},
+    popupCallback:   function() {},
+    customScroll:    false,
+    scrollOptions:   {
+      sizethumb: 'auto'
+    },
+    theme:           '',
+    allowClearDates: false,
+    isRange:         false,
+    startDate:       null,
+    endDate:         null,
+    useIsoForInput:  false
+  }
+  var params = extend(defaults, options)
+  var locale = params.locale
+  var startDate = fieldDate(params.startField) || params.startDate
+  var endDate = fieldDate(params.endField) || params.endDate
+  var today = DateTime.today()
 
   if(params.selectToday) {
     startDate = today
@@ -1946,7 +1941,7 @@ $.fn.continuousCalendar = function(options) {
     dateBehavior = dateBehaviour(params.isRange)
     params.fadeOutDuration = +params.fadeOutDuration
     calendarContainer = $(getCalendarContainerOrCreateOne())
-    calendarContainer.click(function(e) { e.stopPropagation() })
+    //calendarContainer.click(function(e) { e.stopPropagation() })
     if(!container2.querySelector('.startDateLabel')) addDateLabels(container, popupBehavior, dateBehavior)
     popupBehavior.initUI()
     dateBehavior.showInitialSelection()
@@ -2143,6 +2138,12 @@ $.fn.continuousCalendar = function(options) {
   function setEndField(date) { params.endField.val(formatDate(date)) }
 
   function formatDate(date) { return date ? (params.useIsoForInput ? date.toISODateString() : DateFormat.shortDateFormat(date, locale)) : '' }
+
+  function extend(destination, source) {
+    for(var property in source)
+      destination[property] = source[property]
+    return destination
+  }
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
