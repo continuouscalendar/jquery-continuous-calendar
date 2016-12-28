@@ -1,4 +1,3 @@
-var $ = require('jquery')
 var DateFormat = require('dateutils').DateFormat
 var DateRange = require('dateutils').DateRange
 var DateTime = require('dateutils').DateTime
@@ -230,7 +229,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     setStartField(selection.start)
     setEndField(selection.end)
     setRangeLabels()
-    if(params.selectWeek) calendar.close($('td.selected', container).first())
+    if(params.selectWeek) calendar.close()
     executeCallback(selection)
   }
 
