@@ -201,7 +201,7 @@ describe('continuousCalendar', function() {
       })
       var clearDates = cal().find('.clearDates')
       expect(clearDates).to.be.visible
-      clearDates.click()
+      clickEl(clearDates)
       expect(cal().find('.selected').length).to.equal(0)
       expect(clearDates).not.to.be.visible
       expect(startFieldValue()).to.equal('')
@@ -515,7 +515,7 @@ describe('continuousCalendar', function() {
     it('clearing closes the calendar', function() {
       createClearablePopupWeekCalendar()
       cal().find('.calendarIcon').click()
-      cal().find('.clearDates').click()
+      clickEl(cal().find('.clearDates'))
       expect(cal().find('.continuousCalendar')).not.to.be.visible
       expect(startFieldValue()).to.equal('')
       expect(endFieldValue()).to.equal('')

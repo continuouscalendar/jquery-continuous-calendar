@@ -66,7 +66,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     var rangeLengthLabel = container.querySelector('span.rangeLengthLabel')
     rangeLengthLabel.innerText = locale.daysLabel(selection.days())
     if (params.allowClearDates) {
-      $('span.clearDates', container).click(clearRangeClick)
+      container.querySelector('span.clearDates').addEventListener('click', clearRangeClick)
     }
     bodyTable.classList.add(params.selectWeek ? 'weekRange' : 'freeRange')
     $(bodyTable).mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
