@@ -1536,34 +1536,34 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function addRangeLengthLabel() {
-    var rangeLengthLabel = container.get(0).querySelector('.rangeLengthLabel')
+    var rangeLengthLabel = container.querySelector('.rangeLengthLabel')
     if(rangeLengthLabel && rangeLengthLabel.childNodes)
       return
-    container.get(0).querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label"><span class="rangeLengthLabel"></span></div>')
+    container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label"><span class="rangeLengthLabel"></span></div>')
   }
 
   function addEndDateLabel(dateLabelContainer) { dateLabelContainer.get(0).insertAdjacentHTML('beforeend', '<span class="separator"> - </span><span class="endDateLabel"></span>') }
 
   function addDateClearingLabel() {
     if(params.allowClearDates) {
-      container.get(0).querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel"><span class="clearDates clickable">' + locale.clearRangeLabel + '</span></div>')
+      container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel"><span class="clearDates clickable">' + locale.clearRangeLabel + '</span></div>')
     }
   }
 
   function performTrigger() {
-    container.get(0).calendarRange = selection
+    container.calendarRange = selection
     executeCallback(selection)
   }
 
   function setInitialSelection() {
     selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange()
     if (!selection.start && !selection.end) {
-      container.get(0).querySelector('span.separator').style.display = 'none'
+      container.querySelector('span.separator').style.display = 'none'
     }
   }
 
   function initRangeCalendarEvents(container, bodyTable) {
-    var rangeLengthLabel = container.get(0).querySelector('span.rangeLengthLabel')
+    var rangeLengthLabel = container.querySelector('span.rangeLengthLabel')
     rangeLengthLabel.innerText = locale.daysLabel(selection.days())
     if (params.allowClearDates) {
       $('span.clearDates', container).click(clearRangeClick)
@@ -1683,8 +1683,8 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function drawSelection() {
     selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends, calendarRange)
     drawSelectionBetweenDates(selection)
-    container.get(0).querySelector('span.rangeLengthLabel').innerText = locale.daysLabel(selection.days())
-    var clearDates = container.get(0).querySelector('span.clearDates')
+    container.querySelector('span.rangeLengthLabel').innerText = locale.daysLabel(selection.days())
+    var clearDates = container.querySelector('span.clearDates')
     if(clearDates) clearDates.style.display = (selection.hasSelection() ? '' : 'none')
   }
 
@@ -1699,7 +1699,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       var endIndex = index(range.end)
       for (var i = startIndex; i <= endIndex; i++)
         calendarBody.getDateCell(i).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
-      if (rangeHasDisabledDate()) container.get(0).querySelector('td.selected').classList.add('invalidSelection')
+      if (rangeHasDisabledDate()) container.querySelector('td.selected').classList.add('invalidSelection')
     }
     function index(date) { return calendarBody.dateCellMap[DateFormat.format(date, 'Ymd', locale)] }
   }
@@ -1718,7 +1718,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       // Flash invalidSelection styled cells when selection is expanded to minimum length
       setTimeout(function() { drawSelectionBetweenDates(selection) }, 200)
     }
-    container.get(0).calendarRange = selection
+    container.calendarRange = selection
     setStartField(selection.start)
     setEndField(selection.end)
     setRangeLabels()
@@ -1728,7 +1728,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function setRangeLabels() {
     if(!selection) setInitialSelection()
-    var cont = container.get(0)
+    var cont = container
     var startDateLabel = cont.querySelector('span.startDateLabel')
     var endDateLabel = cont.querySelector('span.endDateLabel')
     var clearRangeLabel = cont.querySelector('span.clearRangeLabel')
@@ -1782,7 +1782,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function showInitialSelection() {
     if(startDate) {
       setFieldValues(startDate)
-      var clearDates = container.get(0).querySelector('.clearDates')
+      var clearDates = container.querySelector('.clearDates')
       if(clearDates) clearDates.style.display = ''
     }
   }
@@ -1802,32 +1802,32 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function setSelectedDate(date, cell) {
-    var selectedElem = container.get(0).querySelector('td.selected')
+    var selectedElem = container.querySelector('td.selected')
     selectedElem && selectedElem.classList.remove('selected')
     cell.classList.add('selected')
     setFieldValues(date)
   }
 
   function setFieldValues(date) {
-    container.get(0).calendarRange = date
+    container.calendarRange = date
     setStartField(date)
     setDateLabel(DateFormat.format(date, locale.weekDateFormat, locale))
   }
 
   function addDateClearingLabel() {
     if(params.allowClearDates) {
-      container.get(0).querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel">' +
+      container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel">' +
         '<span class="clearDates clickable" style="display: none">' + locale.clearDateLabel + '</span></div>')
     }
   }
 
   function performTrigger() {
-    container.get(0).calendarRange = startDate
+    container.calendarRange = startDate
     executeCallback(startDate)
   }
 
   function initSingleDateCalendarEvents() {
-    container.get(0).addEventListener('click', function(e) {
+    container.addEventListener('click', function(e) {
       var dateCell = e.target
       if (dateCell.classList.contains('date') && !dateCell.classList.contains('disabled')) {
         var selectedDate = getElemDate(dateCell)
@@ -1836,19 +1836,19 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
         executeCallback(selectedDate)
       }
     })
-    var clearDates = container.get(0).querySelector('.clearDates')
+    var clearDates = container.querySelector('.clearDates')
     if(clearDates) clearDates.addEventListener('click', clickClearDate)
   }
 
   function setDateLabel(val) {
-    container.get(0).querySelector('span.startDateLabel').innerText = val
+    container.querySelector('span.startDateLabel').innerText = val
     if(params.allowClearDates) {
-      container.get(0).querySelector('.clearDates').style.display = (val === '' ? 'none' : '')
+      container.querySelector('.clearDates').style.display = (val === '' ? 'none' : '')
     }
   }
 
   function clickClearDate() {
-    container.get(0).querySelector('td.selected').classList.remove('selected')
+    container.querySelector('td.selected').classList.remove('selected')
     params.startField.get(0).value = ''
     setDateLabel('')
   }
@@ -2009,7 +2009,7 @@ module.exports = function(containerEl, options) {
   }
 
   function dateBehaviour(isRange) {
-    var basicParams = [container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
+    var basicParams = [container.get(0), calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
     var rangeParams = [endDate, setEndField, calendarRange, disabledDatesList]
     return isRange ? RangeEvents.apply(null, basicParams.concat(rangeParams)) : SingleDateEvents.apply(null, basicParams)
   }
