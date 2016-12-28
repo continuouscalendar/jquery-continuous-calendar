@@ -1551,7 +1551,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function performTrigger() {
-    container.data('calendarRange', selection)
+    container.get(0).calendarRange = selection
     executeCallback(selection)
   }
 
@@ -1718,7 +1718,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       // Flash invalidSelection styled cells when selection is expanded to minimum length
       setTimeout(function() { drawSelectionBetweenDates(selection) }, 200)
     }
-    container.data('calendarRange', selection)
+    container.get(0).calendarRange = selection
     setStartField(selection.start)
     setEndField(selection.end)
     setRangeLabels()
@@ -1765,8 +1765,6 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"dateutils":7}],22:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
 
@@ -1811,7 +1809,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function setFieldValues(date) {
-    container.data('calendarRange', date)
+    container.get(0).calendarRange = date
     setStartField(date)
     setDateLabel(DateFormat.format(date, locale.weekDateFormat, locale))
   }
@@ -1824,7 +1822,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function performTrigger() {
-    container.data('calendarRange', startDate)
+    container.get(0).calendarRange = startDate
     executeCallback(startDate)
   }
 
@@ -1838,7 +1836,8 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
         executeCallback(selectedDate)
       }
     })
-    $('.clearDates', container).click(clickClearDate)
+    var clearDates = container.get(0).querySelector('.clearDates')
+    if(clearDates) clearDates.addEventListener('click', clickClearDate)
   }
 
   function setDateLabel(val) {
@@ -1855,7 +1854,6 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"dateutils":7}],23:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
@@ -2158,7 +2156,7 @@ $.continuousCalendar = {
 $.fn.continuousCalendar = function(options) {
   return this.each(function() { continuousCalendar($(this).get(0), options) })
 }
-$.fn.calendarRange = function() { return $(this).data('calendarRange') }
+$.fn.calendarRange = function() { return $(this).get(0).calendarRange }
 $.fn.exists = function() { return this.length > 0 }
 $.fn.isEmpty = function() { return this.length === 0 }
 
