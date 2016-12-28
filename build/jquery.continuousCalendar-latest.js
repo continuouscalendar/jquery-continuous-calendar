@@ -1913,7 +1913,7 @@ module.exports = function(containerEl, options) {
     setEndField(today)
   }
   var container = $(containerEl)
-  var container2 = $(containerEl).get(0)
+  var container2 = containerEl
   var averageCellHeight
   var calendarContainer
   var beforeFirstOpening = true
@@ -1943,7 +1943,7 @@ module.exports = function(containerEl, options) {
     popupBehavior = popUpBehaviour(params.isPopup)
     dateBehavior = dateBehaviour(params.isRange)
     params.fadeOutDuration = +params.fadeOutDuration
-    calendarContainer = $(getCalendarContainerOrCreateOne())
+    calendarContainer = getCalendarContainerOrCreateOne()
     //calendarContainer.click(function(e) { e.stopPropagation() })
     if(!container2.querySelector('.startDateLabel')) addDateLabels(container, popupBehavior, dateBehavior)
     popupBehavior.initUI()
@@ -1956,7 +1956,7 @@ module.exports = function(containerEl, options) {
   function initCalendarTable() {
     if(!calendarBody.scrollContent) {
 
-      calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer.get(0), calendarRange, locale,
+      calendarBody = $.extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
         params.customScroll, params.disableWeekends, disabledDatesObject))
       bindScrollEvent()
 
@@ -2022,7 +2022,8 @@ module.exports = function(containerEl, options) {
   function popUpBehaviour(isPopup) {
     var popUpVersion = {
       initUI:                function() {
-        calendarContainer.addClass('popup').hide()
+        calendarContainer.classList.add('popup')
+        calendarContainer.style.display = 'none'
         var icon = $('<a href="#" class="calendarIcon">' + today.getDate() + '</a>').click(toggleCalendar)
         container.prepend(icon)
       },
@@ -2042,12 +2043,13 @@ module.exports = function(containerEl, options) {
 
     function toggleCalendar() {
       initCalendarTable()
-      if(calendarContainer.is(':visible')) {
-        calendarContainer.fadeOut(params.fadeOutDuration)
+      if(calendarContainer.style.display === '' ) {
+        //calendarContainer.fadeOut(params.fadeOutDuration)
+        calendarContainer.style.display = 'none'
         $(document).unbind('click.continuousCalendar')
       } else {
         params.popupCallback()
-        calendarContainer.show()
+        calendarContainer.style.display = ''
         if(beforeFirstOpening) {
           initScrollBar()
           calculateCellHeight()
@@ -2113,7 +2115,7 @@ module.exports = function(containerEl, options) {
   function setYearLabel() {
     var scrollContent = calendarBody.scrollContent
     var table = scrollContent.querySelector('table')
-    var scrollTop = params.customScroll ? -calendarContainer.get(0).querySelector('.overview').offsetTop : scrollContent.scrollTop
+    var scrollTop = params.customScroll ? -calendarContainer.querySelector('.overview').offsetTop : scrollContent.scrollTop
     var rowNumber = parseInt(scrollTop / averageCellHeight, 10)
     var date = getElemDate(table.rows[rowNumber].cells[2])
     calendarBody.yearTitle.innerText = date.getFullYear()
