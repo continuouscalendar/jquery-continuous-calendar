@@ -69,7 +69,9 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       container.querySelector('span.clearDates').addEventListener('click', clearRangeClick)
     }
     bodyTable.classList.add(params.selectWeek ? 'weekRange' : 'freeRange')
-    $(bodyTable).mousedown(mouseDown).mouseover(mouseMove).mouseup(mouseUp)
+    bodyTable.addEventListener('mousedown', mouseDown)
+    bodyTable.addEventListener('mouseover', mouseMove)
+    bodyTable.addEventListener('mouseup', mouseUp)
     disableTextSelection(bodyTable)
   }
 
