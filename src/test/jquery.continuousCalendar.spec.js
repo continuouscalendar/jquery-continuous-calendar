@@ -311,7 +311,9 @@ describe('continuousCalendar', function() {
       })
 
       it('mouse click on current date selects current date', function() {
-        elemByDate(today.getDate()).mousedown().mouseover().mouseup()
+        elEvent(elemByDate(today.getDate()), 'mousedown')
+        elEvent(elemByDate(today.getDate()), 'mouseover')
+        elEvent(elemByDate(today.getDate()), 'mouseup')
         expect(startFieldValue()).to.equal(todayStr)
         expect(endFieldValue()).to.equal(todayStr)
         expect(cal().find('.rangeLengthLabel')).to.have.text('1 Day')
@@ -710,34 +712,40 @@ function createCalendarFields(params) {
 
 function mouseClick(selector) {
   var targetElement = (typeof selector == 'object') ? selector : cal().find(selector)
-  targetElement.mousedown().mouseup()
+  elEvent(targetElement, 'mousedown')
+  elEvent(targetElement, 'mouseup')
 }
 
 function clickDateWithShift(date) {
-  elemByDate(date)
-    .trigger({type: 'mousedown', shiftKey: true})
-    .mouseover()
-    .mouseup()
+  elEventWithShift(elemByDate(date), 'mousedown')
+  elEvent(elemByDate(date), 'mouseover')
+  elEvent(elemByDate(date), 'mouseup')
 }
 
-function mouseDownMouseUpOnDate(date) { elemByDate(date).mousedown().mouseover().mouseup() }
+function mouseDownMouseUpOnDate(date) {
+  elEvent(elemByDate(date), 'mousedown')
+  elEvent(elemByDate(date), 'mouseover')
+  elEvent(elemByDate(date), 'mouseup')
+}
 
 function dragDates(enter, exit) {
-  elemByDate(enter).mousedown()
-  elemByDate(exit).mouseover().mouseup()
+  elEvent(elemByDate(enter), 'mousedown')
+  elEvent(elemByDate(exit), 'mouseover')
+  elEvent(elemByDate(exit), 'mouseup')
 }
 
 function dragDatesSlowly(enter, exit) {
-  elemByDate(enter).mousedown()
+  elEvent(elemByDate(enter), 'mousedown')
   for(var day = enter; day < exit; day++) {
-    elemByDate(day).mouseover()
+    elEvent(elemByDate(day),'mouseover')
   }
-  elemByDate(exit).mouseover().mouseup()
+  elEvent(elemByDate(exit), 'mouseover')
+  elEvent(elemByDate(exit), 'mouseup')
 }
 
 function dragOutsideCalendar(enter) {
-  elemByDate(enter).mousedown()
-  cal().find('.monthName').mouseover()
+  elEvent(elemByDate(enter), 'mousedown')
+  elEvent(cal().find('.monthName'), 'mouseover')
 }
 
 function createCalendarWithOneWeek() {
@@ -862,7 +870,21 @@ function assertHasValues(selector, expectedArray) {
 }
 
 function clickEl(targetElement) {
+  elEvent(targetElement, 'click')
+}
+
+function elEvent(targetElement, eventName) {
   var evt = document.createEvent('HTMLEvents')
-  evt.initEvent('click', true, true)
+  evt.initEvent(eventName, true, true)
   targetElement.get(0).dispatchEvent(evt)
+}
+
+function elEventWithShift(targetElement, eventName) {
+  var elem = targetElement.get(0)
+  var evt = document.createEvent('MouseEvents')
+  evt.initEvent(eventName, true, true)
+  evt.initMouseEvent(eventName,  true, true,
+    elem.ownerDocument.defaultView, 1, 0, 0, 0, 0, false,
+    false, true, false, 1, elem)
+  elem.dispatchEvent(evt)
 }
