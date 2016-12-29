@@ -1,5 +1,6 @@
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
+var toggle = require('./util').toggle
 
 module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField) {
   return {
@@ -16,7 +17,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     if(startDate) {
       setFieldValues(startDate)
       var clearDates = container.querySelector('.clearDates')
-      if(clearDates) clearDates.style.display = ''
+      if(clearDates) toggle(clearDates, true)
     }
   }
 
@@ -76,7 +77,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function setDateLabel(val) {
     container.querySelector('span.startDateLabel').innerText = val
     if(params.allowClearDates) {
-      container.querySelector('.clearDates').style.display = (val === '' ? 'none' : '')
+      toggle(container.querySelector('.clearDates'), val !== '')
     }
   }
 

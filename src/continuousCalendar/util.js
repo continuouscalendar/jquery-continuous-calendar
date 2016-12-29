@@ -1,7 +1,8 @@
 module.exports = {
   el: el,
   extend: extend,
-  elemsAsList: elemsAsList
+  elemsAsList: elemsAsList,
+  toggle: toggle
 }
 
 function extend(destination, source) {
@@ -19,4 +20,8 @@ function el(tagName, properties, childNode) {
 
 function elemsAsList(selector) {
   return Array.prototype.slice.call(selector)
+}
+
+function toggle(elem, show) {
+  elem.style.display = show ? '' : 'none'
 }

@@ -1496,6 +1496,7 @@ var DateFormat = require('dateutils').DateFormat
 var DateRange = require('dateutils').DateRange
 var DateTime = require('dateutils').DateTime
 var elemsAsList = require('./util').elemsAsList
+var toggle = require('./util').toggle
 
 module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, setStartField,
                 endDate, setEndField, calendarRange, disabledDatesList) {
@@ -1551,9 +1552,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function setInitialSelection() {
     selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange()
-    if (!selection.start && !selection.end) {
-      container.querySelector('span.separator').style.display = 'none'
-    }
+    toggle(container.querySelector('span.separator'), selection.start || selection.end)
   }
 
   function initRangeCalendarEvents(container, bodyTable) {
@@ -1681,7 +1680,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     drawSelectionBetweenDates(selection)
     container.querySelector('span.rangeLengthLabel').innerText = locale.daysLabel(selection.days())
     var clearDates = container.querySelector('span.clearDates')
-    if(clearDates) clearDates.style.display = (selection.hasSelection() ? '' : 'none')
+    if(clearDates) toggle(clearDates, selection.hasSelection())
   }
 
   function drawSelectionBetweenDates(range) {
@@ -1736,19 +1735,19 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
       var format = locale.weekDateFormat
       startDateLabel.innerText = DateFormat.format(selection.start, format, locale)
       endDateLabel.innerText = DateFormat.format(selection.end, format, locale)
-      separator.style.display = ''
-      if(clearRangeLabel) clearRangeLabel.style.display = ''
-      startDateLabel.parentNode.style.display = ''
+      toggle(separator, true)
+      if(clearRangeLabel) toggle(clearRangeLabel, true)
+      toggle(startDateLabel.parentNode, true)
     } else {
       if (!selection.start) {
         startDateLabel.innerText = ''
-        startDateLabel.parentNode.style.display = 'none'
+        toggle(startDateLabel.parentNode, false)
       }
       if (!selection.end) {
         endDateLabel.innerText = ''
       }
-      separator.style.display = 'none'
-      if(clearRangeLabel) clearRangeLabel.style.display = 'none'
+      toggle(separator, false)
+      if(clearRangeLabel) toggle(clearRangeLabel, false)
     }
   }
 
@@ -1764,6 +1763,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 },{"./util":25,"dateutils":7}],22:[function(require,module,exports){
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
+var toggle = require('./util').toggle
 
 module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField) {
   return {
@@ -1780,7 +1780,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     if(startDate) {
       setFieldValues(startDate)
       var clearDates = container.querySelector('.clearDates')
-      if(clearDates) clearDates.style.display = ''
+      if(clearDates) toggle(clearDates, true)
     }
   }
 
@@ -1840,7 +1840,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function setDateLabel(val) {
     container.querySelector('span.startDateLabel').innerText = val
     if(params.allowClearDates) {
-      container.querySelector('.clearDates').style.display = (val === '' ? 'none' : '')
+      toggle(container.querySelector('.clearDates'), val !== '')
     }
   }
 
@@ -1851,7 +1851,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 }
 
-},{"dateutils":7}],23:[function(require,module,exports){
+},{"./util":25,"dateutils":7}],23:[function(require,module,exports){
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
 var EN = require('dateutils').DateLocale.EN
@@ -1863,6 +1863,7 @@ var SingleDateEvents = require('./SingleDateEvents')
 var el = require('./util').el
 var extend = require('./util').extend
 var elemsAsList = require('./util').elemsAsList
+var toggle = require('./util').toggle
 
 module.exports = function(container, options) {
   var defaults = {
@@ -2011,7 +2012,7 @@ module.exports = function(container, options) {
     var popUpVersion = {
       initUI:                function() {
         calendarContainer.classList.add('popup')
-        calendarContainer.style.display = 'none'
+        toggle(calendarContainer, false)
         var icon = el('a', {
           'href':  '#',
           'className': 'calendarIcon',
@@ -2041,12 +2042,12 @@ module.exports = function(container, options) {
       initCalendarTable()
       if(calendarContainer.style.display === '' ) {
         //calendarContainer.fadeOut(params.fadeOutDuration)
-        calendarContainer.style.display = 'none'
+        toggle(calendarContainer, false)
         //TODO re-actiate
         //$(document).unbind('click.continuousCalendar')
       } else {
         params.popupCallback()
-        calendarContainer.style.display = ''
+        toggle(calendarContainer, true)
         if(beforeFirstOpening) {
           params.initScrollBar(container, params)
           calculateCellHeight()
@@ -2172,7 +2173,8 @@ $.fn.isEmpty = function() { return this.length === 0 }
 module.exports = {
   el: el,
   extend: extend,
-  elemsAsList: elemsAsList
+  elemsAsList: elemsAsList,
+  toggle: toggle
 }
 
 function extend(destination, source) {
@@ -2190,6 +2192,10 @@ function el(tagName, properties, childNode) {
 
 function elemsAsList(selector) {
   return Array.prototype.slice.call(selector)
+}
+
+function toggle(elem, show) {
+  elem.style.display = show ? '' : 'none'
 }
 
 },{}]},{},[19]);
