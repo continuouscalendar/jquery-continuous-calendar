@@ -192,11 +192,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function drawSelectionBetweenDates(range) {
     elemsAsList(container.querySelectorAll('td.selected')).forEach(function(el) {
-      var classList = el.classList
-      classList.remove('selected')
-      classList.remove('rangeStart')
-      classList.remove('rangeEnd')
-      classList.remove('invalidSelection')
+      el.classList.remove('selected', 'rangeStart', 'rangeEnd', 'invalidSelection')
     })
     iterateAndToggleCells(range)
   }

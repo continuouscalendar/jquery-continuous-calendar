@@ -1686,11 +1686,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function drawSelectionBetweenDates(range) {
     elemsAsList(container.querySelectorAll('td.selected')).forEach(function(el) {
-      var classList = el.classList
-      classList.remove('selected')
-      classList.remove('rangeStart')
-      classList.remove('rangeEnd')
-      classList.remove('invalidSelection')
+      el.classList.remove('selected', 'rangeStart', 'rangeEnd', 'invalidSelection')
     })
     iterateAndToggleCells(range)
   }
@@ -1920,8 +1916,7 @@ module.exports = function(container, options) {
   var disabledDatesList
   var disabledDatesObject
 
-  container.classList.add('continuousCalendarContainer')
-  container.classList.add('params.theme')
+  container.classList.add('continuousCalendarContainer', 'params.theme')
   createCalendar()
 
   function createCalendar() {
