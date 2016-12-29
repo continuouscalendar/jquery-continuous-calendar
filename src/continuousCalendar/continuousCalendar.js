@@ -283,7 +283,9 @@ module.exports = function(containerEl, options) {
     container.trigger('calendarChange', selection)
   }
 
-  function getElemDate(elem) { return calendarBody.dateCellDates[$(elem).closest('[date-cell-index]').attr('date-cell-index')] }
+  function getElemDate(elem) {
+    return calendarBody.dateCellDates[elem.getAttribute('date-cell-index') || elem.parentNode.getAttribute('date-cell-index')]
+  }
 
   function setStartField(date) { if(params.startField) params.startField.value = formatDate(date) }
 
