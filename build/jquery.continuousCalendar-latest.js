@@ -1356,6 +1356,8 @@ window.DateRange = require('dateutils').DateRange
 },{"../continuousCalendar/jquery.continuousCalendar":24,"dateutils":7}],20:[function(require,module,exports){
 var DateFormat = require('dateutils').DateFormat
 var DateTime = require('dateutils').DateTime
+var util = require('./util')
+var el = util.el
 
 module.exports = function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
   var dateCellMap = {}
@@ -1487,19 +1489,13 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   }
 
   function getDateCell(index) { return dateCells[index] }
-
-  function el(tagName, properties, childNode) {
-    var elem = document.createElement(tagName)
-    for(var i in properties) elem[i] = properties[i]
-    if(childNode) elem.appendChild(childNode)
-    return elem
-  }
 }
 
-},{"dateutils":7}],21:[function(require,module,exports){
+},{"./util":25,"dateutils":7}],21:[function(require,module,exports){
 var DateFormat = require('dateutils').DateFormat
 var DateRange = require('dateutils').DateRange
 var DateTime = require('dateutils').DateTime
+var elemsAsList = require('./util').elemsAsList
 
 module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, setStartField,
                 endDate, setEndField, calendarRange, disabledDatesList) {
@@ -1689,7 +1685,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function drawSelectionBetweenDates(range) {
-    Array.prototype.slice.call(container.querySelectorAll('td.selected')).forEach(function(el) {
+    elemsAsList(container.querySelectorAll('td.selected')).forEach(function(el) {
       var classList = el.classList
       classList.remove('selected')
       classList.remove('rangeStart')
@@ -1769,7 +1765,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function isEnabled(elem) { return !elem.classList.contains('disabled') }
 }
 
-},{"dateutils":7}],22:[function(require,module,exports){
+},{"./util":25,"dateutils":7}],22:[function(require,module,exports){
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
 
@@ -1868,6 +1864,9 @@ var DateTime = require('dateutils').DateTime
 var CalendarBody = require('./CalendarBody')
 var RangeEvents = require('./RangeEvents')
 var SingleDateEvents = require('./SingleDateEvents')
+var el = require('./util').el
+var extend = require('./util').extend
+var elemsAsList = require('./util').elemsAsList
 
 module.exports = function(container, options) {
   var defaults = {
@@ -2018,25 +2017,25 @@ module.exports = function(container, options) {
       initUI:                function() {
         calendarContainer.classList.add('popup')
         calendarContainer.style.display = 'none'
-        var icon = createElement('a', {
+        var icon = el('a', {
           'href':  '#',
-          'class': 'calendarIcon'
+          'className': 'calendarIcon',
+          'innerText': today.getDate()
         })
-        icon.innerText = today.getDate()
         icon.addEventListener('click', toggleCalendar)
         container.insertBefore(icon, container.firstChild)
       },
       initState:             function() { },
       getContainer:          function(newContainer) {
-        var popUpContainer = createElement('div', {
-          'class': 'popUpContainer'
+        var popUpContainer = el('div', {
+          'className': 'popUpContainer'
         })
         popUpContainer.appendChild(newContainer)
         return popUpContainer
       },
       close:                 toggleCalendar,
       addDateLabelBehaviour: function(labels) {
-        Array.prototype.slice.call(labels).forEach(function(label) {
+        elemsAsList(labels).forEach(function(label) {
           label.classList.add('clickable')
           label.addEventListener('click', toggleCalendar)
         })
@@ -2085,15 +2084,15 @@ module.exports = function(container, options) {
     if(existingContainer) {
       return existingContainer
     } else {
-      var newContainer = createElement('div', {'class':'continuousCalendar'})
+      var newContainer = el('div', {'className':'continuousCalendar'})
       container.appendChild(popupBehavior.getContainer(newContainer))
       return newContainer
     }
   }
 
   function addDateLabels(container2, popupBehavior, dateBehavior) {
-    var dateLabelContainer = createElement('div', {'class': 'label'})
-    dateLabelContainer.appendChild(createElement('span', {'class': 'startDateLabel'}))
+    var dateLabelContainer = el('div', {'className': 'label'})
+    dateLabelContainer.appendChild(el('span', {'className': 'startDateLabel'}))
     dateBehavior.addEndDateLabel(dateLabelContainer)
     container2.insertBefore(dateLabelContainer, container2.firstChild)
     popupBehavior.addDateLabelBehaviour(dateLabelContainer.childNodes)
@@ -2145,21 +2144,9 @@ module.exports = function(container, options) {
 
   function formatDate(date) { return date ? (params.useIsoForInput ? date.toISODateString() : DateFormat.shortDateFormat(date, locale)) : '' }
 
-  function extend(destination, source) {
-    for(var property in source)
-      destination[property] = source[property]
-    return destination
-  }
-  function createElement(tagName, attributes) {
-    var el = document.createElement(tagName)
-    Object.keys(attributes).forEach(function(key) {
-      el.setAttribute(key, attributes[key])
-    })
-    return el
-  }
 }
 
-},{"./CalendarBody":20,"./RangeEvents":21,"./SingleDateEvents":22,"dateutils":7}],24:[function(require,module,exports){
+},{"./CalendarBody":20,"./RangeEvents":21,"./SingleDateEvents":22,"./util":25,"dateutils":7}],24:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
 var continuousCalendar = require('./continuousCalendar')
@@ -2186,4 +2173,28 @@ $.fn.isEmpty = function() { return this.length === 0 }
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./continuousCalendar":23}]},{},[19]);
+},{"./continuousCalendar":23}],25:[function(require,module,exports){
+module.exports = {
+  el: el,
+  extend: extend,
+  elemsAsList: elemsAsList
+}
+
+function extend(destination, source) {
+  for(var property in source)
+    destination[property] = source[property]
+  return destination
+}
+
+function el(tagName, properties, childNode) {
+  var elem = document.createElement(tagName)
+  for(var i in properties) elem[i] = properties[i]
+  if(childNode) elem.appendChild(childNode)
+  return elem
+}
+
+function elemsAsList(selector) {
+  return Array.prototype.slice.call(selector)
+}
+
+},{}]},{},[19]);

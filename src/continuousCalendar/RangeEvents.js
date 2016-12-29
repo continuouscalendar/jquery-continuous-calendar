@@ -1,6 +1,7 @@
 var DateFormat = require('dateutils').DateFormat
 var DateRange = require('dateutils').DateRange
 var DateTime = require('dateutils').DateTime
+var elemsAsList = require('./util').elemsAsList
 
 module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, setStartField,
                 endDate, setEndField, calendarRange, disabledDatesList) {
@@ -190,7 +191,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function drawSelectionBetweenDates(range) {
-    Array.prototype.slice.call(container.querySelectorAll('td.selected')).forEach(function(el) {
+    elemsAsList(container.querySelectorAll('td.selected')).forEach(function(el) {
       var classList = el.classList
       classList.remove('selected')
       classList.remove('rangeStart')

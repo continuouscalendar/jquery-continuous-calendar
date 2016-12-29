@@ -1,5 +1,7 @@
 var DateFormat = require('dateutils').DateFormat
 var DateTime = require('dateutils').DateTime
+var util = require('./util')
+var el = util.el
 
 module.exports = function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
   var dateCellMap = {}
@@ -131,11 +133,4 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   }
 
   function getDateCell(index) { return dateCells[index] }
-
-  function el(tagName, properties, childNode) {
-    var elem = document.createElement(tagName)
-    for(var i in properties) elem[i] = properties[i]
-    if(childNode) elem.appendChild(childNode)
-    return elem
-  }
 }
