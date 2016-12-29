@@ -1945,13 +1945,11 @@ module.exports = function(containerEl, options) {
     params.fadeOutDuration = +params.fadeOutDuration
     calendarContainer = getCalendarContainerOrCreateOne()
     //calendarContainer.click(function(e) { e.stopPropagation() })
-    if(!container2.querySelector('.startDateLabel')) addDateLabels(container, popupBehavior, dateBehavior)
+    if(!container2.querySelector('.startDateLabel')) addDateLabels(container2, popupBehavior, dateBehavior)
     popupBehavior.initUI()
     dateBehavior.showInitialSelection()
     dateBehavior.performTrigger()
   }
-
-  function initScrollBar() { if(params.customScroll) customScrollContainer = $('.tinyscrollbar', container).tinyscrollbar(params.scrollOptions) }
 
   function initCalendarTable() {
     if(!calendarBody.scrollContent) {
@@ -1991,7 +1989,7 @@ module.exports = function(containerEl, options) {
 
   function bindScrollEvent() {
     if(params.customScroll) {
-      if(!customScrollContainer) initScrollBar()
+      if(!customScrollContainer) customScrollContainer = params.initScrollBar(container2, params)
       customScrollContainer.bind('scroll', setYearLabel)
     } else {
       var waiting = false
@@ -2060,7 +2058,7 @@ module.exports = function(containerEl, options) {
         params.popupCallback()
         calendarContainer.style.display = ''
         if(beforeFirstOpening) {
-          initScrollBar()
+          params.initScrollBar(container2, params)
           calculateCellHeight()
           setYearLabel()
           beforeFirstOpening = false
@@ -2097,7 +2095,7 @@ module.exports = function(containerEl, options) {
     }
   }
 
-  function addDateLabels(container, popupBehavior, dateBehavior) {
+  function addDateLabels(container2, popupBehavior, dateBehavior) {
     var dateLabelContainer = createElement('div', {'class': 'label'})
     dateLabelContainer.appendChild(createElement('span', {'class': 'startDateLabel'}))
     dateBehavior.addEndDateLabel(dateLabelContainer)
@@ -2132,7 +2130,7 @@ module.exports = function(containerEl, options) {
   }
 
   function calculateCellHeightAndInitScroll() {
-    initScrollBar()
+    params.initScrollBar(container2, params)
     calculateCellHeight()
     setYearLabel()
   }
@@ -2177,14 +2175,21 @@ var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "u
 var continuousCalendar = require('./continuousCalendar')
 
 $.continuousCalendar = {
-  "version" : "5.1.0" // eslint-disable-line
+  "version": "5.1.0" // eslint-disable-line
 }
 $.fn.continuousCalendar = function(options) {
-  return this.each(function() { continuousCalendar($(this).get(0), options) })
+  return this.each(function() {
+    options.initScrollBar = function(container, params) {
+      return params.customScroll && $('.tinyscrollbar', container).tinyscrollbar(params.scrollOptions)
+    }
+    continuousCalendar($(this).get(0), options)
+  })
 }
+
 $.fn.calendarRange = function() { return this.get(0).calendarRange }
 $.fn.exists = function() { return this.length > 0 }
 $.fn.isEmpty = function() { return this.length === 0 }
+
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./continuousCalendar":23}]},{},[19]);
