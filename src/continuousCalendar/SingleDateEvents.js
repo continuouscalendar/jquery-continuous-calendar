@@ -56,7 +56,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function performTrigger() {
     container.calendarRange = startDate
-    executeCallback(startDate)
+    executeCallback(container, startDate, params)
   }
 
   function initSingleDateCalendarEvents() {
@@ -66,7 +66,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
         var selectedDate = getElemDate(dateCell)
         setSelectedDate(selectedDate, dateCell)
         popupBehavior.close()
-        executeCallback(selectedDate)
+        executeCallback(container, selectedDate, params)
       }
     })
     var clearDates = container.querySelector('.clearDates')

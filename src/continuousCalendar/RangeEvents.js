@@ -51,7 +51,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function performTrigger() {
     container.calendarRange = selection
-    executeCallback(selection)
+    executeCallback(container, selection, params)
   }
 
   function setInitialSelection() {
@@ -230,7 +230,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     setEndField(selection.end)
     setRangeLabels()
     if(params.selectWeek) calendar.close()
-    executeCallback(selection)
+    executeCallback(container, selection, params)
   }
 
   function setRangeLabels() {
