@@ -151,7 +151,7 @@ module.exports = function(containerEl, options) {
   }
 
   function dateBehaviour(isRange) {
-    var basicParams = [container.get(0), calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
+    var basicParams = [container2, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
     var rangeParams = [endDate, setEndField, calendarRange, disabledDatesList]
     return isRange ? RangeEvents.apply(null, basicParams.concat(rangeParams)) : SingleDateEvents.apply(null, basicParams)
   }
@@ -167,7 +167,7 @@ module.exports = function(containerEl, options) {
         })
         icon.innerText = today.getDate()
         icon.addEventListener('click', toggleCalendar)
-        container.get(0).insertBefore(icon, container.get(0).firstChild)
+        container2.insertBefore(icon, container2.firstChild)
       },
       initState:             function() { },
       getContainer:          function(newContainer) {
@@ -238,7 +238,7 @@ module.exports = function(containerEl, options) {
     var dateLabelContainer = createElement('div', {'class': 'label'})
     dateLabelContainer.appendChild(createElement('span', {'class': 'startDateLabel'}))
     dateBehavior.addEndDateLabel(dateLabelContainer)
-    container.get(0).insertBefore(dateLabelContainer, container.get(0).firstChild)
+    container2.insertBefore(dateLabelContainer, container2.firstChild)
     popupBehavior.addDateLabelBehaviour(dateLabelContainer.childNodes)
   }
 
