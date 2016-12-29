@@ -6,6 +6,9 @@ var DateTime = require('dateutils').DateTime
 var CalendarBody = require('./CalendarBody')
 var RangeEvents = require('./RangeEvents')
 var SingleDateEvents = require('./SingleDateEvents')
+var el = require('./util').el
+var extend = require('./util').extend
+var elemsAsList = require('./util').elemsAsList
 
 module.exports = function(container, options) {
   var defaults = {
@@ -156,25 +159,25 @@ module.exports = function(container, options) {
       initUI:                function() {
         calendarContainer.classList.add('popup')
         calendarContainer.style.display = 'none'
-        var icon = createElement('a', {
+        var icon = el('a', {
           'href':  '#',
-          'class': 'calendarIcon'
+          'className': 'calendarIcon',
+          'innerText': today.getDate()
         })
-        icon.innerText = today.getDate()
         icon.addEventListener('click', toggleCalendar)
         container.insertBefore(icon, container.firstChild)
       },
       initState:             function() { },
       getContainer:          function(newContainer) {
-        var popUpContainer = createElement('div', {
-          'class': 'popUpContainer'
+        var popUpContainer = el('div', {
+          'className': 'popUpContainer'
         })
         popUpContainer.appendChild(newContainer)
         return popUpContainer
       },
       close:                 toggleCalendar,
       addDateLabelBehaviour: function(labels) {
-        Array.prototype.slice.call(labels).forEach(function(label) {
+        elemsAsList(labels).forEach(function(label) {
           label.classList.add('clickable')
           label.addEventListener('click', toggleCalendar)
         })
@@ -223,15 +226,15 @@ module.exports = function(container, options) {
     if(existingContainer) {
       return existingContainer
     } else {
-      var newContainer = createElement('div', {'class':'continuousCalendar'})
+      var newContainer = el('div', {'className':'continuousCalendar'})
       container.appendChild(popupBehavior.getContainer(newContainer))
       return newContainer
     }
   }
 
   function addDateLabels(container2, popupBehavior, dateBehavior) {
-    var dateLabelContainer = createElement('div', {'class': 'label'})
-    dateLabelContainer.appendChild(createElement('span', {'class': 'startDateLabel'}))
+    var dateLabelContainer = el('div', {'className': 'label'})
+    dateLabelContainer.appendChild(el('span', {'className': 'startDateLabel'}))
     dateBehavior.addEndDateLabel(dateLabelContainer)
     container2.insertBefore(dateLabelContainer, container2.firstChild)
     popupBehavior.addDateLabelBehaviour(dateLabelContainer.childNodes)
@@ -283,16 +286,4 @@ module.exports = function(container, options) {
 
   function formatDate(date) { return date ? (params.useIsoForInput ? date.toISODateString() : DateFormat.shortDateFormat(date, locale)) : '' }
 
-  function extend(destination, source) {
-    for(var property in source)
-      destination[property] = source[property]
-    return destination
-  }
-  function createElement(tagName, attributes) {
-    var el = document.createElement(tagName)
-    Object.keys(attributes).forEach(function(key) {
-      el.setAttribute(key, attributes[key])
-    })
-    return el
-  }
 }
