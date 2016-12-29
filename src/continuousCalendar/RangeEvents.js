@@ -41,7 +41,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label"><span class="rangeLengthLabel"></span></div>')
   }
 
-  function addEndDateLabel(dateLabelContainer) { dateLabelContainer.get(0).insertAdjacentHTML('beforeend', '<span class="separator"> - </span><span class="endDateLabel"></span>') }
+  function addEndDateLabel(dateLabelContainer) { dateLabelContainer.insertAdjacentHTML('beforeend', '<span class="separator"> - </span><span class="endDateLabel"></span>') }
 
   function addDateClearingLabel() {
     if(params.allowClearDates) {

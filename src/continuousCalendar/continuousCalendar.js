@@ -161,24 +161,28 @@ module.exports = function(containerEl, options) {
       initUI:                function() {
         calendarContainer.classList.add('popup')
         calendarContainer.style.display = 'none'
-        var icon = document.createElement('a')
-        icon.setAttribute('href', '#')
-        icon.setAttribute('class', 'calendarIcon')
+        var icon = createElement('a', {
+          'href':  '#',
+          'class': 'calendarIcon'
+        })
         icon.innerText = today.getDate()
         icon.addEventListener('click', toggleCalendar)
         container.get(0).insertBefore(icon, container.get(0).firstChild)
       },
       initState:             function() { },
       getContainer:          function(newContainer) {
-        var popUpContainer = document.createElement('div')
-        popUpContainer.setAttribute('class', 'popUpContainer')
+        var popUpContainer = createElement('div', {
+          'class': 'popUpContainer'
+        })
         popUpContainer.appendChild(newContainer)
         return popUpContainer
       },
       close:                 toggleCalendar,
-      addDateLabelBehaviour: function(label) {
-        label.get(0).classList.add('clickable')
-        label.get(0).addEventListener('click', toggleCalendar)
+      addDateLabelBehaviour: function(labels) {
+        Array.prototype.slice.call(labels).forEach(function(label) {
+          label.classList.add('clickable')
+          label.addEventListener('click', toggleCalendar)
+        })
       }
     }
 
@@ -224,18 +228,18 @@ module.exports = function(containerEl, options) {
     if(existingContainer) {
       return existingContainer
     } else {
-      var newContainer = document.createElement('div')
-      newContainer.setAttribute('class', 'continuousCalendar')
+      var newContainer = createElement('div', {'class':'continuousCalendar'})
       container2.appendChild(popupBehavior.getContainer(newContainer))
       return newContainer
     }
   }
 
   function addDateLabels(container, popupBehavior, dateBehavior) {
-    var dateLabelContainer = $('<div class="label"><span class="startDateLabel"></span></div>')
+    var dateLabelContainer = createElement('div', {'class': 'label'})
+    dateLabelContainer.appendChild(createElement('span', {'class': 'startDateLabel'}))
     dateBehavior.addEndDateLabel(dateLabelContainer)
-    container.prepend(dateLabelContainer)
-    popupBehavior.addDateLabelBehaviour(dateLabelContainer.children())
+    container.get(0).insertBefore(dateLabelContainer, container.get(0).firstChild)
+    popupBehavior.addDateLabelBehaviour(dateLabelContainer.childNodes)
   }
 
   function scrollToSelection() {
@@ -291,5 +295,12 @@ module.exports = function(containerEl, options) {
     for(var property in source)
       destination[property] = source[property]
     return destination
+  }
+  function createElement(tagName, attributes) {
+    var el = document.createElement(tagName)
+    Object.keys(attributes).forEach(function(key) {
+      el.setAttribute(key, attributes[key])
+    })
+    return el
   }
 }
