@@ -82,13 +82,11 @@ module.exports = function(containerEl, options) {
     params.fadeOutDuration = +params.fadeOutDuration
     calendarContainer = getCalendarContainerOrCreateOne()
     //calendarContainer.click(function(e) { e.stopPropagation() })
-    if(!container2.querySelector('.startDateLabel')) addDateLabels(container, popupBehavior, dateBehavior)
+    if(!container2.querySelector('.startDateLabel')) addDateLabels(container2, popupBehavior, dateBehavior)
     popupBehavior.initUI()
     dateBehavior.showInitialSelection()
     dateBehavior.performTrigger()
   }
-
-  function initScrollBar() { if(params.customScroll) customScrollContainer = $('.tinyscrollbar', container).tinyscrollbar(params.scrollOptions) }
 
   function initCalendarTable() {
     if(!calendarBody.scrollContent) {
@@ -128,7 +126,7 @@ module.exports = function(containerEl, options) {
 
   function bindScrollEvent() {
     if(params.customScroll) {
-      if(!customScrollContainer) initScrollBar()
+      if(!customScrollContainer) customScrollContainer = params.initScrollBar(container2, params)
       customScrollContainer.bind('scroll', setYearLabel)
     } else {
       var waiting = false
@@ -197,7 +195,7 @@ module.exports = function(containerEl, options) {
         params.popupCallback()
         calendarContainer.style.display = ''
         if(beforeFirstOpening) {
-          initScrollBar()
+          params.initScrollBar(container2, params)
           calculateCellHeight()
           setYearLabel()
           beforeFirstOpening = false
@@ -234,7 +232,7 @@ module.exports = function(containerEl, options) {
     }
   }
 
-  function addDateLabels(container, popupBehavior, dateBehavior) {
+  function addDateLabels(container2, popupBehavior, dateBehavior) {
     var dateLabelContainer = createElement('div', {'class': 'label'})
     dateLabelContainer.appendChild(createElement('span', {'class': 'startDateLabel'}))
     dateBehavior.addEndDateLabel(dateLabelContainer)
@@ -269,7 +267,7 @@ module.exports = function(containerEl, options) {
   }
 
   function calculateCellHeightAndInitScroll() {
-    initScrollBar()
+    params.initScrollBar(container2, params)
     calculateCellHeight()
     setYearLabel()
   }
