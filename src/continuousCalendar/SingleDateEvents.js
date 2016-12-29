@@ -61,7 +61,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function initSingleDateCalendarEvents() {
     container.addEventListener('click', function(e) {
-      var dateCell = e.target
+      var dateCell = e.target.tagName === 'DIV' ? e.target.parentNode : e.target
       if (dateCell.classList.contains('date') && !dateCell.classList.contains('disabled')) {
         var selectedDate = getElemDate(dateCell)
         setSelectedDate(selectedDate, dateCell)
