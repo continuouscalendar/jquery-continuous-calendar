@@ -9,6 +9,7 @@ var SingleDateEvents = require('./SingleDateEvents')
 var el = require('./util').el
 var extend = require('./util').extend
 var elemsAsList = require('./util').elemsAsList
+var toggle = require('./util').toggle
 
 module.exports = function(container, options) {
   var defaults = {
@@ -157,7 +158,7 @@ module.exports = function(container, options) {
     var popUpVersion = {
       initUI:                function() {
         calendarContainer.classList.add('popup')
-        calendarContainer.style.display = 'none'
+        toggle(calendarContainer, false)
         var icon = el('a', {
           'href':  '#',
           'className': 'calendarIcon',
@@ -187,12 +188,12 @@ module.exports = function(container, options) {
       initCalendarTable()
       if(calendarContainer.style.display === '' ) {
         //calendarContainer.fadeOut(params.fadeOutDuration)
-        calendarContainer.style.display = 'none'
+        toggle(calendarContainer, false)
         //TODO re-actiate
         //$(document).unbind('click.continuousCalendar')
       } else {
         params.popupCallback()
-        calendarContainer.style.display = ''
+        toggle(calendarContainer, true)
         if(beforeFirstOpening) {
           params.initScrollBar(container, params)
           calculateCellHeight()
