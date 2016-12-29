@@ -9,6 +9,10 @@ $.fn.continuousCalendar = function(options) {
     options.initScrollBar = function(container, params) {
       return params.customScroll && $('.tinyscrollbar', container).tinyscrollbar(params.scrollOptions)
     }
+    options.executeCallback = function(container, selection, params) {
+      params.callback.call(container, selection)
+      $(container).trigger('calendarChange', selection)
+    }
     continuousCalendar($(this).get(0), options)
   })
 }

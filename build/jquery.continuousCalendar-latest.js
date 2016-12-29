@@ -1550,7 +1550,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function performTrigger() {
     container.calendarRange = selection
-    executeCallback(selection)
+    executeCallback(container, selection, params)
   }
 
   function setInitialSelection() {
@@ -1729,7 +1729,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     setEndField(selection.end)
     setRangeLabels()
     if(params.selectWeek) calendar.close()
-    executeCallback(selection)
+    executeCallback(container, selection, params)
   }
 
   function setRangeLabels() {
@@ -1828,7 +1828,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 
   function performTrigger() {
     container.calendarRange = startDate
-    executeCallback(startDate)
+    executeCallback(container, startDate, params)
   }
 
   function initSingleDateCalendarEvents() {
@@ -1838,7 +1838,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
         var selectedDate = getElemDate(dateCell)
         setSelectedDate(selectedDate, dateCell)
         popupBehavior.close()
-        executeCallback(selectedDate)
+        executeCallback(container, selectedDate, params)
       }
     })
     var clearDates = container.querySelector('.clearDates')
@@ -1860,8 +1860,6 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
 }
 
 },{"dateutils":7}],23:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
 var EN = require('dateutils').DateLocale.EN
@@ -1871,14 +1869,14 @@ var CalendarBody = require('./CalendarBody')
 var RangeEvents = require('./RangeEvents')
 var SingleDateEvents = require('./SingleDateEvents')
 
-module.exports = function(containerEl, options) {
+module.exports = function(container, options) {
   var defaults = {
     weeksBefore:     26,
     weeksAfter:      26,
     firstDate:       null,
     lastDate:        null,
-    startField:      containerEl.querySelector('input.startDate'),
-    endField:        containerEl.querySelector('input.endDate'),
+    startField:      container.querySelector('input.startDate'),
+    endField:        container.querySelector('input.endDate'),
     isPopup:         false,
     selectToday:     false,
     locale:          EN,
@@ -1912,8 +1910,6 @@ module.exports = function(containerEl, options) {
     setStartField(today)
     setEndField(today)
   }
-  var container = $(containerEl)
-  var container2 = containerEl
   var averageCellHeight
   var calendarContainer
   var beforeFirstOpening = true
@@ -1925,8 +1921,8 @@ module.exports = function(containerEl, options) {
   var disabledDatesList
   var disabledDatesObject
 
-  container2.classList.add('continuousCalendarContainer')
-  container2.classList.add('params.theme')
+  container.classList.add('continuousCalendarContainer')
+  container.classList.add('params.theme')
   createCalendar()
 
   function createCalendar() {
@@ -1945,7 +1941,7 @@ module.exports = function(containerEl, options) {
     params.fadeOutDuration = +params.fadeOutDuration
     calendarContainer = getCalendarContainerOrCreateOne()
     //calendarContainer.click(function(e) { e.stopPropagation() })
-    if(!container2.querySelector('.startDateLabel')) addDateLabels(container2, popupBehavior, dateBehavior)
+    if(!container.querySelector('.startDateLabel')) addDateLabels(container, popupBehavior, dateBehavior)
     popupBehavior.initUI()
     dateBehavior.showInitialSelection()
     dateBehavior.performTrigger()
@@ -1989,7 +1985,7 @@ module.exports = function(containerEl, options) {
 
   function bindScrollEvent() {
     if(params.customScroll) {
-      if(!customScrollContainer) customScrollContainer = params.initScrollBar(container2, params)
+      if(!customScrollContainer) customScrollContainer = params.initScrollBar(container, params)
       customScrollContainer.bind('scroll', setYearLabel)
     } else {
       var waiting = false
@@ -2012,7 +2008,7 @@ module.exports = function(containerEl, options) {
   }
 
   function dateBehaviour(isRange) {
-    var basicParams = [container2, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
+    var basicParams = [container, calendarBody, params.executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
     var rangeParams = [endDate, setEndField, calendarRange, disabledDatesList]
     return isRange ? RangeEvents.apply(null, basicParams.concat(rangeParams)) : SingleDateEvents.apply(null, basicParams)
   }
@@ -2028,7 +2024,7 @@ module.exports = function(containerEl, options) {
         })
         icon.innerText = today.getDate()
         icon.addEventListener('click', toggleCalendar)
-        container2.insertBefore(icon, container2.firstChild)
+        container.insertBefore(icon, container.firstChild)
       },
       initState:             function() { },
       getContainer:          function(newContainer) {
@@ -2058,7 +2054,7 @@ module.exports = function(containerEl, options) {
         params.popupCallback()
         calendarContainer.style.display = ''
         if(beforeFirstOpening) {
-          params.initScrollBar(container2, params)
+          params.initScrollBar(container, params)
           calculateCellHeight()
           setYearLabel()
           beforeFirstOpening = false
@@ -2085,12 +2081,12 @@ module.exports = function(containerEl, options) {
   }
 
   function getCalendarContainerOrCreateOne() {
-    var existingContainer = container2.querySelector('.continuousCalendar')
+    var existingContainer = container.querySelector('.continuousCalendar')
     if(existingContainer) {
       return existingContainer
     } else {
       var newContainer = createElement('div', {'class':'continuousCalendar'})
-      container2.appendChild(popupBehavior.getContainer(newContainer))
+      container.appendChild(popupBehavior.getContainer(newContainer))
       return newContainer
     }
   }
@@ -2130,7 +2126,7 @@ module.exports = function(containerEl, options) {
   }
 
   function calculateCellHeightAndInitScroll() {
-    params.initScrollBar(container2, params)
+    params.initScrollBar(container, params)
     calculateCellHeight()
     setYearLabel()
   }
@@ -2138,11 +2134,6 @@ module.exports = function(containerEl, options) {
   function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.clientHeight / calendarBody.bodyTable.querySelectorAll('tr').length, 10) }
 
   function fieldDate(field) { return field && field.value && field.value.length > 0 ? (params.useIsoForInput ? DateTime.fromIsoDate(field.value) : DateParse.parse(field.value, locale)) : null }
-
-  function executeCallback(selection) {
-    params.callback.call(container2, selection)
-    container.trigger('calendarChange', selection)
-  }
 
   function getElemDate(elem) {
     return calendarBody.dateCellDates[elem.getAttribute('date-cell-index') || elem.parentNode.getAttribute('date-cell-index')]
@@ -2168,7 +2159,6 @@ module.exports = function(containerEl, options) {
   }
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./CalendarBody":20,"./RangeEvents":21,"./SingleDateEvents":22,"dateutils":7}],24:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
@@ -2181,6 +2171,10 @@ $.fn.continuousCalendar = function(options) {
   return this.each(function() {
     options.initScrollBar = function(container, params) {
       return params.customScroll && $('.tinyscrollbar', container).tinyscrollbar(params.scrollOptions)
+    }
+    options.executeCallback = function(container, selection, params) {
+      params.callback.call(container, selection)
+      $(container).trigger('calendarChange', selection)
     }
     continuousCalendar($(this).get(0), options)
   })
