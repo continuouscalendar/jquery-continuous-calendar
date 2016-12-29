@@ -62,8 +62,7 @@ module.exports = function(container, options) {
   var disabledDatesList
   var disabledDatesObject
 
-  container.classList.add('continuousCalendarContainer')
-  container.classList.add('params.theme')
+  container.classList.add('continuousCalendarContainer', 'params.theme')
   createCalendar()
 
   function createCalendar() {
