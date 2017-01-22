@@ -1,18 +1,28 @@
-$("#timeCalendar").continuousCalendar({weeksBefore: 30, lastDate: "today", selectToday: true, theme: 'rounded', isRange: true})
-$("#timeCalendar").bind('calendarChange', function() {
-  var container = $(this)
-  var startTime = container.find('select[name=tripStartTime]').val()
-  var endTime = container.find('select[name=tripEndTime]').val()
-  var range = container.calendarRange()
+ContinuousCalendar(document.getElementById('timeCalendar'),  {weeksBefore: 30, lastDate: "today", selectToday: true, theme: 'rounded', isRange: true, executeCallback: executeCallback})
+
+function executeCallback(container, selection, params) {
+  var startTime = container.querySelector('select[name=tripStartTime]').value
+  var endTime = container.querySelector('select[name=tripEndTime]').value
+  var range = container.calendarRange
   range = range.withTimes(startTime, endTime)
-  container.find('.totalTimeOfTrip').text(DateFormat.formatRange(range, DateLocale.EN)).toggleClass('invalid', !range.isValid())
+  container.querySelector('.totalTimeOfTrip').innerText = DateFormat.formatRange(range, DateLocale.EN)
+  container.querySelector('.totalTimeOfTrip').classList.toggle('invalid', !range.isValid())
+}
+
+Array.prototype.slice.call(document.querySelectorAll("#timeCalendar select")).forEach(function(el) {
+  el.addEventListener('change', function() {
+    executeCallback(document.getElementById('timeCalendar'))
+  })
 });
-$("#timeCalendar select").bind('change', function() {
-  $("#timeCalendar").trigger('calendarChange');
-});
-$("#timeCalendar select").each(function() {
+
+Array.prototype.slice.call(document.querySelectorAll("#timeCalendar select")).forEach(function(elem) {
   for(i = 0; i < 24; i++) {
-    $(this).append($("<option>").text(i + ":00")).append($("<option>").text(i + ":30"));
+    var option = document.createElement('option')
+    option.innerText = i + ":00"
+    var option2 = document.createElement('option')
+    option2.innerText = i + ":30"
+    elem.appendChild(option);
+    elem.appendChild(option2);
   }
 });
-$('#date-picker').continuousCalendar({isPopup: true, firstDate: 'today', customScroll: true});
+ContinuousCalendar(document.getElementById('date-picker'), {isPopup: true, firstDate: 'today', customScroll: false});
