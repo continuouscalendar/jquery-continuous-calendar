@@ -1892,7 +1892,9 @@ module.exports = function(container, options) {
     isRange:         false,
     startDate:       null,
     endDate:         null,
-    useIsoForInput:  false
+    useIsoForInput:  false,
+    initScrollBar: function() { },
+    executeCallback: function() { }
   }
   var params = extend(defaults, options)
   var locale = params.locale
