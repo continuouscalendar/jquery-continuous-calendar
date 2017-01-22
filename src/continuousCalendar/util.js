@@ -23,5 +23,5 @@ function elemsAsList(selector) {
 }
 
 function toggle(elem, show) {
-  elem.style.display = show ? '' : 'none'
+  if(elem) elem.style.display = show ? '' : 'none'
 }
