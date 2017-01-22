@@ -12,8 +12,10 @@
     "portDateutils": "r.js -convert node_modules/dateutils/src src/main/dateutils",
     "portContinuousCalendar": "r.js -convert src/continuousCalendar src/main",
     "buildBundle": "browserify src/build/bundleWrapper.js -o build/jquery.continuousCalendar-latest.js",
+    "buildLightBundle": "browserify src/build/bundleWrapperLight.js -o build/continuousCalendar-latest.js",
     "watch": "watchify src/build/bundleWrapper.js -o build/jquery.continuousCalendar-latest.js",
     "minifyBundle": "uglifyjs build/jquery.continuousCalendar-latest.js > build/jquery.continuousCalendar-latest-min.js",
+    "minifyLightBundle": "uglifyjs build/continuousCalendar-latest.js > build/continuousCalendar-latest-min.js",
     "prepublish": "npm run buildBundle && npm run minifyBundle"
   },
   "keywords": [
