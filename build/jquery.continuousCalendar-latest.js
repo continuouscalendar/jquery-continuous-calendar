@@ -880,7 +880,7 @@ function createSafeDate(year, month, date, hours, minutes, seconds) {
     month !== newDate.getMonth() + 1 ||
     year !== newDate.getFullYear() ||
     date !== newDate.getDate() ||
-    hours !== newDate.getHours() ||
+    hours !== (newDate.getHours() & newDate.getHours()-1) ||
     minutes !== newDate.getMinutes() ||
     seconds !== newDate.getSeconds()) throw Error('Invalid Date: ' + year + '-' + month + '-' + date + ' ' + hours + ':' + minutes + ':' + seconds)
   return newDate
