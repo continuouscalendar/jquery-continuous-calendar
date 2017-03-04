@@ -681,33 +681,43 @@ var testIndex = 0
 
 function createCalendarContainer() {
   testIndex++
-  var container = $('<div>').addClass('testCalendarContainer')
-  var containerWrapper = $('<div>').addClass('containerWrapper')
+
+  var container = document.createElement('div')
+  container.classList.add('testCalendarContainer')
+
+  var containerWrapper = document.createElement('div')
+  containerWrapper.classList.add('containerWrapper')
   //TODO current test is undefined for some reason
   var currentTest = this.currentTest || this
   var suite_description = currentTest.parent.title
   var description = currentTest.title
-  var index = $('<div></div>').append('<strong>' + suite_description + '</strong><br>' + description).addClass('testLabel')
-  container.attr('id', calendarId())
-  containerWrapper.append(index)
-  containerWrapper.append(container)
-  $('#calendars').append(containerWrapper)
+
+  var index = document.createElement('div')
+  index.classList.add('testLabel')
+  index.innerHTML = '<strong>' + suite_description + '</strong><br>' + description
+  container.setAttribute('id', calendarId())
+  containerWrapper.appendChild(index)
+  containerWrapper.appendChild(container)
+  document.getElementById('calendars').appendChild(containerWrapper)
 }
 
-function cal(delta) { return $('#' + calendarId(delta)) }
+function cal(delta) { return $(document.getElementById(calendarId(delta))) }
 
 function createCalendarFields(params) {
-  var container = $('#' + calendarId())
+  var container = document.getElementById(calendarId())
   addFieldIfRequired('startDate')
   addFieldIfRequired('endDate')
   function addFieldIfRequired(fieldName) {
-    if(params && params[fieldName] != undefined) {
-      var field = $('<input>').attr('type', 'text').addClass(fieldName).val(params[fieldName])
-      container.append(field)
+    if (params && params[fieldName] != undefined) {
+      var field = document.createElement('input')
+      field.setAttribute('type', 'text')
+      field.classList.add(fieldName)
+      field.value = params[fieldName]
+      container.appendChild(field)
     }
   }
 
-  return container
+  return $(container)
 }
 
 function mouseClick(selector) {
