@@ -1,6 +1,6 @@
 {
   "name": "jquery-continuous-calendar",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "Date picker and range selector with scrollable months instead of paged",
   "repository": {
     "type": "git",
