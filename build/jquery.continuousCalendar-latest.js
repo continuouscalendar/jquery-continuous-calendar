@@ -934,7 +934,7 @@ module.exports = Duration
 
 },{}],7:[function(require,module,exports){
 module.exports = {
-  "version":  "0.3.1",
+  "version":  "0.3.0",
   DateFormat: require('./DateFormat'),
   DateLocale: require('./DateLocale'),
   DateParse:  require('./DateParse'),
@@ -2150,7 +2150,7 @@ var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "u
 var continuousCalendar = require('./continuousCalendar')
 
 $.continuousCalendar = {
-  "version": "5.1.0" // eslint-disable-line
+  "version": "5.1.1"
 }
 $.fn.continuousCalendar = function(options) {
   return this.each(function() {
