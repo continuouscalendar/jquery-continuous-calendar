@@ -1,13 +1,13 @@
-var $ = require('jquery')
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
+var toggle = require('./util').toggle
 
 module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField) {
   return {
     showInitialSelection: showInitialSelection,
     initEvents          : initEvents,
-    addRangeLengthLabel : $.noop,
-    addEndDateLabel     : $.noop,
+    addRangeLengthLabel : function () { },
+    addEndDateLabel     : function () { },
     addDateClearingLabel: addDateClearingLabel,
     setSelection        : setSelection,
     performTrigger      : performTrigger
@@ -16,7 +16,8 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function showInitialSelection() {
     if(startDate) {
       setFieldValues(startDate)
-      $('.clearDates', container).show()
+      var clearDates = container.querySelector('.clearDates')
+      if(clearDates) toggle(clearDates, true)
     }
   }
 
@@ -25,7 +26,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
     setSelection(fieldDate(params.startField) || startDate)
   }
 
-  function fieldDate(field) { return field.length > 0 && field.val().length > 0 ? DateParse.parse(field.val(), locale) : null }
+  function fieldDate(field) { return field && field.value && field.value.length > 0 ? DateParse.parse(field.value, locale) : null }
 
   function setSelection(date) {
     var selectedDateKey = date && DateFormat.format(date, 'Ymd', locale)
@@ -35,54 +36,54 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 
   function setSelectedDate(date, cell) {
-    $('td.selected', container).removeClass('selected')
-    cell.addClass('selected')
+    var selectedElem = container.querySelector('td.selected')
+    selectedElem && selectedElem.classList.remove('selected')
+    cell.classList.add('selected')
     setFieldValues(date)
   }
 
   function setFieldValues(date) {
-    container.data('calendarRange', date)
+    container.calendarRange = date
     setStartField(date)
     setDateLabel(DateFormat.format(date, locale.weekDateFormat, locale))
   }
 
   function addDateClearingLabel() {
     if(params.allowClearDates) {
-      var dateClearingLabel = $('<span class="clearDates clickable"></span>').hide()
-      dateClearingLabel.text(locale.clearDateLabel)
-      var dateClearingContainer = $('<div class="label clearLabel"></div>').append(dateClearingLabel)
-      $('.continuousCalendar', container).append(dateClearingContainer)
+      container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel">' +
+        '<span class="clearDates clickable" style="display: none">' + locale.clearDateLabel + '</span></div>')
     }
   }
 
   function performTrigger() {
-    container.data('calendarRange', startDate)
-    executeCallback(startDate)
+    container.calendarRange = startDate
+    executeCallback(container, startDate, params)
   }
 
   function initSingleDateCalendarEvents() {
-    $('.date', container).bind('click', function() {
-      var dateCell = $(this)
-      if (!dateCell.hasClass('disabled')) {
-        var selectedDate = getElemDate(dateCell.get(0))
+    container.addEventListener('click', function(e) {
+      var dateCell = e.target.tagName === 'DIV' ? e.target.parentNode : e.target
+      if (dateCell.classList.contains('date') && !dateCell.classList.contains('disabled')) {
+        var selectedDate = getElemDate(dateCell)
         setSelectedDate(selectedDate, dateCell)
-        popupBehavior.close(this)
-        executeCallback(selectedDate)
+        popupBehavior.close()
+        executeCallback(container, selectedDate, params)
       }
     })
-    $('.clearDates', container).click(clickClearDate)
+    var clearDates = container.querySelector('.clearDates')
+    if(clearDates) clearDates.addEventListener('click', clickClearDate)
   }
 
   function setDateLabel(val) {
-    $('span.startDateLabel', container).text(val)
+    container.querySelector('span.startDateLabel').innerText = val
     if(params.allowClearDates) {
-      $('.clearDates', container).toggle(val !== '')
+      toggle(container.querySelector('.clearDates'), val !== '')
     }
   }
 
   function clickClearDate() {
-    $('td.selected', container).removeClass('selected')
-    params.startField.val('')
+    container.querySelector('td.selected').classList.remove('selected')
+    params.startField.value = ''
     setDateLabel('')
   }
 }

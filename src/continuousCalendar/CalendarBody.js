@@ -1,29 +1,29 @@
-var $ = require('jquery')
 var DateFormat = require('dateutils').DateFormat
 var DateTime = require('dateutils').DateTime
+var util = require('./util')
+var el = util.el
 
 module.exports = function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
   var dateCellMap = {}
   var dateCellDates = []
-
-  var headerTable = $('<table class="calendarHeader">').append(headerRow())
-  var bodyTable = $('<table class="calendarBody">').append(calendarBody())
-  var scrollContent = $('<div class="calendarScrollContent">').append(bodyTable)
-  calendarContainer.append(headerTable)
+  var dateCells = []
+  var yearTitle = el('th', {className:'month'})
+  var headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
+  var bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
+  var scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
+  calendarContainer.appendChild(headerTable)
 
   if(customScroll) {
-    bodyTable.addClass('overview')
-    scrollContent.addClass('viewport')
-    calendarContainer.append(
-        $('<div class="tinyscrollbar"></div>')
-            .append('<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>')
-            .append(scrollContent))
+    bodyTable.classList.add('overview')
+    scrollContent.classList.add('viewport')
+    calendarContainer.appendChild(el('div', {
+      className: 'tinyscrollbar',
+      innerHTML: '<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>'
+    }, scrollContent))
   } else {
-    calendarContainer.append(scrollContent)
+    calendarContainer.appendChild(scrollContent)
   }
-  var dateCells = $('td.date', calendarContainer).get()
   highlightToday(dateCellMap)
-  var yearTitle = $('th.month', headerTable)
 
   return {
     bodyTable    : bodyTable,
@@ -36,71 +36,84 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     getDateCell  : getDateCell
   }
 
-  function headerRow() {
-    var tr = $('<tr><th class="month"></th><th class="week">&nbsp;</th>')
-    $(locale.dayNames).each(function(index) {
-      var weekDay = $('<th>').append(locale.shortDayNames[(index + locale.firstWeekday) % 7]).addClass('weekDay')
-      tr.append(weekDay)
-    })
-    return $('<thead>').append(tr)
+  function headerRow(yearTitle) {
+    var thead = el('thead')
+    var tr = el('tr', {className:'month'}, yearTitle)
+    tr.insertAdjacentHTML('beforeend', '<th class="week">&nbsp;</th>' + locale.dayNames.map(function(name, index) {
+      return'<th class="weekDay">' + locale.shortDayNames[(index + locale.firstWeekday) % 7] + '</th>'
+    }).join(''))
+    thead.appendChild(tr)
+    return thead
   }
 
   function highlightToday(dateCellMap) {
     var todayKey = DateFormat.format(DateTime.today(), 'Ymd', locale)
     if(todayKey in dateCellMap) {
-      getDateCell(dateCellMap[todayKey]).addClass('today').wrapInner('<div>')
+      var dateCell = getDateCell(dateCellMap[todayKey])
+      dateCell.classList.add('today')
+      dateCell.innerHTML = '<div>' + dateCell.innerText + '</div>'
+
     }
   }
 
   function calendarBody() {
     var firstWeekDay = calendarRange.start.getFirstDateOfWeek(locale)
     var isFirst = true
-    var rows = []
+    var rows = document.createDocumentFragment()
+
     while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
-      calendarRow(rows, firstWeekDay.clone(), isFirst)
+      rows.appendChild(calendarRow(firstWeekDay, isFirst))
       isFirst = false
       firstWeekDay = firstWeekDay.plusDays(7)
     }
 
-    return '<tbody>' + rows.join('') + '</tbody>'
+    return el('tbody', {}, rows)
 
-    function calendarRow(rows, firstDayOfWeek, isFirst) {
-      rows.push('<tr>')
-      rows.push(monthCell(firstDayOfWeek, isFirst))
-      rows.push(weekCell(firstDayOfWeek))
+    function calendarRow(firstDayOfWeek, isFirst) {
+      var row = el('tr', {}, monthCell(firstDayOfWeek, isFirst))
+      row.appendChild(weekCell(firstDayOfWeek))
       for(var i = 0; i < 7; i++) {
         var date = firstDayOfWeek.plusDays(i)
-        rows.push(dateCell(date))
+        row.appendChild(dateCell(date))
       }
-      rows.push('</tr>')
+      return row
     }
 
     function dateCell(date) {
-      var tooltip = (locale.holidays && (date.toISODateString() in locale.holidays)) ? 'title="' + locale.holidays[date.toISODateString()] + '" ' : ''
-      var cell = '<td class="' + dateStyles(date) + '" date-cell-index="' + dateCellDates.length + '" ' + tooltip + '>' + date.getDate() + '</td>'
+      var td = el('td', {
+        className:         dateStyles(date),
+        innerText:         date.getDate()
+      })
+      if(locale.holidays && (date.toISODateString() in locale.holidays))
+        td.title = locale.holidays[date.toISODateString()]
+      td.setAttribute('date-cell-index', String(dateCellDates.length))
       dateCellMap[DateFormat.format(date, 'Ymd', locale)] = dateCellDates.length
       dateCellDates.push(date)
-      return cell
+      dateCells.push(td)
+      return td
     }
 
     function monthCell(firstDayOfWeek, isFirst) {
-      var th = '<th class="month ' + backgroundBy(firstDayOfWeek)
-      if(isFirst || firstDayOfWeek.getDate() <= 7) {
-        th += ' monthName">'
-        th += locale.monthNames[firstDayOfWeek.getMonth()-1]
-      } else {
-        th += '">'
-        if(firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1) {
-          th += firstDayOfWeek.getFullYear()
-        }
-      }
-      return th + '</th>'
+      var showMonth = isFirst || firstDayOfWeek.getDate() <= 7
+      var showYear = firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1
+      return el('th', {
+        className: 'month ' + backgroundBy(firstDayOfWeek) + (showMonth ? ' monthName':''),
+        innerText: (showMonth ? locale.monthNames[firstDayOfWeek.getMonth()-1] : (showYear ? firstDayOfWeek.getFullYear() : ''))
+      })
     }
 
-    function weekCell(firstDayOfWeek) { return '<th class="week ' + backgroundBy(firstDayOfWeek) + '">' + firstDayOfWeek.getWeekInYear('ISO') + '</th>' }
+    function weekCell(firstDayOfWeek) {
+      return el('th', {
+        className: 'week ' + backgroundBy(firstDayOfWeek),
+        innerText: firstDayOfWeek.getWeekInYear('ISO')
+      })
+    }
   }
 
-  function dateStyles(date) { return $.trim(['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)].sort().join(' ')) }
+  function dateStyles(date) {
+    return ['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)]
+      .filter(function(x) { return x}).join(' ')
+  }
 
   function backgroundBy(date) { return date.isOddMonth() ? 'odd' : '' }
 
@@ -119,5 +132,5 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
     return (isSunday || isHoliday) ? 'holiday' : ''
   }
 
-  function getDateCell(index) { return $(dateCells[index]) }
+  function getDateCell(index) { return dateCells[index] }
 }
