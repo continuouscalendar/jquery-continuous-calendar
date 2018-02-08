@@ -394,40 +394,32 @@ describe('continuousCalendar', function() {
       expect(cal().find('.week').length).to.equal(22)
     })
 
-    xit('calendar executes callback-function and triggers event when date is picked', function() {
-      function testFunction() {
-        window.calendarCallBack++
-      }
+    it('calendar executes callback-function and triggers event when date is picked', function() {
 
-      window.bindCalled = 0
-      window.calendarCallBack = 0
+      window.callBackCalled = 0
       ContinuousCalendar(createCalendarFields({startDate: ''}), {
         firstDate: '4/26/2009',
         lastDate:  '5/2/2009',
-        callback:  testFunction
-      })
-      cal().bind('calendarChange', function() {
-        window.bindCalled++
+        executeCallback: function(container, selection, params) {
+          window.callBackCalled++
+        }
       })
       clickEl(elemByDate(28))
-      expect(window.bindCalled).to.equal(1, 'bind')
-      expect(window.calendarCallBack).to.equal(2)
+      expect(window.callBackCalled).to.equal(2, 'bind')
     })
 
-    xit('range calendar executes callback-function and triggers event when range is created or changed', function() {
-      function testFunction(range) {
-        window.calendarContainer = this
+    it('range calendar executes callback-function and triggers event when range is created or changed', function() {
+      function testFunction(container, range, params) {
+        window.calendarContainer = container
         window.calendarCallBack = range.days()
+        window.calendarChanged = container.querySelectorAll('.selected').length
       }
 
       ContinuousCalendar(createCalendarFields(), {
         firstDate: '4/26/2009',
         lastDate:  '5/2/2009',
-        callback:  testFunction,
+        executeCallback:  testFunction,
         isRange:   true
-      })
-      cal().bind('calendarChange', function() {
-        window.calendarChanged = $(this).find('.selected').length
       })
       expect(window.calendarCallBack).to.equal(0)
       dragDates(28, 29)
@@ -647,20 +639,20 @@ describe('continuousCalendar', function() {
 
     })
   })
-  xdescribe('calendar trigger and callback', function() {
+  describe('calendar trigger and callback', function() {
     beforeEach(createCalendarContainer)
 
     it('when using single date calendar', function() {
-      var _this
-      var _arguments
+      var _container
+      var _selection
       var container = createCalendarFields({startDate: '4/29/2009'})
-      container.bind('calendarChange', function() {
-        _this = this
-        _arguments = arguments
-      })
-      ContinuousCalendar(container, {firstDate: '4/15/2009', lastDate: '5/12/2009'})
-      expect(_arguments).toHaveLength(2)
-      expect(_this).to.eql(container.get(0))
+      ContinuousCalendar(container, {firstDate: '4/15/2009', lastDate: '5/12/2009',
+        executeCallback: function (container, selection, params) {
+          _container = container
+          _selection = selection
+        }})
+      expect(_selection.toString()).to.equal(DateTime.fromDate(2009,4,29).toString())
+      expect(_container).to.eql(container)
     })
 
     it('when using range calendar', function() {
