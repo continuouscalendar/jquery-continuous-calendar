@@ -1,4 +1,824 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var DateFormat = require('dateutils').DateFormat
+var DateTime = require('dateutils').DateTime
+var util = require('./util')
+var el = util.el
+
+module.exports = function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
+  var dateCellMap = {}
+  var dateCellDates = []
+  var dateCells = []
+  var yearTitle = el('th', {className:'month'})
+  var headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
+  var bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
+  var scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
+  calendarContainer.appendChild(headerTable)
+
+  if(customScroll) {
+    bodyTable.classList.add('overview')
+    scrollContent.classList.add('viewport')
+    calendarContainer.appendChild(el('div', {
+      className: 'tinyscrollbar',
+      innerHTML: '<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>'
+    }, scrollContent))
+  } else {
+    calendarContainer.appendChild(scrollContent)
+  }
+  highlightToday(dateCellMap)
+
+  return {
+    bodyTable    : bodyTable,
+    scrollContent: scrollContent,
+    dateCells    : dateCells,
+    yearTitle    : yearTitle,
+    dateCellMap  : dateCellMap,
+    dateCellDates: dateCellDates,
+    dateStyles   : dateStyles,
+    getDateCell  : getDateCell
+  }
+
+  function headerRow(yearTitle) {
+    var thead = el('thead')
+    var tr = el('tr', {className:'month'}, yearTitle)
+    tr.insertAdjacentHTML('beforeend', '<th class="week">&nbsp;</th>' + locale.dayNames.map(function(name, index) {
+      return'<th class="weekDay">' + locale.shortDayNames[(index + locale.firstWeekday) % 7] + '</th>'
+    }).join(''))
+    thead.appendChild(tr)
+    return thead
+  }
+
+  function highlightToday(dateCellMap) {
+    var todayKey = DateFormat.format(DateTime.today(), 'Ymd', locale)
+    if(todayKey in dateCellMap) {
+      var dateCell = getDateCell(dateCellMap[todayKey])
+      dateCell.classList.add('today')
+      dateCell.innerHTML = '<div>' + dateCell.innerText + '</div>'
+
+    }
+  }
+
+  function calendarBody() {
+    var firstWeekDay = calendarRange.start.getFirstDateOfWeek(locale)
+    var isFirst = true
+    var rows = document.createDocumentFragment()
+
+    while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
+      rows.appendChild(calendarRow(firstWeekDay, isFirst))
+      isFirst = false
+      firstWeekDay = firstWeekDay.plusDays(7)
+    }
+
+    return el('tbody', {}, rows)
+
+    function calendarRow(firstDayOfWeek, isFirst) {
+      var row = el('tr', {}, monthCell(firstDayOfWeek, isFirst))
+      row.appendChild(weekCell(firstDayOfWeek))
+      for(var i = 0; i < 7; i++) {
+        var date = firstDayOfWeek.plusDays(i)
+        row.appendChild(dateCell(date))
+      }
+      return row
+    }
+
+    function dateCell(date) {
+      var td = el('td', {
+        className:         dateStyles(date),
+        innerText:         date.getDate()
+      })
+      if(locale.holidays && (date.toISODateString() in locale.holidays))
+        td.title = locale.holidays[date.toISODateString()]
+      td.setAttribute('date-cell-index', String(dateCellDates.length))
+      dateCellMap[DateFormat.format(date, 'Ymd', locale)] = dateCellDates.length
+      dateCellDates.push(date)
+      dateCells.push(td)
+      return td
+    }
+
+    function monthCell(firstDayOfWeek, isFirst) {
+      var showMonth = isFirst || firstDayOfWeek.getDate() <= 7
+      var showYear = firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1
+      return el('th', {
+        className: 'month ' + backgroundBy(firstDayOfWeek) + (showMonth ? ' monthName':''),
+        innerText: (showMonth ? locale.monthNames[firstDayOfWeek.getMonth()-1] : (showYear ? firstDayOfWeek.getFullYear() : ''))
+      })
+    }
+
+    function weekCell(firstDayOfWeek) {
+      return el('th', {
+        className: 'week ' + backgroundBy(firstDayOfWeek),
+        innerText: firstDayOfWeek.getWeekInYear('ISO')
+      })
+    }
+  }
+
+  function dateStyles(date) {
+    return ['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)]
+      .filter(function(x) { return x}).join(' ')
+  }
+
+  function backgroundBy(date) { return date.isOddMonth() ? 'odd' : '' }
+
+  function disabledOrNot(date) {
+    var disabledWeekendDay = disableWeekends && date.isWeekend()
+    var disabledDay = disabledDatesObject[date.getOnlyDate().date]
+    var outOfBounds = !calendarRange.hasDate(date)
+    return outOfBounds || disabledWeekendDay || disabledDay ? 'disabled' : ''
+  }
+
+  function todayStyle(date) { return date.isToday() ? 'today' : '' }
+
+  function holidayStyle(date) {
+    var isSunday = date.getDay() === 0
+    var isHoliday =  locale.holidays && (date.toISODateString() in locale.holidays)
+    return (isSunday || isHoliday) ? 'holiday' : ''
+  }
+
+  function getDateCell(index) { return dateCells[index] }
+}
+
+},{"./util":5,"dateutils":12}],2:[function(require,module,exports){
+var DateFormat = require('dateutils').DateFormat
+var DateRange = require('dateutils').DateRange
+var DateTime = require('dateutils').DateTime
+var elemsAsList = require('./util').elemsAsList
+var toggle = require('./util').toggle
+
+module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, setStartField,
+                endDate, setEndField, calendarRange, disabledDatesList) {
+  var mouseDownDate = null
+  var selection
+  var Status = {
+    CREATE_OR_RESIZE: 'create',
+    MOVE            : 'move',
+    NONE            : 'none'
+  }
+  var status = Status.NONE
+
+  return {
+    showInitialSelection: setRangeLabels,
+    initEvents          : initEvents,
+    addRangeLengthLabel : addRangeLengthLabel,
+    addEndDateLabel     : addEndDateLabel,
+    addDateClearingLabel: addDateClearingLabel,
+    setSelection        : setSelection,
+    performTrigger      : performTrigger
+  }
+
+  function initEvents() {
+    setInitialSelection()
+    initRangeCalendarEvents(container, calendarBody.bodyTable)
+    drawSelection()
+  }
+
+  function setSelection(start, end) {
+    if (start && end) selection = new DateRange(start, end)
+    mouseUp()
+  }
+
+  function addRangeLengthLabel() {
+    var rangeLengthLabel = container.querySelector('.rangeLengthLabel')
+    if(rangeLengthLabel && rangeLengthLabel.childNodes)
+      return
+    container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label"><span class="rangeLengthLabel"></span></div>')
+  }
+
+  function addEndDateLabel(dateLabelContainer) { dateLabelContainer.insertAdjacentHTML('beforeend', '<span class="separator"> - </span><span class="endDateLabel"></span>') }
+
+  function addDateClearingLabel() {
+    if(params.allowClearDates) {
+      container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel"><span class="clearDates clickable">' + locale.clearRangeLabel + '</span></div>')
+    }
+  }
+
+  function performTrigger() {
+    container.calendarRange = selection
+    executeCallback(container, selection, params)
+  }
+
+  function setInitialSelection() {
+    selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange()
+    toggle(container.querySelector('span.separator'), selection.start || selection.end)
+  }
+
+  function initRangeCalendarEvents(container, bodyTable) {
+    var rangeLengthLabel = container.querySelector('span.rangeLengthLabel')
+    rangeLengthLabel.innerText = locale.daysLabel(selection.days())
+    if (params.allowClearDates) {
+      container.querySelector('span.clearDates').addEventListener('click', clearRangeClick)
+    }
+    bodyTable.classList.add(params.selectWeek ? 'weekRange' : 'freeRange')
+    bodyTable.addEventListener('mousedown', mouseDown)
+    bodyTable.addEventListener('mouseover', mouseMove)
+    bodyTable.addEventListener('mouseup', mouseUp)
+    disableTextSelection(bodyTable)
+  }
+
+  function mouseDown(event) {
+    var elem = event.target
+    var hasShiftKeyPressed = event.shiftKey
+    if(isInstantSelection(elem, hasShiftKeyPressed)) {
+      selection = instantSelection(elem, hasShiftKeyPressed)
+    } else {
+      status = Status.CREATE_OR_RESIZE
+      mouseDownDate = getElemDate(elem)
+      if(mouseDownDate.equalsOnlyDate(selection.end)) mouseDownDate = selection.start
+      else if(mouseDownDate.equalsOnlyDate(selection.start)) mouseDownDate = selection.end
+      else if(selection.hasDate(mouseDownDate)) status = Status.MOVE
+      else if(enabledCell(elem)) startNewRange()
+    }
+
+    function enabledCell(elem) { return isDateCell(elem) && isEnabled(elem) }
+
+    function isInstantSelection(elem, hasShiftKeyPressed) {
+      if(params.selectWeek) return enabledCell(elem) || isWeekCell(elem)
+      else return isWeekCell(elem) || isMonthCell(elem) || hasShiftKeyPressed
+
+    }
+
+    function instantSelection(elem, hasShiftKeyPressed) {
+      if((params.selectWeek && enabledCell(elem)) || isWeekCell(elem)) {
+        status = Status.NONE
+        var firstDayOfWeek = getElemDate(elem.parentNode.querySelector('.date'))
+        return instantSelectWeek(firstDayOfWeek)
+      } else if(isMonthCell(elem)) {
+        status = Status.NONE
+        var dayInMonth = getElemDate(elem.parentNode.querySelector('.date'))
+        return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth(), locale)
+      } else if(hasShiftKeyPressed) {
+        if(selection.days() > 0 && enabledCell(elem)) {
+          status = Status.NONE
+          selection = selection.expandTo(getElemDate(elem))
+          return selection
+        }
+      }
+      return selection
+    }
+
+    function instantSelectWeek(firstDayOfWeek) {
+      var firstDay = firstDayOfWeek
+      var lastDay = firstDayOfWeek.plusDays(6)
+      if(params.disableWeekends) {
+        firstDay = firstDayOfWeek.withWeekday(DateTime.MONDAY)
+        lastDay = firstDayOfWeek.withWeekday(DateTime.FRIDAY)
+      }
+      return new DateRange(firstDay, lastDay, locale).and(calendarRange)
+    }
+  }
+
+  function startNewRange() { selection = new DateRange(mouseDownDate, mouseDownDate, locale) }
+
+  function disableTextSelection(elem) {
+    //Firefox
+    elem.style.MozUserSelect = 'none'
+    //IE
+    elem.addEventListener('selectstart', function() { return false })
+    //Opera, etc.
+    elem.addEventListener('onmousedown', function() { return false })
+  }
+
+  function mouseMove(event) {
+    if (status !== Status.NONE) {
+      var date = getElemDate(event.target)
+      var actions = {
+        move:   function() {
+          var deltaDays = mouseDownDate.distanceInDays(date)
+          var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
+          if (isPermittedRange(movedSelection)) {
+            mouseDownDate = date
+            selection = movedSelection
+          }
+        },
+        create: function() {
+          var newSelection = new DateRange(mouseDownDate, date, locale)
+          if (isEnabled(event.target) && isPermittedRange(newSelection)) selection = newSelection
+        }
+      }
+      if (date) actions[status]()
+      drawSelection()
+    }
+  }
+
+  function isPermittedRange(newSelection) { return newSelection.isPermittedRange(params.minimumRange, params.disableWeekends, calendarRange) }
+
+  function mouseUp() {
+    status = Status.NONE
+    if(rangeHasDisabledDate()) selection = DateRange.emptyRange()
+    drawSelection()
+    afterSelection()
+  }
+
+  function clearRangeClick() {
+    selection = DateRange.emptyRange()
+    drawSelection()
+    afterSelection()
+  }
+
+  function rangeHasDisabledDate() {
+    for(var i = 0; i < disabledDatesList.length; i++) {
+      if(selection.hasDate(DateTime.fromIsoDate(disabledDatesList[i]))) return true
+    }
+    return false
+  }
+
+  function drawSelection() {
+    selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends, calendarRange)
+    drawSelectionBetweenDates(selection)
+    container.querySelector('span.rangeLengthLabel').innerText = locale.daysLabel(selection.days())
+    var clearDates = container.querySelector('span.clearDates')
+    if(clearDates) toggle(clearDates, selection.hasSelection())
+  }
+
+  function drawSelectionBetweenDates(range) {
+    elemsAsList(container.querySelectorAll('td.selected')).forEach(function(el) {
+      el.classList.remove('selected', 'rangeStart', 'rangeEnd', 'invalidSelection')
+    })
+    iterateAndToggleCells(range)
+  }
+
+  function iterateAndToggleCells(range) {
+    if (range.days() > 0) {
+      var startIndex = index(range.start)
+      var endIndex = index(range.end)
+      for (var i = startIndex; i <= endIndex; i++)
+        calendarBody.getDateCell(i).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
+      if (rangeHasDisabledDate()) container.querySelector('td.selected').classList.add('invalidSelection')
+    }
+    function index(date) { return calendarBody.dateCellMap[DateFormat.format(date, 'Ymd', locale)] }
+  }
+
+  function dateCellStyle(date, start, end) {
+    var styleClass = [calendarBody.dateStyles(date)]
+    if(date.equalsOnlyDate(end)) return styleClass.concat('selected rangeEnd')
+    if(date.equalsOnlyDate(start)) return styleClass.concat('selected rangeStart')
+    if(date.isBetweenDates(start, end)) return styleClass.concat('selected')
+    return styleClass
+  }
+
+  function afterSelection() {
+    if(rangeHasDisabledDate()) {
+      selection = DateRange.emptyRange()
+      // Flash invalidSelection styled cells when selection is expanded to minimum length
+      setTimeout(function() { drawSelectionBetweenDates(selection) }, 200)
+    }
+    container.calendarRange = selection
+    setStartField(selection.start)
+    setEndField(selection.end)
+    setRangeLabels()
+    if(params.selectWeek) calendar.close()
+    executeCallback(container, selection, params)
+  }
+
+  function setRangeLabels() {
+    if(!selection) setInitialSelection()
+    var cont = container
+    var startDateLabel = cont.querySelector('span.startDateLabel')
+    var endDateLabel = cont.querySelector('span.endDateLabel')
+    var clearRangeLabel = cont.querySelector('span.clearRangeLabel')
+    var separator = cont.querySelector('span.separator')
+
+    if(selection.start && selection.end) {
+      var format = locale.weekDateFormat
+      startDateLabel.innerText = DateFormat.format(selection.start, format, locale)
+      endDateLabel.innerText = DateFormat.format(selection.end, format, locale)
+      toggle(separator, true)
+      if(clearRangeLabel) toggle(clearRangeLabel, true)
+      toggle(startDateLabel.parentNode, true)
+    } else {
+      if (!selection.start) {
+        startDateLabel.innerText = ''
+        toggle(startDateLabel.parentNode, false)
+      }
+      if (!selection.end) {
+        endDateLabel.innerText = ''
+      }
+      toggle(separator, false)
+      if(clearRangeLabel) toggle(clearRangeLabel, false)
+    }
+  }
+
+  function isDateCell(elem) { return elem.classList.contains('date') || elem.parentNode.classList.contains('date') }
+
+  function isWeekCell(elem) { return elem.classList.contains('week') }
+
+  function isMonthCell(elem) { return elem.classList.contains('month') }
+
+  function isEnabled(elem) { return !elem.classList.contains('disabled') }
+}
+
+},{"./util":5,"dateutils":12}],3:[function(require,module,exports){
+var DateFormat = require('dateutils').DateFormat
+var DateParse = require('dateutils').DateParse
+var toggle = require('./util').toggle
+
+module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField) {
+  return {
+    showInitialSelection: showInitialSelection,
+    initEvents          : initEvents,
+    addRangeLengthLabel : function () { },
+    addEndDateLabel     : function () { },
+    addDateClearingLabel: addDateClearingLabel,
+    setSelection        : setSelection,
+    performTrigger      : performTrigger
+  }
+
+  function showInitialSelection() {
+    if(startDate) {
+      setFieldValues(startDate)
+      var clearDates = container.querySelector('.clearDates')
+      if(clearDates) toggle(clearDates, true)
+    }
+  }
+
+  function initEvents() {
+    initSingleDateCalendarEvents()
+    setSelection(fieldDate(params.startField) || startDate)
+  }
+
+  function fieldDate(field) { return field && field.value && field.value.length > 0 ? DateParse.parse(field.value, locale) : null }
+
+  function setSelection(date) {
+    var selectedDateKey = date && DateFormat.format(date, 'Ymd', locale)
+    if(selectedDateKey in calendarBody.dateCellMap) {
+      setSelectedDate(date, calendarBody.getDateCell(calendarBody.dateCellMap[selectedDateKey]))
+    }
+  }
+
+  function setSelectedDate(date, cell) {
+    var selectedElem = container.querySelector('td.selected')
+    selectedElem && selectedElem.classList.remove('selected')
+    cell.classList.add('selected')
+    setFieldValues(date)
+  }
+
+  function setFieldValues(date) {
+    container.calendarRange = date
+    setStartField(date)
+    setDateLabel(DateFormat.format(date, locale.weekDateFormat, locale))
+  }
+
+  function addDateClearingLabel() {
+    if(params.allowClearDates) {
+      container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel">' +
+        '<span class="clearDates clickable" style="display: none">' + locale.clearDateLabel + '</span></div>')
+    }
+  }
+
+  function performTrigger() {
+    container.calendarRange = startDate
+    executeCallback(container, startDate, params)
+  }
+
+  function initSingleDateCalendarEvents() {
+    container.addEventListener('click', function(e) {
+      var dateCell = e.target.tagName === 'DIV' ? e.target.parentNode : e.target
+      if (dateCell.classList.contains('date') && !dateCell.classList.contains('disabled')) {
+        var selectedDate = getElemDate(dateCell)
+        setSelectedDate(selectedDate, dateCell)
+        popupBehavior.close()
+        executeCallback(container, selectedDate, params)
+      }
+    })
+    var clearDates = container.querySelector('.clearDates')
+    if(clearDates) clearDates.addEventListener('click', clickClearDate)
+  }
+
+  function setDateLabel(val) {
+    container.querySelector('span.startDateLabel').innerText = val
+    if(params.allowClearDates) {
+      toggle(container.querySelector('.clearDates'), val !== '')
+    }
+  }
+
+  function clickClearDate() {
+    container.querySelector('td.selected').classList.remove('selected')
+    params.startField.value = ''
+    setDateLabel('')
+  }
+}
+
+},{"./util":5,"dateutils":12}],4:[function(require,module,exports){
+var DateFormat = require('dateutils').DateFormat
+var DateParse = require('dateutils').DateParse
+var EN = require('dateutils').DateLocale.EN
+var DateRange = require('dateutils').DateRange
+var DateTime = require('dateutils').DateTime
+var CalendarBody = require('./CalendarBody')
+var RangeEvents = require('./RangeEvents')
+var SingleDateEvents = require('./SingleDateEvents')
+var el = require('./util').el
+var extend = require('./util').extend
+var elemsAsList = require('./util').elemsAsList
+var toggle = require('./util').toggle
+
+module.exports = function(container, options) {
+  var defaults = {
+    weeksBefore:     26,
+    weeksAfter:      26,
+    firstDate:       null,
+    lastDate:        null,
+    startField:      container.querySelector('input.startDate'),
+    endField:        container.querySelector('input.endDate'),
+    isPopup:         false,
+    selectToday:     false,
+    locale:          EN,
+    disableWeekends: false,
+    disabledDates:   null,
+    minimumRange:    -1,
+    selectWeek:      false,
+    fadeOutDuration: 0,
+    callback:        function() {},
+    popupCallback:   function() {},
+    customScroll:    false,
+    scrollOptions:   {
+      sizethumb: 'auto'
+    },
+    theme:           '',
+    allowClearDates: false,
+    isRange:         false,
+    startDate:       null,
+    endDate:         null,
+    useIsoForInput:  false,
+    initScrollBar: function() { },
+    executeCallback: function() { }
+  }
+  var params = extend(defaults, options)
+  var locale = params.locale
+  var startDate = fieldDate(params.startField) || params.startDate
+  var endDate = fieldDate(params.endField) || params.endDate
+  var today = DateTime.today()
+
+  if(params.selectToday) {
+    startDate = today
+    endDate = today
+    setStartField(today)
+    setEndField(today)
+  }
+  var averageCellHeight
+  var calendarContainer
+  var beforeFirstOpening = true
+  var popupBehavior
+  var dateBehavior
+  var customScrollContainer
+  var calendarBody = {}
+  var calendarRange
+  var disabledDatesList
+  var disabledDatesObject
+
+  container.classList.add('continuousCalendarContainer', 'params.theme')
+  createCalendar()
+
+  function createCalendar() {
+    //TODO change api to take YYYY-MM-DD instead of MM/DD/YYYY and array instead of space separated string
+    disabledDatesList = params.disabledDates ? params.disabledDates.split(' ').map(function(slashStr) {
+      var mdy = slashStr.split('/')
+      var year = mdy[2]
+      var month = mdy[0]
+      var day = mdy[1]
+      return [year, (month.length === 1 ? '0' : '') + month, (day.length === 1 ? '0' : '') + day].join('-')
+    }) : []
+    disabledDatesObject = params.disabledDates ? parseDisabledDates(disabledDatesList) : {}
+    calendarRange = determineRangeToRenderFormParams(params)
+    popupBehavior = popUpBehaviour(params.isPopup)
+    dateBehavior = dateBehaviour(params.isRange)
+    params.fadeOutDuration = +params.fadeOutDuration
+    calendarContainer = getCalendarContainerOrCreateOne()
+    //calendarContainer.click(function(e) { e.stopPropagation() })
+    if(!container.querySelector('.startDateLabel')) addDateLabels(container, popupBehavior, dateBehavior)
+    popupBehavior.initUI()
+    dateBehavior.showInitialSelection()
+    dateBehavior.performTrigger()
+  }
+
+  function initCalendarTable() {
+    if(!calendarBody.scrollContent) {
+
+      calendarBody = extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
+        params.customScroll, params.disableWeekends, disabledDatesObject))
+      bindScrollEvent()
+
+      popupBehavior.initState()
+      dateBehavior.addRangeLengthLabel()
+      dateBehavior.addDateClearingLabel()
+      dateBehavior.initEvents()
+      scrollToSelection()
+    }
+  }
+
+  function determineRangeToRenderFormParams(params) {
+    var firstWeekdayOfGivenDate = (startDate || DateTime.today()).getFirstDateOfWeek(locale)
+    var rangeStart = dateOrWeek(params.firstDate, -params.weeksBefore * 7)
+    var rangeEnd = dateOrWeek(params.lastDate, params.weeksAfter * 7 + 6)
+
+    return new DateRange(rangeStart, rangeEnd)
+
+    function dateOrWeek(date, week) {
+      if(date) {
+        if(date instanceof Date) {
+          return DateTime.fromDateObject(date)
+        } else if(date instanceof DateTime) {
+          return date
+        } else {
+          return DateParse.parse(date, locale)
+        }
+      }
+      return firstWeekdayOfGivenDate.plusDays(week)
+    }
+  }
+
+  function bindScrollEvent() {
+    if(params.customScroll) {
+      if(!customScrollContainer) customScrollContainer = params.initScrollBar(container, params)
+      customScrollContainer.bind('scroll', setYearLabel)
+    } else {
+      var waiting = false
+      calendarBody.scrollContent.addEventListener('scroll', function() {
+        if(!waiting) {
+          setTimeout(function() {
+            waiting = false
+            setYearLabel()
+          }, 250)
+          waiting = true
+        }
+      })
+    }
+  }
+
+  function parseDisabledDates(dates) {
+    var dateMap = {}
+    dates.forEach(function(date) { dateMap[DateTime.fromIsoDate(date).date] = true })
+    return dateMap
+  }
+
+  function dateBehaviour(isRange) {
+    var basicParams = [container, calendarBody, params.executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
+    var rangeParams = [endDate, setEndField, calendarRange, disabledDatesList]
+    return isRange ? RangeEvents.apply(null, basicParams.concat(rangeParams)) : SingleDateEvents.apply(null, basicParams)
+  }
+
+  function popUpBehaviour(isPopup) {
+    var popUpVersion = {
+      initUI:                function() {
+        calendarContainer.classList.add('popup')
+        toggle(calendarContainer, false)
+        var icon = el('a', {
+          'href':  '#',
+          'className': 'calendarIcon',
+          'innerText': today.getDate()
+        })
+        icon.addEventListener('click', toggleCalendar)
+        container.insertBefore(icon, container.firstChild)
+      },
+      initState:             function() { },
+      getContainer:          function(newContainer) {
+        var popUpContainer = el('div', {
+          'className': 'popUpContainer'
+        })
+        popUpContainer.appendChild(newContainer)
+        return popUpContainer
+      },
+      close:                 toggleCalendar,
+      addDateLabelBehaviour: function(labels) {
+        elemsAsList(labels).forEach(function(label) {
+          label.classList.add('clickable')
+          label.addEventListener('click', toggleCalendar)
+        })
+      }
+    }
+
+    function toggleCalendar() {
+      initCalendarTable()
+      if(calendarContainer.style.display === '' ) {
+        //calendarContainer.fadeOut(params.fadeOutDuration)
+        toggle(calendarContainer, false)
+        //TODO re-actiate
+        //$(document).unbind('click.continuousCalendar')
+      } else {
+        params.popupCallback()
+        toggle(calendarContainer, true)
+        if(beforeFirstOpening) {
+          params.initScrollBar(container, params)
+          calculateCellHeight()
+          setYearLabel()
+          beforeFirstOpening = false
+        }
+        dateBehavior.setSelection(fieldDate(params.startField), fieldDate(params.endField))
+        scrollToSelection()
+        //TODO re-actiate
+        //$(document).bind('click.continuousCalendar', toggleCalendar)
+
+      }
+      return false
+    }
+
+    var inlineVersion = {
+      initUI:                initCalendarTable,
+      initState:             calculateCellHeightAndInitScroll,
+      getContainer:          function(newContainer) {
+        return newContainer
+      },
+      close:                 function() {},
+      addDateLabelBehaviour: function() {}
+    }
+    return isPopup ? popUpVersion : inlineVersion
+  }
+
+  function getCalendarContainerOrCreateOne() {
+    var existingContainer = container.querySelector('.continuousCalendar')
+    if(existingContainer) {
+      return existingContainer
+    } else {
+      var newContainer = el('div', {'className':'continuousCalendar'})
+      container.appendChild(popupBehavior.getContainer(newContainer))
+      return newContainer
+    }
+  }
+
+  function addDateLabels(container2, popupBehavior, dateBehavior) {
+    var dateLabelContainer = el('div', {'className': 'label'})
+    dateLabelContainer.appendChild(el('span', {'className': 'startDateLabel'}))
+    dateBehavior.addEndDateLabel(dateLabelContainer)
+    container2.insertBefore(dateLabelContainer, container2.firstChild)
+    popupBehavior.addDateLabelBehaviour(dateLabelContainer.childNodes)
+  }
+
+  function scrollToSelection() {
+    var scrollContent = calendarBody.scrollContent
+    var selectionStartOrToday = scrollContent.querySelector('.selected') || scrollContent.querySelector('.today')
+    if(selectionStartOrToday) {
+      var height = calendarBody.scrollContent.clientHeight
+      var position = selectionStartOrToday.offsetTop - (height - selectionStartOrToday.offsetHeight) / 2
+      if(params.customScroll) {
+        var totalHeight = calendarBody.bodyTable.clientHeight
+        var maxScroll = totalHeight - height
+        var validPosition = position > maxScroll ? maxScroll : position
+        customScrollContainer.tinyscrollbar_update(validPosition > 0 ? validPosition : 0)
+      } else {
+        calendarBody.scrollContent.scrollTop = position
+      }
+    }
+  }
+
+  function setYearLabel() {
+    var scrollContent = calendarBody.scrollContent
+    var table = scrollContent.querySelector('table')
+    var scrollTop = params.customScroll ? -calendarContainer.querySelector('.overview').offsetTop : scrollContent.scrollTop
+    var rowNumber = parseInt(scrollTop / averageCellHeight, 10)
+    var date = getElemDate(table.rows[rowNumber].cells[2])
+    calendarBody.yearTitle.innerText = date.getFullYear()
+  }
+
+  function calculateCellHeightAndInitScroll() {
+    params.initScrollBar(container, params)
+    calculateCellHeight()
+    setYearLabel()
+  }
+
+  function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.clientHeight / calendarBody.bodyTable.querySelectorAll('tr').length, 10) }
+
+  function fieldDate(field) { return field && field.value && field.value.length > 0 ? (params.useIsoForInput ? DateTime.fromIsoDate(field.value) : DateParse.parse(field.value, locale)) : null }
+
+  function getElemDate(elem) {
+    return calendarBody.dateCellDates[elem.getAttribute('date-cell-index') || elem.parentNode.getAttribute('date-cell-index')]
+  }
+
+  function setStartField(date) { if(params.startField) params.startField.value = formatDate(date) }
+
+  function setEndField(date) { if(params.endField) params.endField.value = formatDate(date) }
+
+  function formatDate(date) { return date ? (params.useIsoForInput ? date.toISODateString() : DateFormat.shortDateFormat(date, locale)) : '' }
+
+}
+
+},{"./CalendarBody":1,"./RangeEvents":2,"./SingleDateEvents":3,"./util":5,"dateutils":12}],5:[function(require,module,exports){
+module.exports = {
+  el: el,
+  extend: extend,
+  elemsAsList: elemsAsList,
+  toggle: toggle
+}
+
+function extend(destination, source) {
+  for(var property in source)
+    destination[property] = source[property]
+  return destination
+}
+
+function el(tagName, properties, childNode) {
+  var elem = document.createElement(tagName)
+  for(var i in properties) elem[i] = properties[i]
+  if(childNode) elem.appendChild(childNode)
+  return elem
+}
+
+function elemsAsList(selector) {
+  return Array.prototype.slice.call(selector)
+}
+
+function toggle(elem, show) {
+  if(elem) elem.style.display = show ? '' : 'none'
+}
+
+},{}],6:[function(require,module,exports){
 var DateTime = require('./DateTime')
 var DateFormat = {}
 /**
@@ -177,7 +997,7 @@ function leftPad(val, size, ch) {
 }
 module.exports = DateFormat
 
-},{"./DateTime":5}],2:[function(require,module,exports){
+},{"./DateTime":10}],7:[function(require,module,exports){
 module.exports = {
     FI: require('./locale/FI'),
     EN: require('./locale/EN'),
@@ -191,7 +1011,7 @@ module.exports = {
     CN: require('./locale/CN')
 }
 
-},{"./locale/AU":8,"./locale/CN":9,"./locale/DE":10,"./locale/EN":11,"./locale/ET":12,"./locale/FI":14,"./locale/FR":15,"./locale/LV":16,"./locale/RU":17,"./locale/SV":18}],3:[function(require,module,exports){
+},{"./locale/AU":13,"./locale/CN":14,"./locale/DE":15,"./locale/EN":16,"./locale/ET":17,"./locale/FI":19,"./locale/FR":20,"./locale/LV":21,"./locale/RU":22,"./locale/SV":23}],8:[function(require,module,exports){
 var DateTime = require('./DateTime')
 var DateParse = {}
 DateParse.parseRegexes = []
@@ -257,7 +1077,7 @@ DateParse.parseTime = function (timeStr) {
 
 module.exports = DateParse
 
-},{"./DateTime":5}],4:[function(require,module,exports){
+},{"./DateTime":10}],9:[function(require,module,exports){
 var DateTime = require('./DateTime')
 var DateFormat = require('./DateFormat')
 var DateParse = require('./DateParse')
@@ -430,7 +1250,7 @@ DateRange.prototype.hasSelection = function () {
 
 module.exports = DateRange
 
-},{"./DateFormat":1,"./DateParse":3,"./DateTime":5}],5:[function(require,module,exports){
+},{"./DateFormat":6,"./DateParse":8,"./DateTime":10}],10:[function(require,module,exports){
 function DateTime(date) {
   if(arguments.length === 0) this.date = new Date()
   else if(date instanceof Date) this.date = new Date(date)
@@ -911,7 +1731,7 @@ function parseTime(str) {
 module.exports = DateTime
 
 
-},{}],6:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var Duration = function (durationMs) {
   this.durationMs = durationMs
 }
@@ -932,7 +1752,7 @@ Duration.prototype.toMS = function () { return this.durationMs }
 Duration.prototype.asUnit = function (unit) { return Number(this.durationMs / unit) }
 module.exports = Duration
 
-},{}],7:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = {
   "version":  "0.3.0",
   DateFormat: require('./DateFormat'),
@@ -944,7 +1764,7 @@ module.exports = {
 }
 
 
-},{"./DateFormat":1,"./DateLocale":2,"./DateParse":3,"./DateRange":4,"./DateTime":5,"./Duration":6}],8:[function(require,module,exports){
+},{"./DateFormat":6,"./DateLocale":7,"./DateParse":8,"./DateRange":9,"./DateTime":10,"./Duration":11}],13:[function(require,module,exports){
 var DateTime = require('../DateTime')
 var DateFormat = require('../DateFormat')
 module.exports = {
@@ -968,7 +1788,7 @@ module.exports = {
   holidays: {}
 }
 
-},{"../DateFormat":1,"../DateTime":5}],9:[function(require,module,exports){
+},{"../DateFormat":6,"../DateTime":10}],14:[function(require,module,exports){
 //简体中文
 var DateTime = require('../DateTime');
 var DateFormat = require('../DateFormat');
@@ -998,7 +1818,7 @@ module.exports = {
     firstWeekday: DateTime.MONDAY,
     holidays: {}
 };
-},{"../DateFormat":1,"../DateTime":5}],10:[function(require,module,exports){
+},{"../DateFormat":6,"../DateTime":10}],15:[function(require,module,exports){
 var DateTime = require('../DateTime')
 var DateFormat = require('../DateFormat')
 module.exports = {
@@ -1022,7 +1842,7 @@ module.exports = {
   holidays: {}
 }
 
-},{"../DateFormat":1,"../DateTime":5}],11:[function(require,module,exports){
+},{"../DateFormat":6,"../DateTime":10}],16:[function(require,module,exports){
 var DateTime = require('../DateTime')
 var DateFormat = require('../DateFormat')
 module.exports = {
@@ -1046,7 +1866,7 @@ module.exports = {
   holidays: {}
 }
 
-},{"../DateFormat":1,"../DateTime":5}],12:[function(require,module,exports){
+},{"../DateFormat":6,"../DateTime":10}],17:[function(require,module,exports){
   var DateTime = require('../DateTime')
   var DateFormat = require('../DateFormat')
   module.exports = {
@@ -1070,7 +1890,7 @@ module.exports = {
     holidays: {}
   }
 
-},{"../DateFormat":1,"../DateTime":5}],13:[function(require,module,exports){
+},{"../DateFormat":6,"../DateTime":10}],18:[function(require,module,exports){
 module.exports = {
   "2015-01-01": "Uudenvuodenpäivä",
   "2015-01-06": "Loppiainen",
@@ -1179,7 +1999,7 @@ module.exports = {
   "2021-12-26": "Tapaninpäivä"
 }
 
-},{}],14:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var DateTime = require('../DateTime')
 var DateFormat = require('../DateFormat')
 var holidays = require('./FI-holidays')
@@ -1204,7 +2024,7 @@ module.exports = {
   holidays: holidays
 }
 
-},{"../DateFormat":1,"../DateTime":5,"./FI-holidays":13}],15:[function(require,module,exports){
+},{"../DateFormat":6,"../DateTime":10,"./FI-holidays":18}],20:[function(require,module,exports){
 var DateTime = require('../DateTime')
 var DateFormat = require('../DateFormat')
 module.exports = {
@@ -1228,7 +2048,7 @@ module.exports = {
   holidays: {}
 }
 
-},{"../DateFormat":1,"../DateTime":5}],16:[function(require,module,exports){
+},{"../DateFormat":6,"../DateTime":10}],21:[function(require,module,exports){
 var DateTime = require('../DateTime')
 var DateFormat = require('../DateFormat')
 module.exports = {
@@ -1252,7 +2072,7 @@ module.exports = {
   holidays: {}
 }
 
-},{"../DateFormat":1,"../DateTime":5}],17:[function(require,module,exports){
+},{"../DateFormat":6,"../DateTime":10}],22:[function(require,module,exports){
 var DateTime = require('../DateTime')
 var DateFormat = require('../DateFormat')
 
@@ -1321,7 +2141,7 @@ module.exports = {
   holidays: {}
 }
 
-},{"../DateFormat":1,"../DateTime":5}],18:[function(require,module,exports){
+},{"../DateFormat":6,"../DateTime":10}],23:[function(require,module,exports){
 var DateTime = require('../DateTime')
 var DateFormat = require('../DateFormat')
 module.exports = {
@@ -1345,809 +2165,18 @@ module.exports = {
   holidays: {}
 }
 
-},{"../DateFormat":1,"../DateTime":5}],19:[function(require,module,exports){
-require('../continuousCalendar/jquery.continuousCalendar')
+},{"../DateFormat":6,"../DateTime":10}],24:[function(require,module,exports){
+require('../jquery.continuousCalendar')
 window.DateFormat = require('dateutils').DateFormat
 window.DateParse = require('dateutils').DateParse
 window.DateLocale = require('dateutils').DateLocale
 window.DateTime = require('dateutils').DateTime
 window.DateRange = require('dateutils').DateRange
 
-},{"../continuousCalendar/jquery.continuousCalendar":24,"dateutils":7}],20:[function(require,module,exports){
-var DateFormat = require('dateutils').DateFormat
-var DateTime = require('dateutils').DateTime
-var util = require('./util')
-var el = util.el
-
-module.exports = function(calendarContainer, calendarRange, locale, customScroll, disableWeekends, disabledDatesObject) {
-  var dateCellMap = {}
-  var dateCellDates = []
-  var dateCells = []
-  var yearTitle = el('th', {className:'month'})
-  var headerTable = el('table', {className: 'calendarHeader'}, headerRow(yearTitle))
-  var bodyTable = el('table', {className: 'calendarBody'}, calendarBody())
-  var scrollContent = el('div', {className:'calendarScrollContent'}, bodyTable)
-  calendarContainer.appendChild(headerTable)
-
-  if(customScroll) {
-    bodyTable.classList.add('overview')
-    scrollContent.classList.add('viewport')
-    calendarContainer.appendChild(el('div', {
-      className: 'tinyscrollbar',
-      innerHTML: '<div class="scrollbar"> <div class="track"> <div class="thumb"> <div class="end"></div> </div> </div> </div>'
-    }, scrollContent))
-  } else {
-    calendarContainer.appendChild(scrollContent)
-  }
-  highlightToday(dateCellMap)
-
-  return {
-    bodyTable    : bodyTable,
-    scrollContent: scrollContent,
-    dateCells    : dateCells,
-    yearTitle    : yearTitle,
-    dateCellMap  : dateCellMap,
-    dateCellDates: dateCellDates,
-    dateStyles   : dateStyles,
-    getDateCell  : getDateCell
-  }
-
-  function headerRow(yearTitle) {
-    var thead = el('thead')
-    var tr = el('tr', {className:'month'}, yearTitle)
-    tr.insertAdjacentHTML('beforeend', '<th class="week">&nbsp;</th>' + locale.dayNames.map(function(name, index) {
-      return'<th class="weekDay">' + locale.shortDayNames[(index + locale.firstWeekday) % 7] + '</th>'
-    }).join(''))
-    thead.appendChild(tr)
-    return thead
-  }
-
-  function highlightToday(dateCellMap) {
-    var todayKey = DateFormat.format(DateTime.today(), 'Ymd', locale)
-    if(todayKey in dateCellMap) {
-      var dateCell = getDateCell(dateCellMap[todayKey])
-      dateCell.classList.add('today')
-      dateCell.innerHTML = '<div>' + dateCell.innerText + '</div>'
-
-    }
-  }
-
-  function calendarBody() {
-    var firstWeekDay = calendarRange.start.getFirstDateOfWeek(locale)
-    var isFirst = true
-    var rows = document.createDocumentFragment()
-
-    while(firstWeekDay.compareTo(calendarRange.end) <= 0) {
-      rows.appendChild(calendarRow(firstWeekDay, isFirst))
-      isFirst = false
-      firstWeekDay = firstWeekDay.plusDays(7)
-    }
-
-    return el('tbody', {}, rows)
-
-    function calendarRow(firstDayOfWeek, isFirst) {
-      var row = el('tr', {}, monthCell(firstDayOfWeek, isFirst))
-      row.appendChild(weekCell(firstDayOfWeek))
-      for(var i = 0; i < 7; i++) {
-        var date = firstDayOfWeek.plusDays(i)
-        row.appendChild(dateCell(date))
-      }
-      return row
-    }
-
-    function dateCell(date) {
-      var td = el('td', {
-        className:         dateStyles(date),
-        innerText:         date.getDate()
-      })
-      if(locale.holidays && (date.toISODateString() in locale.holidays))
-        td.title = locale.holidays[date.toISODateString()]
-      td.setAttribute('date-cell-index', String(dateCellDates.length))
-      dateCellMap[DateFormat.format(date, 'Ymd', locale)] = dateCellDates.length
-      dateCellDates.push(date)
-      dateCells.push(td)
-      return td
-    }
-
-    function monthCell(firstDayOfWeek, isFirst) {
-      var showMonth = isFirst || firstDayOfWeek.getDate() <= 7
-      var showYear = firstDayOfWeek.getDate() <= 7 * 2 && firstDayOfWeek.getMonth() === 1
-      return el('th', {
-        className: 'month ' + backgroundBy(firstDayOfWeek) + (showMonth ? ' monthName':''),
-        innerText: (showMonth ? locale.monthNames[firstDayOfWeek.getMonth()-1] : (showYear ? firstDayOfWeek.getFullYear() : ''))
-      })
-    }
-
-    function weekCell(firstDayOfWeek) {
-      return el('th', {
-        className: 'week ' + backgroundBy(firstDayOfWeek),
-        innerText: firstDayOfWeek.getWeekInYear('ISO')
-      })
-    }
-  }
-
-  function dateStyles(date) {
-    return ['date', backgroundBy(date), disabledOrNot(date), todayStyle(date), holidayStyle(date)]
-      .filter(function(x) { return x}).join(' ')
-  }
-
-  function backgroundBy(date) { return date.isOddMonth() ? 'odd' : '' }
-
-  function disabledOrNot(date) {
-    var disabledWeekendDay = disableWeekends && date.isWeekend()
-    var disabledDay = disabledDatesObject[date.getOnlyDate().date]
-    var outOfBounds = !calendarRange.hasDate(date)
-    return outOfBounds || disabledWeekendDay || disabledDay ? 'disabled' : ''
-  }
-
-  function todayStyle(date) { return date.isToday() ? 'today' : '' }
-
-  function holidayStyle(date) {
-    var isSunday = date.getDay() === 0
-    var isHoliday =  locale.holidays && (date.toISODateString() in locale.holidays)
-    return (isSunday || isHoliday) ? 'holiday' : ''
-  }
-
-  function getDateCell(index) { return dateCells[index] }
-}
-
-},{"./util":25,"dateutils":7}],21:[function(require,module,exports){
-var DateFormat = require('dateutils').DateFormat
-var DateRange = require('dateutils').DateRange
-var DateTime = require('dateutils').DateTime
-var elemsAsList = require('./util').elemsAsList
-var toggle = require('./util').toggle
-
-module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, calendar, startDate, setStartField,
-                endDate, setEndField, calendarRange, disabledDatesList) {
-  var mouseDownDate = null
-  var selection
-  var Status = {
-    CREATE_OR_RESIZE: 'create',
-    MOVE            : 'move',
-    NONE            : 'none'
-  }
-  var status = Status.NONE
-
-  return {
-    showInitialSelection: setRangeLabels,
-    initEvents          : initEvents,
-    addRangeLengthLabel : addRangeLengthLabel,
-    addEndDateLabel     : addEndDateLabel,
-    addDateClearingLabel: addDateClearingLabel,
-    setSelection        : setSelection,
-    performTrigger      : performTrigger
-  }
-
-  function initEvents() {
-    setInitialSelection()
-    initRangeCalendarEvents(container, calendarBody.bodyTable)
-    drawSelection()
-  }
-
-  function setSelection(start, end) {
-    if (start && end) selection = new DateRange(start, end)
-    mouseUp()
-  }
-
-  function addRangeLengthLabel() {
-    var rangeLengthLabel = container.querySelector('.rangeLengthLabel')
-    if(rangeLengthLabel && rangeLengthLabel.childNodes)
-      return
-    container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label"><span class="rangeLengthLabel"></span></div>')
-  }
-
-  function addEndDateLabel(dateLabelContainer) { dateLabelContainer.insertAdjacentHTML('beforeend', '<span class="separator"> - </span><span class="endDateLabel"></span>') }
-
-  function addDateClearingLabel() {
-    if(params.allowClearDates) {
-      container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel"><span class="clearDates clickable">' + locale.clearRangeLabel + '</span></div>')
-    }
-  }
-
-  function performTrigger() {
-    container.calendarRange = selection
-    executeCallback(container, selection, params)
-  }
-
-  function setInitialSelection() {
-    selection = startDate && endDate ? new DateRange(startDate, endDate) : DateRange.emptyRange()
-    toggle(container.querySelector('span.separator'), selection.start || selection.end)
-  }
-
-  function initRangeCalendarEvents(container, bodyTable) {
-    var rangeLengthLabel = container.querySelector('span.rangeLengthLabel')
-    rangeLengthLabel.innerText = locale.daysLabel(selection.days())
-    if (params.allowClearDates) {
-      container.querySelector('span.clearDates').addEventListener('click', clearRangeClick)
-    }
-    bodyTable.classList.add(params.selectWeek ? 'weekRange' : 'freeRange')
-    bodyTable.addEventListener('mousedown', mouseDown)
-    bodyTable.addEventListener('mouseover', mouseMove)
-    bodyTable.addEventListener('mouseup', mouseUp)
-    disableTextSelection(bodyTable)
-  }
-
-  function mouseDown(event) {
-    var elem = event.target
-    var hasShiftKeyPressed = event.shiftKey
-    if(isInstantSelection(elem, hasShiftKeyPressed)) {
-      selection = instantSelection(elem, hasShiftKeyPressed)
-    } else {
-      status = Status.CREATE_OR_RESIZE
-      mouseDownDate = getElemDate(elem)
-      if(mouseDownDate.equalsOnlyDate(selection.end)) mouseDownDate = selection.start
-      else if(mouseDownDate.equalsOnlyDate(selection.start)) mouseDownDate = selection.end
-      else if(selection.hasDate(mouseDownDate)) status = Status.MOVE
-      else if(enabledCell(elem)) startNewRange()
-    }
-
-    function enabledCell(elem) { return isDateCell(elem) && isEnabled(elem) }
-
-    function isInstantSelection(elem, hasShiftKeyPressed) {
-      if(params.selectWeek) return enabledCell(elem) || isWeekCell(elem)
-      else return isWeekCell(elem) || isMonthCell(elem) || hasShiftKeyPressed
-
-    }
-
-    function instantSelection(elem, hasShiftKeyPressed) {
-      if((params.selectWeek && enabledCell(elem)) || isWeekCell(elem)) {
-        status = Status.NONE
-        var firstDayOfWeek = getElemDate(elem.parentNode.querySelector('.date'))
-        return instantSelectWeek(firstDayOfWeek)
-      } else if(isMonthCell(elem)) {
-        status = Status.NONE
-        var dayInMonth = getElemDate(elem.parentNode.querySelector('.date'))
-        return new DateRange(dayInMonth.firstDateOfMonth(), dayInMonth.lastDateOfMonth(), locale)
-      } else if(hasShiftKeyPressed) {
-        if(selection.days() > 0 && enabledCell(elem)) {
-          status = Status.NONE
-          selection = selection.expandTo(getElemDate(elem))
-          return selection
-        }
-      }
-      return selection
-    }
-
-    function instantSelectWeek(firstDayOfWeek) {
-      var firstDay = firstDayOfWeek
-      var lastDay = firstDayOfWeek.plusDays(6)
-      if(params.disableWeekends) {
-        firstDay = firstDayOfWeek.withWeekday(DateTime.MONDAY)
-        lastDay = firstDayOfWeek.withWeekday(DateTime.FRIDAY)
-      }
-      return new DateRange(firstDay, lastDay, locale).and(calendarRange)
-    }
-  }
-
-  function startNewRange() { selection = new DateRange(mouseDownDate, mouseDownDate, locale) }
-
-  function disableTextSelection(elem) {
-    //Firefox
-    elem.style.MozUserSelect = 'none'
-    //IE
-    elem.addEventListener('selectstart', function() { return false })
-    //Opera, etc.
-    elem.addEventListener('onmousedown', function() { return false })
-  }
-
-  function mouseMove(event) {
-    if (status !== Status.NONE) {
-      var date = getElemDate(event.target)
-      var actions = {
-        move:   function() {
-          var deltaDays = mouseDownDate.distanceInDays(date)
-          var movedSelection = selection.shiftDays(deltaDays).and(calendarRange)
-          if (isPermittedRange(movedSelection)) {
-            mouseDownDate = date
-            selection = movedSelection
-          }
-        },
-        create: function() {
-          var newSelection = new DateRange(mouseDownDate, date, locale)
-          if (isEnabled(event.target) && isPermittedRange(newSelection)) selection = newSelection
-        }
-      }
-      if (date) actions[status]()
-      drawSelection()
-    }
-  }
-
-  function isPermittedRange(newSelection) { return newSelection.isPermittedRange(params.minimumRange, params.disableWeekends, calendarRange) }
-
-  function mouseUp() {
-    status = Status.NONE
-    if(rangeHasDisabledDate()) selection = DateRange.emptyRange()
-    drawSelection()
-    afterSelection()
-  }
-
-  function clearRangeClick() {
-    selection = DateRange.emptyRange()
-    drawSelection()
-    afterSelection()
-  }
-
-  function rangeHasDisabledDate() {
-    for(var i = 0; i < disabledDatesList.length; i++) {
-      if(selection.hasDate(DateTime.fromIsoDate(disabledDatesList[i]))) return true
-    }
-    return false
-  }
-
-  function drawSelection() {
-    selection = DateRange.rangeWithMinimumSize(selection, params.minimumRange, params.disableWeekends, calendarRange)
-    drawSelectionBetweenDates(selection)
-    container.querySelector('span.rangeLengthLabel').innerText = locale.daysLabel(selection.days())
-    var clearDates = container.querySelector('span.clearDates')
-    if(clearDates) toggle(clearDates, selection.hasSelection())
-  }
-
-  function drawSelectionBetweenDates(range) {
-    elemsAsList(container.querySelectorAll('td.selected')).forEach(function(el) {
-      el.classList.remove('selected', 'rangeStart', 'rangeEnd', 'invalidSelection')
-    })
-    iterateAndToggleCells(range)
-  }
-
-  function iterateAndToggleCells(range) {
-    if (range.days() > 0) {
-      var startIndex = index(range.start)
-      var endIndex = index(range.end)
-      for (var i = startIndex; i <= endIndex; i++)
-        calendarBody.getDateCell(i).className = dateCellStyle(calendarBody.dateCellDates[i], range.start, range.end).join(' ')
-      if (rangeHasDisabledDate()) container.querySelector('td.selected').classList.add('invalidSelection')
-    }
-    function index(date) { return calendarBody.dateCellMap[DateFormat.format(date, 'Ymd', locale)] }
-  }
-
-  function dateCellStyle(date, start, end) {
-    var styleClass = [calendarBody.dateStyles(date)]
-    if(date.equalsOnlyDate(end)) return styleClass.concat('selected rangeEnd')
-    if(date.equalsOnlyDate(start)) return styleClass.concat('selected rangeStart')
-    if(date.isBetweenDates(start, end)) return styleClass.concat('selected')
-    return styleClass
-  }
-
-  function afterSelection() {
-    if(rangeHasDisabledDate()) {
-      selection = DateRange.emptyRange()
-      // Flash invalidSelection styled cells when selection is expanded to minimum length
-      setTimeout(function() { drawSelectionBetweenDates(selection) }, 200)
-    }
-    container.calendarRange = selection
-    setStartField(selection.start)
-    setEndField(selection.end)
-    setRangeLabels()
-    if(params.selectWeek) calendar.close()
-    executeCallback(container, selection, params)
-  }
-
-  function setRangeLabels() {
-    if(!selection) setInitialSelection()
-    var cont = container
-    var startDateLabel = cont.querySelector('span.startDateLabel')
-    var endDateLabel = cont.querySelector('span.endDateLabel')
-    var clearRangeLabel = cont.querySelector('span.clearRangeLabel')
-    var separator = cont.querySelector('span.separator')
-
-    if(selection.start && selection.end) {
-      var format = locale.weekDateFormat
-      startDateLabel.innerText = DateFormat.format(selection.start, format, locale)
-      endDateLabel.innerText = DateFormat.format(selection.end, format, locale)
-      toggle(separator, true)
-      if(clearRangeLabel) toggle(clearRangeLabel, true)
-      toggle(startDateLabel.parentNode, true)
-    } else {
-      if (!selection.start) {
-        startDateLabel.innerText = ''
-        toggle(startDateLabel.parentNode, false)
-      }
-      if (!selection.end) {
-        endDateLabel.innerText = ''
-      }
-      toggle(separator, false)
-      if(clearRangeLabel) toggle(clearRangeLabel, false)
-    }
-  }
-
-  function isDateCell(elem) { return elem.classList.contains('date') || elem.parentNode.classList.contains('date') }
-
-  function isWeekCell(elem) { return elem.classList.contains('week') }
-
-  function isMonthCell(elem) { return elem.classList.contains('month') }
-
-  function isEnabled(elem) { return !elem.classList.contains('disabled') }
-}
-
-},{"./util":25,"dateutils":7}],22:[function(require,module,exports){
-var DateFormat = require('dateutils').DateFormat
-var DateParse = require('dateutils').DateParse
-var toggle = require('./util').toggle
-
-module.exports = function(container, calendarBody, executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField) {
-  return {
-    showInitialSelection: showInitialSelection,
-    initEvents          : initEvents,
-    addRangeLengthLabel : function () { },
-    addEndDateLabel     : function () { },
-    addDateClearingLabel: addDateClearingLabel,
-    setSelection        : setSelection,
-    performTrigger      : performTrigger
-  }
-
-  function showInitialSelection() {
-    if(startDate) {
-      setFieldValues(startDate)
-      var clearDates = container.querySelector('.clearDates')
-      if(clearDates) toggle(clearDates, true)
-    }
-  }
-
-  function initEvents() {
-    initSingleDateCalendarEvents()
-    setSelection(fieldDate(params.startField) || startDate)
-  }
-
-  function fieldDate(field) { return field && field.value && field.value.length > 0 ? DateParse.parse(field.value, locale) : null }
-
-  function setSelection(date) {
-    var selectedDateKey = date && DateFormat.format(date, 'Ymd', locale)
-    if(selectedDateKey in calendarBody.dateCellMap) {
-      setSelectedDate(date, calendarBody.getDateCell(calendarBody.dateCellMap[selectedDateKey]))
-    }
-  }
-
-  function setSelectedDate(date, cell) {
-    var selectedElem = container.querySelector('td.selected')
-    selectedElem && selectedElem.classList.remove('selected')
-    cell.classList.add('selected')
-    setFieldValues(date)
-  }
-
-  function setFieldValues(date) {
-    container.calendarRange = date
-    setStartField(date)
-    setDateLabel(DateFormat.format(date, locale.weekDateFormat, locale))
-  }
-
-  function addDateClearingLabel() {
-    if(params.allowClearDates) {
-      container.querySelector('.continuousCalendar').insertAdjacentHTML('beforeend', '<div class="label clearLabel">' +
-        '<span class="clearDates clickable" style="display: none">' + locale.clearDateLabel + '</span></div>')
-    }
-  }
-
-  function performTrigger() {
-    container.calendarRange = startDate
-    executeCallback(container, startDate, params)
-  }
-
-  function initSingleDateCalendarEvents() {
-    container.addEventListener('click', function(e) {
-      var dateCell = e.target.tagName === 'DIV' ? e.target.parentNode : e.target
-      if (dateCell.classList.contains('date') && !dateCell.classList.contains('disabled')) {
-        var selectedDate = getElemDate(dateCell)
-        setSelectedDate(selectedDate, dateCell)
-        popupBehavior.close()
-        executeCallback(container, selectedDate, params)
-      }
-    })
-    var clearDates = container.querySelector('.clearDates')
-    if(clearDates) clearDates.addEventListener('click', clickClearDate)
-  }
-
-  function setDateLabel(val) {
-    container.querySelector('span.startDateLabel').innerText = val
-    if(params.allowClearDates) {
-      toggle(container.querySelector('.clearDates'), val !== '')
-    }
-  }
-
-  function clickClearDate() {
-    container.querySelector('td.selected').classList.remove('selected')
-    params.startField.value = ''
-    setDateLabel('')
-  }
-}
-
-},{"./util":25,"dateutils":7}],23:[function(require,module,exports){
-var DateFormat = require('dateutils').DateFormat
-var DateParse = require('dateutils').DateParse
-var EN = require('dateutils').DateLocale.EN
-var DateRange = require('dateutils').DateRange
-var DateTime = require('dateutils').DateTime
-var CalendarBody = require('./CalendarBody')
-var RangeEvents = require('./RangeEvents')
-var SingleDateEvents = require('./SingleDateEvents')
-var el = require('./util').el
-var extend = require('./util').extend
-var elemsAsList = require('./util').elemsAsList
-var toggle = require('./util').toggle
-
-module.exports = function(container, options) {
-  var defaults = {
-    weeksBefore:     26,
-    weeksAfter:      26,
-    firstDate:       null,
-    lastDate:        null,
-    startField:      container.querySelector('input.startDate'),
-    endField:        container.querySelector('input.endDate'),
-    isPopup:         false,
-    selectToday:     false,
-    locale:          EN,
-    disableWeekends: false,
-    disabledDates:   null,
-    minimumRange:    -1,
-    selectWeek:      false,
-    fadeOutDuration: 0,
-    callback:        function() {},
-    popupCallback:   function() {},
-    customScroll:    false,
-    scrollOptions:   {
-      sizethumb: 'auto'
-    },
-    theme:           '',
-    allowClearDates: false,
-    isRange:         false,
-    startDate:       null,
-    endDate:         null,
-    useIsoForInput:  false,
-    initScrollBar: function() { },
-    executeCallback: function() { }
-  }
-  var params = extend(defaults, options)
-  var locale = params.locale
-  var startDate = fieldDate(params.startField) || params.startDate
-  var endDate = fieldDate(params.endField) || params.endDate
-  var today = DateTime.today()
-
-  if(params.selectToday) {
-    startDate = today
-    endDate = today
-    setStartField(today)
-    setEndField(today)
-  }
-  var averageCellHeight
-  var calendarContainer
-  var beforeFirstOpening = true
-  var popupBehavior
-  var dateBehavior
-  var customScrollContainer
-  var calendarBody = {}
-  var calendarRange
-  var disabledDatesList
-  var disabledDatesObject
-
-  container.classList.add('continuousCalendarContainer', 'params.theme')
-  createCalendar()
-
-  function createCalendar() {
-    //TODO change api to take YYYY-MM-DD instead of MM/DD/YYYY and array instead of space separated string
-    disabledDatesList = params.disabledDates ? params.disabledDates.split(' ').map(function(slashStr) {
-      var mdy = slashStr.split('/')
-      var year = mdy[2]
-      var month = mdy[0]
-      var day = mdy[1]
-      return [year, (month.length === 1 ? '0' : '') + month, (day.length === 1 ? '0' : '') + day].join('-')
-    }) : []
-    disabledDatesObject = params.disabledDates ? parseDisabledDates(disabledDatesList) : {}
-    calendarRange = determineRangeToRenderFormParams(params)
-    popupBehavior = popUpBehaviour(params.isPopup)
-    dateBehavior = dateBehaviour(params.isRange)
-    params.fadeOutDuration = +params.fadeOutDuration
-    calendarContainer = getCalendarContainerOrCreateOne()
-    //calendarContainer.click(function(e) { e.stopPropagation() })
-    if(!container.querySelector('.startDateLabel')) addDateLabels(container, popupBehavior, dateBehavior)
-    popupBehavior.initUI()
-    dateBehavior.showInitialSelection()
-    dateBehavior.performTrigger()
-  }
-
-  function initCalendarTable() {
-    if(!calendarBody.scrollContent) {
-
-      calendarBody = extend(calendarBody, CalendarBody(calendarContainer, calendarRange, locale,
-        params.customScroll, params.disableWeekends, disabledDatesObject))
-      bindScrollEvent()
-
-      popupBehavior.initState()
-      dateBehavior.addRangeLengthLabel()
-      dateBehavior.addDateClearingLabel()
-      dateBehavior.initEvents()
-      scrollToSelection()
-    }
-  }
-
-  function determineRangeToRenderFormParams(params) {
-    var firstWeekdayOfGivenDate = (startDate || DateTime.today()).getFirstDateOfWeek(locale)
-    var rangeStart = dateOrWeek(params.firstDate, -params.weeksBefore * 7)
-    var rangeEnd = dateOrWeek(params.lastDate, params.weeksAfter * 7 + 6)
-
-    return new DateRange(rangeStart, rangeEnd)
-
-    function dateOrWeek(date, week) {
-      if(date) {
-        if(date instanceof Date) {
-          return DateTime.fromDateObject(date)
-        } else if(date instanceof DateTime) {
-          return date
-        } else {
-          return DateParse.parse(date, locale)
-        }
-      }
-      return firstWeekdayOfGivenDate.plusDays(week)
-    }
-  }
-
-  function bindScrollEvent() {
-    if(params.customScroll) {
-      if(!customScrollContainer) customScrollContainer = params.initScrollBar(container, params)
-      customScrollContainer.bind('scroll', setYearLabel)
-    } else {
-      var waiting = false
-      calendarBody.scrollContent.addEventListener('scroll', function() {
-        if(!waiting) {
-          setTimeout(function() {
-            waiting = false
-            setYearLabel()
-          }, 250)
-          waiting = true
-        }
-      })
-    }
-  }
-
-  function parseDisabledDates(dates) {
-    var dateMap = {}
-    dates.forEach(function(date) { dateMap[DateTime.fromIsoDate(date).date] = true })
-    return dateMap
-  }
-
-  function dateBehaviour(isRange) {
-    var basicParams = [container, calendarBody, params.executeCallback, locale, params, getElemDate, popupBehavior, startDate, setStartField]
-    var rangeParams = [endDate, setEndField, calendarRange, disabledDatesList]
-    return isRange ? RangeEvents.apply(null, basicParams.concat(rangeParams)) : SingleDateEvents.apply(null, basicParams)
-  }
-
-  function popUpBehaviour(isPopup) {
-    var popUpVersion = {
-      initUI:                function() {
-        calendarContainer.classList.add('popup')
-        toggle(calendarContainer, false)
-        var icon = el('a', {
-          'href':  '#',
-          'className': 'calendarIcon',
-          'innerText': today.getDate()
-        })
-        icon.addEventListener('click', toggleCalendar)
-        container.insertBefore(icon, container.firstChild)
-      },
-      initState:             function() { },
-      getContainer:          function(newContainer) {
-        var popUpContainer = el('div', {
-          'className': 'popUpContainer'
-        })
-        popUpContainer.appendChild(newContainer)
-        return popUpContainer
-      },
-      close:                 toggleCalendar,
-      addDateLabelBehaviour: function(labels) {
-        elemsAsList(labels).forEach(function(label) {
-          label.classList.add('clickable')
-          label.addEventListener('click', toggleCalendar)
-        })
-      }
-    }
-
-    function toggleCalendar() {
-      initCalendarTable()
-      if(calendarContainer.style.display === '' ) {
-        //calendarContainer.fadeOut(params.fadeOutDuration)
-        toggle(calendarContainer, false)
-        //TODO re-actiate
-        //$(document).unbind('click.continuousCalendar')
-      } else {
-        params.popupCallback()
-        toggle(calendarContainer, true)
-        if(beforeFirstOpening) {
-          params.initScrollBar(container, params)
-          calculateCellHeight()
-          setYearLabel()
-          beforeFirstOpening = false
-        }
-        dateBehavior.setSelection(fieldDate(params.startField), fieldDate(params.endField))
-        scrollToSelection()
-        //TODO re-actiate
-        //$(document).bind('click.continuousCalendar', toggleCalendar)
-
-      }
-      return false
-    }
-
-    var inlineVersion = {
-      initUI:                initCalendarTable,
-      initState:             calculateCellHeightAndInitScroll,
-      getContainer:          function(newContainer) {
-        return newContainer
-      },
-      close:                 function() {},
-      addDateLabelBehaviour: function() {}
-    }
-    return isPopup ? popUpVersion : inlineVersion
-  }
-
-  function getCalendarContainerOrCreateOne() {
-    var existingContainer = container.querySelector('.continuousCalendar')
-    if(existingContainer) {
-      return existingContainer
-    } else {
-      var newContainer = el('div', {'className':'continuousCalendar'})
-      container.appendChild(popupBehavior.getContainer(newContainer))
-      return newContainer
-    }
-  }
-
-  function addDateLabels(container2, popupBehavior, dateBehavior) {
-    var dateLabelContainer = el('div', {'className': 'label'})
-    dateLabelContainer.appendChild(el('span', {'className': 'startDateLabel'}))
-    dateBehavior.addEndDateLabel(dateLabelContainer)
-    container2.insertBefore(dateLabelContainer, container2.firstChild)
-    popupBehavior.addDateLabelBehaviour(dateLabelContainer.childNodes)
-  }
-
-  function scrollToSelection() {
-    var scrollContent = calendarBody.scrollContent
-    var selectionStartOrToday = scrollContent.querySelector('.selected') || scrollContent.querySelector('.today')
-    if(selectionStartOrToday) {
-      var height = calendarBody.scrollContent.clientHeight
-      var position = selectionStartOrToday.offsetTop - (height - selectionStartOrToday.offsetHeight) / 2
-      if(params.customScroll) {
-        var totalHeight = calendarBody.bodyTable.clientHeight
-        var maxScroll = totalHeight - height
-        var validPosition = position > maxScroll ? maxScroll : position
-        customScrollContainer.tinyscrollbar_update(validPosition > 0 ? validPosition : 0)
-      } else {
-        calendarBody.scrollContent.scrollTop = position
-      }
-    }
-  }
-
-  function setYearLabel() {
-    var scrollContent = calendarBody.scrollContent
-    var table = scrollContent.querySelector('table')
-    var scrollTop = params.customScroll ? -calendarContainer.querySelector('.overview').offsetTop : scrollContent.scrollTop
-    var rowNumber = parseInt(scrollTop / averageCellHeight, 10)
-    var date = getElemDate(table.rows[rowNumber].cells[2])
-    calendarBody.yearTitle.innerText = date.getFullYear()
-  }
-
-  function calculateCellHeightAndInitScroll() {
-    params.initScrollBar(container, params)
-    calculateCellHeight()
-    setYearLabel()
-  }
-
-  function calculateCellHeight() { averageCellHeight = parseInt(calendarBody.bodyTable.clientHeight / calendarBody.bodyTable.querySelectorAll('tr').length, 10) }
-
-  function fieldDate(field) { return field && field.value && field.value.length > 0 ? (params.useIsoForInput ? DateTime.fromIsoDate(field.value) : DateParse.parse(field.value, locale)) : null }
-
-  function getElemDate(elem) {
-    return calendarBody.dateCellDates[elem.getAttribute('date-cell-index') || elem.parentNode.getAttribute('date-cell-index')]
-  }
-
-  function setStartField(date) { if(params.startField) params.startField.value = formatDate(date) }
-
-  function setEndField(date) { if(params.endField) params.endField.value = formatDate(date) }
-
-  function formatDate(date) { return date ? (params.useIsoForInput ? date.toISODateString() : DateFormat.shortDateFormat(date, locale)) : '' }
-
-}
-
-},{"./CalendarBody":20,"./RangeEvents":21,"./SingleDateEvents":22,"./util":25,"dateutils":7}],24:[function(require,module,exports){
+},{"../jquery.continuousCalendar":25,"dateutils":12}],25:[function(require,module,exports){
 (function (global){
 var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
-var continuousCalendar = require('./continuousCalendar')
+var continuousCalendar = require('continuous-calendar')
 
 $.continuousCalendar = {
   "version": "5.1.1"
@@ -2171,33 +2200,4 @@ $.fn.isEmpty = function() { return this.length === 0 }
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./continuousCalendar":23}],25:[function(require,module,exports){
-module.exports = {
-  el: el,
-  extend: extend,
-  elemsAsList: elemsAsList,
-  toggle: toggle
-}
-
-function extend(destination, source) {
-  for(var property in source)
-    destination[property] = source[property]
-  return destination
-}
-
-function el(tagName, properties, childNode) {
-  var elem = document.createElement(tagName)
-  for(var i in properties) elem[i] = properties[i]
-  if(childNode) elem.appendChild(childNode)
-  return elem
-}
-
-function elemsAsList(selector) {
-  return Array.prototype.slice.call(selector)
-}
-
-function toggle(elem, show) {
-  if(elem) elem.style.display = show ? '' : 'none'
-}
-
-},{}]},{},[19]);
+},{"continuous-calendar":4}]},{},[24]);

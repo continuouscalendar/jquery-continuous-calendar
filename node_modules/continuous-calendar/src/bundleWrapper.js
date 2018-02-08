@@ -1,4 +1,4 @@
-window.ContinuousCalendar = require('../continuousCalendar/continuousCalendar')
+window.ContinuousCalendar = require('./continuousCalendar')
 window.DateFormat = require('dateutils').DateFormat
 window.DateParse = require('dateutils').DateParse
 window.DateLocale = require('dateutils').DateLocale
