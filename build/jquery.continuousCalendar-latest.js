@@ -934,7 +934,7 @@ module.exports = Duration
 
 },{}],7:[function(require,module,exports){
 module.exports = {
-  "version":  "0.3.0",
+  "version":  "0.3.1",
   DateFormat: require('./DateFormat'),
   DateLocale: require('./DateLocale'),
   DateParse:  require('./DateParse'),
@@ -1346,14 +1346,6 @@ module.exports = {
 }
 
 },{"../DateFormat":1,"../DateTime":5}],19:[function(require,module,exports){
-require('../continuousCalendar/jquery.continuousCalendar')
-window.DateFormat = require('dateutils').DateFormat
-window.DateParse = require('dateutils').DateParse
-window.DateLocale = require('dateutils').DateLocale
-window.DateTime = require('dateutils').DateTime
-window.DateRange = require('dateutils').DateRange
-
-},{"../continuousCalendar/jquery.continuousCalendar":24,"dateutils":7}],20:[function(require,module,exports){
 var DateFormat = require('dateutils').DateFormat
 var DateTime = require('dateutils').DateTime
 var util = require('./util')
@@ -1491,7 +1483,7 @@ module.exports = function(calendarContainer, calendarRange, locale, customScroll
   function getDateCell(index) { return dateCells[index] }
 }
 
-},{"./util":25,"dateutils":7}],21:[function(require,module,exports){
+},{"./util":24,"dateutils":7}],20:[function(require,module,exports){
 var DateFormat = require('dateutils').DateFormat
 var DateRange = require('dateutils').DateRange
 var DateTime = require('dateutils').DateTime
@@ -1760,7 +1752,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   function isEnabled(elem) { return !elem.classList.contains('disabled') }
 }
 
-},{"./util":25,"dateutils":7}],22:[function(require,module,exports){
+},{"./util":24,"dateutils":7}],21:[function(require,module,exports){
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
 var toggle = require('./util').toggle
@@ -1851,7 +1843,7 @@ module.exports = function(container, calendarBody, executeCallback, locale, para
   }
 }
 
-},{"./util":25,"dateutils":7}],23:[function(require,module,exports){
+},{"./util":24,"dateutils":7}],22:[function(require,module,exports){
 var DateFormat = require('dateutils').DateFormat
 var DateParse = require('dateutils').DateParse
 var EN = require('dateutils').DateLocale.EN
@@ -2144,34 +2136,12 @@ module.exports = function(container, options) {
 
 }
 
-},{"./CalendarBody":20,"./RangeEvents":21,"./SingleDateEvents":22,"./util":25,"dateutils":7}],24:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
-var continuousCalendar = require('./continuousCalendar')
-
-$.continuousCalendar = {
-  "version": "5.1.1"
+},{"./CalendarBody":19,"./RangeEvents":20,"./SingleDateEvents":21,"./util":24,"dateutils":7}],23:[function(require,module,exports){
+module.exports = {
+  CalendarBody: require('./CalendarBody'),
+  continuousCalendar: require('./continuousCalendar')
 }
-$.fn.continuousCalendar = function(options) {
-  return this.each(function() {
-    options.initScrollBar = function(container, params) {
-      return params.customScroll && $('.tinyscrollbar', container).tinyscrollbar(params.scrollOptions)
-    }
-    options.executeCallback = function(container, selection, params) {
-      params.callback.call(container, selection)
-      $(container).trigger('calendarChange', selection)
-    }
-    continuousCalendar($(this).get(0), options)
-  })
-}
-
-$.fn.calendarRange = function() { return this.get(0).calendarRange }
-$.fn.exists = function() { return this.length > 0 }
-$.fn.isEmpty = function() { return this.length === 0 }
-
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./continuousCalendar":23}],25:[function(require,module,exports){
+},{"./CalendarBody":19,"./continuousCalendar":22}],24:[function(require,module,exports){
 module.exports = {
   el: el,
   extend: extend,
@@ -2200,4 +2170,85 @@ function toggle(elem, show) {
   if(elem) elem.style.display = show ? '' : 'none'
 }
 
-},{}]},{},[19]);
+},{}],25:[function(require,module,exports){
+arguments[4][1][0].apply(exports,arguments)
+},{"./DateTime":29,"dup":1}],26:[function(require,module,exports){
+arguments[4][2][0].apply(exports,arguments)
+},{"./locale/AU":32,"./locale/CN":33,"./locale/DE":34,"./locale/EN":35,"./locale/ET":36,"./locale/FI":38,"./locale/FR":39,"./locale/LV":40,"./locale/RU":41,"./locale/SV":42,"dup":2}],27:[function(require,module,exports){
+arguments[4][3][0].apply(exports,arguments)
+},{"./DateTime":29,"dup":3}],28:[function(require,module,exports){
+arguments[4][4][0].apply(exports,arguments)
+},{"./DateFormat":25,"./DateParse":27,"./DateTime":29,"dup":4}],29:[function(require,module,exports){
+arguments[4][5][0].apply(exports,arguments)
+},{"dup":5}],30:[function(require,module,exports){
+arguments[4][6][0].apply(exports,arguments)
+},{"dup":6}],31:[function(require,module,exports){
+module.exports = {
+  "version":  "0.3.0",
+  DateFormat: require('./DateFormat'),
+  DateLocale: require('./DateLocale'),
+  DateParse:  require('./DateParse'),
+  DateRange:  require('./DateRange'),
+  DateTime:   require('./DateTime'),
+  Duration:   require('./Duration')
+}
+
+
+},{"./DateFormat":25,"./DateLocale":26,"./DateParse":27,"./DateRange":28,"./DateTime":29,"./Duration":30}],32:[function(require,module,exports){
+arguments[4][8][0].apply(exports,arguments)
+},{"../DateFormat":25,"../DateTime":29,"dup":8}],33:[function(require,module,exports){
+arguments[4][9][0].apply(exports,arguments)
+},{"../DateFormat":25,"../DateTime":29,"dup":9}],34:[function(require,module,exports){
+arguments[4][10][0].apply(exports,arguments)
+},{"../DateFormat":25,"../DateTime":29,"dup":10}],35:[function(require,module,exports){
+arguments[4][11][0].apply(exports,arguments)
+},{"../DateFormat":25,"../DateTime":29,"dup":11}],36:[function(require,module,exports){
+arguments[4][12][0].apply(exports,arguments)
+},{"../DateFormat":25,"../DateTime":29,"dup":12}],37:[function(require,module,exports){
+arguments[4][13][0].apply(exports,arguments)
+},{"dup":13}],38:[function(require,module,exports){
+arguments[4][14][0].apply(exports,arguments)
+},{"../DateFormat":25,"../DateTime":29,"./FI-holidays":37,"dup":14}],39:[function(require,module,exports){
+arguments[4][15][0].apply(exports,arguments)
+},{"../DateFormat":25,"../DateTime":29,"dup":15}],40:[function(require,module,exports){
+arguments[4][16][0].apply(exports,arguments)
+},{"../DateFormat":25,"../DateTime":29,"dup":16}],41:[function(require,module,exports){
+arguments[4][17][0].apply(exports,arguments)
+},{"../DateFormat":25,"../DateTime":29,"dup":17}],42:[function(require,module,exports){
+arguments[4][18][0].apply(exports,arguments)
+},{"../DateFormat":25,"../DateTime":29,"dup":18}],43:[function(require,module,exports){
+require('../continuousCalendar/jquery.continuousCalendar')
+window.DateFormat = require('dateutils').DateFormat
+window.DateParse = require('dateutils').DateParse
+window.DateLocale = require('dateutils').DateLocale
+window.DateTime = require('dateutils').DateTime
+window.DateRange = require('dateutils').DateRange
+
+},{"../continuousCalendar/jquery.continuousCalendar":44,"dateutils":31}],44:[function(require,module,exports){
+(function (global){
+var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
+var continuousCalendar = require('continuous-calendar').continuousCalendar
+
+$.continuousCalendar = {
+  "version": "5.1.1"
+}
+$.fn.continuousCalendar = function(options) {
+  return this.each(function() {
+    options.initScrollBar = function(container, params) {
+      return params.customScroll && $('.tinyscrollbar', container).tinyscrollbar(params.scrollOptions)
+    }
+    options.executeCallback = function(container, selection, params) {
+      params.callback.call(container, selection)
+      $(container).trigger('calendarChange', selection)
+    }
+    continuousCalendar($(this).get(0), options)
+  })
+}
+
+$.fn.calendarRange = function() { return this.get(0).calendarRange }
+$.fn.exists = function() { return this.length > 0 }
+$.fn.isEmpty = function() { return this.length === 0 }
+
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"continuous-calendar":23}]},{},[43]);

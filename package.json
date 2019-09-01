@@ -9,14 +9,11 @@
   "scripts": {
     "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html?spec --reporter spec && eslint .",
     "lint": "eslint .",
-    "portDateutils": "r.js -convert node_modules/dateutils/src src/main/dateutils",
-    "portContinuousCalendar": "r.js -convert src/continuousCalendar src/main",
     "buildBundle": "browserify src/build/bundleWrapper.js -o build/jquery.continuousCalendar-latest.js",
-    "buildLightBundle": "browserify src/build/bundleWrapperLight.js -o build/continuousCalendar-latest.js",
     "watch": "watchify src/build/bundleWrapper.js -o build/jquery.continuousCalendar-latest.js",
     "minifyBundle": "uglifyjs build/jquery.continuousCalendar-latest.js > build/jquery.continuousCalendar-latest-min.js",
-    "minifyLightBundle": "uglifyjs build/continuousCalendar-latest.js > build/continuousCalendar-latest-min.js",
-    "prepublish": "npm run buildBundle && npm run minifyBundle"
+    "prepublish": "npm run buildBundle && npm run minifyBundle",
+    "buildStyles": "lessc src/continuousCalendar/jquery.continuousCalendar.less build/jquery.continuousCalendar-latest-min.css"
   },
   "keywords": [
     "calendar",
@@ -51,6 +48,7 @@
     "chai": "~3.5.0",
     "chai-jquery": "~2.0.0",
     "eslint": "^3.3.1",
+    "less": "^3.10.3",
     "mocha": "^3.0.2",
     "mocha-phantomjs": "~4.1.0",
     "phantomjs": "^2.1.3",
@@ -59,6 +57,7 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
+    "continuous-calendar": "^1.0.2",
     "dateutils": "^0.3.0",
     "jquery": "^3.1.0"
   },

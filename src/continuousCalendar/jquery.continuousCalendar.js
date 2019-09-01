@@ -1,5 +1,4 @@
-var $ = require('jquery')
-var continuousCalendar = require('./continuousCalendar')
+var continuousCalendar = require('continuous-calendar').continuousCalendar
 
 $.continuousCalendar = {
   "version": "5.1.1"

@@ -13,7 +13,6 @@
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css"/>
   <link rel="stylesheet" type="text/css" href="site/styles.css"/>
   <link rel="stylesheet" href="build/jquery.continuousCalendar-latest-min.css" type="text/css" media="all"/>
-  <link rel="stylesheet" href="src/main/theme.rounded.css" type="text/css" media="all"/>
   <!--<link rel="stylesheet" href="src/main/jquery.continuousCalendar.css" type="text/css" media="all"/>-->
   <meta content="Jquery continuous calendar. A JavaScript Calendar component and date picker for selecting dates and date ranges." name="description"/>
 </head>
@@ -248,10 +247,42 @@ href="http://continuouscalendar.github.com/jquery-continuous-calendar/build/jque
 </div>
 
 </div>
-<script type="text/javascript" src="build/continuousCalendar-latest-min.js" charset="UTF-8"></script>
-<script type="text/javascript" language="JavaScript" src="site/index.js" ></script>
+<script
+        src="//code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="build/jquery.continuousCalendar-latest-min.js" charset="UTF-8"></script>
 <script type="text/javascript">
+  $('#timeCalendar').continuousCalendar({weeksBefore: 30, lastDate: "today", selectToday: true, theme: 'rounded', isRange: true, executeCallback: executeCallback})
 
+  function executeCallback(container, selection, params) {
+    var startTime = container.querySelector('select[name=tripStartTime]').value
+    var endTime = container.querySelector('select[name=tripEndTime]').value
+    var range = container.calendarRange
+    range = range.withTimes(startTime, endTime)
+    container.querySelector('.totalTimeOfTrip').innerText = DateFormat.formatRange(range, DateLocale.EN)
+    container.querySelector('.totalTimeOfTrip').classList.toggle('invalid', !range.isValid())
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll("#timeCalendar select")).forEach(function(el) {
+    el.addEventListener('change', function() {
+      executeCallback(document.getElementById('timeCalendar'))
+    })
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll("#timeCalendar select")).forEach(function(elem) {
+    for(i = 0; i < 24; i++) {
+      var option = document.createElement('option')
+      option.innerText = i + ":00"
+      var option2 = document.createElement('option')
+      option2.innerText = i + ":30"
+      elem.appendChild(option);
+      elem.appendChild(option2);
+    }
+  });
+  $('#date-picker').continuousCalendar({isPopup: true, firstDate: 'today', customScroll: false});
+</script>
+<script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-4154602-6']);
   _gaq.push(['_trackPageview']);
