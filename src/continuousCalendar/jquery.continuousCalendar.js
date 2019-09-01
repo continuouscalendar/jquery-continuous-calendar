@@ -1,7 +1,7 @@
 var continuousCalendar = require('continuous-calendar').continuousCalendar
 
 $.continuousCalendar = {
-  "version": "5.1.1"
+  'version': '5.1.1'
 }
 $.fn.continuousCalendar = function(options) {
   return this.each(function() {

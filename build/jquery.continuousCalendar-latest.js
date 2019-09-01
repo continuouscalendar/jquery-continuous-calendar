@@ -2225,8 +2225,6 @@ window.DateTime = require('dateutils').DateTime
 window.DateRange = require('dateutils').DateRange
 
 },{"../continuousCalendar/jquery.continuousCalendar":44,"dateutils":31}],44:[function(require,module,exports){
-(function (global){
-var $ = (typeof window !== "undefined" ? window['jQuery'] : typeof global !== "undefined" ? global['jQuery'] : null)
 var continuousCalendar = require('continuous-calendar').continuousCalendar
 
 $.continuousCalendar = {
@@ -2250,5 +2248,4 @@ $.fn.exists = function() { return this.length > 0 }
 $.fn.isEmpty = function() { return this.length === 0 }
 
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"continuous-calendar":23}]},{},[43]);

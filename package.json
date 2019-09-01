@@ -7,10 +7,8 @@
     "url": "https://github.com/continuouscalendar/jquery-continuous-calendar"
   },
   "scripts": {
-    "test": "mocha-phantomjs src/test/jquery.continuousCalendar.spec.html?spec --reporter spec && eslint .",
-    "lint": "eslint .",
+    "test": "eslint .",
     "buildBundle": "browserify src/build/bundleWrapper.js -o build/jquery.continuousCalendar-latest.js",
-    "watch": "watchify src/build/bundleWrapper.js -o build/jquery.continuousCalendar-latest.js",
     "minifyBundle": "uglifyjs build/jquery.continuousCalendar-latest.js > build/jquery.continuousCalendar-latest-min.js",
     "prepublish": "npm run buildBundle && npm run minifyBundle",
     "buildStyles": "lessc src/continuousCalendar/jquery.continuousCalendar.less build/jquery.continuousCalendar-latest-min.css"
@@ -42,31 +40,13 @@
     "LICENSE-2.0.txt"
   ],
   "devDependencies": {
-    "almond": "~0.3.1",
     "browserify": "^13.0.0",
-    "browserify-shim": "^3.8.12",
-    "chai": "~3.5.0",
-    "chai-jquery": "~2.0.0",
     "eslint": "^3.3.1",
     "less": "^3.10.3",
-    "mocha": "^3.0.2",
-    "mocha-phantomjs": "~4.1.0",
-    "phantomjs": "^2.1.3",
-    "requirejs": "~2.2.0",
-    "uglify-js": "^2.6.1",
-    "watchify": "^3.7.0"
+    "uglify-js": "^2.6.1"
   },
   "dependencies": {
     "continuous-calendar": "^1.0.2",
-    "dateutils": "^0.3.0",
-    "jquery": "^3.1.0"
-  },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
-  "browserify-shim": {
-    "jquery": "global:jQuery"
+    "dateutils": "^0.3.0"
   }
 }
