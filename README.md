@@ -1,7 +1,7 @@
-![Calendar screen shot](http://continuouscalendar.github.com/jquery-continuous-calendar/site/calendar.png)
-[Homepage]: http://continuouscalendar.github.com/jquery-continuous-calendar/
-[Playground]: http://continuouscalendar.github.com/jquery-continuous-calendar/site/playground.html
-[Unit tests]: http://continuouscalendar.github.com/jquery-continuous-calendar/src/test/jquery.continuousCalendar.spec.html
+![Calendar screen shot](http://continuouscalendar.github.io/jquery-continuous-calendar/site/calendar.png)
+[Homepage]: http://continuouscalendar.github.io/jquery-continuous-calendar/
+[Playground]: http://continuouscalendar.github.io/jquery-continuous-calendar/site/playground.html
+[Unit tests]: http://continuouscalendar.github.io/jquery-continuous-calendar/src/test/jquery.continuousCalendar.spec.html
 [Latest revision as ZIP file]: http://github.com/continuouscalendar/jquery-continuous-calendar/zipball/master
 [Change log]: https://github.com/continuouscalendar/jquery-continuous-calendar/blob/master/History.textile
 [wicket-continuous-calendar]: https://code.google.com/p/wicket-continuous-calendar/
